@@ -23,13 +23,11 @@
 </template>
 
 <script>
-import $ from 'jquery'
-
 export default {
   name: 'Navbar'
 }
 
-$(document).ready(function () {
-  $('.sidenav').sidenav()
+$(function () {
+  alert('hello')
 })
 </script>
