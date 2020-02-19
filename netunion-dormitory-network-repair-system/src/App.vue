@@ -1,19 +1,21 @@
 <template>
-  <div id="app">
-    <Navbar/>
-    <Footer/>
-  </div>
+  <v-content>
+    <Drawer/>
+  </v-content>
 </template>
 
 <script>
-import Navbar from '@/components/Navbar.vue'
-import Footer from '@/components/Footer.vue'
+import Drawer from './components/Drawer'
 
 export default {
   name: 'App',
+
   components: {
-    Navbar,
-    Footer
-  }
+    Drawer
+  },
+
+  data: () => ({
+    //
+  })
 }
 </script>
