@@ -1,10 +1,10 @@
 module.exports = {
   app: {
-    name: 'UESTC Dormitory Network Repair System'
+    name: 'UESTC | Dormitory Network Repair Platform'
   },
   viewTitle: {
     home: 'HOME',
-    account: 'ACCOUNT',
+    user: 'USER',
     order: 'ORDER',
     about: 'ABOUT US'
   }

@@ -1,17 +1,17 @@
 <template>
   <v-content>
-    <Drawer/>
+    <Appbar/>
   </v-content>
 </template>
 
 <script>
-import Drawer from './components/Drawer'
+import Appbar from './components/Appbar'
 
 export default {
   name: 'App',
 
   components: {
-    Drawer
+    Appbar
   },
 
   data: () => ({

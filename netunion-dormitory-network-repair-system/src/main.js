@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
+import VueCookies from 'vue-cookies'
 import vuetify from './plugins/vuetify'
 import VueI18n from 'vue-i18n'
 
 Vue.config.productionTip = false
 
+Vue.use(VueCookies)
 Vue.use(VueI18n)
 
 const i18n = new VueI18n({
@@ -14,7 +16,8 @@ const i18n = new VueI18n({
   messages: {
     'zh-CN': require('./common/lang/zh'),
     'en-US': require('./common/lang/en')
-  }
+  },
+  defaultLanguage: '简体中文'
 })
 
 new Vue({
