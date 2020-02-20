@@ -76,10 +76,8 @@
           <v-select
             v-model="defaultLanguage"
             :items="languages"
-            menu-props="auto"
             hide-details
             prepend-icon="mdi-translate"
-            single-line
             @change="switchLanguage"
             style="width: 140px; margin: auto 120px auto auto"
           >
@@ -157,8 +155,8 @@ export default {
     },
     setDefaultMode () { // 使用 cookies 保存界面夜间模式
       if (this.$cookies.isKey('defaultDarkMode')) {
-        this.defaultLanguage = this.$cookies.get('defaultDarkMode')
-        if (this.defaultLanguage === 'true') {
+        this.defaultDarkMode = this.$cookies.get('defaultDarkMode')
+        if (this.defaultDarkMode === 'true') {
           this.changeMode(true)
           this.darkModeSwitch = true
         } else {
@@ -174,7 +172,7 @@ export default {
       } else {
         this.$vuetify.theme.dark = false
         this.$vuetify.theme.light = true
-        this.$cookies.set('defaultDarkMode', false)
+        this.$cookies.set('defaultDarkMode', value)
       }
     }
   }
