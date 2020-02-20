@@ -7,5 +7,8 @@ module.exports = {
     user: '账户',
     order: '订单',
     about: '关于我们'
+  },
+  theme: {
+    darkMode: '夜间模式'
   }
 }

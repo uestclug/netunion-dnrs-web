@@ -41,11 +41,25 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
+
+      <template v-slot:append>
+        <v-card
+          class="mx-auto"
+          style="padding: 10px; text-align: center"
+        >
+          {{ $t('theme.darkMode') }}
+          <v-switch
+            v-model="darkModeSwitch"
+            color="cyan lighten-1"
+            @change="changeMode"
+            style="display: inline-block; margin: auto auto auto 20px"
+          ></v-switch>
+        </v-card>
+      </template>
     </v-navigation-drawer>
 
     <v-app-bar
       app
-      color="white"
       elevate-on-scroll
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
@@ -112,10 +126,12 @@ export default {
     languages: [
       { text: '简体中文' },
       { text: 'ENGLISH' }
-    ]
+    ],
+    darkModeSwitch: false
   }),
   created: function () {
     this.setDefaultLanguage()
+    this.setDefaultMode()
   },
   methods: {
     setDefaultLanguage () { // 使用 cookies 保存用户使用语言习惯
@@ -138,6 +154,28 @@ export default {
         this.$i18n.locale = 'en-US'
       }
       this.$cookies.set('defaultLanguage', id)
+    },
+    setDefaultMode () { // 使用 cookies 保存界面夜间模式
+      if (this.$cookies.isKey('defaultDarkMode')) {
+        this.defaultLanguage = this.$cookies.get('defaultDarkMode')
+        if (this.defaultLanguage === 'true') {
+          this.changeMode(true)
+          this.darkModeSwitch = true
+        } else {
+          this.changeMode(false)
+        }
+      }
+    },
+    changeMode (value) { // 设置夜间模式
+      if (value === true) {
+        this.$vuetify.theme.dark = true
+        this.$vuetify.theme.light = false
+        this.$cookies.set('defaultDarkMode', value)
+      } else {
+        this.$vuetify.theme.dark = false
+        this.$vuetify.theme.light = true
+        this.$cookies.set('defaultDarkMode', false)
+      }
     }
   }
 }

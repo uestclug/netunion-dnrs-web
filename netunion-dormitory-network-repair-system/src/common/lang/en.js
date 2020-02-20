@@ -7,5 +7,8 @@ module.exports = {
     user: 'USER',
     order: 'ORDER',
     about: 'ABOUT US'
+  },
+  theme: {
+    darkMode: 'DARK MODE'
   }
 }
