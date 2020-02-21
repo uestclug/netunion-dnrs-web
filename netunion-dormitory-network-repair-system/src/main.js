@@ -4,8 +4,10 @@ import router from './router'
 import VueCookies from 'vue-cookies'
 import vuetify from './plugins/vuetify'
 import VueI18n from 'vue-i18n'
+import axios from 'axios'
 
 Vue.config.productionTip = false
+Vue.prototype.$http = axios
 
 Vue.use(VueCookies)
 Vue.use(VueI18n)

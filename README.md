@@ -23,7 +23,7 @@ NetUnion - 电子科技大学 | 宿舍网络在线报修平台
 
 - **数据库设计**
 
-  使用 [MySQL](https://www.mysql.com/) 数据库；
+  使用 [MySQL 5.7.28](https://downloads.mysql.com/archives/community/) 数据库；
 
   前端用 [axios](http://www.axios-js.com/) 发送请求，后端使用 [body-parser](https://github.com/expressjs/body-parser) 接受请求。
 
