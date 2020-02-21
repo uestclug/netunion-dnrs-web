@@ -1,10 +1,11 @@
 <template>
-  <v-app id="Appbar">
+  <v-app id="AppView">
+    <!-- Drawer -->
     <v-navigation-drawer
       app
       v-model="drawer"
     >
-      <v-list dense>
+      <v-list>
         <v-list-item router-link to="/">
           <v-list-item-action>
             <v-icon>mdi-home</v-icon>
@@ -58,18 +59,14 @@
       </template>
     </v-navigation-drawer>
 
+    <!-- App Bar -->
     <v-app-bar
       app
       elevate-on-scroll
+      scroll-off-screen
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title>{{ $t($route.meta.viewTitle) }}</v-toolbar-title>
-      <!--
-      <v-spacer></v-spacer>
-      <v-toolbar-title>
-        <div class='hideOnPhone'>{{ $t('app.name') }}</div>
-      </v-toolbar-title>
-      -->
       <v-spacer></v-spacer>
       <v-app-bar-nav-icon>
         <div class='hideOnPhone'>
@@ -108,14 +105,24 @@
       </v-app-bar-nav-icon>
     </v-app-bar>
 
-    <v-container>
-      <router-view></router-view>
-    </v-container>
+    <!-- Main View -->
+    <router-view></router-view>
+
+    <!-- Footer -->
+    <div class="hideOnPhone">
+      <v-footer
+        absolute
+      >
+        <v-spacer></v-spacer>
+        <div>{{ $t('app.name') }} &copy; {{ new Date().getFullYear() }}</div>
+      </v-footer>
+    </div>
   </v-app>
 </template>
 
 <script>
 export default {
+  name: 'AppView',
   props: {
     source: String
   },

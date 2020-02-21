@@ -10,5 +10,20 @@ module.exports = {
   },
   theme: {
     darkMode: '夜间模式'
+  },
+  home: {
+    welcome: {
+      words: '欢迎你，',
+      slogan: '宿舍网络问题找我们！',
+      order: '填写报修订单'
+    },
+    orderOngoing: {
+      title: '正在进行的订单',
+      freeTime: '空闲时间',
+      location: '宿舍号',
+      solver: '处理人',
+      viewDetails: '进入订单',
+      changeDetails: '修改订单'
+    }
   }
 }
