@@ -62,8 +62,7 @@
     <!-- App Bar -->
     <v-app-bar
       app
-      elevate-on-scroll
-      scroll-off-screen
+      hide-on-scroll
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title>{{ $t($route.meta.viewTitle) }}</v-toolbar-title>
@@ -106,13 +105,13 @@
     </v-app-bar>
 
     <!-- Main View -->
-    <router-view></router-view>
+    <div style="margin: 40px 0px 40px 0px">
+      <router-view></router-view>
+    </div>
 
     <!-- Footer -->
     <div class="hideOnPhone">
-      <v-footer
-        style="margin: 60px auto auto auto"
-      >
+      <v-footer>
         <v-spacer></v-spacer>
         <div>{{ $t('app.name') }} &copy; {{ new Date().getFullYear() }}</div>
       </v-footer>
