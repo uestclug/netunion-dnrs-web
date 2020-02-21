@@ -111,7 +111,7 @@
     <!-- Footer -->
     <div class="hideOnPhone">
       <v-footer
-        absolute
+        style="margin: 60px auto auto auto"
       >
         <v-spacer></v-spacer>
         <div>{{ $t('app.name') }} &copy; {{ new Date().getFullYear() }}</div>

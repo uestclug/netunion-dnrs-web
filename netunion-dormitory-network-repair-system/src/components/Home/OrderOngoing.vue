@@ -12,7 +12,7 @@
         <v-card-text>
           <p class="subtitle-1">{{ $t('home.orderOngoing.title') }}<v-divider></v-divider></p>
           <p class="title"><v-icon>mdi-clock-outline</v-icon> {{ $t('home.orderOngoing.freeTime') }}</p>
-          <p class="title text--primary">2020/2/21 14:00 - 18:00</p>
+          <p class="title text--primary">2020/2/21 14:00 - 18:00等</p>
           <p class="title"><v-icon>mdi-map-marker-outline</v-icon> {{ $t('home.orderOngoing.location') }}</p>
           <p class="title text--primary">欣2栋 211</p>
           <p class="title"><v-icon>mdi-account-tie-outline</v-icon> {{ $t('home.orderOngoing.solver') }}</p>

@@ -20,10 +20,31 @@ module.exports = {
     orderOngoing: {
       title: 'Order in progress',
       freeTime: 'Free time',
-      location: 'Dormitory number',
+      location: 'Dormitory',
       solver: 'Solver',
       viewDetails: 'VIEW DETAILS',
       changeDetails: 'SETTING'
+    }
+  },
+  user: {
+    account: {
+      title: 'Account information',
+      setting: 'Modify',
+      name: 'Name',
+      sex: 'Sex',
+      location: 'Dormitory',
+      telephone: 'Telephone'
+    },
+    statistics: {
+      title: 'Statistics',
+      orderTime: 'Order Time',
+      firstOrderDate: 'First Order Date',
+      firstOrderSolver: 'First Order Solver',
+      lastOrderDate: 'Last Order Date',
+      lastOrderSolver: 'Last Order Solver',
+      unlockedSolver: 'Unlocked Solver Number',
+      bestSolver: 'Best Solver of You',
+      bestSolverOrderedTime: 'and He/She Helped You'
     }
   }
 }
