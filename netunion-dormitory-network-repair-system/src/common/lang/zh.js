@@ -14,8 +14,7 @@ module.exports = {
   home: {
     welcome: {
       words: '欢迎你，',
-      slogan: '宿舍网络问题找我们！',
-      order: '填写报修订单'
+      slogan: '宿舍网络问题找我们！'
     },
     orderOngoing: {
       title: '正在进行的订单',
@@ -46,5 +45,17 @@ module.exports = {
       bestSolver: '你最好的SOLVER',
       bestSolverOrderedTime: '以及Ta帮助你的次数'
     }
+  },
+  order: {
+    create: '新建网络报修订单',
+    note: '我们建议您首先检查网络是否欠费并试着重启路由器',
+    cancelTip: '已填写内容不会消失',
+    submit: '提交',
+    cancel: '取消',
+    nameMaxLengthErr: '姓名最长输入 20 字符',
+    nameRequiredErr: '您必须输入姓名',
+    telephoneMaxLengthErr: '电话最长输入 11 字符',
+    telephoneRequiredErr: '您必须输入电话',
+    locationRequiredErr: '您必须填写寝室地址'
   }
 }

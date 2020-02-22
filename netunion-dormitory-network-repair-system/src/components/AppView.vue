@@ -110,12 +110,14 @@
     </div>
 
     <!-- Footer -->
+    <!--
     <div class="hideOnPhone">
       <v-footer>
         <v-spacer></v-spacer>
         <div>{{ $t('app.name') }} &copy; {{ new Date().getFullYear() }}</div>
       </v-footer>
     </div>
+    -->
   </v-app>
 </template>
 

@@ -22,10 +22,11 @@
         </v-card-text>
         <v-card-actions>
           <v-btn
-            color="info"
+            color="brown darken-1"
+            outlined
             style="margin: 0px 0px 10px 10px"
           >
-            {{ $t('user.account.setting') }}
+            <v-icon left>mdi-key-outline</v-icon>{{ $t('user.account.setting') }}
           </v-btn>
         </v-card-actions>
       </v-card>

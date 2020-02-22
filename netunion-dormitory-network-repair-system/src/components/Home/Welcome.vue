@@ -14,6 +14,7 @@
           <p class="headline text--primary font-weight-medium">{{ $t('home.welcome.slogan') }}</p>
         </v-card-text>
         <v-card-actions>
+          <!--
           <v-btn
             color="success"
             outlined
@@ -21,6 +22,8 @@
           >
             <v-icon left>mdi-pencil</v-icon> {{ $t('home.welcome.order') }}
           </v-btn>
+          -->
+          <createOrder/>
         </v-card-actions>
       </v-card>
     </v-hover>
@@ -28,7 +31,12 @@
 </template>
 
 <script>
+import createOrder from '@/components/Order/createOrder'
+
 export default {
-  name: 'Welcome'
+  name: 'Welcome',
+  components: {
+    createOrder
+  }
 }
 </script>
