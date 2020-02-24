@@ -16,13 +16,16 @@ module.exports = {
       words: '欢迎你，',
       slogan: '宿舍网络问题找我们！'
     },
-    orderOngoing: {
-      title: '正在进行的订单',
+    latestOrder: {
+      title: '最近的订单',
       freeTime: '空闲时间',
       location: '寝室号',
       solver: '处理人',
       viewDetails: '进入订单',
-      changeDetails: '修改订单'
+      status: '订单状态'
+    },
+    infoNote: {
+      note: '我们建议您首先检查网络是否欠费并试着重启路由器'
     }
   },
   user: {
@@ -30,7 +33,7 @@ module.exports = {
       title: '账户资料',
       setting: '修改信息',
       name: '姓名',
-      sex: '性别',
+      campus: '所在校区',
       location: '寝室号',
       telephone: '联系电话'
     },
@@ -47,15 +50,23 @@ module.exports = {
     }
   },
   order: {
-    create: '新建网络报修订单',
-    note: '我们建议您首先检查网络是否欠费并试着重启路由器',
-    cancelTip: '已填写内容不会消失',
-    submit: '提交',
-    cancel: '取消',
-    nameMaxLengthErr: '姓名最长输入 20 字符',
-    nameRequiredErr: '您必须输入姓名',
-    telephoneMaxLengthErr: '电话最长输入 11 字符',
-    telephoneRequiredErr: '您必须输入电话',
-    locationRequiredErr: '您必须填写寝室地址'
+    createOrder: {
+      create: '新建网络报修订单',
+      cancelTip: '已填写内容不会消失',
+      submit: '提交',
+      cancel: '取消',
+      nameLabel: '姓名',
+      telephoneLabel: '联系电话',
+      campusLabel: '所处校区',
+      dormitoryLabel: '寝室地址',
+      descriptionLabel: '描述（可选）',
+      nameMaxLengthErr: '姓名最长输入 20 字符',
+      nameRequiredErr: '您必须输入姓名',
+      telephoneMaxLengthErr: '电话最长输入 11 字符',
+      telephoneRequiredErr: '您必须输入电话',
+      campusRequiredErr: '您必须选择所处校区',
+      dormitoryRequiredErr: '您必须填写寝室楼栋和寝室号',
+      descriptionHint: '添加对具体情况的描述可以帮助我们更好地解决问题'
+    }
   }
 }

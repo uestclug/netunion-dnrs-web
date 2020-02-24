@@ -10,60 +10,60 @@
         max-width="800"
       >
         <v-card-text>
-          <p class="subtitle-1">{{ $t('user.account.title') }}<v-divider></v-divider></p>
+          <p class="subtitle-1">{{ $t('home.latestOrder.title') }}<v-divider></v-divider></p>
 
           <v-row>
             <v-col>
-              <p class="title"><v-icon>mdi-account-outline</v-icon>
-                {{ $t('user.account.name') }}
+              <p class="title"><v-icon>mdi-clock-outline</v-icon>
+                {{ $t('home.latestOrder.freeTime') }}
               </p>
             </v-col>
             <v-col>
-              <p class="title text--primary">Snake</p>
-            </v-col>
-          </v-row>
-
-          <v-row>
-            <v-col>
-              <p class="title"><v-icon>mdi-domain</v-icon>
-                {{ $t('user.account.campus') }}
-              </p>
-            </v-col>
-            <v-col>
-              <p class="title text--primary">沙河校区</p>
+              <p class="title text--primary">2020/2/21 14:00 - 18:00等</p>
             </v-col>
           </v-row>
 
           <v-row>
             <v-col>
               <p class="title"><v-icon>mdi-map-marker-outline</v-icon>
-                {{ $t('user.account.location') }}
+                {{ $t('home.latestOrder.location') }}
               </p>
             </v-col>
             <v-col>
-              <p class="title text--primary">欣二栋 233</p>
+              <p class="title text--primary">欣2栋 211</p>
             </v-col>
           </v-row>
 
           <v-row>
             <v-col>
-              <p class="title"><v-icon>mdi-cellphone</v-icon>
-                {{ $t('user.account.telephone') }}
+              <p class="title"><v-icon>mdi-account-tie-outline</v-icon>
+                {{ $t('home.latestOrder.solver') }}
               </p>
             </v-col>
             <v-col>
-              <p class="title text--primary">18980442215</p>
+              <p class="title text--primary">等待接单</p>
+            </v-col>
+          </v-row>
+
+          <v-row>
+            <v-col>
+              <p class="title"><v-icon>mdi-bell-ring-outline</v-icon>
+                {{ $t('home.latestOrder.status') }}
+              </p>
+            </v-col>
+            <v-col>
+              <p class="title text--primary">正在进行中</p>
             </v-col>
           </v-row>
 
         </v-card-text>
         <v-card-actions>
           <v-btn
-            color="brown darken-1"
+            color="primary"
             outlined
             style="margin: 0px 0px 10px 10px"
           >
-            <v-icon left>mdi-key-outline</v-icon>{{ $t('user.account.setting') }}
+            <v-icon left>mdi-tag-outline</v-icon> {{ $t('home.latestOrder.viewDetails') }}
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -73,6 +73,6 @@
 
 <script>
 export default {
-  name: 'Account'
+  name: 'LatestOrder'
 }
 </script>

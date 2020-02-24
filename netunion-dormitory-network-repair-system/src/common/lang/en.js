@@ -16,13 +16,16 @@ module.exports = {
       words: 'Welcome, ',
       slogan: 'We are the solvers of dormitory network problems!'
     },
-    orderOngoing: {
-      title: 'Order in progress',
+    latestOrder: {
+      title: 'Latest order',
       freeTime: 'Free time',
       location: 'Dormitory',
       solver: 'Solver',
       viewDetails: 'VIEW DETAILS',
-      changeDetails: 'SETTING'
+      status: 'Status'
+    },
+    infoNote: {
+      note: 'We highly recommend you to check if the network is in arrears and try to restart the router'
     }
   },
   user: {
@@ -30,7 +33,7 @@ module.exports = {
       title: 'Account information',
       setting: 'Modify',
       name: 'Name',
-      sex: 'Sex',
+      campus: 'Campus',
       location: 'Dormitory',
       telephone: 'Telephone'
     },
@@ -47,15 +50,23 @@ module.exports = {
     }
   },
   order: {
-    create: 'CREATE NEW ORDER',
-    note: 'We highly recommend you to check if the network is in arrears and try to restart the router',
-    cancelTip: 'completed content will not reset',
-    submit: 'SUBMIT',
-    cancel: 'CANCEL',
-    nameMaxLengthErr: 'Name must be at most 20 characters long',
-    nameRequiredErr: 'Name is required',
-    telephoneMaxLengthErr: 'Telephone must be at most 11 characters long',
-    telephoneRequiredErr: 'Telephone is required',
-    locationRequiredErr: 'Dormitory location is required'
+    createOrder: {
+      create: 'CREATE NEW ORDER',
+      cancelTip: 'completed content will not reset',
+      submit: 'SUBMIT',
+      cancel: 'CANCEL',
+      nameLabel: 'Name',
+      telephoneLabel: 'Telephone',
+      campusLabel: 'Campus',
+      dormitoryLabel: 'Dormitory',
+      descriptionLabel: 'Description (optional)',
+      nameMaxLengthErr: 'Name must be at most 20 characters long',
+      nameRequiredErr: 'Name is required',
+      telephoneMaxLengthErr: 'Telephone must be at most 11 characters long',
+      telephoneRequiredErr: 'Telephone is required',
+      campusRequiredErr: 'Campus location is required',
+      dormitoryRequiredErr: 'Dormitory location and number is required',
+      descriptionHint: 'Adding a description of the situation can help us solve the problem better'
+    }
   }
 }

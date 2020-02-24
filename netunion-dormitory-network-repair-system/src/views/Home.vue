@@ -1,19 +1,22 @@
 <template>
   <div class="home">
+    <InfoNote/>
     <Welcome/>
-    <OrderOngoing/>
+    <LatestOrder/>
   </div>
 </template>
 
 <script>
+import InfoNote from '@/components/Home/InfoNote'
 import Welcome from '@/components/Home/Welcome'
-import OrderOngoing from '@/components/Home/OrderOngoing'
+import LatestOrder from '@/components/Home/LatestOrder'
 
 export default {
   name: 'Home',
   components: {
+    InfoNote,
     Welcome,
-    OrderOngoing
+    LatestOrder
   }
 }
 </script>

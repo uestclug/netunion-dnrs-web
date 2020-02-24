@@ -11,22 +11,43 @@
       >
         <v-card-text>
           <p class="subtitle-1">{{ $t('user.statistics.title') }}<v-divider></v-divider></p>
-          <p class="title">{{ $t('user.statistics.orderTime') }}</p>
-          <p class="title text--primary">4 次</p>
-          <p class="title">{{ $t('user.statistics.firstOrderDate') }}</p>
-          <p class="title text--primary">2019/12/23</p>
-          <p class="title">{{ $t('user.statistics.firstOrderSolver') }}</p>
-          <p class="title text--primary">Jason</p>
-          <p class="title">{{ $t('user.statistics.lastOrderDate') }}</p>
-          <p class="title text--primary">2020/2/22</p>
-          <p class="title">{{ $t('user.statistics.lastOrderSolver') }}</p>
-          <p class="title text--primary">Mary</p>
-          <p class="title">{{ $t('user.statistics.unlockedSolver') }}</p>
-          <p class="title text--primary">2 人</p>
-          <p class="title">{{ $t('user.statistics.bestSolver') }}</p>
-          <p class="title text--primary">Mary</p>
-          <p class="title">{{ $t('user.statistics.bestSolverOrderedTime') }}</p>
-          <p class="title text--primary">3 次</p>
+
+          <v-simple-table>
+            <tbody>
+              <tr>
+                <td>{{ $t('user.statistics.orderTime') }}</td>
+                <td>4 次</td>
+              </tr>
+              <tr>
+                <td>{{ $t('user.statistics.firstOrderDate') }}</td>
+                <td>2019/12/23</td>
+              </tr>
+              <tr>
+                <td>{{ $t('user.statistics.firstOrderSolver') }}</td>
+                <td>Jason</td>
+              </tr>
+              <tr>
+                <td>{{ $t('user.statistics.lastOrderDate') }}</td>
+                <td>2020/2/22</td>
+              </tr>
+              <tr>
+                <td>{{ $t('user.statistics.lastOrderSolver') }}</td>
+                <td>Mary</td>
+              </tr>
+              <tr>
+                <td>{{ $t('user.statistics.unlockedSolver') }}</td>
+                <td>2 人</td>
+              </tr>
+              <tr>
+                <td>{{ $t('user.statistics.bestSolver') }}</td>
+                <td>Mary</td>
+              </tr>
+              <tr>
+                <td>{{ $t('user.statistics.bestSolverOrderedTime') }}</td>
+                <td>3 次</td>
+              </tr>
+            </tbody>
+          </v-simple-table>
         </v-card-text>
       </v-card>
     </v-hover>

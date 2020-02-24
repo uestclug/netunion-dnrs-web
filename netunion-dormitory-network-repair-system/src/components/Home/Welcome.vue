@@ -23,7 +23,7 @@
             <v-icon left>mdi-pencil</v-icon> {{ $t('home.welcome.order') }}
           </v-btn>
           -->
-          <createOrder/>
+          <CreateOrder/>
         </v-card-actions>
       </v-card>
     </v-hover>
@@ -31,12 +31,12 @@
 </template>
 
 <script>
-import createOrder from '@/components/Order/createOrder'
+import CreateOrder from '@/components/Order/CreateOrder'
 
 export default {
   name: 'Welcome',
   components: {
-    createOrder
+    CreateOrder
   }
 }
 </script>

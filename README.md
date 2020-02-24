@@ -38,7 +38,7 @@ NetUnion - 电子科技大学 | 宿舍网络在线报修平台
 
   使用 vuetify 自带的 dark 主题。
 
-  - [x] Drawer 界面最下方设置快捷按钮
+  - [x] 快捷按钮
 
 - **Cookies**
 
