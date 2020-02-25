@@ -1,4 +1,4 @@
-// 存放 MySQL 函数
+// 存放 pgSQL 函数
 var sqlMap = {
 
 }
