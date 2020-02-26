@@ -7,44 +7,48 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Home',
+    name: 'home',
     meta: {
-      viewTitle: 'viewTitle.home'
+      viewTitle: 'viewTitle.home',
+      needLogin: true
     },
     component: Home
   },
   {
     path: '/about',
-    name: 'About',
+    name: 'about',
     meta: {
-      viewTitle: 'viewTitle.about'
+      viewTitle: 'viewTitle.about',
+      needLogin: false
     },
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    component: () => import('../views/About.vue')
   },
   {
     path: '/user',
-    name: 'User',
+    name: 'user',
     meta: {
-      viewTitle: 'viewTitle.user'
+      viewTitle: 'viewTitle.user',
+      needLogin: true
     },
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/User.vue')
+    component: () => import('../views/User.vue')
   },
   {
     path: '/order',
-    name: 'Order',
+    name: 'order',
     meta: {
-      viewTitle: 'viewTitle.order'
+      viewTitle: 'viewTitle.order',
+      needLogin: true
     },
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/Order.vue')
+    component: () => import('../views/Order.vue')
+  },
+  {
+    path: '/login',
+    name: 'login',
+    meta: {
+      viewTitle: 'viewTitle.login',
+      needLogin: false
+    },
+    component: () => import('../views/Login.vue')
   }
 ]
 

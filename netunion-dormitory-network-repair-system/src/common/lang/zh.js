@@ -6,7 +6,8 @@ module.exports = {
     home: '主页',
     user: '账户',
     order: '订单',
-    about: '关于我们'
+    about: '关于我们',
+    login: '登录'
   },
   theme: {
     darkMode: '夜间模式'
@@ -68,5 +69,12 @@ module.exports = {
       dormitoryRequiredErr: '您必须填写寝室楼栋和寝室号',
       descriptionHint: '添加对具体情况的描述可以帮助我们更好地解决问题'
     }
+  },
+  login: {
+    submit: '登陆',
+    usernameLabel: '学号',
+    pwdLabel: '密码',
+    usernameRequiredErr: '您需要输入您的学号作为用户名',
+    pwdRequiredErr: '您需要输入您的密码进行登陆'
   }
 }

@@ -13,16 +13,8 @@
           <p class="subtitle-1">{{ $t('home.welcome.words') }}同学<v-divider></v-divider></p>
           <p class="headline text--primary font-weight-medium">{{ $t('home.welcome.slogan') }}</p>
         </v-card-text>
+
         <v-card-actions>
-          <!--
-          <v-btn
-            color="success"
-            outlined
-            style="margin: 0px 0px 10px 10px"
-          >
-            <v-icon left>mdi-pencil</v-icon> {{ $t('home.welcome.order') }}
-          </v-btn>
-          -->
           <CreateOrder/>
         </v-card-actions>
       </v-card>

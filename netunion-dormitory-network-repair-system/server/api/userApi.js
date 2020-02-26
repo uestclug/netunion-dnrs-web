@@ -12,7 +12,7 @@ conn.connect()
 
 // 用户登录接口
 router.post('/login', (req, res) => {
-  console.log("post!")
+  console.log("posted!")
 })
 
 // 修改用户资料接口

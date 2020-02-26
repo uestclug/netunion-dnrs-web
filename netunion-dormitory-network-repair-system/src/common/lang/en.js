@@ -6,7 +6,8 @@ module.exports = {
     home: 'HOME',
     user: 'USER',
     order: 'ORDER',
-    about: 'ABOUT US'
+    about: 'ABOUT US',
+    login: 'LOGIN'
   },
   theme: {
     darkMode: 'DARK MODE'
@@ -68,5 +69,12 @@ module.exports = {
       dormitoryRequiredErr: 'Dormitory location and number is required',
       descriptionHint: 'Adding a description of the situation can help us solve the problem better'
     }
+  },
+  login: {
+    submit: 'Login',
+    usernameLabel: 'Student ID',
+    pwdLabel: 'Password',
+    usernameRequiredErr: 'Student ID is required as username',
+    pwdRequiredErr: 'Password can not be blank'
   }
 }
