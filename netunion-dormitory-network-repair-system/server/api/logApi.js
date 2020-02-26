@@ -1,7 +1,15 @@
-// 操作日志数据库 api
+const db = require("../db");
+const express = require("express");
+const router = express.Router();
+const pgsql = require("pg");
+const utils = require("../utils");
+const $sql = require("../sqlMap");
 
-// 连接数据库
+const conn = pgsql.Pool(db.pgsql);
+conn.connect();
 
-// 存储操作日志接口
+// 添加操作日志接口
 
 // 读取操作日志接口
+
+module.exports = router;

@@ -1,13 +1,23 @@
-// 订单资料数据库 api
+const db = require("../db");
+const express = require("express");
+const router = express.Router();
+const pgsql = require("pg");
+const utils = require("../utils");
+const $sql = require("../sqlMap");
 
-// 连接数据库
+const conn = pgsql.Pool(db.pgsql);
+conn.connect();
 
-// （学生/运维部）添加订单接口
+// 新建订单接口
 
-// （运维部）接受订单接口
+// 接受订单接口
 
-// （学生/运维部）显示历史订单接口
+// 获取订单信息接口
 
-// （运维部）设置订单完成接口
+// 查看历史订单接口
 
-// （学生/运维部）取消订单接口
+// 修改订单信息接口
+
+// 删除订单接口
+
+module.exports = router;
