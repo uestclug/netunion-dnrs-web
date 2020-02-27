@@ -1,3 +1,4 @@
+/* 数据库 model */
 module.exports = {
   pgsql: {
     host: 'localhost',

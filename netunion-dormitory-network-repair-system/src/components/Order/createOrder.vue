@@ -139,7 +139,7 @@ export default {
     sheet: false,
     name: '',
     campus: null,
-    campusItems: ['清水河校区', '沙河校区'],
+    campusItems: ['清水河校区(Qingshuihe Campus)', '沙河校区(Shahe Campus)'],
     dormitory: '',
     telephone: '',
     description: ''
@@ -160,14 +160,6 @@ export default {
       required,
       maxLength: maxLength(11)
     }
-  },
-  created: function () {
-    this.nameLabel = this.$i18n.t('order.createOrder.nameLabel')
-    this.telephoneLabel = this.$i18n.t('order.createOrder.telephoneLabel')
-    this.campusLabel = this.$i18n.t('order.createOrder.campusLabel')
-    this.dormitoryLabel = this.$i18n.t('order.createOrder.dormitoryLabel')
-    this.descriptionLabel = this.$i18n.t('order.createOrder.descriptionLabel')
-    this.descriptionHint = this.$i18n.t('order.createOrder.descriptionHint')
   },
   computed: {
     nameErrors () {
@@ -195,6 +187,24 @@ export default {
       !this.$v.telephone.maxLength && errors.push(this.$i18n.t('order.createOrder.telephoneMaxLengthErr'))
       !this.$v.telephone.required && errors.push(this.$i18n.t('order.createOrder.telephoneRequiredErr'))
       return errors
+    },
+    nameLabel () {
+      return this.$i18n.t('order.createOrder.nameLabel')
+    },
+    telephoneLabel () {
+      return this.$i18n.t('order.createOrder.telephoneLabel')
+    },
+    campusLabel () {
+      return this.$i18n.t('order.createOrder.campusLabel')
+    },
+    dormitoryLabel () {
+      return this.$i18n.t('order.createOrder.dormitoryLabel')
+    },
+    descriptionLabel () {
+      return this.$i18n.t('order.createOrder.descriptionLabel')
+    },
+    descriptionHint () {
+      return this.$i18n.t('order.createOrder.descriptionHint')
     }
   },
   methods: {

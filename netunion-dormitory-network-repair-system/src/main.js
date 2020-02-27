@@ -24,16 +24,22 @@ const i18n = new VueI18n({
 
 // 添加页面登录验证
 router.beforeEach(function (to, from, next) {
-  if (to.meta.needLogin) {
-    if (localStorage.getItem('token')) {
+  if (to.meta.needLogin) { // 页面需要登录访问时
+    if (localStorage.getItem('token')) { // 如果已经登陆，则访问该页面
       next()
-    } else {
+    } else { // 如果未登录，则跳转到登录页面
       next({
         name: 'login'
       })
     }
-  } else {
-    next()
+  } else { // 页面不需要登录访问时
+    if (to.name === 'login' && localStorage.getItem('token')) { // 如果进入“登录”页面且已登录，跳转到主页
+      next({
+        name: 'home'
+      })
+    } else { // 访问该页面
+      next()
+    }
   }
 })
 

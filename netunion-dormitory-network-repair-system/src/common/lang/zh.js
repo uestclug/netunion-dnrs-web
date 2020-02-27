@@ -62,11 +62,11 @@ module.exports = {
       dormitoryLabel: '寝室地址',
       descriptionLabel: '描述（可选）',
       nameMaxLengthErr: '姓名最长输入 20 字符',
-      nameRequiredErr: '您必须输入姓名',
+      nameRequiredErr: '嗨，请告诉我们您的姓名',
       telephoneMaxLengthErr: '电话最长输入 11 字符',
-      telephoneRequiredErr: '您必须输入电话',
-      campusRequiredErr: '您必须选择所处校区',
-      dormitoryRequiredErr: '您必须填写寝室楼栋和寝室号',
+      telephoneRequiredErr: '联系电话是我们沟通的桥梁',
+      campusRequiredErr: '两个校区的 SOLVER 同样尽心尽责',
+      dormitoryRequiredErr: '填写您的宿舍楼栋与寝室号，我们整装待发',
       descriptionHint: '添加对具体情况的描述可以帮助我们更好地解决问题'
     }
   },
@@ -75,6 +75,7 @@ module.exports = {
     usernameLabel: '学号',
     pwdLabel: '密码',
     usernameRequiredErr: '您需要输入您的学号作为用户名',
-    pwdRequiredErr: '您需要输入您的密码进行登陆'
+    pwdRequiredErr: '您需要输入正确的密码进行登陆',
+    loginFailed: '学号或密码错误，请检查！'
   }
 }

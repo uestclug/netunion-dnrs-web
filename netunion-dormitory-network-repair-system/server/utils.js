@@ -1,3 +1,4 @@
+/* 公用函数 */
 const jsonWrite = function (res, ret) {
   if (typeof ret === 'undefined') {
     res.json({

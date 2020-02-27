@@ -65,8 +65,12 @@
 <script>
 import { validationMixin } from 'vuelidate'
 import { required } from 'vuelidate/lib/validators'
+import Bus from '@/Bus.js'
+import md5 from 'js-md5'
+const Base64 = require('js-base64').Base64
 
 export default {
+  name: 'Login',
   data: () => ({
     username: '',
     pwd: ''
@@ -80,11 +84,13 @@ export default {
       required
     }
   },
-  created: function () {
-    this.usernameLabel = this.$i18n.t('login.usernameLabel')
-    this.pwdLabel = this.$i18n.t('login.pwdLabel')
-  },
   computed: {
+    usernameLabel () {
+      return this.$i18n.t('login.usernameLabel')
+    },
+    pwdLabel () {
+      return this.$i18n.t('login.pwdLabel')
+    },
     usernameErrors () {
       const errors = []
       if (!this.$v.username.$dirty) return errors
@@ -102,14 +108,25 @@ export default {
     submit () {
       this.$v.$touch()
       if (this.usernameErrors.length === 0 && this.pwdErrors.length === 0) { // 无报错内容时
-        // 设置 token
-        localStorage.setItem('token', this.username)
-        // 回到主页
-        this.$router.push({
-          name: 'home'
+        const password = md5(Base64.encode(this.pwd))
+        this.axios.post('/api/user/login', {
+          username: this.username,
+          password: password
+        }).then((Response) => {
+          // console.log(Response)
+          if (Response.data === true) {
+            // 设置 token
+            localStorage.setItem('token', this.username)
+            // 回到主页
+            this.$router.push({
+              name: 'home'
+            })
+          } else {
+            this.pwd = ''
+            // 显示提示登录失败消息条
+            Bus.$emit('setSnackbar', this.$i18n.t('login.loginFailed'))
+          }
         })
-      } else {
-        alert('have errors')
       }
     }
   }

@@ -75,6 +75,7 @@ module.exports = {
     usernameLabel: 'Student ID',
     pwdLabel: 'Password',
     usernameRequiredErr: 'Student ID is required as username',
-    pwdRequiredErr: 'Password can not be blank'
+    pwdRequiredErr: 'Wrong password, please check it',
+    loginFailed: 'Wrong student number or password, please check it!'
   }
 }
