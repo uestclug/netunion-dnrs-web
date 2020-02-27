@@ -1,5 +1,7 @@
 # netunion-dormitory-network-repair-system
 
+![networkOff](./src/assets/networkOff.jpg)
+
 ## Project setup
 
 ``` node
