@@ -1,10 +1,11 @@
 <template>
-  <v-app id="Appbar">
+  <v-app id="AppView">
+    <!-- Drawer -->
     <v-navigation-drawer
       app
       v-model="drawer"
     >
-      <v-list dense>
+      <v-list>
         <v-list-item router-link to="/">
           <v-list-item-action>
             <v-icon>mdi-home</v-icon>
@@ -58,18 +59,13 @@
       </template>
     </v-navigation-drawer>
 
+    <!-- App Bar -->
     <v-app-bar
       app
-      elevate-on-scroll
+      hide-on-scroll
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title>{{ $t($route.meta.viewTitle) }}</v-toolbar-title>
-      <!--
-      <v-spacer></v-spacer>
-      <v-toolbar-title>
-        <div class='hideOnPhone'>{{ $t('app.name') }}</div>
-      </v-toolbar-title>
-      -->
       <v-spacer></v-spacer>
       <v-app-bar-nav-icon>
         <div class='hideOnPhone'>
@@ -108,14 +104,34 @@
       </v-app-bar-nav-icon>
     </v-app-bar>
 
-    <v-container>
+    <!-- Main View -->
+    <div style="margin: 40px 0px 40px 0px">
       <router-view></router-view>
-    </v-container>
+    </div>
+
+    <!-- Footer -->
+    <!--
+    <div class="hideOnPhone">
+      <v-footer>
+        <v-spacer></v-spacer>
+        <div>{{ $t('app.name') }} &copy; {{ new Date().getFullYear() }}</div>
+      </v-footer>
+    </div>
+    -->
+
+    <!-- Snackbar -->
+    <Snackbar/>
   </v-app>
 </template>
 
 <script>
+import Snackbar from '@/components/Snackbar'
+
 export default {
+  name: 'AppView',
+  components: {
+    Snackbar
+  },
   props: {
     source: String
   },
@@ -132,9 +148,10 @@ export default {
     this.setDefaultMode()
   },
   methods: {
-    setDefaultLanguage () { // 使用 cookies 保存用户使用语言习惯
-      if (this.$cookies.isKey('defaultLanguage')) {
-        this.defaultLanguage = this.$cookies.get('defaultLanguage')
+    setDefaultLanguage () { // 使用 localStorage 保存用户使用语言习惯
+      const dl = localStorage.getItem('defaultLanguage')
+      if (dl != null) {
+        this.defaultLanguage = dl
         if (this.defaultLanguage === '简体中文') {
           this.$i18n.locale = 'zh-CN'
         } else if (this.defaultLanguage === 'ENGLISH') {
@@ -151,11 +168,12 @@ export default {
       } else if (id === 'ENGLISH') {
         this.$i18n.locale = 'en-US'
       }
-      this.$cookies.set('defaultLanguage', id)
+      localStorage.setItem('defaultLanguage', id)
     },
-    setDefaultMode () { // 使用 cookies 保存界面夜间模式
-      if (this.$cookies.isKey('defaultDarkMode')) {
-        this.defaultDarkMode = this.$cookies.get('defaultDarkMode')
+    setDefaultMode () { // 使用 localStorage 保存界面夜间模式
+      const ddm = localStorage.getItem('defaultDarkMode')
+      if (ddm != null) {
+        this.defaultDarkMode = ddm
         if (this.defaultDarkMode === 'true') {
           this.changeMode(true)
           this.darkModeSwitch = true
@@ -165,14 +183,13 @@ export default {
       }
     },
     changeMode (value) { // 设置夜间模式
+      localStorage.setItem('defaultDarkMode', value)
       if (value === true) {
         this.$vuetify.theme.dark = true
         this.$vuetify.theme.light = false
-        this.$cookies.set('defaultDarkMode', value)
       } else {
         this.$vuetify.theme.dark = false
         this.$vuetify.theme.light = true
-        this.$cookies.set('defaultDarkMode', value)
       }
     }
   }

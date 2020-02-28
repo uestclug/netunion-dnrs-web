@@ -1,17 +1,17 @@
 <template>
   <v-content>
-    <Appbar/>
+    <AppView/>
   </v-content>
 </template>
 
 <script>
-import Appbar from './components/Appbar'
+import AppView from '@/components/AppView'
 
 export default {
   name: 'App',
 
   components: {
-    Appbar
+    AppView
   },
 
   data: () => ({
