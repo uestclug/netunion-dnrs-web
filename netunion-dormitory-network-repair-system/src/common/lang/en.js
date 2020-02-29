@@ -14,7 +14,7 @@ module.exports = {
   },
   home: {
     welcome: {
-      words: 'Welcome, ',
+      words: 'Don\'t worry.',
       slogan: 'We are the solvers of dormitory network problems!'
     },
     latestOrder: {
@@ -76,6 +76,7 @@ module.exports = {
     pwdLabel: 'Password',
     usernameRequiredErr: 'Student ID is required as username',
     pwdRequiredErr: 'Wrong password, please check it',
-    loginFailed: 'Wrong student number or password, please check it!'
+    loginFailed: 'Wrong student number or password, please check it!',
+    loginSucceed: 'Welcome, '
   }
 }

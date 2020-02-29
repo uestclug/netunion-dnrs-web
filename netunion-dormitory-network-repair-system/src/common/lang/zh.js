@@ -14,7 +14,7 @@ module.exports = {
   },
   home: {
     welcome: {
-      words: '欢迎你，',
+      words: '别担心，',
       slogan: '宿舍网络问题找我们！'
     },
     latestOrder: {
@@ -76,6 +76,7 @@ module.exports = {
     pwdLabel: '密码',
     usernameRequiredErr: '您需要输入您的学号作为用户名',
     pwdRequiredErr: '您需要输入正确的密码进行登陆',
-    loginFailed: '学号或密码错误，请检查！'
+    loginFailed: '学号或密码错误，请检查！',
+    loginSucceed: '欢迎你， '
   }
 }

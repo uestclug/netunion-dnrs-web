@@ -5,17 +5,6 @@
       persistent
       inset
     >
-      <template v-slot:activator="{ on }">
-        <v-btn
-          color="success"
-          outlined
-          style="margin: 0px 0px 10px 10px"
-          v-on="on"
-        >
-          <v-icon left>mdi-pencil</v-icon> {{ $t('order.createOrder.create') }}
-        </v-btn>
-      </template>
-
       <v-sheet height="1200px">
         <v-form ref="bottomForm">
           <v-container>
@@ -132,6 +121,7 @@
 <script>
 import { validationMixin } from 'vuelidate'
 import { required, maxLength } from 'vuelidate/lib/validators'
+import Bus from '@/Bus'
 
 export default {
   name: 'CreateOrder',
@@ -211,6 +201,11 @@ export default {
     submit () {
       this.$v.$touch()
     }
+  },
+  mounted () {
+    Bus.$on('openBottomSheet', (msg) => {
+      this.sheet = true
+    })
   }
 }
 </script>

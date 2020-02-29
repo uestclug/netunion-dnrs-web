@@ -22,26 +22,51 @@ const i18n = new VueI18n({
   defaultLanguage: '简体中文'
 })
 
-// 添加页面登录验证
+// 设置路由拦截
 router.beforeEach(function (to, from, next) {
-  if (to.meta.needLogin) { // 页面需要登录访问时
-    if (localStorage.getItem('token')) { // 如果已经登陆，则访问该页面
-      next()
-    } else { // 如果未登录，则跳转到登录页面
+  if (to.path === '/login') { // 如果跳转到登录页面，则直接放行
+    next()
+  } else {
+    if (to.meta.needLogin && !localStorage.getItem('token')) { // 如果页面需要登录且没有 token 则跳转登录页面
       next({
         name: 'login'
       })
-    }
-  } else { // 页面不需要登录访问时
-    if (to.name === 'login' && localStorage.getItem('token')) { // 如果进入“登录”页面且已登录，跳转到主页
-      next({
-        name: 'home'
-      })
-    } else { // 访问该页面
+    } else { // 如果页面不需要登录则放行
       next()
     }
   }
 })
+
+// 设置 request & response 拦截
+axios.interceptors.request.use(
+  config => {
+    if (localStorage.getItem('token')) { // 当本地存储 token 时，设置请求头带有 token
+      config.headers.Authorization = localStorage.getItem('token')
+    }
+    return config
+  },
+  error => {
+    return Promise.reject(error)
+  }
+)
+
+axios.interceptors.response.use(
+  response => {
+    return response
+  },
+  error => {
+    if (error.response) {
+      switch (error.response.status) { // 如果响应错误码为 401，则清空 token，回到 login 页面
+        case 401:
+          localStorage.removeItem('token')
+          router.push({
+            name: 'login'
+          })
+      }
+    }
+    return Promise.reject(error.response.data)
+  }
+)
 
 new Vue({
   router,

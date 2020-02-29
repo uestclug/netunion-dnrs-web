@@ -9,13 +9,8 @@ import AppView from '@/components/AppView'
 
 export default {
   name: 'App',
-
   components: {
     AppView
-  },
-
-  data: () => ({
-    //
-  })
+  }
 }
 </script>

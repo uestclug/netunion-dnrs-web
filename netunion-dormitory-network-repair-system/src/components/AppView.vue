@@ -121,16 +121,19 @@
 
     <!-- Snackbar -->
     <Snackbar/>
+    <CreateOrder/>
   </v-app>
 </template>
 
 <script>
 import Snackbar from '@/components/Snackbar'
+import CreateOrder from '@/components/Order/CreateOrder'
 
 export default {
   name: 'AppView',
   components: {
-    Snackbar
+    Snackbar,
+    CreateOrder
   },
   props: {
     source: String

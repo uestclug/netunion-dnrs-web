@@ -10,12 +10,19 @@
         max-width="800"
       >
         <v-card-text>
-          <p class="subtitle-1">{{ $t('home.welcome.words') }}同学<v-divider></v-divider></p>
+          <p class="subtitle-1">{{ $t('home.welcome.words') }}<v-divider></v-divider></p>
           <p class="headline text--primary font-weight-medium">{{ $t('home.welcome.slogan') }}</p>
         </v-card-text>
 
         <v-card-actions>
-          <CreateOrder/>
+          <v-btn
+            color="success"
+            outlined
+            style="margin: 0px 0px 10px 10px"
+            @click="openBottomSheet"
+          >
+            <v-icon left>mdi-pencil</v-icon> {{ $t('order.createOrder.create') }}
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-hover>
@@ -23,12 +30,14 @@
 </template>
 
 <script>
-import CreateOrder from '@/components/Order/CreateOrder'
+import Bus from '@/Bus'
 
 export default {
   name: 'Welcome',
-  components: {
-    CreateOrder
+  methods: {
+    openBottomSheet () {
+      Bus.$emit('openBottomSheet', 'on')
+    }
   }
 }
 </script>

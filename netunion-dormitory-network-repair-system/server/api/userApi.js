@@ -14,26 +14,67 @@ conn.connect()
 // 用户登录接口
 router.post('/login', (req, res) => {
   const input_password = req.body.password
-  const username = [req.body.username]
+  const token = req.body.token
+  const sqlData = [req.body.std_id]
 
-  conn.query($sql.user.getPassword, username, function (error, result) {
+  conn.query($sql.user.getLoginResponse, sqlData, function (error, result) {
     if (error) {
       console.log(error)
       res.send(false)
+      return
     }
 
-    console.log(result)
-    if (result.rowCount == 1) {
-      const read_password = result.rows[0].password
-      if (input_password === read_password) {
-        res.send(true)
-      } else {
-        res.send(false)
-      }
-    } else {
-      res.send(false)
+    // 登陆验证
+    if (result.rowCount == 1 && input_password === result.rows[0].password) {
+      // 更新 token 并返回用户 id
+      const id = result.rows[0].id
+      updateToken(id, token)
+      res.send({ id: id })
+      return
+    }
+    res.send(false)
+  })
+})
+
+function updateToken (id, token) { // 保存登陆令牌到数据库
+  const expiration_time = 86400000 // 令牌过期时间为 1 天
+  const expiration_date = new Date().getTime() + expiration_time
+  const sqlData = [token, expiration_date, id]
+
+  conn.query($sql.token.updateToken, sqlData, function (error) {
+    if (error) {
+      console.log(error)
     }
   })
+}
+
+// 用户 token 验证接口
+router.post('/tokenCheck', (req, res) => {
+  const token = req.body.token
+  const sqlData = [req.body.id]
+
+  conn.query($sql.token.getTokenResponse, sqlData, function (error, result) {
+    if (error) {
+      console.log(error)
+      res.send(false)
+      return
+    }
+
+    if (result.rowCount == 1 && token === result.rows[0].token) { // id 对应的 token 存在
+      const expiration_date = result.rows[0].expiration_date
+      const nowDate = new Date().getTime()
+      if (nowDate < expiration_date) { // token 未过期
+        res.send(true)
+        return
+      }
+    }
+    res.send(false)
+  })
+})
+
+// 获取用户资料接口
+router.post('/queryUserInfo', (req, res) => {
+  const id = req.body.id
 })
 
 // 修改用户资料接口
