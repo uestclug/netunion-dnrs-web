@@ -120,7 +120,7 @@ export default {
           password: password,
           token: token
         }).then((Response) => {
-          if (Response.data !== false) { // 登录成功
+          if (Response.data.id) { // 获得后端相应的用户编号，登陆成功
             // 设置 token 和 id
             localStorage.setItem('token', token)
             localStorage.setItem('id', Response.data.id)

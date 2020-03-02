@@ -17,11 +17,10 @@ router.post('/login', (req, res) => {
   const token = req.body.token
   const sqlData = [req.body.std_id]
 
-  conn.query($sql.user.getLoginResponse, sqlData, function (error, result) {
+  conn.query($sql.user.getLoginResponse, sqlData, (error, result) => {
     if (error) {
       console.log(error)
       res.send(false)
-      return
     }
 
     // 登陆验证
@@ -30,9 +29,9 @@ router.post('/login', (req, res) => {
       const id = result.rows[0].id
       updateToken(id, token)
       res.send({ id: id })
-      return
+    } else {
+      res.send(false)
     }
-    res.send(false)
   })
 })
 
@@ -49,28 +48,34 @@ function updateToken (id, token) { // 保存登陆令牌到数据库
 }
 
 // 用户 token 验证接口
-router.post('/tokenCheck', (req, res) => {
-  const token = req.body.token
-  const sqlData = [req.body.id]
-
-  conn.query($sql.token.getTokenResponse, sqlData, function (error, result) {
-    if (error) {
-      console.log(error)
-      res.send(false)
-      return
-    }
-
-    if (result.rowCount == 1 && token === result.rows[0].token) { // id 对应的 token 存在
-      const expiration_date = result.rows[0].expiration_date
-      const nowDate = new Date().getTime()
-      if (nowDate < expiration_date) { // token 未过期
-        res.send(true)
-        return
-      }
-    }
+router.post('/checkToken', async function (req, res) {
+  const id = req.body.id
+  const token = req.headers.authorization
+  const flag = await checkToken(id, token)
+  if (flag === true) {
+    res.send(true)
+  } else {
     res.send(false)
-  })
+  }
 })
+
+async function checkToken (id, token) { // 用户 token 验证
+  const sqlData = [id]
+
+  let response = await conn.query($sql.token.getTokenResponse, sqlData)
+  if (response.rowCount == 1) { // 得到数据库返回的结果
+    const savedToken = response.rows[0].token
+    const savedExpirationDate = response.rows[0].expiration_date
+    const nowDate = new Date().getTime()
+    if (token === savedToken && nowDate < savedExpirationDate) { // 数据库保存的 token 与 localStorage 存储相同且 token 未过期
+      return true
+    } else {
+      return false
+    }
+  } else { // 数据库无该 id 结果
+    return false
+  }
+}
 
 // 获取用户资料接口
 router.post('/queryUserInfo', (req, res) => {

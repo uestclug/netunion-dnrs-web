@@ -35,8 +35,17 @@ import Bus from '@/Bus'
 export default {
   name: 'Welcome',
   methods: {
-    openBottomSheet () {
-      Bus.$emit('openBottomSheet', 'on')
+    openBottomSheet: async function () {
+      const response = await this.axios.post('/api/user/checkToken', {
+        id: localStorage.getItem('id')
+      })
+      if (response.data === true) {
+        Bus.$emit('openBottomSheet', '')
+      } else {
+        Bus.$emit('setSnackbar', this.$i18n.t('login.tokenCheckFailed'))
+        localStorage.removeItem('token')
+        location.reload()
+      }
     }
   }
 }

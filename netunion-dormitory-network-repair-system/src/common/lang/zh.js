@@ -77,6 +77,7 @@ module.exports = {
     usernameRequiredErr: '您需要输入您的学号作为用户名',
     pwdRequiredErr: '您需要输入正确的密码进行登陆',
     loginFailed: '学号或密码错误，请检查！',
-    loginSucceed: '欢迎你， '
+    loginSucceed: '欢迎你，',
+    tokenCheckFailed: '账户凭证过期或错误，请重新登陆！'
   }
 }

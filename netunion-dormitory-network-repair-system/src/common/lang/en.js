@@ -77,6 +77,7 @@ module.exports = {
     usernameRequiredErr: 'Student ID is required as username',
     pwdRequiredErr: 'Wrong password, please check it',
     loginFailed: 'Wrong student number or password, please check it!',
-    loginSucceed: 'Welcome, '
+    loginSucceed: 'Welcome, ',
+    tokenCheckFailed: 'Account voucher expired or wrong, please login again!'
   }
 }
