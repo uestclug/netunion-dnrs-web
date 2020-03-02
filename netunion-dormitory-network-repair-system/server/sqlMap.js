@@ -12,7 +12,15 @@ const sqlMap = {
   },
   user: {
     // 通过 std_id 获取 password 和 id
-    getLoginResponse: 'SELECT password, id FROM' + userDatabase + 'WHERE std_id = $1'
+    getLoginResponse: 'SELECT password, id FROM' + userDatabase + 'WHERE std_id = $1',
+    // 通过 id 获取 password
+    getLoginPassword: 'SELECT password FROM' + userDatabase + 'WHERE id = $1',
+    // 通过 id 获取用户资料
+    queryUserInfo: 'SELECT name, telephone, campus, dormitory, std_id FROM' + userDatabase + 'WHERE id = $1',
+    // 修改用户资料
+    modifyAccountInfo: 'UPDATE' + userDatabase + 'SET name=$1, campus=$2, dormitory=$3, telephone=$4 WHERE id = $5',
+    // 修改用户密码
+    modifyPassword: 'UPDATE' + userDatabase + 'SET password=$1 WHERE id = $2'
   },
   user_netunion: {
     // 通过 std_id 获取 password 和 id

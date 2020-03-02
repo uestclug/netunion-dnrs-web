@@ -39,9 +39,9 @@ export default {
       const response = await this.axios.post('/api/user/checkToken', {
         id: localStorage.getItem('id')
       })
-      if (response.data === true) {
+      if (response.data === true) { // 当用户 token 有效时打开创建订单页面
         Bus.$emit('openBottomSheet', '')
-      } else {
+      } else { // 无效时清除 token 并刷新回到登录页面
         Bus.$emit('setSnackbar', this.$i18n.t('login.tokenCheckFailed'))
         localStorage.removeItem('token')
         location.reload()

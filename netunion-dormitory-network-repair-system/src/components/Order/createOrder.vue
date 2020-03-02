@@ -41,7 +41,6 @@
                   v-model="name"
                   :error-messages="nameErrors"
                   :label="nameLabel"
-                  required
                   @input="$v.name.$touch()"
                   @blur="$v.name.$touch()"
                 ></v-text-field>
@@ -56,7 +55,6 @@
                   :error-messages="telephoneErrors"
                   :counter="11"
                   :label="telephoneLabel"
-                  required
                   @input="$v.telephone.$touch()"
                   @blur="$v.telephone.$touch()"
                 ></v-text-field>
@@ -75,7 +73,6 @@
                   :items="campusItems"
                   :error-messages="campusErrors"
                   :label="campusLabel"
-                  required
                   @change="$v.campus.$touch()"
                   @blur="$v.campus.$touch()"
                 ></v-select>
@@ -89,7 +86,6 @@
                   v-model="dormitory"
                   :error-messages="dormitoryErrors"
                   :label="dormitoryLabel"
-                  required
                   @input="$v.dormitory.$touch()"
                   @blur="$v.dormitory.$touch()"
                 ></v-text-field>
@@ -203,7 +199,18 @@ export default {
     }
   },
   mounted () {
-    Bus.$on('openBottomSheet', (msg) => {
+    Bus.$on('openBottomSheet', (msg) => { // 自动填写表单
+      if (this.name === '') { this.name = sessionStorage.getItem('name') }
+      if (this.telephone === '') { this.telephone = sessionStorage.getItem('telephone') }
+      if (this.dormitory === '') { this.dormitory = sessionStorage.getItem('dormitory') }
+      if (this.campus === null) {
+        const defaultCampus = sessionStorage.getItem('campus')
+        if (defaultCampus === '沙河校区(Shahe Campus)') {
+          this.campus = '沙河校区(Shahe Campus)'
+        } else {
+          this.campus = '清水河校区(Qingshuihe Campus)'
+        }
+      }
       this.sheet = true
     })
   }

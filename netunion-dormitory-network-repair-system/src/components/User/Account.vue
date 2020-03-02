@@ -14,65 +14,346 @@
 
           <v-row>
             <v-col>
-              <p class="title"><v-icon>mdi-account-outline</v-icon>
+              <p class="title pt-2"><v-icon>mdi-account-outline</v-icon>
                 {{ $t('user.account.name') }}
               </p>
             </v-col>
             <v-col>
-              <p class="title text--primary">Snake</p>
+              <v-text-field
+                v-model="name"
+                class="title pt-0 pb-0"
+                :disabled="disabled"
+              ></v-text-field>
             </v-col>
           </v-row>
 
           <v-row>
             <v-col>
-              <p class="title"><v-icon>mdi-domain</v-icon>
+              <p class="title pt-2"><v-icon>mdi-domain</v-icon>
                 {{ $t('user.account.campus') }}
               </p>
             </v-col>
             <v-col>
-              <p class="title text--primary">沙河校区</p>
+              <v-select
+                v-model="campus"
+                class="title pt-0 pb-0"
+                :items="campusItems"
+                :disabled="disabled"
+              ></v-select>
             </v-col>
           </v-row>
 
           <v-row>
             <v-col>
-              <p class="title"><v-icon>mdi-map-marker-outline</v-icon>
+              <p class="title pt-2"><v-icon>mdi-map-marker-outline</v-icon>
                 {{ $t('user.account.location') }}
               </p>
             </v-col>
             <v-col>
-              <p class="title text--primary">欣二栋 233</p>
+              <v-text-field
+                v-model="dormitory"
+                class="title pt-0 pb-0"
+                :disabled="disabled"
+              ></v-text-field>
             </v-col>
           </v-row>
 
           <v-row>
             <v-col>
-              <p class="title"><v-icon>mdi-cellphone</v-icon>
+              <p class="title pt-2"><v-icon>mdi-cellphone</v-icon>
                 {{ $t('user.account.telephone') }}
               </p>
             </v-col>
             <v-col>
-              <p class="title text--primary">18980442215</p>
+              <v-text-field
+                v-model="telephone"
+                class="title pt-0 pb-0"
+                :disabled="disabled"
+              ></v-text-field>
             </v-col>
           </v-row>
 
         </v-card-text>
         <v-card-actions>
           <v-btn
-            color="brown darken-1"
+            :color="modifyBtnColor"
             outlined
             style="margin: 0px 0px 10px 10px"
+            @click="modifyAccountInfo"
           >
-            <v-icon left>mdi-key-outline</v-icon>{{ $t('user.account.setting') }}
+            <v-icon left>mdi-account-edit-outline</v-icon>{{ $t('user.account.modify') }}
           </v-btn>
+          <v-btn
+            color="blue-grey"
+            text
+            style="margin: 0px 0px 10px 10px"
+            @click="modifyPassword"
+          >
+            <v-icon left>mdi-key-outline</v-icon>{{ $t('user.account.modifyPassword') }}
+          </v-btn>
+          <v-spacer></v-spacer>
+          <v-btn
+            text
+            style="margin: 0px 0px 10px 0px"
+            @click="toLogoutDialog"
+          >{{ $t('user.account.logout') }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-hover>
+    <!-- 修改密码 Dialog -->
+    <v-dialog v-model="modifyPasswordDialog" persistent max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">{{ $t('user.account.modifyPassword') }}</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-form
+              ref="passwordForm"
+            >
+              <v-row>
+                <v-col cols="12">
+                  <v-text-field
+                    v-model="presentPassword"
+                    :label="presentPasswordLabel"
+                    :error-messages="presentPasswordErrors"
+                    @input="$v.presentPassword.$touch()"
+                    @blur="$v.presentPassword.$touch()"
+                    type='password'
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <v-text-field
+                    v-model="modifiedPassword"
+                    :label="modifiedPasswordLabel"
+                    :error-messages="modifiedPasswordErrors"
+                    @input="$v.modifiedPassword.$touch()"
+                    @blur="$v.modifiedPassword.$touch()"
+                    type='password'
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <v-text-field
+                    v-model="reModifiedPassword"
+                    :label="reModifiedPasswordLabel"
+                    :error-messages="reModifiedPasswordErrors"
+                    @input="$v.reModifiedPassword.$touch()"
+                    @blur="$v.reModifiedPassword.$touch()"
+                    type='password'
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </v-form>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="error" @click="modifyPasswordDialog = false">{{ $t('user.account.cancel') }}</v-btn>
+          <v-btn color="success" @click="submitNewPassword">{{ $t('user.account.submit') }}<v-icon right>mdi-check</v-icon></v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-- 登出 Dialog -->
+    <v-dialog v-model="logoutDialog" max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">{{ $t('user.account.logout') }}</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12">
+                {{ $t('user.account.logoutText') }}
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="info" @click="logoutDialog = false">{{ $t('user.account.cancel') }}</v-btn>
+          <v-btn color="success" @click="logout">{{ $t('user.account.confirm') }}</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
 <script>
+import { validationMixin } from 'vuelidate'
+import { required, maxLength, minLength } from 'vuelidate/lib/validators'
+import Bus from '@/Bus'
+import md5 from 'js-md5'
+const Base64 = require('js-base64').Base64
+
 export default {
-  name: 'Account'
+  name: 'Account',
+  data: () => ({
+    disabled: true,
+    modifyPasswordDialog: false,
+    logoutDialog: false,
+    modifyBtnColor: 'brown darken-1',
+    campusItems: ['清水河校区(Qingshuihe Campus)', '沙河校区(Shahe Campus)'],
+    presentPassword: '',
+    modifiedPassword: '',
+    reModifiedPassword: ''
+  }),
+  mixins: [validationMixin],
+  validations: {
+    presentPassword: {
+      required,
+      maxLength: maxLength(32),
+      minLength: minLength(6)
+    },
+    modifiedPassword: {
+      required,
+      maxLength: maxLength(32),
+      minLength: minLength(6)
+    },
+    reModifiedPassword: {
+      required,
+      maxLength: maxLength(32),
+      minLength: minLength(6)
+    }
+  },
+  beforeCreate: async function () {
+    if (!sessionStorage.getItem('name') || !sessionStorage.getItem('telephone') ||
+      !sessionStorage.getItem('campus') || !sessionStorage.getItem('dormitory') ||
+      !sessionStorage.getItem('std_id')) {
+      const response = await this.axios.post('/api/user/queryUserInfo', { // 获取用户资料
+        id: localStorage.getItem('id')
+      })
+      sessionStorage.setItem('name', response.data.name)
+      sessionStorage.setItem('telephone', response.data.telephone)
+      sessionStorage.setItem('campus', response.data.campus)
+      sessionStorage.setItem('dormitory', response.data.dormitory)
+      sessionStorage.setItem('std_id', response.data.std_id)
+    }
+  },
+  created () {
+    this.name = sessionStorage.getItem('name')
+    this.campus = sessionStorage.getItem('campus')
+    this.telephone = sessionStorage.getItem('telephone')
+    this.dormitory = sessionStorage.getItem('dormitory')
+  },
+  computed: {
+    presentPasswordErrors () {
+      const errors = []
+      if (!this.$v.presentPassword.$dirty) return errors
+      !this.$v.presentPassword.maxLength && errors.push(this.$i18n.t('user.account.passwordMaxLengthErr'))
+      !this.$v.presentPassword.minLength && errors.push(this.$i18n.t('user.account.passwordminLengthErr'))
+      !this.$v.presentPassword.required && errors.push(this.$i18n.t('user.account.presentPasswordRequiredErr'))
+      return errors
+    },
+    modifiedPasswordErrors () {
+      const errors = []
+      if (!this.$v.modifiedPassword.$dirty) return errors
+      !this.$v.modifiedPassword.maxLength && errors.push(this.$i18n.t('user.account.passwordMaxLengthErr'))
+      !this.$v.modifiedPassword.minLength && errors.push(this.$i18n.t('user.account.passwordminLengthErr'))
+      !this.$v.modifiedPassword.required && errors.push(this.$i18n.t('user.account.modifiedPasswordRequiredErr'))
+      return errors
+    },
+    reModifiedPasswordErrors () {
+      const errors = []
+      if (!this.$v.reModifiedPassword.$dirty) return errors
+      !this.$v.reModifiedPassword.maxLength && errors.push(this.$i18n.t('user.account.passwordMaxLengthErr'))
+      !this.$v.reModifiedPassword.minLength && errors.push(this.$i18n.t('user.account.passwordminLengthErr'))
+      !this.$v.reModifiedPassword.required && errors.push(this.$i18n.t('user.account.reModifiedPasswordRequiredErr'))
+      return errors
+    },
+    presentPasswordLabel () {
+      return this.$i18n.t('user.account.presentPassword')
+    },
+    modifiedPasswordLabel () {
+      return this.$i18n.t('user.account.modifiedPassword')
+    },
+    reModifiedPasswordLabel () {
+      return this.$i18n.t('user.account.reModifiedPassword')
+    }
+  },
+  methods: {
+    modifyAccountInfo: async function () {
+      if (this.disabled === true) { // 进入修改模式
+        const loginResponse = await this.axios.post('/api/user/checkToken', {
+          id: localStorage.getItem('id')
+        })
+        if (loginResponse.data === true) { // 当用户 token 有效时进入修改模式
+          this.modifyBtnColor = 'success'
+          Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyAccountInfoNote'))
+          this.disabled = false
+        } else { // 无效时清除 token 并刷新回到登录页面
+          Bus.$emit('setSnackbar', this.$i18n.t('login.tokenCheckFailed'))
+          localStorage.removeItem('token')
+          location.reload()
+        }
+      } else { // 保存修改内容到数据库中
+        const modifyResponse = await this.axios.post('/api/user/modifyAccountInfo', {
+          name: this.name,
+          campus: this.campus,
+          dormitory: this.dormitory,
+          telephone: this.telephone,
+          id: localStorage.getItem('id')
+        })
+        if (modifyResponse.data === true) { // 修改成功，更新 sessionStorage
+          sessionStorage.setItem('name', this.name)
+          sessionStorage.setItem('campus', this.campus)
+          sessionStorage.setItem('telephone', this.telephone)
+          sessionStorage.setItem('dormitory', this.dormitory)
+          this.modifyBtnColor = 'brown darken-1'
+          Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyAccountInfoSucceed'))
+          this.disabled = true
+        } else { // 修改失败，显示提示信息
+          Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyAccountInfoFailed'))
+        }
+      }
+    },
+    modifyPassword: async function () {
+      const loginResponse = await this.axios.post('/api/user/checkToken', {
+        id: localStorage.getItem('id')
+      })
+      if (loginResponse.data === true) { // 当用户 token 有效时打开密码修改 dialog
+        this.modifyPasswordDialog = true
+      } else {
+        Bus.$emit('setSnackbar', this.$i18n.t('login.tokenCheckFailed'))
+        localStorage.removeItem('token')
+        location.reload()
+      }
+    },
+    submitNewPassword: async function () {
+      this.$v.$touch()
+      if (this.presentPasswordErrors.length === 0 && this.modifiedPasswordErrors.length === 0 && this.reModifiedPasswordErrors.length === 0) {
+        if (this.modifiedPassword !== this.reModifiedPassword) { // 当两次输入的新密码不一样时
+          this.modifiedPassword = ''
+          this.reModifiedPassword = ''
+          Bus.$emit('setSnackbar', this.$i18n.t('user.account.reModifiedPasswordErr'))
+          return
+        }
+
+        this.axios.post('/api/user/modifyPassword', { // 调用修改密码接口
+          id: localStorage.getItem('id'),
+          presentPassword: md5(Base64.encode(this.presentPassword)),
+          modifiedPassword: md5(Base64.encode(this.modifiedPassword))
+        }).then((Response) => {
+          if (Response.data === true) {
+            Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyPasswordSucceed'))
+            this.$refs.passwordForm.reset() // 重置表单
+            this.modifyPasswordDialog = false
+          } else if (Response.data === 'present password error') {
+            Bus.$emit('setSnackbar', this.$i18n.t('user.account.presentPasswordErr'))
+            this.presentPassword = ''
+          } else {
+            Bus.$emit('setSnackbar', this.$i18n.t('user.account.unknownErr'))
+          }
+        })
+      }
+    },
+    toLogoutDialog () { // 打开确认 logout 的 dialog
+      this.logoutDialog = true
+    },
+    logout () { // 移除 localStorage 的 token 并刷新回到登录页面
+      localStorage.removeItem('token')
+      location.reload()
+    }
+  }
 }
 </script>

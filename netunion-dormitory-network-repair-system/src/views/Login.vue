@@ -40,6 +40,9 @@
                 required
                 @input="$v.pwd.$touch()"
                 @blur="$v.pwd.$touch()"
+                :type="showPassword ? 'text' : 'password'"
+                :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                @click:append="showPassword = !showPassword"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -73,7 +76,8 @@ export default {
   name: 'Login',
   data: () => ({
     username: '',
-    pwd: ''
+    pwd: '',
+    showPassword: false
   }),
   mixins: [validationMixin],
   validations: {
@@ -120,15 +124,26 @@ export default {
           password: password,
           token: token
         }).then((Response) => {
-          if (Response.data.id) { // 获得后端相应的用户编号，登陆成功
+          if (Response.data.id) { // 获得后端相应的用户编号，登录成功
+            const id = Response.data.id
             // 设置 token 和 id
             localStorage.setItem('token', token)
-            localStorage.setItem('id', Response.data.id)
-            // 显示提示登录成功的信息条
-            Bus.$emit('setSnackbar', this.$i18n.t('login.loginSucceed'))
-            // 回到主页
-            this.$router.push({
-              name: 'home'
+            localStorage.setItem('id', id)
+            this.axios.post('/api/user/queryUserInfo', { // 获取用户资料
+              id: id
+            }).then((Response) => {
+              // 将得到的用户资料保存到 sessionStorage 中
+              sessionStorage.setItem('name', Response.data.name)
+              sessionStorage.setItem('telephone', Response.data.telephone)
+              sessionStorage.setItem('campus', Response.data.campus)
+              sessionStorage.setItem('dormitory', Response.data.dormitory)
+              sessionStorage.setItem('std_id', Response.data.std_id)
+              // 显示提示登录成功的信息条
+              Bus.$emit('setSnackbar', this.$i18n.t('login.loginSucceed') + Response.data.name)
+              // 回到主页
+              this.$router.push({
+                name: 'home'
+              })
             })
           } else { // 登录失败
             this.pwd = ''

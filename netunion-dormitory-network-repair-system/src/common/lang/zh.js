@@ -32,11 +32,32 @@ module.exports = {
   user: {
     account: {
       title: '账户资料',
-      setting: '修改信息',
+      modify: '修改信息',
+      modifyPassword: '修改密码',
+      logout: '登出',
+      logoutText: '确定要退出吗？',
       name: '姓名',
       campus: '所在校区',
       location: '寝室号',
-      telephone: '联系电话'
+      telephone: '联系电话',
+      modifyAccountInfoNote: '再次点击按钮可保存修改信息。',
+      modifyAccountInfoSucceed: '已保存修改信息！',
+      modifyAccountInfoFailed: '修改资料失败，请检查网络或稍后尝试。',
+      presentPassword: '当前密码',
+      modifiedPassword: '新密码',
+      reModifiedPassword: '确认新密码',
+      passwordMaxLengthErr: '密码最长 32 位',
+      passwordminLengthErr: '密码最短 6 位',
+      presentPasswordRequiredErr: '您需要输入当前的密码',
+      modifiedPasswordRequiredErr: '您需要输入新的密码',
+      reModifiedPasswordRequiredErr: '您需要再次输入新密码',
+      reModifiedPasswordErr: '两次输入的新密码不相同，请重新输入',
+      modifyPasswordSucceed: '修改密码成功！',
+      presentPasswordErr: '当前密码错误，请重新输入',
+      unknownErr: '发生不明错误，密码修改失败',
+      cancel: '取消',
+      submit: '提交',
+      confirm: '确认'
     },
     statistics: {
       title: '统计信息',
@@ -71,13 +92,13 @@ module.exports = {
     }
   },
   login: {
-    submit: '登陆',
+    submit: '登录',
     usernameLabel: '学号',
     pwdLabel: '密码',
     usernameRequiredErr: '您需要输入您的学号作为用户名',
-    pwdRequiredErr: '您需要输入正确的密码进行登陆',
+    pwdRequiredErr: '您需要输入正确的密码进行登录',
     loginFailed: '学号或密码错误，请检查！',
     loginSucceed: '欢迎你，',
-    tokenCheckFailed: '账户凭证过期或错误，请重新登陆！'
+    tokenCheckFailed: '账户凭证过期或错误，请重新登录！'
   }
 }
