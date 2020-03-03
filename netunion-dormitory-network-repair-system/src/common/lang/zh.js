@@ -17,14 +17,6 @@ module.exports = {
       words: '别担心，',
       slogan: '宿舍网络问题找我们！'
     },
-    latestOrder: {
-      title: '最近的订单',
-      freeTime: '空闲时间',
-      location: '寝室号',
-      solver: '处理人',
-      viewDetails: '进入订单',
-      status: '订单状态'
-    },
     infoNote: {
       note: '我们建议您首先检查网络是否欠费并试着重启路由器'
     }
@@ -38,7 +30,7 @@ module.exports = {
       logoutText: '确定要退出吗？',
       name: '姓名',
       campus: '所在校区',
-      location: '寝室号',
+      location: '寝室地址',
       telephone: '联系电话',
       modifyAccountInfoNote: '再次点击按钮可保存修改信息。',
       modifyAccountInfoSucceed: '已保存修改信息！',
@@ -91,6 +83,27 @@ module.exports = {
       descriptionHint: '添加对具体情况的描述可以帮助我们更好地解决问题',
       autoEnter: '自动填写',
       autoEnterNote: '将根据您的个人资料自动填写表单'
+    },
+    latestOrder: {
+      title: '最近的订单',
+      freeTime: '空闲时间',
+      location: '寝室地址',
+      solver: '处理人',
+      solverTelephone: '工作电话',
+      viewDetails: '进入订单',
+      status: '订单状态',
+      cancelOrder: '取消订单',
+      cancel: '取消',
+      confirm: '确认',
+      cancelOrderNote: '已被接受的订单请联系处理人取消',
+      cancelOrderText: '尚无人接单，您确定要取消当前订单吗？',
+      cancelOrderSucceed: '您成功取消了当前订单',
+      cancelOrderFailed: '似乎发生了什么问题，您未能取消当前订单',
+      orderInfo: '订单信息',
+      name: '姓名',
+      campus: '所处校区',
+      description: '描述',
+      telephone: '联系电话'
     }
   },
   login: {

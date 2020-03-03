@@ -17,14 +17,6 @@ module.exports = {
       words: 'Don\'t worry.',
       slogan: 'We are the solvers of dormitory network problems!'
     },
-    latestOrder: {
-      title: 'Latest order',
-      freeTime: 'Free time',
-      location: 'Dormitory',
-      solver: 'Solver',
-      viewDetails: 'VIEW DETAILS',
-      status: 'Status'
-    },
     infoNote: {
       note: 'We highly recommend you to check if the network is in arrears and try to restart the router'
     }
@@ -33,7 +25,7 @@ module.exports = {
     account: {
       title: 'Account information',
       modify: 'Modify',
-      modifyPassword: 'Change Password',
+      modifyPassword: 'Reset Pwd',
       logout: 'LOGOUT',
       logoutText: 'Logout?',
       name: 'Name',
@@ -89,8 +81,29 @@ module.exports = {
       campusRequiredErr: 'Campus location is required',
       dormitoryRequiredErr: 'Dormitory location and number is required',
       descriptionHint: 'Adding a description of the situation can help us solve the problem better',
-      autoEnter: 'AUTO ENTER',
+      autoEnter: 'AUTO',
       autoEnterNote: 'base on your own information'
+    },
+    latestOrder: {
+      title: 'Latest order',
+      freeTime: 'Free time',
+      location: 'Dormitory',
+      solver: 'Solver',
+      solverTelephone: 'Work Tel',
+      viewDetails: 'VIEW DETAILS',
+      status: 'Status',
+      cancelOrder: 'CANCEL ORDER',
+      cancel: 'CANCEL CANCEL ORDER',
+      confirm: 'CONFIRM CANCEL ORDER',
+      cancelOrderNote: 'Please contact the solver to cancel the accepted order',
+      cancelOrderText: 'No one has received the order yet. Are you sure you want to cancel the current order?',
+      cancelOrderSucceed: 'You have successfully cancelled the current order',
+      cancelOrderFailed: 'Ops, you failed to cancel the current order',
+      orderInfo: 'Order details',
+      name: 'Name',
+      campus: 'Campus',
+      description: 'Description',
+      telephone: 'Telephone'
     }
   },
   login: {

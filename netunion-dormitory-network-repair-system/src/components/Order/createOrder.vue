@@ -15,6 +15,7 @@
                     v-on="on"
                     color="info"
                     @click="autoEnter"
+                    class="subtitle-2"
                   >{{ $t('order.createOrder.autoEnter') }}</v-btn>
                 </template>
                 <span>{{ $t('order.createOrder.autoEnterNote') }}</span>
@@ -28,7 +29,7 @@
                   <v-btn
                     v-on="on"
                     color="error"
-                    class="mr-3"
+                    class="mr-2 subtitle-2"
                     @click="sheet = !sheet"
                   >{{ $t('order.createOrder.cancel') }}</v-btn>
                 </template>
@@ -39,6 +40,7 @@
               <v-btn
                 color="success"
                 @click="submit"
+                class="subtitle-2"
               >{{ $t('order.createOrder.submit') }}<v-icon right>mdi-check</v-icon></v-btn>
             </v-card-title>
             <v-card-text>

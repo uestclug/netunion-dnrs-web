@@ -9,7 +9,7 @@
 <script>
 import InfoNote from '@/components/Home/InfoNote'
 import Welcome from '@/components/Home/Welcome'
-import LatestOrder from '@/components/Home/LatestOrder'
+import LatestOrder from '@/components/Order/LatestOrder'
 
 export default {
   name: 'Home',

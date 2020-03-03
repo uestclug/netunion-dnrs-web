@@ -13,61 +13,52 @@
           <p class="subtitle-1">{{ $t('user.account.title') }}<v-divider></v-divider></p>
 
           <v-row>
-            <v-col>
-              <p class="title pt-2"><v-icon>mdi-account-outline</v-icon>
+            <v-col cols="6">
+              <p class="body-1 pt-2"><v-icon>mdi-account-outline</v-icon>
                 {{ $t('user.account.name') }}
               </p>
             </v-col>
-            <v-col>
+            <v-col cols="6">
               <v-text-field
                 v-model="name"
-                class="title pt-0 pb-0"
+                class="body-1 pt-0 pb-0"
                 :disabled="disabled"
               ></v-text-field>
             </v-col>
-          </v-row>
-
-          <v-row>
-            <v-col>
-              <p class="title pt-2"><v-icon>mdi-domain</v-icon>
+            <v-col cols="6">
+              <p class="body-1 pt-2"><v-icon>mdi-domain</v-icon>
                 {{ $t('user.account.campus') }}
               </p>
             </v-col>
-            <v-col>
+            <v-col cols="6">
               <v-select
                 v-model="campus"
-                class="title pt-0 pb-0"
+                class="body-1 pt-0 pb-0"
                 :items="campusItems"
                 :disabled="disabled"
               ></v-select>
             </v-col>
-          </v-row>
-
-          <v-row>
-            <v-col>
-              <p class="title pt-2"><v-icon>mdi-map-marker-outline</v-icon>
+            <v-col cols="6">
+              <p class="body-1 pt-2"><v-icon>mdi-map-marker-outline</v-icon>
                 {{ $t('user.account.location') }}
               </p>
             </v-col>
-            <v-col>
+            <v-col cols="6">
               <v-text-field
                 v-model="dormitory"
-                class="title pt-0 pb-0"
+                class="body-1 pt-0 pb-0"
                 :disabled="disabled"
               ></v-text-field>
             </v-col>
-          </v-row>
-
-          <v-row>
-            <v-col>
-              <p class="title pt-2"><v-icon>mdi-cellphone</v-icon>
+            <v-col cols="6">
+              <p class="body-1 pt-2"><v-icon>mdi-cellphone</v-icon>
                 {{ $t('user.account.telephone') }}
               </p>
             </v-col>
-            <v-col>
+            <v-col cols="6">
               <v-text-field
                 v-model="telephone"
-                class="title pt-0 pb-0"
+                class="body-1 pt-0 pb-0"
                 :disabled="disabled"
               ></v-text-field>
             </v-col>
@@ -80,6 +71,7 @@
             outlined
             style="margin: 0px 0px 10px 10px"
             @click="modifyAccountInfo"
+            class="subtitle-2"
           >
             <v-icon left>mdi-account-edit-outline</v-icon>{{ $t('user.account.modify') }}
           </v-btn>
@@ -88,6 +80,7 @@
             text
             style="margin: 0px 0px 10px 10px"
             @click="modifyPassword"
+            class="subtitle-2"
           >
             <v-icon left>mdi-key-outline</v-icon>{{ $t('user.account.modifyPassword') }}
           </v-btn>
@@ -96,6 +89,7 @@
             text
             style="margin: 0px 0px 10px 0px"
             @click="toLogoutDialog"
+            class="subtitle-2"
           >{{ $t('user.account.logout') }}</v-btn>
         </v-card-actions>
       </v-card>
@@ -148,8 +142,16 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="error" @click="modifyPasswordDialog = false">{{ $t('user.account.cancel') }}</v-btn>
-          <v-btn color="success" @click="submitNewPassword">{{ $t('user.account.submit') }}<v-icon right>mdi-check</v-icon></v-btn>
+          <v-btn
+            color="error"
+            @click="modifyPasswordDialog = false"
+            class="subtitle-2"
+          >{{ $t('user.account.cancel') }}</v-btn>
+          <v-btn
+            color="success"
+            @click="submitNewPassword"
+            class="subtitle-2"
+          >{{ $t('user.account.submit') }}<v-icon right>mdi-check</v-icon></v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -171,8 +173,16 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="info" @click="logoutDialog = false">{{ $t('user.account.cancel') }}</v-btn>
-          <v-btn color="success" @click="logout">{{ $t('user.account.confirm') }}</v-btn>
+          <v-btn
+            color="info"
+            @click="logoutDialog = false"
+            class="subtitle-2"
+          >{{ $t('user.account.cancel') }}</v-btn>
+          <v-btn
+            color="success"
+            @click="logout"
+            class="subtitle-2"
+          >{{ $t('user.account.confirm') }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
