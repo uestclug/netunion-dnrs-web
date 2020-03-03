@@ -88,7 +88,9 @@ module.exports = {
       telephoneRequiredErr: '联系电话是我们沟通的桥梁',
       campusRequiredErr: '两个校区的 SOLVER 同样尽心尽责',
       dormitoryRequiredErr: '填写您的宿舍楼栋与寝室号，我们整装待发',
-      descriptionHint: '添加对具体情况的描述可以帮助我们更好地解决问题'
+      descriptionHint: '添加对具体情况的描述可以帮助我们更好地解决问题',
+      autoEnter: '自动填写',
+      autoEnterNote: '将根据您的个人资料自动填写表单'
     }
   },
   login: {

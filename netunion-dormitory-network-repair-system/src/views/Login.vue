@@ -132,12 +132,12 @@ export default {
             this.axios.post('/api/user/queryUserInfo', { // 获取用户资料
               id: id
             }).then((Response) => {
-              // 将得到的用户资料保存到 sessionStorage 中
-              sessionStorage.setItem('name', Response.data.name)
-              sessionStorage.setItem('telephone', Response.data.telephone)
-              sessionStorage.setItem('campus', Response.data.campus)
-              sessionStorage.setItem('dormitory', Response.data.dormitory)
-              sessionStorage.setItem('std_id', Response.data.std_id)
+              // 将得到的用户资料保存到 localStorage 中
+              localStorage.setItem('name', Response.data.name)
+              localStorage.setItem('telephone', Response.data.telephone)
+              localStorage.setItem('campus', Response.data.campus)
+              localStorage.setItem('dormitory', Response.data.dormitory)
+              localStorage.setItem('std_id', Response.data.std_id)
               // 显示提示登录成功的信息条
               Bus.$emit('setSnackbar', this.$i18n.t('login.loginSucceed') + Response.data.name)
               // 回到主页

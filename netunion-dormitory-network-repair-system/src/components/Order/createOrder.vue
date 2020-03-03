@@ -7,8 +7,21 @@
     >
       <v-sheet height="1200px">
         <v-form ref="bottomForm">
-          <v-container>
-            <div class="text-right">
+          <v-card flat>
+            <v-card-title>
+              <v-tooltip right>
+                <template v-slot:activator="{ on }">
+                  <v-btn
+                    v-on="on"
+                    color="info"
+                    @click="autoEnter"
+                  >{{ $t('order.createOrder.autoEnter') }}</v-btn>
+                </template>
+                <span>{{ $t('order.createOrder.autoEnterNote') }}</span>
+              </v-tooltip>
+
+              <v-spacer></v-spacer>
+
               <!-- 取消按钮 -->
               <v-tooltip left>
                 <template v-slot:activator="{ on }">
@@ -27,87 +40,79 @@
                 color="success"
                 @click="submit"
               >{{ $t('order.createOrder.submit') }}<v-icon right>mdi-check</v-icon></v-btn>
-            </div>
-
-            <v-row
-              class="mt-6"
-              justify="center"
-            >
-              <!-- 姓名表单 -->
-              <v-col
-                lg="2"
+            </v-card-title>
+            <v-card-text>
+              <v-row
+                class="mt-6"
+                justify="center"
               >
-                <v-text-field
-                  v-model="name"
-                  :error-messages="nameErrors"
-                  :label="nameLabel"
-                  @input="$v.name.$touch()"
-                  @blur="$v.name.$touch()"
-                ></v-text-field>
-              </v-col>
+                <!-- 姓名表单 -->
+                <v-col
+                  cols="6"
+                >
+                  <v-text-field
+                    v-model="name"
+                    :error-messages="nameErrors"
+                    :label="nameLabel"
+                    @input="$v.name.$touch()"
+                    @blur="$v.name.$touch()"
+                  ></v-text-field>
+                </v-col>
 
-              <!-- 联系电话表单 -->
-              <v-col
-                lg="4"
-              >
-                <v-text-field
-                  v-model="telephone"
-                  :error-messages="telephoneErrors"
-                  :counter="11"
-                  :label="telephoneLabel"
-                  @input="$v.telephone.$touch()"
-                  @blur="$v.telephone.$touch()"
-                ></v-text-field>
-              </v-col>
-            </v-row>
+                <!-- 联系电话表单 -->
+                <v-col
+                  cols="6"
+                >
+                  <v-text-field
+                    v-model="telephone"
+                    :error-messages="telephoneErrors"
+                    :counter="11"
+                    :label="telephoneLabel"
+                    @input="$v.telephone.$touch()"
+                    @blur="$v.telephone.$touch()"
+                  ></v-text-field>
+                </v-col>
 
-            <v-row
-              justify="center"
-            >
-              <!-- 校区选择器 -->
-              <v-col
-                lg="2"
-              >
-                <v-select
-                  v-model="campus"
-                  :items="campusItems"
-                  :error-messages="campusErrors"
-                  :label="campusLabel"
-                  @change="$v.campus.$touch()"
-                  @blur="$v.campus.$touch()"
-                ></v-select>
-              </v-col>
+                <!-- 校区选择器 -->
+                <v-col
+                  cols="6"
+                >
+                  <v-select
+                    v-model="campus"
+                    :items="campusItems"
+                    :error-messages="campusErrors"
+                    :label="campusLabel"
+                    @change="$v.campus.$touch()"
+                    @blur="$v.campus.$touch()"
+                  ></v-select>
+                </v-col>
 
-              <!-- 寝室表单 -->
-              <v-col
-                lg="4"
-              >
-                <v-text-field
-                  v-model="dormitory"
-                  :error-messages="dormitoryErrors"
-                  :label="dormitoryLabel"
-                  @input="$v.dormitory.$touch()"
-                  @blur="$v.dormitory.$touch()"
-                ></v-text-field>
-              </v-col>
-            </v-row>
+                <!-- 寝室表单 -->
+                <v-col
+                  cols="6"
+                >
+                  <v-text-field
+                    v-model="dormitory"
+                    :error-messages="dormitoryErrors"
+                    :label="dormitoryLabel"
+                    @input="$v.dormitory.$touch()"
+                    @blur="$v.dormitory.$touch()"
+                  ></v-text-field>
+                </v-col>
 
-            <!-- 描述表单 -->
-            <v-row
-              justify="center"
-            >
-              <v-col
-                lg="6"
-              >
-                <v-textarea
-                  v-model="description"
-                  :label="descriptionLabel"
-                  :hint="descriptionHint"
-                ></v-textarea>
-              </v-col>
-            </v-row>
-
-          </v-container>
+              <!-- 描述表单 -->
+                <v-col
+                  cols="12"
+                >
+                  <v-textarea
+                    v-model="description"
+                    :label="descriptionLabel"
+                    :hint="descriptionHint"
+                  ></v-textarea>
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </v-card>
         </v-form>
       </v-sheet>
     </v-bottom-sheet>
@@ -196,21 +201,20 @@ export default {
   methods: {
     submit () {
       this.$v.$touch()
+    },
+    autoEnter () {
+      this.name = localStorage.getItem('name')
+      this.telephone = localStorage.getItem('telephone')
+      this.dormitory = localStorage.getItem('dormitory')
+      this.campus = localStorage.getItem('campus')
     }
   },
   mounted () {
     Bus.$on('openBottomSheet', (msg) => { // 自动填写表单
-      if (this.name === '') { this.name = sessionStorage.getItem('name') }
-      if (this.telephone === '') { this.telephone = sessionStorage.getItem('telephone') }
-      if (this.dormitory === '') { this.dormitory = sessionStorage.getItem('dormitory') }
-      if (this.campus === null) {
-        const defaultCampus = sessionStorage.getItem('campus')
-        if (defaultCampus === '沙河校区(Shahe Campus)') {
-          this.campus = '沙河校区(Shahe Campus)'
-        } else {
-          this.campus = '清水河校区(Qingshuihe Campus)'
-        }
-      }
+      if (this.name === '') { this.name = localStorage.getItem('name') }
+      if (this.telephone === '') { this.telephone = localStorage.getItem('telephone') }
+      if (this.dormitory === '') { this.dormitory = localStorage.getItem('dormitory') }
+      if (this.campus === null) { this.campus = localStorage.getItem('campus') }
       this.sheet = true
     })
   }

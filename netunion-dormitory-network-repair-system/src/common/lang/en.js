@@ -88,7 +88,9 @@ module.exports = {
       telephoneRequiredErr: 'Telephone is required',
       campusRequiredErr: 'Campus location is required',
       dormitoryRequiredErr: 'Dormitory location and number is required',
-      descriptionHint: 'Adding a description of the situation can help us solve the problem better'
+      descriptionHint: 'Adding a description of the situation can help us solve the problem better',
+      autoEnter: 'AUTO ENTER',
+      autoEnterNote: 'base on your own information'
     }
   },
   login: {

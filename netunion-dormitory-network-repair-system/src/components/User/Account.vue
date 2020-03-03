@@ -189,6 +189,10 @@ const Base64 = require('js-base64').Base64
 export default {
   name: 'Account',
   data: () => ({
+    name: '',
+    campus: '',
+    telephone: '',
+    dormitory: '',
     disabled: true,
     modifyPasswordDialog: false,
     logoutDialog: false,
@@ -216,25 +220,30 @@ export default {
       minLength: minLength(6)
     }
   },
-  beforeCreate: async function () {
-    if (!sessionStorage.getItem('name') || !sessionStorage.getItem('telephone') ||
-      !sessionStorage.getItem('campus') || !sessionStorage.getItem('dormitory') ||
-      !sessionStorage.getItem('std_id')) {
+  created: async function () {
+    if (!localStorage.getItem('name') || !localStorage.getItem('telephone') ||
+      !localStorage.getItem('campus') || !localStorage.getItem('dormitory') ||
+      !localStorage.getItem('std_id')) { // 当 localStorage 没有存储账户资料内容时
       const response = await this.axios.post('/api/user/queryUserInfo', { // 获取用户资料
         id: localStorage.getItem('id')
       })
-      sessionStorage.setItem('name', response.data.name)
-      sessionStorage.setItem('telephone', response.data.telephone)
-      sessionStorage.setItem('campus', response.data.campus)
-      sessionStorage.setItem('dormitory', response.data.dormitory)
-      sessionStorage.setItem('std_id', response.data.std_id)
+      // 设置 localStorage
+      localStorage.setItem('name', response.data.name)
+      localStorage.setItem('telephone', response.data.telephone)
+      localStorage.setItem('campus', response.data.campus)
+      localStorage.setItem('dormitory', response.data.dormitory)
+      localStorage.setItem('std_id', response.data.std_id)
+      // 设置页面 dom
+      this.name = localStorage.getItem('name')
+      this.campus = localStorage.getItem('campus')
+      this.telephone = localStorage.getItem('telephone')
+      this.dormitory = localStorage.getItem('dormitory')
+    } else { // 设置页面 dom
+      this.name = localStorage.getItem('name')
+      this.campus = localStorage.getItem('campus')
+      this.telephone = localStorage.getItem('telephone')
+      this.dormitory = localStorage.getItem('dormitory')
     }
-  },
-  created () {
-    this.name = sessionStorage.getItem('name')
-    this.campus = sessionStorage.getItem('campus')
-    this.telephone = sessionStorage.getItem('telephone')
-    this.dormitory = sessionStorage.getItem('dormitory')
   },
   computed: {
     presentPasswordErrors () {
@@ -273,12 +282,12 @@ export default {
   },
   methods: {
     modifyAccountInfo: async function () {
-      if (this.disabled === true) { // 进入修改模式
+      if (this.disabled === true) { // 第一次点击，进入修改模式
         const loginResponse = await this.axios.post('/api/user/checkToken', {
           id: localStorage.getItem('id')
         })
         if (loginResponse.data === true) { // 当用户 token 有效时进入修改模式
-          this.modifyBtnColor = 'success'
+          this.modifyBtnColor = 'success' // 设置按钮颜色
           Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyAccountInfoNote'))
           this.disabled = false
         } else { // 无效时清除 token 并刷新回到登录页面
@@ -286,7 +295,7 @@ export default {
           localStorage.removeItem('token')
           location.reload()
         }
-      } else { // 保存修改内容到数据库中
+      } else { // 第二次点击，保存修改内容到数据库中
         const modifyResponse = await this.axios.post('/api/user/modifyAccountInfo', {
           name: this.name,
           campus: this.campus,
@@ -294,11 +303,11 @@ export default {
           telephone: this.telephone,
           id: localStorage.getItem('id')
         })
-        if (modifyResponse.data === true) { // 修改成功，更新 sessionStorage
-          sessionStorage.setItem('name', this.name)
-          sessionStorage.setItem('campus', this.campus)
-          sessionStorage.setItem('telephone', this.telephone)
-          sessionStorage.setItem('dormitory', this.dormitory)
+        if (modifyResponse.data === true) { // 修改成功，更新 localStorage
+          localStorage.setItem('name', this.name)
+          localStorage.setItem('campus', this.campus)
+          localStorage.setItem('telephone', this.telephone)
+          localStorage.setItem('dormitory', this.dormitory)
           this.modifyBtnColor = 'brown darken-1'
           Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyAccountInfoSucceed'))
           this.disabled = true
