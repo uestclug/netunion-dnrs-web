@@ -32,6 +32,14 @@ npm run serve
 
 当然，也可以在 `user` 表中自定义添加登录信息：`std_id` 为登录账号； `password` 填写 `42253fa978ca4bbf95668ec455e4844d` ，对应登录密码为 `123123` ，之后可以在账户页面修改密码。
 
+### 导出数据库
+
+1. 选择数据库
+
+2. 点击上方的 `工具` ，选择 `备份`
+
+3. `文件名` 选择覆盖原文件， `格式` 选择 `tar` ， `编码` 选择 `UTF-8` ， `角色名称` 选择 `postgres`
+
 ### 启动后端服务器
 
 在 `NetUnion-InternetRepairSys\netunion-dormitory-network-repair-system\server` 目录下执行：

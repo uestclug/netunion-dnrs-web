@@ -259,19 +259,13 @@ export default {
       localStorage.setItem('campus', response.data.campus)
       localStorage.setItem('dormitory', response.data.dormitory)
       localStorage.setItem('std_id', response.data.std_id)
-      // 设置页面 dom
-      this.name = localStorage.getItem('name')
-      this.gender = localStorage.getItem('gender')
-      this.campus = localStorage.getItem('campus')
-      this.telephone = localStorage.getItem('telephone')
-      this.dormitory = localStorage.getItem('dormitory')
-    } else { // 设置页面 dom
-      this.name = localStorage.getItem('name')
-      this.gender = localStorage.getItem('gender')
-      this.campus = localStorage.getItem('campus')
-      this.telephone = localStorage.getItem('telephone')
-      this.dormitory = localStorage.getItem('dormitory')
     }
+    // 设置页面 dom
+    this.name = localStorage.getItem('name')
+    this.gender = localStorage.getItem('gender')
+    this.campus = localStorage.getItem('campus')
+    this.telephone = localStorage.getItem('telephone')
+    this.dormitory = localStorage.getItem('dormitory')
   },
   computed: {
     presentPasswordErrors () {

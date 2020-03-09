@@ -89,7 +89,6 @@ router.post('/queryUserInfo', async function (req, res) {
         console.log(error)
         res.send(false)
       } else if (result.rowCount == 1) { // 查询到用户结果时
-        console.log(result)
         const userName = result.rows[0].name
         const userGender = result.rows[0].gender
         const userTelephone = result.rows[0].telephone
