@@ -26,6 +26,19 @@
               ></v-text-field>
             </v-col>
             <v-col cols="6">
+              <p class="body-1 pt-2"><v-icon>mdi-gender-male-female</v-icon>
+                {{ $t('user.account.gender') }}
+              </p>
+            </v-col>
+            <v-col cols="6">
+              <v-select
+                v-model="gender"
+                class="body-1 pt-0 pb-0"
+                :items="genderItems"
+                :disabled="disabled"
+              ></v-select>
+            </v-col>
+            <v-col cols="6">
               <p class="body-1 pt-2"><v-icon>mdi-domain</v-icon>
                 {{ $t('user.account.campus') }}
               </p>
@@ -200,13 +213,15 @@ export default {
   name: 'Account',
   data: () => ({
     name: '',
-    campus: '',
+    gender: null,
+    campus: null,
     telephone: '',
     dormitory: '',
     disabled: true,
     modifyPasswordDialog: false,
     logoutDialog: false,
     modifyBtnColor: 'brown darken-1',
+    genderItems: ['男(Male)', '女(Female)'],
     campusItems: ['清水河校区(Qingshuihe Campus)', '沙河校区(Shahe Campus)'],
     presentPassword: '',
     modifiedPassword: '',
@@ -231,25 +246,28 @@ export default {
     }
   },
   created: async function () {
-    if (!localStorage.getItem('name') || !localStorage.getItem('telephone') ||
-      !localStorage.getItem('campus') || !localStorage.getItem('dormitory') ||
-      !localStorage.getItem('std_id')) { // 当 localStorage 没有存储账户资料内容时
+    if (!localStorage.getItem('name') || !localStorage.getItem('gender') ||
+      !localStorage.getItem('telephone') || !localStorage.getItem('campus') ||
+      !localStorage.getItem('dormitory') || !localStorage.getItem('std_id')) { // 当 localStorage 没有存储账户资料内容时
       const response = await this.axios.post('/api/user/queryUserInfo', { // 获取用户资料
         id: localStorage.getItem('id')
       })
       // 设置 localStorage
       localStorage.setItem('name', response.data.name)
+      localStorage.setItem('gender', response.data.gender)
       localStorage.setItem('telephone', response.data.telephone)
       localStorage.setItem('campus', response.data.campus)
       localStorage.setItem('dormitory', response.data.dormitory)
       localStorage.setItem('std_id', response.data.std_id)
       // 设置页面 dom
       this.name = localStorage.getItem('name')
+      this.gender = localStorage.getItem('gender')
       this.campus = localStorage.getItem('campus')
       this.telephone = localStorage.getItem('telephone')
       this.dormitory = localStorage.getItem('dormitory')
     } else { // 设置页面 dom
       this.name = localStorage.getItem('name')
+      this.gender = localStorage.getItem('gender')
       this.campus = localStorage.getItem('campus')
       this.telephone = localStorage.getItem('telephone')
       this.dormitory = localStorage.getItem('dormitory')
@@ -308,6 +326,7 @@ export default {
       } else { // 第二次点击，保存修改内容到数据库中
         const modifyResponse = await this.axios.post('/api/user/modifyAccountInfo', {
           name: this.name,
+          gender: this.gender,
           campus: this.campus,
           dormitory: this.dormitory,
           telephone: this.telephone,
@@ -315,6 +334,7 @@ export default {
         })
         if (modifyResponse.data === true) { // 修改成功，更新 localStorage
           localStorage.setItem('name', this.name)
+          localStorage.setItem('gender', this.gender)
           localStorage.setItem('campus', this.campus)
           localStorage.setItem('telephone', this.telephone)
           localStorage.setItem('dormitory', this.dormitory)

@@ -89,13 +89,16 @@ router.post('/queryUserInfo', async function (req, res) {
         console.log(error)
         res.send(false)
       } else if (result.rowCount == 1) { // 查询到用户结果时
+        console.log(result)
         const userName = result.rows[0].name
+        const userGender = result.rows[0].gender
         const userTelephone = result.rows[0].telephone
         const userCampus = result.rows[0].campus
         const userDormitory = result.rows[0].dormitory
         const userStudentId = result.rows[0].std_id
         const response = {
           name: userName,
+          gender: userGender,
           telephone: userTelephone,
           campus: userCampus,
           dormitory: userDormitory,
@@ -112,11 +115,12 @@ router.post('/queryUserInfo', async function (req, res) {
 // 修改用户资料接口
 router.post('/modifyAccountInfo', (req, res) => {
   const name = req.body.name
+  const gender = req.body.gender
   const campus = req.body.campus
   const dormitory = req.body.dormitory
   const telephone = req.body.telephone
   const id = req.body.id
-  const sqlData = [name, campus, dormitory, telephone, id]
+  const sqlData = [name, gender, campus, dormitory, telephone, id]
 
   conn.query($sql.user.modifyAccountInfo, sqlData, (error) => {
     if (error) {

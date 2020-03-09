@@ -1,6 +1,6 @@
 /* 数据库操作函数 */
 const tokenDatabase = ' public.user_token '
-const userDatabase = ' public.\"user\" '
+const userDatabase = ' public.user '
 const userNetunionDatabase = ' public.user_netunion '
 
 const sqlMap = {
@@ -16,9 +16,9 @@ const sqlMap = {
     // 通过 id 获取 password
     getLoginPassword: 'SELECT password FROM' + userDatabase + 'WHERE id = $1',
     // 通过 id 获取用户资料
-    queryUserInfo: 'SELECT name, telephone, campus, dormitory, std_id FROM' + userDatabase + 'WHERE id = $1',
+    queryUserInfo: 'SELECT name, gender, telephone, campus, dormitory, std_id FROM' + userDatabase + 'WHERE id = $1',
     // 修改用户资料
-    modifyAccountInfo: 'UPDATE' + userDatabase + 'SET name=$1, campus=$2, dormitory=$3, telephone=$4 WHERE id = $5',
+    modifyAccountInfo: 'UPDATE' + userDatabase + 'SET name=$1, gender=$2, campus=$3, dormitory=$4, telephone=$5 WHERE id = $6',
     // 修改用户密码
     modifyPassword: 'UPDATE' + userDatabase + 'SET password=$1 WHERE id = $2'
   },

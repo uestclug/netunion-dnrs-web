@@ -50,7 +50,7 @@
               >
                 <!-- 姓名表单 -->
                 <v-col
-                  cols="6"
+                  cols="3"
                 >
                   <v-text-field
                     v-model="name"
@@ -59,6 +59,20 @@
                     @input="$v.name.$touch()"
                     @blur="$v.name.$touch()"
                   ></v-text-field>
+                </v-col>
+
+                <!-- 性别表单 -->
+                <v-col
+                  cols="3"
+                >
+                  <v-select
+                    v-model="gender"
+                    :items="genderItems"
+                    :error-messages="genderErrors"
+                    :label="genderLabel"
+                    @change="$v.gender.$touch()"
+                    @blur="$v.gender.$touch()"
+                  ></v-select>
                 </v-col>
 
                 <!-- 联系电话表单 -->
@@ -131,7 +145,9 @@ export default {
   data: () => ({
     sheet: false,
     name: '',
+    gender: null,
     campus: null,
+    genderItems: ['男(Male)', '女(Female)'],
     campusItems: ['清水河校区(Qingshuihe Campus)', '沙河校区(Shahe Campus)'],
     dormitory: '',
     telephone: '',
@@ -142,6 +158,9 @@ export default {
     name: {
       required,
       maxLength: maxLength(20)
+    },
+    gender: {
+      required
     },
     campus: {
       required
@@ -160,6 +179,12 @@ export default {
       if (!this.$v.name.$dirty) return errors
       !this.$v.name.maxLength && errors.push(this.$i18n.t('order.createOrder.nameMaxLengthErr'))
       !this.$v.name.required && errors.push(this.$i18n.t('order.createOrder.nameRequiredErr'))
+      return errors
+    },
+    genderErrors () {
+      const errors = []
+      if (!this.$v.gender.$dirty) return errors
+      !this.$v.gender.required && errors.push(this.$i18n.t('order.createOrder.genderRequiredErr'))
       return errors
     },
     campusErrors () {
@@ -184,6 +209,9 @@ export default {
     nameLabel () {
       return this.$i18n.t('order.createOrder.nameLabel')
     },
+    genderLabel () {
+      return this.$i18n.t('order.createOrder.genderLabel')
+    },
     telephoneLabel () {
       return this.$i18n.t('order.createOrder.telephoneLabel')
     },
@@ -206,6 +234,7 @@ export default {
     },
     autoEnter () {
       this.name = localStorage.getItem('name')
+      this.gender = localStorage.getItem('gender')
       this.telephone = localStorage.getItem('telephone')
       this.dormitory = localStorage.getItem('dormitory')
       this.campus = localStorage.getItem('campus')
@@ -214,6 +243,7 @@ export default {
   mounted () {
     Bus.$on('openBottomSheet', (msg) => { // 自动填写表单
       if (this.name === '') { this.name = localStorage.getItem('name') }
+      if (this.gender === null) { this.gender = localStorage.getItem('gender') }
       if (this.telephone === '') { this.telephone = localStorage.getItem('telephone') }
       if (this.dormitory === '') { this.dormitory = localStorage.getItem('dormitory') }
       if (this.campus === null) { this.campus = localStorage.getItem('campus') }
