@@ -105,8 +105,9 @@ module.exports = {
       orderInfo: '订单信息',
       name: '姓名',
       campus: '所处校区',
-      description: '描述',
-      telephone: '联系电话'
+      description: '订单描述',
+      telephone: '联系电话',
+      date: '订单日期'
     }
   },
   login: {

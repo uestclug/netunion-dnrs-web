@@ -247,8 +247,8 @@ export default {
   },
   created: async function () {
     if (!localStorage.getItem('name') || !localStorage.getItem('gender') ||
-      !localStorage.getItem('telephone') || !localStorage.getItem('campus') ||
-      !localStorage.getItem('dormitory') || !localStorage.getItem('std_id')) { // 当 localStorage 没有存储账户资料内容时
+    !localStorage.getItem('telephone') || !localStorage.getItem('campus') ||
+    !localStorage.getItem('dormitory') || !localStorage.getItem('std_id')) { // 当 localStorage 没有存储账户资料内容时
       const response = await this.axios.post('/api/user/queryUserInfo', { // 获取用户资料
         id: localStorage.getItem('id')
       })

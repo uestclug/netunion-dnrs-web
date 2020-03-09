@@ -106,7 +106,8 @@ module.exports = {
       name: 'Name',
       campus: 'Campus',
       description: 'Description',
-      telephone: 'Telephone'
+      telephone: 'Telephone',
+      date: 'Date'
     }
   },
   login: {

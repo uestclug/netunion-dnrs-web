@@ -23,7 +23,7 @@
             <v-col
               cols="6"
             >
-              <p class="body-1 text--primary">欣2栋 211</p>
+              <p class="body-1 text--primary">{{ orderDormitory }}</p>
             </v-col>
             <v-col
               cols="6"
@@ -35,7 +35,7 @@
             <v-col
               cols="6"
             >
-              <p class="body-1 text--primary">Jason</p>
+              <p class="body-1 text--primary">{{ orderSolverName }}</p>
             </v-col>
             <v-col
               cols="6"
@@ -47,7 +47,7 @@
             <v-col
               cols="6"
             >
-              <p class="body-1 text--primary">18790842913</p>
+              <p class="body-1 text--primary">{{ orderSolverTelephone }}</p>
             </v-col>
             <v-col
               cols="6"
@@ -59,7 +59,7 @@
             <v-col
               cols="6"
             >
-              <p class="body-1 text--primary">已完成</p>
+              <p class="body-1 text--primary">{{ orderStatus }}</p>
             </v-col>
           </v-row>
         </v-card-text>
@@ -104,7 +104,7 @@
                   <v-col
                     cols="6"
                   >
-                    <p class="body-1 text--primary">Lolipop</p>
+                    <p class="body-1 text--primary">{{ orderName }}</p>
                   </v-col>
                   <v-col
                     cols="6"
@@ -116,7 +116,7 @@
                   <v-col
                     cols="6"
                   >
-                    <p class="body-1 text--primary">沙河校区</p>
+                    <p class="body-1 text--primary">{{ orderCampus }}</p>
                   </v-col>
                   <v-col
                     cols="6"
@@ -128,7 +128,7 @@
                   <v-col
                     cols="6"
                   >
-                    <p class="body-1 text--primary">18980344000</p>
+                    <p class="body-1 text--primary">{{ orderTelephone }}</p>
                   </v-col>
                   <v-col
                     cols="6"
@@ -140,7 +140,19 @@
                   <v-col
                     cols="6"
                   >
-                    <p class="body-1 text--primary">null</p>
+                    <p class="body-1 text--primary">{{ orderDescription }}</p>
+                  </v-col>
+                  <v-col
+                    cols="6"
+                  >
+                    <p class="body-1"><v-icon>mdi-clock-outline</v-icon>
+                      {{ $t('order.latestOrder.date') }}
+                    </p>
+                  </v-col>
+                  <v-col
+                    cols="6"
+                  >
+                    <p class="body-1 text--primary">{{ orderDate }}</p>
                   </v-col>
                 </v-row>
               </v-card-text>
@@ -184,20 +196,78 @@
 </template>
 
 <script>
+import Bus from '@/Bus'
+
 export default {
   name: 'LatestOrder',
   data: () => ({
     showDetails: false,
     cancelDialog: false,
-    cancelDisabled: true
+    cancelDisabled: true,
+    orderDormitory: '-',
+    orderSolverName: '-',
+    orderSolverTelephone: '-',
+    orderStatus: '-',
+    orderName: '-',
+    orderCampus: '-',
+    orderTelephone: '-',
+    orderDescription: '-',
+    orderDate: '-'
   }),
   methods: {
     toCancelOrderDialog () {
       this.cancelDialog = true
     },
     cancelOrder () {
-      //
+      this.cancelDialog = false
+      this.orderStatus = this.$i18n.t('order.latestOrder.canceledByUserStatus')
+      this.cancelDisabled = true
+      Bus.$emit('setSnackbar', this.$i18n.t('order.latestOrder.cancelSucceed'))
     }
+  },
+  mounted () {
+    Bus.$on('refreshLatestOrder', (msg) => {
+      console.log(msg)
+      if (msg.order_dormitory) { this.orderDormitory = msg.order_dormitory }
+      if (msg.order_solver_name) { // 设置订单处理者姓名
+        this.orderSolverName = msg.order_solver_name
+      } else {
+        this.orderSolverName = this.$i18n.t('order.latestOrder.waitingForSolver')
+      }
+      if (msg.order_solver_telephone) { // 设置订单处理者工作电话
+        this.orderSolverTelephone = msg.order_solver_telephone
+      } else {
+        this.orderSolverTelephone = '-'
+      }
+      if (msg.order_status) { // 设置订单状态
+        const status = msg.order_status
+        if (status === 'waiting') {
+          this.orderStatus = this.$i18n.t('order.latestOrder.waitingStatus')
+          this.cancelDisabled = false
+        } else if (status === 'receipted') {
+          this.orderStatus = this.$i18n.t('order.latestOrder.receiptedStatus')
+          this.cancelDisabled = true
+        } else if (status === 'canceled by user') {
+          this.orderStatus = this.$i18n.t('order.latestOrder.canceledByUserStatus')
+          this.cancelDisabled = true
+        } else if (status === 'canceled by solver') {
+          this.orderStatus = this.$i18n.t('order.latestOrder.canceledBySolverStatus')
+          this.cancelDisabled = true
+        } else if (status === 'finished') {
+          this.orderStatus = this.$i18n.t('order.latestOrder.finishedStatus')
+          this.cancelDisabled = true
+        }
+      }
+      if (msg.order_name) { this.orderName = msg.order_name }
+      if (msg.order_campus) { this.orderCampus = msg.order_campus }
+      if (msg.order_telephone) { this.orderTelephone = msg.order_telephone }
+      if (msg.order_description) { // 设置订单描述
+        this.orderDescription = msg.order_description
+      } else {
+        this.orderDescription = '-'
+      }
+      if (msg.order_date) { this.orderDate = msg.order_date }
+    })
   }
 }
 </script>

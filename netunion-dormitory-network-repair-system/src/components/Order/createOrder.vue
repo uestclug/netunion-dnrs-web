@@ -41,7 +41,8 @@
                 color="success"
                 @click="submit"
                 class="subtitle-2"
-              >{{ $t('order.createOrder.submit') }}<v-icon right>mdi-check</v-icon></v-btn>
+              >{{ $t('order.createOrder.submit') }}<v-icon right>mdi-check</v-icon>
+              </v-btn>
             </v-card-title>
             <v-card-text>
               <v-row
@@ -231,6 +232,27 @@ export default {
   methods: {
     submit () {
       this.$v.$touch()
+      if (this.nameErrors.length === 0 && this.genderErrors.length === 0 &&
+      this.campusErrors.length === 0 && this.dormitoryErrors.length === 0 &&
+      this.telephoneErrors.length === 0) {
+        this.axios.post('/api/order/createOrder', {
+          user_name: this.name,
+          user_gender: this.gender,
+          user_telephone: this.telephone,
+          user_campus: this.campus,
+          user_dormitory: this.dormitory,
+          user_description: this.description,
+          user_id: localStorage.getItem('id')
+        }).then((Response) => {
+          if (Response.data === false) {
+            Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.createFailed'))
+          } else {
+            Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.createSucceed'))
+            this.sheet = false
+            Bus.$emit('refreshLatestOrder', Response.data)
+          }
+        })
+      }
     },
     autoEnter () {
       this.name = localStorage.getItem('name')

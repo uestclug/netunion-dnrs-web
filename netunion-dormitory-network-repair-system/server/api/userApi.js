@@ -5,6 +5,7 @@ const router = express.Router()
 const pgsql = require('pg')
 const utils = require('../utils')
 const $sql = require('../sqlMap')
+const $common = require('../common')
 
 const conn = pgsql.Pool(db.pgsql)
 conn.connect()
@@ -152,7 +153,7 @@ router.post('/modifyPassword', async function (req, res) {
       }
     })
   } else { // 输入的密码和数据库密码不同时
-    res.send('present password error')
+    res.send($common.password.presentErr)
   }
 })
 
