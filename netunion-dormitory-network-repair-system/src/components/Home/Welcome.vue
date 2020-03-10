@@ -39,8 +39,19 @@ export default {
       const response = await this.axios.post('/api/user/checkToken', {
         id: localStorage.getItem('id')
       })
-      if (response.data === true) { // 当用户 token 有效时打开创建订单页面
-        Bus.$emit('openBottomSheet', '')
+      if (response.data === true) { // 当用户 token 有效时
+        const orderStatus = await this.axios.post('/api/order/getLatestOrderStatus', {
+          user_id: localStorage.getItem('id')
+        })
+        if (orderStatus.data === true) { // 可以新建订单
+          Bus.$emit('openBottomSheet', '')
+        } else if (orderStatus.data === false) { // 订单状态验证错误
+          Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.orderStatusErr'))
+        } else if (orderStatus.data === 'waiting' || orderStatus.data === 'receipted') { // 不可新建订单
+          Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.orderStatusErr'))
+        } else {
+          Bus.$emit('openBottomSheet', '')
+        }
       } else { // 无效时清除 token 并刷新回到登录页面
         Bus.$emit('setSnackbar', this.$i18n.t('login.tokenCheckFailed'))
         localStorage.removeItem('token')

@@ -62,7 +62,7 @@ router.post('/checkToken', async function (req, res) {
 async function checkToken (id, token) { // 用户 token 验证
   const sqlData = [id]
 
-  let response = await conn.query($sql.token.getTokenResponse, sqlData)
+  const response = await conn.query($sql.token.getTokenResponse, sqlData)
   if (response.rowCount == 1) { // 得到数据库返回的结果
     const savedToken = response.rows[0].token
     const savedExpirationDate = response.rows[0].expiration_date

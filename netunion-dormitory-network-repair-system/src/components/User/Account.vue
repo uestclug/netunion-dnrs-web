@@ -384,7 +384,7 @@ export default {
       this.logoutDialog = true
     },
     logout () { // 移除 localStorage 的 token 并刷新回到登录页面
-      localStorage.removeItem('token')
+      localStorage.clear()
       location.reload()
     }
   }

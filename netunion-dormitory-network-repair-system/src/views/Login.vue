@@ -134,6 +134,7 @@ export default {
             }).then((Response) => {
               // 将得到的用户资料保存到 localStorage 中
               localStorage.setItem('name', Response.data.name)
+              localStorage.setItem('gender', Response.data.gender)
               localStorage.setItem('telephone', Response.data.telephone)
               localStorage.setItem('campus', Response.data.campus)
               localStorage.setItem('dormitory', Response.data.dormitory)
