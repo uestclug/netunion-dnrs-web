@@ -244,17 +244,18 @@ export default {
           user_description: this.description,
           user_id: localStorage.getItem('id')
         }).then((Response) => {
-          if (Response.data === false) {
+          if (Response.data === false) { // 订单提交失败，刷新页面
             Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.createFailed'))
-          } else {
+            location.reload()
+          } else { // 订单提交成功
             Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.createSucceed'))
-            this.sheet = false
             Bus.$emit('refreshLatestOrder', Response.data)
+            this.sheet = false
           }
         })
       }
     },
-    autoEnter () {
+    autoEnter () { // 从 localstorage 读取用户资料并填写
       this.name = localStorage.getItem('name')
       this.gender = localStorage.getItem('gender')
       this.telephone = localStorage.getItem('telephone')
@@ -263,12 +264,7 @@ export default {
     }
   },
   mounted () {
-    Bus.$on('openBottomSheet', (msg) => { // 自动填写表单
-      if (this.name === '') { this.name = localStorage.getItem('name') }
-      if (this.gender === null) { this.gender = localStorage.getItem('gender') }
-      if (this.telephone === '') { this.telephone = localStorage.getItem('telephone') }
-      if (this.dormitory === '') { this.dormitory = localStorage.getItem('dormitory') }
-      if (this.campus === null) { this.campus = localStorage.getItem('campus') }
+    Bus.$on('openOrderSheet', (msg) => {
       this.sheet = true
     })
   }

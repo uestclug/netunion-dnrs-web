@@ -121,17 +121,24 @@
 
     <!-- Snackbar -->
     <Snackbar/>
+
+    <!-- Create Oreder -->
     <CreateOrder/>
+
+    <!-- Global Bus Methods -->
+    <BusMethods/>
   </v-app>
 </template>
 
 <script>
+import BusMethods from '@/components/BusMethods'
 import Snackbar from '@/components/Snackbar'
 import CreateOrder from '@/components/Order/CreateOrder'
 
 export default {
   name: 'AppView',
   components: {
+    BusMethods,
     Snackbar,
     CreateOrder
   },

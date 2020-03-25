@@ -217,8 +217,11 @@ export default {
     campus: null,
     telephone: '',
     dormitory: '',
+    // 设置修改用户资料内容默认不可修改
     disabled: true,
+    // 设置修改密码 Dialog 默认不可见
     modifyPasswordDialog: false,
+    // 设置登出 Dialog 默认不可见
     logoutDialog: false,
     modifyBtnColor: 'brown darken-1',
     genderItems: ['男(Male)', '女(Female)'],
@@ -245,21 +248,9 @@ export default {
       minLength: minLength(6)
     }
   },
-  created: async function () {
-    if (!localStorage.getItem('name') || !localStorage.getItem('gender') ||
-    !localStorage.getItem('telephone') || !localStorage.getItem('campus') ||
-    !localStorage.getItem('dormitory') || !localStorage.getItem('std_id')) { // 当 localStorage 没有存储账户资料内容时
-      const response = await this.axios.post('/api/user/queryUserInfo', { // 获取用户资料
-        id: localStorage.getItem('id')
-      })
-      // 设置 localStorage
-      localStorage.setItem('name', response.data.name)
-      localStorage.setItem('gender', response.data.gender)
-      localStorage.setItem('telephone', response.data.telephone)
-      localStorage.setItem('campus', response.data.campus)
-      localStorage.setItem('dormitory', response.data.dormitory)
-      localStorage.setItem('std_id', response.data.std_id)
-    }
+  created: function () {
+    // 检查用户信息是否完整
+    Bus.$emit('infoCheck')
     // 设置页面 dom
     this.name = localStorage.getItem('name')
     this.gender = localStorage.getItem('gender')
@@ -305,18 +296,10 @@ export default {
   methods: {
     modifyAccountInfo: async function () {
       if (this.disabled === true) { // 第一次点击，进入修改模式
-        const loginResponse = await this.axios.post('/api/user/checkToken', {
-          id: localStorage.getItem('id')
-        })
-        if (loginResponse.data === true) { // 当用户 token 有效时进入修改模式
-          this.modifyBtnColor = 'success' // 设置按钮颜色
-          Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyAccountInfoNote'))
-          this.disabled = false
-        } else { // 无效时清除 token 并刷新回到登录页面
-          Bus.$emit('setSnackbar', this.$i18n.t('login.tokenCheckFailed'))
-          localStorage.removeItem('token')
-          location.reload()
-        }
+        Bus.$emit('tokenCheck')
+        this.modifyBtnColor = 'success' // 设置按钮颜色
+        Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyAccountInfoNote'))
+        this.disabled = false
       } else { // 第二次点击，保存修改内容到数据库中
         const modifyResponse = await this.axios.post('/api/user/modifyAccountInfo', {
           name: this.name,
@@ -335,22 +318,15 @@ export default {
           this.modifyBtnColor = 'brown darken-1'
           Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyAccountInfoSucceed'))
           this.disabled = true
-        } else { // 修改失败，显示提示信息
+        } else { // 修改失败，显示提示信息并刷新页面
           Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyAccountInfoFailed'))
+          location.reload()
         }
       }
     },
-    modifyPassword: async function () {
-      const loginResponse = await this.axios.post('/api/user/checkToken', {
-        id: localStorage.getItem('id')
-      })
-      if (loginResponse.data === true) { // 当用户 token 有效时打开密码修改 dialog
-        this.modifyPasswordDialog = true
-      } else {
-        Bus.$emit('setSnackbar', this.$i18n.t('login.tokenCheckFailed'))
-        localStorage.removeItem('token')
-        location.reload()
-      }
+    modifyPassword: function () {
+      Bus.$emit('tokenCheck')
+      this.modifyPasswordDialog = true
     },
     submitNewPassword: async function () {
       this.$v.$touch()
@@ -383,9 +359,8 @@ export default {
     toLogoutDialog () { // 打开确认 logout 的 dialog
       this.logoutDialog = true
     },
-    logout () { // 移除 localStorage 的 token 并刷新回到登录页面
-      localStorage.clear()
-      location.reload()
+    logout () {
+      Bus.$emit('modifyLoginStatus', 'logout')
     }
   }
 }

@@ -215,105 +215,93 @@ export default {
     orderDate: '-'
   }),
   methods: {
-    toCancelOrderDialog: async function () {
-      const response = await this.axios.post('/api/user/checkToken', {
-        id: localStorage.getItem('id')
-      })
-      if (response.data === true) {
-        this.cancelDialog = true
-      } else {
-        Bus.$emit('setSnackbar', this.$i18n.t('login.tokenCheckFailed'))
-        localStorage.removeItem('token')
-        location.reload()
-      }
+    toCancelOrderDialog () {
+      Bus.$emit('tokenCheck')
+      this.cancelDialog = true
     },
     cancelOrder () {
+      this.orderStatus = this.$i18n.t('order.canceledByUserStatus')
+      Bus.$emit('setSnackbar', this.$i18n.t('order.cancelSucceed'))
       this.cancelDialog = false
-      this.orderStatus = this.$i18n.t('order.latestOrder.canceledByUserStatus')
       this.cancelDisabled = true
-      Bus.$emit('setSnackbar', this.$i18n.t('order.latestOrder.cancelSucceed'))
     }
   },
   created: async function () { // 获取最近的订单信息
     const Response = await this.axios.post('/api/order/getLatestOrderInfo', {
       user_id: localStorage.getItem('id')
     })
-    Bus.$emit('refreshLatestOrder', Response.data)
-  },
-  mounted () {
-    Bus.$on('refreshLatestOrder', (msg) => {
-      // console.log(msg)
-      if (msg.order_user_dormitory) { // 设置订单寝室地址
-        localStorage.setItem('order_user_dormitory', msg.order_user_dormitory)
-        this.orderDormitory = msg.order_user_dormitory
-      }
+    const orderInfo = Response.data
+    // console.log(orderInfo)
+    if (orderInfo.order_user_dormitory) { // 设置订单寝室地址
+      localStorage.setItem('order_user_dormitory', orderInfo.order_user_dormitory)
+      this.orderDormitory = orderInfo.order_user_dormitory
+    }
 
-      if (msg.order_solver_name) { // 设置订单处理者姓名
-        localStorage.setItem('order_solver_name', msg.order_solver_name)
-        this.orderSolverName = msg.order_solver_name
-      }
+    if (orderInfo.order_solver_name) { // 设置订单处理者姓名
+      localStorage.setItem('order_solver_name', orderInfo.order_solver_name)
+      this.orderSolverName = orderInfo.order_solver_name
+    }
 
-      if (msg.order_solver_telephone) { // 设置订单处理者工作电话
-        localStorage.setItem('order_solver_telephone', msg.order_solver_telephone)
-        this.orderSolverTelephone = msg.order_solver_telephone
-      }
+    if (orderInfo.order_solver_telephone) { // 设置订单处理者工作电话
+      localStorage.setItem('order_solver_telephone', orderInfo.order_solver_telephone)
+      this.orderSolverTelephone = orderInfo.order_solver_telephone
+    }
 
-      if (msg.order_solver_intro) { // 设置订单处理者简介
-        localStorage.setItem('order_solver_intro', msg.order_solver_intro)
-      }
+    if (orderInfo.order_solver_intro) { // 设置订单处理者简介
+      localStorage.setItem('order_solver_intro', orderInfo.order_solver_intro)
+    }
 
-      if (msg.order_solver_nickname) { // 设置订单处理者昵称
-        localStorage.setItem('order_solver_nickname', msg.order_solver_nickname)
-      }
+    if (orderInfo.order_solver_nickname) { // 设置订单处理者昵称
+      localStorage.setItem('order_solver_nickname', orderInfo.order_solver_nickname)
+    }
 
-      if (msg.order_status) { // 设置订单状态
-        const status = msg.order_status
-        localStorage.setItem('order_status', status)
+    if (orderInfo.order_status) { // 设置订单状态
+      const status = orderInfo.order_status
+      localStorage.setItem('order_status', status)
 
-        if (status === 'waiting') {
-          this.orderStatus = this.$i18n.t('order.latestOrder.waitingStatus')
-          this.cancelDisabled = false
+      if (status === 'waiting') { // 用户可以取消订单
+        this.orderStatus = this.$i18n.t('order.waitingStatus')
+        this.cancelDisabled = false
+      } else { // 用户不可以取消订单
+        if (status === 'receipted') {
+          this.orderStatus = this.$i18n.t('order.receiptedStatus')
+        } else if (status === 'canceled by user') {
+          this.orderStatus = this.$i18n.t('order.canceledByUserStatus')
+        } else if (status === 'canceled by solver') {
+          this.orderStatus = this.$i18n.t('order.canceledBySolverStatus')
+        } else if (status === 'finished') {
+          this.orderStatus = this.$i18n.t('order.finishedStatus')
         } else {
-          if (status === 'receipted') {
-            this.orderStatus = this.$i18n.t('order.latestOrder.receiptedStatus')
-          } else if (status === 'canceled by user') {
-            this.orderStatus = this.$i18n.t('order.latestOrder.canceledByUserStatus')
-          } else if (status === 'canceled by solver') {
-            this.orderStatus = this.$i18n.t('order.latestOrder.canceledBySolverStatus')
-          } else if (status === 'finished') {
-            this.orderStatus = this.$i18n.t('order.latestOrder.finishedStatus')
-          } else {
-            this.orderStatus = this.$i18n.t('order.latestOrder.unknownStatus')
-          }
-          this.cancelDisabled = true
+          this.orderStatus = this.$i18n.t('order.unknownStatus')
         }
+        this.cancelDisabled = true
       }
+    }
 
-      if (msg.order_user_name) { // 设置用户姓名
-        localStorage.setItem('order_user_name', msg.order_user_name)
-        this.orderName = msg.order_user_name
-      }
+    if (orderInfo.order_user_name) { // 设置用户姓名
+      localStorage.setItem('order_user_name', orderInfo.order_user_name)
+      this.orderName = orderInfo.order_user_name
+    }
 
-      if (msg.order_user_campus) { // 设置订单校区
-        localStorage.setItem('order_user_campus', msg.order_user_campus)
-        this.orderCampus = msg.order_user_campus
-      }
+    if (orderInfo.order_user_campus) { // 设置订单校区
+      localStorage.setItem('order_user_campus', orderInfo.order_user_campus)
+      this.orderCampus = orderInfo.order_user_campus
+    }
 
-      if (msg.order_user_telephone) { // 设置用户电话
-        localStorage.setItem('order_user_telephone', msg.order_user_telephone)
-        this.orderTelephone = msg.order_user_telephone
-      }
+    if (orderInfo.order_user_telephone) { // 设置用户电话
+      localStorage.setItem('order_user_telephone', orderInfo.order_user_telephone)
+      this.orderTelephone = orderInfo.order_user_telephone
+    }
 
-      if (msg.order_user_description) { // 设置订单描述
-        localStorage.setItem('order_user_description', msg.order_user_description)
-        this.orderDescription = msg.order_user_description
-      }
+    if (orderInfo.order_user_description) { // 设置订单描述
+      localStorage.setItem('order_user_description', orderInfo.order_user_description)
+      this.orderDescription = orderInfo.order_user_description
+    }
 
-      if (msg.order_date) { // 设置订单下单日期
-        localStorage.setItem('order_date', msg.order_date)
-        this.orderDate = msg.order_date
-      }
-    })
+    if (orderInfo.order_date) { // 设置订单下单日期
+      localStorage.setItem('order_date', orderInfo.order_date)
+      this.orderDate = orderInfo.order_date
+    }
   }
 }
 </script>

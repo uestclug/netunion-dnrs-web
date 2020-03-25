@@ -139,6 +139,8 @@ export default {
               localStorage.setItem('campus', Response.data.campus)
               localStorage.setItem('dormitory', Response.data.dormitory)
               localStorage.setItem('std_id', Response.data.std_id)
+              // 获取最近订单信息
+              Bus.$emit('getLatestOrderInfo')
               // 显示提示登录成功的信息条
               Bus.$emit('setSnackbar', this.$i18n.t('login.loginSucceed') + Response.data.name)
               // 回到主页

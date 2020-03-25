@@ -65,6 +65,13 @@ module.exports = {
     }
   },
   order: {
+    waitingStatus: '等待接单',
+    receiptedStatus: '已接单',
+    canceledByUserStatus: '订单取消',
+    canceledBySolverStatus: '订单被取消',
+    finishedStatus: '订单完成',
+    unknownStatus: '订单穿越了银河系',
+    cancelSucceed: '订单取消成功',
     createOrder: {
       create: '新建网络报修订单',
       cancelTip: '已填写内容不会消失',
@@ -85,7 +92,9 @@ module.exports = {
       dormitoryRequiredErr: '填写您的宿舍楼栋与寝室号，我们整装待发',
       descriptionHint: '添加您的空闲时间或对具体情况的描述可以帮助我们更好地解决问题',
       autoEnter: '自动填写',
-      autoEnterNote: '将根据您的个人资料自动填写表单'
+      autoEnterNote: '将根据您的个人资料自动填写表单',
+      orderStatusErr: '您有正在进行中的订单，无法创建新的订单',
+      orderStatusCheckErr: '订单信息获取失败'
     },
     latestOrder: {
       title: '最近的订单',

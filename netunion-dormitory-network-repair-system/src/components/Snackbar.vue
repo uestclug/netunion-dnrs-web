@@ -26,7 +26,7 @@ export default {
     snackbarText: 'Nothing ever happen'
   }),
   mounted () {
-    Bus.$on('setSnackbar', (msg) => {
+    Bus.$on('setSnackbar', (msg) => { // 弹出显示 msg 内容的 snackbar
       this.snackbarText = msg
       this.snackbar = true
     })

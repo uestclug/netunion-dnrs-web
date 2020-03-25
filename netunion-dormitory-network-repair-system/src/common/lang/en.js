@@ -65,6 +65,13 @@ module.exports = {
     }
   },
   order: {
+    waitingStatus: 'waiting',
+    receiptedStatus: 'receipted',
+    canceledByUserStatus: 'canceled by user',
+    canceledBySolverStatus: 'canceled',
+    finishedStatus: 'finished',
+    unknownStatus: 'unknown',
+    cancelSucceed: 'You cancelled this order successfully',
     createOrder: {
       create: 'CREATE NEW ORDER',
       cancelTip: 'completed content will not reset',
@@ -85,7 +92,9 @@ module.exports = {
       dormitoryRequiredErr: 'Dormitory location and number is required',
       descriptionHint: 'Adding your free time or a description of the situation can help us solve the problem better',
       autoEnter: 'AUTO',
-      autoEnterNote: 'base on your own information'
+      autoEnterNote: 'base on your own information',
+      orderStatusErr: 'You have an order in progress and cannot create a new one',
+      orderStatusCheckErr: 'Failed to get order information'
     },
     latestOrder: {
       title: 'Latest order',
