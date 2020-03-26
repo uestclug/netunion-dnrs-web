@@ -5,8 +5,12 @@
 </template>
 
 <script>
-// @ is an alias to /src
+import Bus from '@/Bus'
+
 export default {
-  name: 'Order'
+  name: 'Order',
+  created () {
+    Bus.$emit('tokenCheck')
+  }
 }
 </script>

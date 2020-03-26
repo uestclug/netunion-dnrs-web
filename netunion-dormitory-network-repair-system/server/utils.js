@@ -12,6 +12,11 @@ const jsonWrite = function (res, ret) {
   }
 }
 
+const prefixZero = function (num, digit) {
+  return (Array(digit).join(0) + num).slice(-digit)
+}
+
 module.exports = {
-  jsonWrite
+  jsonWrite,
+  prefixZero
 }

@@ -94,7 +94,9 @@ module.exports = {
       autoEnter: '自动填写',
       autoEnterNote: '将根据您的个人资料自动填写表单',
       orderStatusErr: '您有正在进行中的订单，无法创建新的订单',
-      orderStatusCheckErr: '订单信息获取失败'
+      orderStatusCheckErr: '订单信息获取失败',
+      createFailed: '订单创建失败，请来电抱怨！',
+      createSucceed: '订单创建成功，我们会尽快为您处理！'
     },
     latestOrder: {
       title: '最近的订单',
@@ -127,6 +129,9 @@ module.exports = {
     pwdRequiredErr: '您需要输入正确的密码进行登录',
     loginFailed: '学号或密码错误，请检查！',
     loginSucceed: '欢迎你，',
+    logoutSuccess: '您已成功登出。',
+    infoCheckFailed: '用户信息检查失败，请重新登陆！',
+    unknownFailed: '时代变了！请重新登陆。',
     tokenCheckFailed: '账户凭证过期或错误，请重新登录！'
   }
 }

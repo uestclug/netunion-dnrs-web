@@ -94,7 +94,9 @@ module.exports = {
       autoEnter: 'AUTO',
       autoEnterNote: 'base on your own information',
       orderStatusErr: 'You have an order in progress and cannot create a new one',
-      orderStatusCheckErr: 'Failed to get order information'
+      orderStatusCheckErr: 'Failed to get order information',
+      createFailed: 'Order creation failed, please call us to complain!',
+      createSucceed: 'Order created successfully, we will deal with it as soon as possible!'
     },
     latestOrder: {
       title: 'Latest order',
@@ -127,6 +129,9 @@ module.exports = {
     pwdRequiredErr: 'Wrong password, please check it',
     loginFailed: 'Wrong student number or password, please check it!',
     loginSucceed: 'Welcome, ',
+    logoutSuccess: 'You have successfully logged out',
+    infoCheckFailed: 'User information check failed, please login again!',
+    unknownFailed: 'Time has changed! Please login again.',
     tokenCheckFailed: 'Account voucher expired or wrong, please login again!'
   }
 }

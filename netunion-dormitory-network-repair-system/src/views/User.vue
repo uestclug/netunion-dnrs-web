@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import Bus from '@/Bus'
 import Account from '@/components/User/Account'
 import Statistics from '@/components/User/Statistics'
 
@@ -14,6 +15,9 @@ export default {
   components: {
     Account,
     Statistics
+  },
+  created () {
+    Bus.$emit('tokenCheck')
   }
 }
 </script>

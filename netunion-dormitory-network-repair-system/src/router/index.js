@@ -49,6 +49,14 @@ const routes = [
       needLogin: false
     },
     component: () => import('../views/Login.vue')
+  },
+  {
+    // 用来偷懒实现页面刷新的 router
+    path: '/_empty',
+    name: '_empty',
+    meta: {
+      needLogin: false
+    }
   }
 ]
 

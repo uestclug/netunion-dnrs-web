@@ -249,7 +249,8 @@ export default {
             location.reload()
           } else { // 订单提交成功
             Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.createSucceed'))
-            Bus.$emit('refreshLatestOrder', Response.data)
+            this.$router.push({ path: '/_empty' })
+            this.$router.back(-1)
             this.sheet = false
           }
         })

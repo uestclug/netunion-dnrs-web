@@ -42,8 +42,7 @@ export default {
       })
       if (orderStatus.data === false) {
         // 订单状态验证错误，刷新页面
-        Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.orderStatusCheckErr'))
-        location.reload()
+        Bus.$on('modifyLoginStatus', 'unknownErr')
       } else if (orderStatus.data === 'waiting' || orderStatus.data === 'receipted') {
         // 存在进行中的订单时不可新建订单
         Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.orderStatusErr'))
