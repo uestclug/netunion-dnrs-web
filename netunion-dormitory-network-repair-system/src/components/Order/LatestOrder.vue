@@ -197,6 +197,7 @@
 
 <script>
 import Bus from '@/Bus'
+const $common = require('@/../server/common')
 
 export default {
   name: 'LatestOrder',
@@ -239,26 +240,26 @@ export default {
       user_id: localStorage.getItem('id')
     })
     const orderInfo = Response.data
-    console.log(orderInfo)
+    // console.log(orderInfo)
     if (orderInfo !== false) {
       this.orderDormitory = orderInfo.order_user_dormitory
       this.orderName = orderInfo.order_user_name
       this.orderCampus = orderInfo.order_user_campus
       this.orderTelephone = orderInfo.order_user_telephone
-      this.orderDescription = orderInfo.order_user_description
+      if (orderInfo.order_user_description !== '') this.orderDescription = orderInfo.order_user_description
       this.orderDate = orderInfo.order_date
       const status = orderInfo.order_status
-      if (status === 'waiting') { // 用户可以取消订单
+      if (status === $common.status.waiting) { // 用户可以取消订单
         this.orderStatus = this.$i18n.t('order.waitingStatus')
         this.cancelDisabled = false
       } else { // 用户不可以取消订单
-        if (status === 'receipted') {
+        if (status === $common.status.receipted) {
           this.orderStatus = this.$i18n.t('order.receiptedStatus')
-        } else if (status === 'canceled by user') {
+        } else if (status === $common.status.canceledByUser) {
           this.orderStatus = this.$i18n.t('order.canceledByUserStatus')
-        } else if (status === 'canceled by solver') {
+        } else if (status === $common.status.canceledBySolver) {
           this.orderStatus = this.$i18n.t('order.canceledBySolverStatus')
-        } else if (status === 'finished') {
+        } else if (status === $common.status.finished) {
           this.orderStatus = this.$i18n.t('order.finishedStatus')
         } else {
           this.orderStatus = this.$i18n.t('order.unknownStatus')

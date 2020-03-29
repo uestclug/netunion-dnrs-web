@@ -12,6 +12,7 @@ const jsonWrite = function (res, ret) {
   }
 }
 
+// 不满足 digit 位则向 num 前补零
 const prefixZero = function (num, digit) {
   return (Array(digit).join(0) + num).slice(-digit)
 }

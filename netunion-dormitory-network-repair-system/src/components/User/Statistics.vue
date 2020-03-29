@@ -16,24 +16,25 @@
             <tbody>
               <tr>
                 <td>{{ $t('user.statistics.orderTime') }}</td>
-                <td>4 次</td>
+                <td>{{ orderTime }}</td>
               </tr>
               <tr>
                 <td>{{ $t('user.statistics.firstOrderDate') }}</td>
-                <td>2019/12/23</td>
+                <td>{{ firstOrderDate }}</td>
               </tr>
               <tr>
                 <td>{{ $t('user.statistics.firstOrderSolver') }}</td>
-                <td>Jason</td>
+                <td>{{ firstOrderSolver }}</td>
               </tr>
               <tr>
                 <td>{{ $t('user.statistics.lastOrderDate') }}</td>
-                <td>2020/2/22</td>
+                <td>{{ lastOrderDate }}</td>
               </tr>
               <tr>
                 <td>{{ $t('user.statistics.lastOrderSolver') }}</td>
-                <td>Mary</td>
+                <td>{{ lastOrderSolver }}</td>
               </tr>
+              <!--
               <tr>
                 <td>{{ $t('user.statistics.unlockedSolver') }}</td>
                 <td>2 人</td>
@@ -46,6 +47,7 @@
                 <td>{{ $t('user.statistics.bestSolverOrderedTime') }}</td>
                 <td>3 次</td>
               </tr>
+              -->
             </tbody>
           </v-simple-table>
         </v-card-text>
@@ -56,6 +58,26 @@
 
 <script>
 export default {
-  name: 'Statistics'
+  name: 'Statistics',
+  data: () => ({
+    orderTime: '-',
+    firstOrderDate: '-',
+    firstOrderSolver: '-',
+    lastOrderDate: '-',
+    lastOrderSolver: '-'
+  }),
+  created: async function () {
+    const Response = await this.axios.post('/api/user/getUserStatisticsInfo', {
+      id: localStorage.getItem('id')
+    })
+    const statisticsInfo = Response.data
+    if (statisticsInfo !== false) {
+      this.orderTime = statisticsInfo.finished_order_time
+      this.firstOrderDate = statisticsInfo.first_finished_order_date
+      this.firstOrderSolver = statisticsInfo.first_finished_order_solver_name
+      this.lastOrderDate = statisticsInfo.latest_finished_order_date
+      this.lastOrderSolver = statisticsInfo.latest_finished_order_solver_name
+    }
+  }
 }
 </script>

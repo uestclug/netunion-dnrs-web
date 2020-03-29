@@ -247,7 +247,7 @@ export default {
           if (Response.data === false) { // 订单提交失败，刷新页面
             Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.createFailed'))
             location.reload()
-          } else { // 订单提交成功
+          } else { // 订单提交成功，通过切换路由更新页面
             Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.createSucceed'))
             this.$router.push({ path: '/_empty' })
             this.$router.back(-1)

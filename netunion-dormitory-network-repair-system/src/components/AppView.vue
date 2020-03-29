@@ -23,7 +23,7 @@
             <v-list-item-title>{{ $t('viewTitle.user') }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-
+        <!--
         <v-list-item router-link to="/Order">
           <v-list-item-action>
             <v-icon>mdi-clipboard-check-multiple</v-icon>
@@ -32,6 +32,7 @@
             <v-list-item-title>{{ $t('viewTitle.order') }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        -->
 
         <v-list-item router-link to="/About">
           <v-list-item-action>

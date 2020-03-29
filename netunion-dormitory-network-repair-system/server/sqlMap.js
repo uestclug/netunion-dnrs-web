@@ -38,14 +38,14 @@ const sqlMap = {
   order: {
     // 添加新的订单
     createOrder: 'INSERT INTO' + orderDatabase + '(order_user_name, order_user_gender, order_user_telephone, order_user_campus, order_user_dormitory, order_user_description, order_date, order_status, order_id, order_solver_id, order_user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)',
-    // 通过 order_user_id 获取最新的订单号
-    queryLatestOrderIdByUserId: 'SELECT order_user_id, MAX(order_id) FROM' + orderDatabase + 'WHERE order_user_id=$1 GROUP BY order_user_id',
     // 通过 order_user_id 查询订单信息
     queryOrderInfoByUserId: 'SELECT * FROM' + orderDatabase + 'WHERE order_user_id=$1',
     // 通过 order_id 查询订单信息
     queryOrderInfoByOrderId: 'SELECT * FROM' + orderDatabase + 'WHERE order_id=$1',
     // 通过 order_solver_id 查询订单信息
     queryOrderInfoBySolverId: 'SELECT * FROM' + orderDatabase + 'WHERE order_solver_id=$1',
+    // 通过 order_user_id 和 order_status 查询订单信息
+    getSelectedOrder: 'SELECT * FROM' + orderDatabase + 'WHERE(order_user_id = $1 and order_status = $2)',
     // 通过 order_user_gender 和 user_campus 查询订单信息
     queryOrderInfoByGender: 'SELECT * FROM' + orderDatabase + 'WHERE order_user_gender=$1 AND order_user_campus=$2',
     // 通过 order_id 设置订单状态

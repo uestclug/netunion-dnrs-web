@@ -54,10 +54,10 @@ module.exports = {
     },
     statistics: {
       title: '统计信息',
-      orderTime: '订单次数',
-      firstOrderDate: '第一次下单日期',
+      orderTime: '完成订单次数',
+      firstOrderDate: '第一次完成订单日期',
       firstOrderSolver: '第一次的处理者',
-      lastOrderDate: '最近一次下单日期',
+      lastOrderDate: '最近一次完成订单日期',
       lastOrderSolver: '最近一次处理者',
       unlockedSolver: '解锁的处理者数',
       bestSolver: '你最好的SOLVER',

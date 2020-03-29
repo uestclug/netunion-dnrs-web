@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* 用户接口文件 */
 const db = require('../db')
 const express = require('express')
@@ -22,7 +23,7 @@ router.post('/login', (req, res) => {
     if (error) {
       console.log(error)
       res.send(false)
-    } else if (result.rowCount == 1 && input_password === result.rows[0].password) {
+    } else if (result.rowCount === 1 && input_password === result.rows[0].password) {
       // 更新 token 并返回用户 id
       const id = result.rows[0].id
       updateToken(id, token)
@@ -41,7 +42,9 @@ function updateToken (id, token) { // 保存登录令牌到数据库
   conn.query($sql.token.updateToken, sqlData, function (error) {
     if (error) {
       console.log(error)
-      return
+      return false
+    } else {
+      return true
     }
   })
 }
@@ -63,7 +66,7 @@ async function checkToken (id, token) { // 用户 token 验证
   const sqlData = [id]
 
   const response = await conn.query($sql.token.getTokenResponse, sqlData)
-  if (response.rowCount == 1) { // 得到数据库返回的结果
+  if (response.rowCount === 1) { // 得到数据库返回的结果
     const savedToken = response.rows[0].token
     const savedExpirationDate = response.rows[0].expiration_date
     const nowDate = new Date().getTime()
@@ -89,7 +92,7 @@ router.post('/queryUserInfo', async function (req, res) {
       if (error) {
         console.log(error)
         res.send(false)
-      } else if (result.rowCount == 1) { // 查询到用户结果时
+      } else if (result.rowCount === 1) { // 查询到用户结果时
         const userName = result.rows[0].name
         const userGender = result.rows[0].gender
         const userTelephone = result.rows[0].telephone
@@ -158,5 +161,46 @@ router.post('/modifyPassword', async function (req, res) {
 })
 
 // 用户统计资料接口
+router.post('/getUserStatisticsInfo', async function (req, res) {
+  const id = req.body.id
+  const sqlMap = [id, $common.status.finished]
+
+  conn.query($sql.order.getSelectedOrder, sqlMap, async function (error, result) {
+    if (error) {
+      console.log(error)
+      res.send(false)
+    } else {
+      const finished_order_time = result.rowCount
+      let first_finished_order_date = '-'
+      let first_finished_order_solver_name = '-'
+      let latest_finished_order_date = '-'
+      let latest_finished_order_solver_name = '-'
+      // let unlocked_solver_num = 0
+      // let best_solver = '-'
+      // let best_solver_time = 0
+      if (finished_order_time !== 0) { // 存在历史完成订单记录时
+        const first_finished_order_solver_id = result[0].order_solver_id
+        const first_finished_order_solver = await conn.query($sql.solver.querySolverInfo, [first_finished_order_solver_id])
+        first_finished_order_solver_name = first_finished_order_solver.rows[0].name
+        first_finished_order_date = result[0].order_date
+        const latest_finished_order_solver_id = result[finished_order_time - 1].order_solver_id
+        const latest_finished_order_solver = await conn.query($sql.solver.querySolverInfo, [latest_finished_order_solver_id])
+        latest_finished_order_solver_name = latest_finished_order_solver.rows[0].name
+        latest_finished_order_date = result[finished_order_time - 1].order_date
+      }
+      const response = {
+        finished_order_time: finished_order_time,
+        first_finished_order_date: first_finished_order_date,
+        first_finished_order_solver_name: first_finished_order_solver_name,
+        latest_finished_order_date: latest_finished_order_date,
+        latest_finished_order_solver_name: latest_finished_order_solver_name
+        // unlocked_solver_num: unlocked_solver_num,
+        // best_solver: best_solver,
+        // best_solver_time: best_solver_time
+      }
+      res.send(response)
+    }
+  })
+})
 
 module.exports = router

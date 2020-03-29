@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* 订单接口文件 */
 const db = require('../db')
 const express = require('express')
@@ -11,13 +12,13 @@ const conn = pgsql.Pool(db.pgsql)
 conn.connect()
 
 // 获取用户最近的订单号
-async function getLatestOrderId(user_id) {
+async function getLatestOrderId (user_id) {
   const sqlData = [user_id]
 
-  const response = await conn.query($sql.order.queryLatestOrderIdByUserId, sqlData)
-  if (response.rowCount == 1) { // 用户有最近的订单记录
-    // 返回订单号
-    return response.rows[0].max
+  const response = await conn.query($sql.order.queryOrderInfoByUserId, sqlData)
+  const orderNum = response.rowCount
+  if (orderNum !== 0) { // 用户有最近的订单记录
+    return response.rows[orderNum - 1].order_id
   } else { // 用户无最近的订单记录
     return false
   }
@@ -63,7 +64,7 @@ router.post('/createOrder', async function (req, res) {
         res.send(false)
       } else {
         const status = result.rows[0].order_status
-        if (status == $common.status.waiting || status == $common.status.receipted) { // 避免提交重复订单
+        if (status === $common.status.waiting || status === $common.status.receipted) { // 避免提交重复订单
           res.send(false)
         } else {
           conn.query($sql.order.createOrder, sqlData, (error) => {
@@ -153,8 +154,6 @@ router.post('/getLatestOrderInfo', async function (req, res) {
 
 // 查看历史订单接口
 
-// 修改订单信息接口
-
 // 删除订单接口
 router.post('/cancelOrderByUser', async function (req, res) {
   const user_id = req.body.user_id
@@ -166,7 +165,7 @@ router.post('/cancelOrderByUser', async function (req, res) {
       console.log(error)
       res.send(false)
     } else {
-      if (result.rows[0].order_user_id == user_id) { // 当订单号属于该用户时
+      if (result.rows[0].order_user_id === user_id) { // 当订单号属于该用户时
         conn.query($sql.order.setOrderStatus, [$common.status.canceledByUser, order_id], (error) => {
           if (error) {
             console.log(error)
