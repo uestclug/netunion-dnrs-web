@@ -17,7 +17,7 @@ async function getLatestOrderId (user_id) {
 
   const response = await conn.query($sql.order.queryOrderInfoByUserId, sqlData)
   const orderNum = response.rowCount
-  if (orderNum !== 0) { // 用户有最近的订单记录
+  if (orderNum != 0) { // 用户有最近的订单记录
     return response.rows[orderNum - 1].order_id
   } else { // 用户无最近的订单记录
     return false
@@ -64,7 +64,7 @@ router.post('/createOrder', async function (req, res) {
         res.send(false)
       } else {
         const status = result.rows[0].order_status
-        if (status === $common.status.waiting || status === $common.status.receipted) { // 避免提交重复订单
+        if (status == $common.status.waiting || status == $common.status.receipted) { // 避免提交重复订单
           res.send(false)
         } else {
           conn.query($sql.order.createOrder, sqlData, (error) => {
@@ -125,7 +125,7 @@ router.post('/getLatestOrderInfo', async function (req, res) {
         res.send(false)
       } else {
         const orderInfo = result.rows[0]
-        if (orderInfo.order_solver_id !== null) { // 当存在 Solver 时
+        if (orderInfo.order_solver_id != null) { // 当存在 Solver 时
           conn.query($sql.order.querySolverInfo, [orderInfo.order_solver_id], (error, result) => {
             if (error) { // 检索失败时仅返回订单信息
               console.log(error)
@@ -165,7 +165,7 @@ router.post('/cancelOrderByUser', async function (req, res) {
       console.log(error)
       res.send(false)
     } else {
-      if (result.rows[0].order_user_id === user_id) { // 当订单号属于该用户时
+      if (result.rows[0].order_user_id == user_id) { // 当订单号属于该用户时
         conn.query($sql.order.setOrderStatus, [$common.status.canceledByUser, order_id], (error) => {
           if (error) {
             console.log(error)

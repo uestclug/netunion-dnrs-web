@@ -5,12 +5,7 @@
 </template>
 
 <script>
-import Bus from '@/Bus'
-
 export default {
-  name: 'About',
-  created () {
-    Bus.$emit('tokenCheck')
-  }
+  name: 'About'
 }
 </script>
