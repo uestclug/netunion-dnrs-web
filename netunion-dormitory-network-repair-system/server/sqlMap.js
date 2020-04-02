@@ -1,6 +1,5 @@
 /* 数据库操作函数 */
 const orderDatabase = ' public.order '
-const solverDatabase = ' public.solver '
 const userDatabase = ' public.user '
 const tokenDatabase = ' public.token '
 
@@ -23,18 +22,6 @@ const sqlMap = {
     // 修改用户密码
     modifyPassword: 'UPDATE' + userDatabase + 'SET password=$1 WHERE id = $2'
   },
-  solver: {
-    // 通过 std_id 获取 password 和 id
-    getLoginResponse: 'SELECT password, id FROM' + solverDatabase + 'WHERE std_id = $1',
-    // 通过 id 获取 password
-    getLoginPassword: 'SELECT password FROM' + solverDatabase + 'WHERE id = $1',
-    // 通过 id 获取处理者资料
-    querySolverInfo: 'SELECT * FROM' + solverDatabase + 'WHERE id = $1',
-    // 修改处理者资料
-    modifyAccountInfo: 'UPDATE' + solverDatabase + 'SET name=$1, gender=$2, campus=$3, dormitory=$4, telephone=$5, intro=$6, nickname=$7 WHERE id = $8',
-    // 修改处理者密码
-    modifyPassword: 'UPDATE' + solverDatabase + 'SET password=$1 WHERE id = $2'
-  },
   order: {
     // 添加新的订单
     createOrder: 'INSERT INTO' + orderDatabase + '(order_user_name, order_user_gender, order_user_telephone, order_user_campus, order_user_dormitory, order_user_description, order_date, order_status, order_id, order_solver_id, order_user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)',
@@ -53,7 +40,7 @@ const sqlMap = {
     // 通过 order_id 接取订单
     setOrderSolver: 'UPDATE' + orderDatabase + 'SET order_solver_id=$1 WHERE order_id=$2',
     // 通过 order_solver_id 查询 solver 信息
-    querySolverInfo: 'SELECT name, telephone, intro, nickname FROM' + solverDatabase + 'WHERE id = $1'
+    querySolverInfo: 'SELECT name, telephone, intro, nickname FROM' + userDatabase + 'WHERE id = $1'
   }
 }
 
