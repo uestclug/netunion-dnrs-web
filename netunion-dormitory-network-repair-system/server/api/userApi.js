@@ -24,10 +24,14 @@ router.post('/login', (req, res) => {
       console.log(error)
       res.send(false)
     } else if (result.rowCount === 1 && input_password === result.rows[0].password) {
-      // 更新 token 并返回用户 id
+      // 更新 token 并返回用户 id 和身份标识
       const id = result.rows[0].id
+      const group = result.rows[0].group
       updateToken(id, token)
-      res.send({ id: id })
+      res.send({
+        id: id,
+        group: group
+      })
     } else {
       res.send(false)
     }

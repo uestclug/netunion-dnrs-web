@@ -12,7 +12,7 @@ const sqlMap = {
   },
   user: {
     // 通过 std_id 获取 password 和 id
-    getLoginResponse: 'SELECT password, id FROM' + userDatabase + 'WHERE std_id = $1',
+    getLoginResponse: 'SELECT "group", id, password FROM' + userDatabase + 'WHERE std_id = $1',
     // 通过 id 获取 password
     getLoginPassword: 'SELECT password FROM' + userDatabase + 'WHERE id = $1',
     // 通过 id 获取用户资料

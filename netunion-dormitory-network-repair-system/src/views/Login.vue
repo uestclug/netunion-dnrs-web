@@ -71,6 +71,7 @@ import { required } from 'vuelidate/lib/validators'
 import Bus from '@/Bus'
 import md5 from 'js-md5'
 const Base64 = require('js-base64').Base64
+const $common = require('@/../server/common')
 
 export default {
   name: 'Login',
@@ -126,28 +127,38 @@ export default {
         }).then((Response) => {
           if (Response.data.id) { // 获得后端相应的用户编号，登录成功
             const id = Response.data.id
-            // 设置 token 和 id
-            localStorage.setItem('token', token)
-            localStorage.setItem('id', id)
-            this.axios.post('/api/user/queryUserInfo', { // 获取用户资料
-              id: id
-            }).then((Response) => {
-              // 将得到的用户资料保存到 localStorage 中
-              localStorage.setItem('name', Response.data.name)
-              localStorage.setItem('gender', Response.data.gender)
-              localStorage.setItem('telephone', Response.data.telephone)
-              localStorage.setItem('campus', Response.data.campus)
-              localStorage.setItem('dormitory', Response.data.dormitory)
-              localStorage.setItem('std_id', Response.data.std_id)
-              // 获取最近订单信息
-              Bus.$emit('getLatestOrderInfo')
-              // 显示提示登录成功的信息条
-              Bus.$emit('setSnackbar', this.$i18n.t('login.loginSucceed') + Response.data.name)
-              // 回到主页
-              this.$router.push({
-                name: 'home'
+            const group = Response.data.group
+            if (group === $common.group.user) { // 对于 user 用户组
+              // 设置 token 和 id
+              localStorage.setItem('token', token)
+              localStorage.setItem('id', id)
+              this.axios.post('/api/user/queryUserInfo', { // 获取用户资料
+                id: id
+              }).then((Response) => {
+                // 将得到的用户资料保存到 localStorage 中
+                localStorage.setItem('name', Response.data.name)
+                localStorage.setItem('gender', Response.data.gender)
+                localStorage.setItem('telephone', Response.data.telephone)
+                localStorage.setItem('campus', Response.data.campus)
+                localStorage.setItem('dormitory', Response.data.dormitory)
+                localStorage.setItem('std_id', Response.data.std_id)
+                // 获取最近订单信息
+                Bus.$emit('getLatestOrderInfo')
+                // 显示提示登录成功的信息条
+                Bus.$emit('setSnackbar', this.$i18n.t('login.loginSucceed') + Response.data.name)
+                // 回到主页
+                this.$router.push({
+                  name: 'home'
+                })
               })
-            })
+            } else if (group === $common.group.solver) { // 对于 solver 用户组
+              //
+            } else if (group === $common.group.admin) { // 对于 admin 用户组
+              //
+            } else {
+              this.pwd = ''
+              Bus.$emit('setSnackbar', this.$i18n.t('login.loginFailed'))
+            }
           } else { // 登录失败
             this.pwd = ''
             // 显示提示登录失败的消息条

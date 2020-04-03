@@ -9,6 +9,11 @@ const common = {
   },
   password: {
     presentErr: 'present password error'
+  },
+  group: {
+    user: 'user',
+    solver: 'solver',
+    admin: 'admin'
   }
 }
 
