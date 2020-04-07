@@ -128,10 +128,10 @@ export default {
           if (Response.data.id) { // 获得后端相应的用户编号，登录成功
             const id = Response.data.id
             const group = Response.data.group
-            if (group === $common.group.user) { // 对于 user 用户组
-              // 设置 token 和 id
-              localStorage.setItem('token', token)
-              localStorage.setItem('id', id)
+            localStorage.setItem('token', token)
+            localStorage.setItem('id', id)
+            /* 对于 user 用户组 */
+            if (group === $common.group.user) {
               this.axios.post('/api/user/queryUserInfo', { // 获取用户资料
                 id: id
               }).then((Response) => {
@@ -142,8 +142,6 @@ export default {
                 localStorage.setItem('campus', Response.data.campus)
                 localStorage.setItem('dormitory', Response.data.dormitory)
                 localStorage.setItem('std_id', Response.data.std_id)
-                // 获取最近订单信息
-                Bus.$emit('getLatestOrderInfo')
                 // 显示提示登录成功的信息条
                 Bus.$emit('setSnackbar', this.$i18n.t('login.loginSucceed') + Response.data.name)
                 // 回到主页
@@ -151,9 +149,11 @@ export default {
                   name: 'home'
                 })
               })
-            } else if (group === $common.group.solver) { // 对于 solver 用户组
+            /* 对于 solver 用户组 */
+            } else if (group === $common.group.solver) {
               //
-            } else if (group === $common.group.admin) { // 对于 admin 用户组
+            /* 对于 admin 用户组 */
+            } else if (group === $common.group.admin) {
               //
             } else {
               this.pwd = ''

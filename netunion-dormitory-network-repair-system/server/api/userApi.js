@@ -55,10 +55,7 @@ function updateToken (id, token) { // 保存登录令牌到数据库
 
 // 用户 token 验证接口
 router.post('/checkToken', async function (req, res) {
-  const id = req.body.id
-  const token = req.headers.authorization
-
-  const flag = await checkToken(id, token)
+  const flag = await utils.checkToken(req)
   if (flag) {
     res.send(true)
   } else {
@@ -66,7 +63,10 @@ router.post('/checkToken', async function (req, res) {
   }
 })
 
-async function checkToken (id, token) { // 用户 token 验证
+/*
+async function checkToken(req) { // 用户 token 验证
+  const id = req.body.id
+  const token = req.headers.authorization
   const sqlData = [id]
 
   const response = await conn.query($sql.token.getTokenResponse, sqlData)
@@ -83,15 +83,14 @@ async function checkToken (id, token) { // 用户 token 验证
     return false
   }
 }
+*/
 
 // 获取用户资料接口
 router.post('/queryUserInfo', async function (req, res) {
-  const id = req.body.id
-  const token = req.headers.authorization
-  const sqlData = [id]
-
-  const flag = await checkToken(id, token)
+  const flag = await utils.checkToken(req)
   if (flag) { // 用户 token 效验成功
+    const id = req.body.id
+    const sqlData = [id]
     conn.query($sql.user.queryUserInfo, sqlData, (error, result) => {
       if (error) {
         console.log(error)
@@ -120,38 +119,18 @@ router.post('/queryUserInfo', async function (req, res) {
 })
 
 // 修改用户资料接口
-router.post('/modifyAccountInfo', (req, res) => {
-  const name = req.body.name
-  const gender = req.body.gender
-  const campus = req.body.campus
-  const dormitory = req.body.dormitory
-  const telephone = req.body.telephone
-  const id = req.body.id
-  const sqlData = [name, gender, campus, dormitory, telephone, id]
+router.post('/modifyAccountInfo', async function (req, res) {
+  const flag = await utils.checkToken(req)
+  if (flag) {
+    const name = req.body.name
+    const gender = req.body.gender
+    const campus = req.body.campus
+    const dormitory = req.body.dormitory
+    const telephone = req.body.telephone
+    const id = req.body.id
+    const sqlData = [name, gender, campus, dormitory, telephone, id]
 
-  conn.query($sql.user.modifyAccountInfo, sqlData, (error) => {
-    if (error) {
-      console.log(error)
-      res.send(false)
-    } else {
-      res.send(true)
-    }
-  })
-})
-
-// 修改用户密码接口
-router.post('/modifyPassword', async function (req, res) {
-  const presentPassword = req.body.presentPassword
-  const modifiedPassword = req.body.modifiedPassword
-  const id = req.body.id
-  const flagData = [id]
-  const sqlData = [modifiedPassword, id]
-
-  const loginPasswordResult = await conn.query($sql.user.getLoginPassword, flagData)
-  const password = loginPasswordResult.rows[0].password
-
-  if (presentPassword === password) {
-    conn.query($sql.user.modifyPassword, sqlData, (error) => {
+    conn.query($sql.user.modifyAccountInfo, sqlData, (error) => {
       if (error) {
         console.log(error)
         res.send(false)
@@ -159,52 +138,87 @@ router.post('/modifyPassword', async function (req, res) {
         res.send(true)
       }
     })
-  } else { // 输入的密码和数据库密码不同时
-    res.send($common.password.presentErr)
-  }
+  } else {
+    res.send(false)
+  }  
+})
+
+// 修改用户密码接口
+router.post('/modifyPassword', async function (req, res) {
+  const flag = await utils.checkToken(req)
+  if (flag) {
+    const presentPassword = req.body.presentPassword
+    const modifiedPassword = req.body.modifiedPassword
+    const id = req.body.id
+    const flagData = [id]
+    const sqlData = [modifiedPassword, id]
+
+    const loginPasswordResult = await conn.query($sql.user.getLoginPassword, flagData)
+    const password = loginPasswordResult.rows[0].password
+
+    if (presentPassword === password) {
+      conn.query($sql.user.modifyPassword, sqlData, (error) => {
+        if (error) {
+          console.log(error)
+          res.send(false)
+        } else {
+          res.send(true)
+        }
+      })
+    } else { // 输入的密码和数据库密码不同时
+      res.send($common.password.presentErr)
+    }
+  } else {
+    res.send(false)
+  }  
 })
 
 // 用户统计资料接口
 router.post('/getUserStatisticsInfo', async function (req, res) {
-  const id = req.body.id
-  const sqlMap = [id, $common.status.finished]
+  const flag = await utils.checkToken(req)
+  if (flag) {
+    const id = req.body.id
+    const sqlMap = [id, $common.status.finished]
 
-  conn.query($sql.order.getSelectedOrder, sqlMap, async function (error, result) {
-    if (error) {
-      console.log(error)
-      res.send(false)
-    } else {
-      const finished_order_time = result.rowCount
-      let first_finished_order_date = '-'
-      let first_finished_order_solver_name = '-'
-      let latest_finished_order_date = '-'
-      let latest_finished_order_solver_name = '-'
-      // let unlocked_solver_num = 0
-      // let best_solver = '-'
-      // let best_solver_time = 0
-      if (finished_order_time !== 0) { // 存在历史完成订单记录时
-        const first_finished_order_solver_id = result[0].order_solver_id
-        const first_finished_order_solver = await conn.query($sql.solver.querySolverInfo, [first_finished_order_solver_id])
-        first_finished_order_solver_name = first_finished_order_solver.rows[0].name
-        first_finished_order_date = result[0].order_date
-        const latest_finished_order_solver_id = result[finished_order_time - 1].order_solver_id
-        const latest_finished_order_solver = await conn.query($sql.solver.querySolverInfo, [latest_finished_order_solver_id])
-        latest_finished_order_solver_name = latest_finished_order_solver.rows[0].name
-        latest_finished_order_date = result[finished_order_time - 1].order_date
+    conn.query($sql.order.getSelectedOrder, sqlMap, async function (error, result) {
+      if (error) {
+        console.log(error)
+        res.send(false)
+      } else {
+        const finished_order_time = result.rowCount
+        let first_finished_order_date = '-'
+        let first_finished_order_solver_name = '-'
+        let latest_finished_order_date = '-'
+        let latest_finished_order_solver_name = '-'
+        // let unlocked_solver_num = 0
+        // let best_solver = '-'
+        // let best_solver_time = 0
+        if (finished_order_time !== 0) { // 存在历史完成订单记录时
+          const first_finished_order_solver_id = result[0].order_solver_id
+          const first_finished_order_solver = await conn.query($sql.solver.querySolverInfo, [first_finished_order_solver_id])
+          first_finished_order_solver_name = first_finished_order_solver.rows[0].name
+          first_finished_order_date = result[0].order_date
+          const latest_finished_order_solver_id = result[finished_order_time - 1].order_solver_id
+          const latest_finished_order_solver = await conn.query($sql.solver.querySolverInfo, [latest_finished_order_solver_id])
+          latest_finished_order_solver_name = latest_finished_order_solver.rows[0].name
+          latest_finished_order_date = result[finished_order_time - 1].order_date
+        }
+        const response = {
+          finished_order_time: finished_order_time,
+          first_finished_order_date: first_finished_order_date,
+          first_finished_order_solver_name: first_finished_order_solver_name,
+          latest_finished_order_date: latest_finished_order_date,
+          latest_finished_order_solver_name: latest_finished_order_solver_name
+          // unlocked_solver_num: unlocked_solver_num,
+          // best_solver: best_solver,
+          // best_solver_time: best_solver_time
+        }
+        res.send(response)
       }
-      const response = {
-        finished_order_time: finished_order_time,
-        first_finished_order_date: first_finished_order_date,
-        first_finished_order_solver_name: first_finished_order_solver_name,
-        latest_finished_order_date: latest_finished_order_date,
-        latest_finished_order_solver_name: latest_finished_order_solver_name
-        // unlocked_solver_num: unlocked_solver_num,
-        // best_solver: best_solver,
-        // best_solver_time: best_solver_time
-      }
-      res.send(response)
-    }
-  })
+    })
+  } else {
+    res.send(false)
+  }  
 })
 
 module.exports = router

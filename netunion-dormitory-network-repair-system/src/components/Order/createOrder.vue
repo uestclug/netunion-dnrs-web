@@ -242,7 +242,7 @@ export default {
           user_campus: this.campus,
           user_dormitory: this.dormitory,
           user_description: this.description,
-          user_id: localStorage.getItem('id')
+          id: localStorage.getItem('id')
         }).then((Response) => {
           if (Response.data === false) { // 订单提交失败，刷新页面
             Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.createFailed'))

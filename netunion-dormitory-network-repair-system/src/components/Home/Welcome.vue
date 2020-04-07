@@ -38,7 +38,7 @@ export default {
     openOrderSheet: async function () {
       Bus.$emit('tokenCheck')
       const orderStatus = await this.axios.post('/api/order/getLatestOrderStatus', {
-        user_id: localStorage.getItem('id')
+        id: localStorage.getItem('id')
       })
       if (orderStatus.data === false) {
         // 订单状态验证错误，刷新页面

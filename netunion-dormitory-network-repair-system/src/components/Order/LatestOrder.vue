@@ -222,7 +222,7 @@ export default {
     },
     cancelOrder: async function () {
       const Response = await this.axios.post('/api/order/cancelOrderByUser', {
-        user_id: localStorage.getItem('id'),
+        id: localStorage.getItem('id'),
         order_id: localStorage.getItem('order_id')
       })
       if (Response.data === true) {
@@ -237,7 +237,7 @@ export default {
   },
   created: async function () { // 获取最近的订单信息
     const Response = await this.axios.post('/api/order/getLatestOrderInfo', {
-      user_id: localStorage.getItem('id')
+      id: localStorage.getItem('id')
     })
     const orderInfo = Response.data
     // console.log(orderInfo)
