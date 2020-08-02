@@ -16,7 +16,7 @@ npm run serve
 
 ### 导入 & 设置数据库
 
-`pgsql` 数据库版本为 `11.7` .
+`pgsql` 数据库版本为 `11.8` .
 
 在 `pgadmin 4` 中导入 `NetUnion-InternetRepairSys\netunion-dormitory-network-repair-system\server` 目录下的文件 `netunion_dnrs.sql` ：
 

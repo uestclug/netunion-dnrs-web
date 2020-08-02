@@ -12,11 +12,11 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
 // 设置跨域
-app.all("*", function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*")
-  res.header("Access-Control-Allow-Headers", "X-Requested-With,Content-Type")
-  res.header("Access-Control-Allow-Methods", "POST,GET")
-  res.header("Access-Control-Expose-Headers", "Authorization")
+app.all('*', function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type')
+  res.header('Access-Control-Allow-Methods', 'POST,GET')
+  res.header('Access-Control-Expose-Headers', 'Authorization')
   next()
 })
 

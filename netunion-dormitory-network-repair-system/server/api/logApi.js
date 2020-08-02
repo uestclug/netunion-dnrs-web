@@ -7,7 +7,7 @@ const utils = require('../utils')
 const $sql = require('../sqlMap')
 const $common = require('../common')
 
-const conn = pgsql.Pool(db.pgsql)
+const conn = new pgsql.Pool(db.pgsql)
 conn.connect()
 
 // 添加操作日志接口

@@ -4,7 +4,7 @@ const pgsql = require('pg')
 const $sql = require('./sqlMap')
 const $common = require('./common')
 
-const conn = pgsql.Pool(db.pgsql)
+const conn = new pgsql.Pool(db.pgsql)
 conn.connect()
 
 const jsonWrite = function (res, ret) {
