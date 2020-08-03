@@ -155,7 +155,9 @@ export default {
             /* 对于 admin 用户组 */
             } else if (group === $common.group.admin) {
               //
+            /* 获取用户组失败 */
             } else {
+              console.log('获取用户组失败')
               this.pwd = ''
               Bus.$emit('setSnackbar', this.$i18n.t('login.loginFailed'))
             }

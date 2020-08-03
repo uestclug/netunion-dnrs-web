@@ -26,7 +26,7 @@ router.post('/login', (req, res) => {
     } else if (result.rowCount === 1 && input_password === result.rows[0].password) {
       // 更新 token 并返回用户 id 和身份标识
       const id = result.rows[0].id
-      const group = result.rows[0].group
+      const group = result.rows[0].user_group
       updateToken(id, token)
       res.send({
         id: id,
@@ -62,28 +62,6 @@ router.post('/checkToken', async function (req, res) {
     res.send(false)
   }
 })
-
-/*
-async function checkToken(req) { // 用户 token 验证
-  const id = req.body.id
-  const token = req.headers.authorization
-  const sqlData = [id]
-
-  const response = await conn.query($sql.token.getTokenResponse, sqlData)
-  if (response.rowCount === 1) { // 得到数据库返回的结果
-    const savedToken = response.rows[0].token
-    const savedExpirationDate = response.rows[0].expiration_date
-    const nowDate = new Date().getTime()
-    if (token === savedToken && nowDate < savedExpirationDate) { // 数据库保存的 token 与 localStorage 存储相同且 token 未过期
-      return true
-    } else {
-      return false
-    }
-  } else { // 数据库无该 id 结果
-    return false
-  }
-}
-*/
 
 // 获取用户资料接口
 router.post('/queryUserInfo', async function (req, res) {
@@ -140,7 +118,7 @@ router.post('/modifyAccountInfo', async function (req, res) {
     })
   } else {
     res.send(false)
-  }  
+  }
 })
 
 // 修改用户密码接口
@@ -170,7 +148,7 @@ router.post('/modifyPassword', async function (req, res) {
     }
   } else {
     res.send(false)
-  }  
+  }
 })
 
 // 用户统计资料接口
@@ -218,7 +196,7 @@ router.post('/getUserStatisticsInfo', async function (req, res) {
     })
   } else {
     res.send(false)
-  }  
+  }
 })
 
 module.exports = router

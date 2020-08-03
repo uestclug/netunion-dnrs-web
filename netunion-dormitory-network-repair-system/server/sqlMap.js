@@ -1,6 +1,8 @@
 /* 数据库操作函数 */
 const orderDatabase = ' public.order '
-const userDatabase = ' public.user '
+const userDatabase = ' public.account_user '
+const solverDatabase = ' public.account_solver '
+const loginDetailsDatabase = ' public.account_login_details '
 const tokenDatabase = ' public.token '
 
 const sqlMap = {
@@ -12,9 +14,9 @@ const sqlMap = {
   },
   user: {
     // 通过 std_id 获取 password 和 id
-    getLoginResponse: 'SELECT "group", id, password FROM' + userDatabase + 'WHERE std_id = $1',
+    getLoginResponse: 'SELECT * FROM' + loginDetailsDatabase + 'WHERE std_id = $1',
     // 通过 id 获取 password
-    getLoginPassword: 'SELECT password FROM' + userDatabase + 'WHERE id = $1',
+    getLoginPassword: 'SELECT password FROM' + loginDetailsDatabase + 'WHERE id = $1',
     // 通过 id 获取用户资料
     queryUserInfo: 'SELECT * FROM' + userDatabase + 'WHERE id = $1',
     // 修改用户资料

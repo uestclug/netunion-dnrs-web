@@ -26,7 +26,7 @@ const prefixZero = function (num, digit) {
 }
 
 // 验证用户 token 是否有效
-async function checkToken(req) { // 用户 token 验证
+async function checkToken (req) { // 用户 token 验证
   const id = req.body.id
   const token = req.headers.authorization
   const sqlData = [id]

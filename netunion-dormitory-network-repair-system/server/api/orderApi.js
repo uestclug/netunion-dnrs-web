@@ -92,7 +92,7 @@ router.post('/createOrder', async function (req, res) {
     }
   } else {
     res.send(false)
-  }  
+  }
 })
 
 // 接受订单接口
@@ -119,7 +119,7 @@ router.post('/getLatestOrderStatus', async function (req, res) {
     }
   } else {
     res.send(false)
-  }  
+  }
 })
 
 // 获取最近订单信息接口
@@ -164,7 +164,7 @@ router.post('/getLatestOrderInfo', async function (req, res) {
     }
   } else {
     res.send(false)
-  }  
+  }
 })
 
 // 查看历史订单接口
@@ -199,7 +199,7 @@ router.post('/cancelOrderByUser', async function (req, res) {
     })
   } else {
     res.send(false)
-  }  
+  }
 })
 
 module.exports = router
