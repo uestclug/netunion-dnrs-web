@@ -152,7 +152,7 @@
                   <v-col
                     cols="6"
                   >
-                    <p class="body-1 text--primary">{{ orderDate }}</p>
+                    <p class="body-1 text--primary">{{ createDate }}</p>
                   </v-col>
                 </v-row>
               </v-card-text>
@@ -213,7 +213,7 @@ export default {
     orderCampus: '-',
     orderTelephone: '-',
     orderDescription: '-',
-    orderDate: '-'
+    createDate: '-'
   }),
   methods: {
     toCancelOrderDialog () {
@@ -222,8 +222,8 @@ export default {
     },
     cancelOrder: async function () {
       const Response = await this.axios.post('/api/order/cancelOrderByUser', {
-        id: localStorage.getItem('id'),
-        order_id: localStorage.getItem('order_id')
+        user_id: localStorage.getItem('user_id'),
+        order_id: localStorage.getItem('latest_order_id')
       })
       if (Response.data === true) {
         this.orderStatus = this.$i18n.t('order.canceledByUserStatus')
@@ -237,7 +237,7 @@ export default {
   },
   created: async function () { // 获取最近的订单信息
     const Response = await this.axios.post('/api/order/getLatestOrderInfo', {
-      id: localStorage.getItem('id')
+      user_id: localStorage.getItem('user_id')
     })
     const orderInfo = Response.data
     // console.log(orderInfo)
@@ -247,7 +247,7 @@ export default {
       this.orderCampus = orderInfo.order_user_campus
       this.orderTelephone = orderInfo.order_user_telephone
       if (orderInfo.order_user_description !== '') this.orderDescription = orderInfo.order_user_description
-      this.orderDate = orderInfo.order_date
+      this.createDate = orderInfo.create_date
       const status = orderInfo.order_status
       if (status === $common.status.waiting) { // 用户可以取消订单
         this.orderStatus = this.$i18n.t('order.waitingStatus')
@@ -266,9 +266,13 @@ export default {
         }
         this.cancelDisabled = true
       }
-      localStorage.setItem('order_id', orderInfo.order_id)
-      if (orderInfo.order_solver_id !== null) { // 存在接单者时
-        this.orderSolverName = orderInfo.order_solver_name
+      localStorage.setItem('latest_order_id', orderInfo.order_id)
+      if (orderInfo.solver_id !== null) { // 存在接单者时
+        if (orderInfo.order_solver_nickname !== null) {
+          this.orderSolverName = orderInfo.order_solver_nickname
+        } else {
+          this.orderSolverName = orderInfo.order_solver_name
+        }
         this.orderSolverTelephone = orderInfo.order_solver_telephone
       }
     }

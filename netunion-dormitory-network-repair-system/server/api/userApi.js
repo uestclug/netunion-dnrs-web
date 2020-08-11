@@ -4,111 +4,93 @@ const db = require('../db')
 const express = require('express')
 const router = express.Router()
 const pgsql = require('pg')
-const utils = require('../utils')
+// const utils = require('../utils')
+const apiUtils = require('./apiUtils')
+
 const $sql = require('../sqlMap')
 const $common = require('../common')
 
 const conn = new pgsql.Pool(db.pgsql)
 conn.connect()
 
-// 用户注册接口
+// todo: 用户注册接口
+router.post('/register', (req, res) => {
+  const reqBody = req.body
+  console.log(reqBody)
+  res.send(false)
+})
 
 // 用户登录接口
 router.post('/login', (req, res) => {
-  const input_password = req.body.password
-  const token = req.body.token
-  const sqlData = [req.body.std_id]
+  const reqBody = req.body
+  const std_id = reqBody.std_id
+  const password = reqBody.password
+  const sqlData = [std_id]
 
-  conn.query($sql.user.getLoginResponse, sqlData, (error, result) => {
+  conn.query($sql.account.getLoginResponse, sqlData, (error, result) => {
     if (error) {
       console.log(error)
       res.send(false)
-    } else if (result.rowCount === 1 && input_password === result.rows[0].password) {
-      // 更新 token 并返回用户 id 和身份标识
-      const id = result.rows[0].id
-      const group = result.rows[0].user_group
-      updateToken(id, token)
+    } else if (result.rowCount === 1 && password === result.rows[0].password) {
+      const user_id = result.rows[0].user_id
+      const role = result.rows[0].role
+      const token = apiUtils.generateToken()
+      const expiration_time = 604800000 // 令牌过期时间为 7 天
+      const expiration_date = new Date().getTime() + expiration_time
+      apiUtils.setToken(user_id, token, expiration_date)
       res.send({
-        id: id,
-        group: group
+        user_id: user_id,
+        role: role,
+        token: token
       })
-    } else {
+    } else { // 未检索到信息或密码错误
       res.send(false)
     }
   })
 })
 
-function updateToken (id, token) { // 保存登录令牌到数据库
-  const expiration_time = 86400000 // 令牌过期时间为 1 天
-  const expiration_date = new Date().getTime() + expiration_time
-  const sqlData = [token, expiration_date, id]
-
-  conn.query($sql.token.updateToken, sqlData, function (error) {
+// 登录成功时获取用户资料接口
+router.post('/queryUserInfo', async function (req, res) {
+  const user_id = req.body.user_id
+  const sqlData = [user_id]
+  conn.query($sql.account.queryUserInfo, sqlData, (error, result) => {
     if (error) {
       console.log(error)
-      return false
-    } else {
-      return true
+      res.send(false)
+    } else if (result.rowCount === 1) { // 查询到用户结果时
+      const name = result.rows[0].name
+      const gender = result.rows[0].gender
+      const telephone = result.rows[0].telephone
+      const campus = result.rows[0].campus
+      const dormitory = result.rows[0].dormitory
+      const response = {
+        name: name,
+        gender: gender,
+        telephone: telephone,
+        campus: campus,
+        dormitory: dormitory
+      }
+      res.send(response)
+    } else { // 未查询到用户结果
+      res.send(false)
     }
   })
-}
-
-// 用户 token 验证接口
-router.post('/checkToken', async function (req, res) {
-  const flag = await utils.checkToken(req)
-  if (flag) {
-    res.send(true)
-  } else {
-    res.send(false)
-  }
 })
 
-// 获取用户资料接口
-router.post('/queryUserInfo', async function (req, res) {
-  const flag = await utils.checkToken(req)
-  if (flag) { // 用户 token 效验成功
-    const id = req.body.id
-    const sqlData = [id]
-    conn.query($sql.user.queryUserInfo, sqlData, (error, result) => {
-      if (error) {
-        console.log(error)
-        res.send(false)
-      } else if (result.rowCount === 1) { // 查询到用户结果时
-        const userName = result.rows[0].name
-        const userGender = result.rows[0].gender
-        const userTelephone = result.rows[0].telephone
-        const userCampus = result.rows[0].campus
-        const userDormitory = result.rows[0].dormitory
-        const userStudentId = result.rows[0].std_id
-        const response = {
-          name: userName,
-          gender: userGender,
-          telephone: userTelephone,
-          campus: userCampus,
-          dormitory: userDormitory,
-          std_id: userStudentId
-        }
-        res.send(response)
-      } else {
-        res.send(false)
-      }
-    })
-  }
-})
-
-// 修改用户资料接口
-router.post('/modifyAccountInfo', async function (req, res) {
-  const flag = await utils.checkToken(req)
+// 修改 user 用户组用户资料接口
+router.post('/modifyUserAccountInfo', async function (req, res) {
+  const flag = await apiUtils.checkToken(req)
   if (flag) {
-    const name = req.body.name
-    const gender = req.body.gender
-    const campus = req.body.campus
-    const dormitory = req.body.dormitory
-    const telephone = req.body.telephone
-    const id = req.body.id
-    const sqlData = [name, gender, campus, dormitory, telephone, id]
+    const reqBody = req.body
+    const name = reqBody.name
+    const gender = reqBody.gender
+    const campus = reqBody.campus
+    const dormitory = reqBody.dormitory
+    const telephone = reqBody.telephone
+    const user_id = reqBody.user_id
+    const sqlData = [name, gender, campus, dormitory, telephone, user_id]
 
-    conn.query($sql.user.modifyAccountInfo, sqlData, (error) => {
+    conn.query($sql.account.user.modifyAccountInfo, sqlData, (error, result) => {
       if (error) {
         console.log(error)
         res.send(false)
@@ -123,19 +105,19 @@ router.post('/modifyAccountInfo', async function (req, res) {
 
 // 修改用户密码接口
 router.post('/modifyPassword', async function (req, res) {
-  const flag = await utils.checkToken(req)
+  const flag = await apiUtils.checkToken(req)
   if (flag) {
     const presentPassword = req.body.presentPassword
     const modifiedPassword = req.body.modifiedPassword
-    const id = req.body.id
-    const flagData = [id]
-    const sqlData = [modifiedPassword, id]
+    const user_id = req.body.user_id
+    const flagData = [user_id]
+    const sqlData = [modifiedPassword, user_id]
 
-    const loginPasswordResult = await conn.query($sql.user.getLoginPassword, flagData)
+    const loginPasswordResult = await conn.query($sql.account.getLoginPassword, flagData)
     const password = loginPasswordResult.rows[0].password
 
     if (presentPassword === password) {
-      conn.query($sql.user.modifyPassword, sqlData, (error) => {
+      conn.query($sql.account.modifyPassword, sqlData, (error) => {
         if (error) {
           console.log(error)
           res.send(false)
@@ -153,10 +135,11 @@ router.post('/modifyPassword', async function (req, res) {
 
 // 用户统计资料接口
 router.post('/getUserStatisticsInfo', async function (req, res) {
-  const flag = await utils.checkToken(req)
+  const flag = await apiUtils.checkToken(req)
   if (flag) {
-    const id = req.body.id
-    const sqlMap = [id, $common.status.finished]
+    const reqBody = req.body
+    const user_id = reqBody.user_id
+    const sqlMap = [user_id, $common.status.finished]
 
     conn.query($sql.order.getSelectedOrder, sqlMap, async function (error, result) {
       if (error) {

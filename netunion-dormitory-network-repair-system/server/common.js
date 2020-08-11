@@ -10,7 +10,7 @@ const common = {
   password: {
     presentErr: 'present password error'
   },
-  group: {
+  role: {
     user: 'user',
     solver: 'solver',
     admin: 'admin'

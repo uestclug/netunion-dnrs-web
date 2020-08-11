@@ -1,7 +1,7 @@
 /* 数据库 model */
 module.exports = {
   pgsql: {
-    host: 'localhost',
+    host: '47.98.154.166',
     port: 5432,
     user: 'postgres',
     password: 'root',

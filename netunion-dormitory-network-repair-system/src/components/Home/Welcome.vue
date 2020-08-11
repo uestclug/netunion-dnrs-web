@@ -38,10 +38,10 @@ export default {
     openOrderSheet: async function () {
       Bus.$emit('tokenCheck')
       const orderStatus = await this.axios.post('/api/order/getLatestOrderStatus', {
-        id: localStorage.getItem('id')
+        user_id: localStorage.getItem('user_id')
       })
       if (orderStatus.data === false) {
-        // 订单状态验证错误，刷新页面
+        // 订单状态验证错误
         Bus.$on('modifyLoginStatus', 'unknownErr')
       } else if (orderStatus.data === 'waiting' || orderStatus.data === 'receipted') {
         // 存在进行中的订单时不可新建订单

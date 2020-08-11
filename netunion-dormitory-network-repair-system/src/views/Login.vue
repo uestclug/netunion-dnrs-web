@@ -110,38 +110,39 @@ export default {
     }
   },
   methods: {
-    generateToken: function () { // 生成随机的 token 令牌
-      const unscrambleToken = new Date().getTime().toString() + Math.floor(Math.random() * 10000 + 1).toString()
-      const token = md5(Base64.encode(unscrambleToken))
-      return token
-    },
     submit () { // 登录验证
       this.$v.$touch()
       if (this.usernameErrors.length === 0 && this.pwdErrors.length === 0) { // 无报错内容时
-        const password = md5(Base64.encode(this.pwd))
-        const token = this.generateToken()
+        const password = md5(Base64.encode(this.pwd)) // 加密密码
+        const stdId = this.username
+        localStorage.setItem('std_id', stdId)
         this.axios.post('/api/user/login', {
-          std_id: this.username,
-          password: password,
-          token: token
+          std_id: stdId,
+          password: password
         }).then((Response) => {
-          if (Response.data.id) { // 获得后端相应的用户编号，登录成功
-            const id = Response.data.id
-            const group = Response.data.group
+          // console.log(Response.data)
+          if (Response.data) { // 登录成功
+            const resData = Response.data
+            const userId = resData.user_id
+            const role = resData.role
+            const token = resData.token
+            // this.$store.commit('setUserrole', role) // 存储用户组至 store
+            localStorage.setItem('user_id', userId)
+            localStorage.setItem('role', role)
             localStorage.setItem('token', token)
-            localStorage.setItem('id', id)
             /* 对于 user 用户组 */
-            if (group === $common.group.user) {
+            if (role == $common.role.user) {
               this.axios.post('/api/user/queryUserInfo', { // 获取用户资料
-                id: id
+                user_id: userId
               }).then((Response) => {
+                // console.log(Response.data)
+                const resData = Response.data
                 // 将得到的用户资料保存到 localStorage 中
-                localStorage.setItem('name', Response.data.name)
-                localStorage.setItem('gender', Response.data.gender)
-                localStorage.setItem('telephone', Response.data.telephone)
-                localStorage.setItem('campus', Response.data.campus)
-                localStorage.setItem('dormitory', Response.data.dormitory)
-                localStorage.setItem('std_id', Response.data.std_id)
+                localStorage.setItem('name', resData.name)
+                localStorage.setItem('gender', resData.gender)
+                localStorage.setItem('telephone', resData.telephone)
+                localStorage.setItem('campus', resData.campus)
+                localStorage.setItem('dormitory', resData.dormitory)
                 // 显示提示登录成功的信息条
                 Bus.$emit('setSnackbar', this.$i18n.t('login.loginSucceed') + Response.data.name)
                 // 回到主页
@@ -150,10 +151,10 @@ export default {
                 })
               })
             /* 对于 solver 用户组 */
-            } else if (group === $common.group.solver) {
+            } else if (role == $common.role.solver) {
               //
             /* 对于 admin 用户组 */
-            } else if (group === $common.group.admin) {
+            } else if (role == $common.role.admin) {
               //
             /* 获取用户组失败 */
             } else {

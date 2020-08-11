@@ -1,5 +1,6 @@
 const logApi = require('./api/logApi')
 const orderApi = require('./api/orderApi')
+const tokenApi = require('./api/tokenApi')
 const userApi = require('./api/userApi')
 const bodyParser = require('body-parser')
 const express = require('express')
@@ -23,6 +24,7 @@ app.all('*', function (req, res, next) {
 // 添加 api 路由
 app.use('/api/log', logApi)
 app.use('/api/order', orderApi)
+app.use('/api/token', tokenApi)
 app.use('/api/user', userApi)
 
 // 监听端口

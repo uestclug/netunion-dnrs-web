@@ -4,6 +4,7 @@
 
 <script>
 import Bus from '@/Bus'
+const $common = require('@/../server/common')
 
 export default {
   name: 'BusMethods',
@@ -29,8 +30,8 @@ export default {
     })
 
     Bus.$on('tokenCheck', async function () { // 检查用户 token 是否有效
-      const response = await this.axios.post('/api/user/checkToken', {
-        id: localStorage.getItem('id')
+      const response = await this.axios.post('/api/token/checkToken', {
+        user_id: localStorage.getItem('user_id')
       })
       if (response.data !== true) {
         Bus.$emit('modifyLoginStatus', 'tokenErr')
@@ -38,10 +39,19 @@ export default {
     })
 
     Bus.$on('infoCheck', function () { // 检查用户信息是否完整
-      if (!localStorage.getItem('name') || !localStorage.getItem('gender') ||
-      !localStorage.getItem('telephone') || !localStorage.getItem('campus') ||
-      !localStorage.getItem('dormitory') || !localStorage.getItem('std_id') ||
-      !localStorage.getItem('id')) {
+      const role = localStorage.getItem('role')
+      if (role == $common.role.user) {
+        if (!localStorage.getItem('name') || !localStorage.getItem('gender') ||
+        !localStorage.getItem('telephone') || !localStorage.getItem('campus') ||
+        !localStorage.getItem('dormitory') || !localStorage.getItem('std_id') ||
+        !localStorage.getItem('user_id')) {
+          Bus.$emit('modifyLoginStatus', 'infoErr')
+        }
+      } else if (role == $common.role.solver) {
+        //
+      } else if (role == $common.role.admin) {
+        //
+      } else {
         Bus.$emit('modifyLoginStatus', 'infoErr')
       }
     })

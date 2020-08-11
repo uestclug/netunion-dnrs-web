@@ -301,13 +301,13 @@ export default {
         Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyAccountInfoNote'))
         this.disabled = false
       } else { // 第二次点击，保存修改内容到数据库中
-        const modifyResponse = await this.axios.post('/api/user/modifyAccountInfo', {
+        const modifyResponse = await this.axios.post('/api/user/modifyUserAccountInfo', {
           name: this.name,
           gender: this.gender,
           campus: this.campus,
           dormitory: this.dormitory,
           telephone: this.telephone,
-          id: localStorage.getItem('id')
+          user_id: localStorage.getItem('user_id')
         })
         if (modifyResponse.data === true) { // 修改成功，更新 localStorage
           localStorage.setItem('name', this.name)
@@ -339,7 +339,7 @@ export default {
         }
 
         this.axios.post('/api/user/modifyPassword', { // 调用修改密码接口
-          id: localStorage.getItem('id'),
+          user_id: localStorage.getItem('user_id'),
           presentPassword: md5(Base64.encode(this.presentPassword)),
           modifiedPassword: md5(Base64.encode(this.modifiedPassword))
         }).then((Response) => {

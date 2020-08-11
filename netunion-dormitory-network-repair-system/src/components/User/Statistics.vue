@@ -68,7 +68,7 @@ export default {
   }),
   created: async function () {
     const Response = await this.axios.post('/api/user/getUserStatisticsInfo', {
-      id: localStorage.getItem('id')
+      user_id: localStorage.getItem('user_id')
     })
     const statisticsInfo = Response.data
     if (statisticsInfo !== false) {
