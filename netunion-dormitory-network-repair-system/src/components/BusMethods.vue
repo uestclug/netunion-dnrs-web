@@ -30,9 +30,7 @@ export default {
     })
 
     Bus.$on('tokenCheck', async function () { // 检查用户 token 是否有效
-      const response = await this.axios.post('/api/token/checkToken', {
-        user_id: localStorage.getItem('user_id')
-      })
+      const response = await this.axios.post('/api/token/checkToken')
       if (response.data !== true) {
         Bus.$emit('modifyLoginStatus', 'tokenErr')
       }

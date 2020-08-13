@@ -35,20 +35,8 @@ import Bus from '@/Bus'
 export default {
   name: 'Welcome',
   methods: {
-    openOrderSheet: async function () {
-      Bus.$emit('tokenCheck')
-      const orderStatus = await this.axios.post('/api/order/getLatestOrderStatus', {
-        user_id: localStorage.getItem('user_id')
-      })
-      if (orderStatus.data === false) {
-        // 订单状态验证错误
-        Bus.$on('modifyLoginStatus', 'unknownErr')
-      } else if (orderStatus.data === 'waiting' || orderStatus.data === 'receipted') {
-        // 存在进行中的订单时不可新建订单
-        Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.orderStatusErr'))
-      } else {
-        Bus.$emit('openOrderSheet')
-      }
+    openOrderSheet: function () {
+      Bus.$emit('openOrderSheet')
     }
   }
 }

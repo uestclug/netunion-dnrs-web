@@ -67,9 +67,7 @@ export default {
     lastOrderSolver: '-'
   }),
   created: async function () {
-    const Response = await this.axios.post('/api/user/getUserStatisticsInfo', {
-      user_id: localStorage.getItem('user_id')
-    })
+    const Response = await this.axios.post('/api/user/getUserStatisticsInfo')
     const statisticsInfo = Response.data
     if (statisticsInfo !== false) {
       this.orderTime = statisticsInfo.finished_order_time

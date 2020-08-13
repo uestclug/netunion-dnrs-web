@@ -114,9 +114,7 @@ router.post('/modifyPassword', async function (req, res) {
     const sqlData = [modifiedPassword, user_id]
 
     const loginPasswordResult = await conn.query($sql.account.getLoginPassword, flagData)
-    const password = loginPasswordResult.rows[0].password
-
-    if (presentPassword === password) {
+    if (presentPassword === loginPasswordResult.rows[0].password) {
       conn.query($sql.account.modifyPassword, sqlData, (error) => {
         if (error) {
           console.log(error)

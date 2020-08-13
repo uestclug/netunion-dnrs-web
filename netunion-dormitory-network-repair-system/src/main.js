@@ -41,8 +41,13 @@ router.beforeEach(function (to, from, next) {
 // 设置 request & response 拦截
 axios.interceptors.request.use(
   config => {
-    if (localStorage.getItem('token')) { // 当本地存储 token 时，设置请求头带有 token
-      config.headers.Authorization = localStorage.getItem('token')
+    // 设置请求头带有 token
+    config.headers.Authorization = localStorage.getItem('token')
+    // 设置请求 data 包含 user_id 和 role
+    config.data = {
+      ...config.data,
+      user_id: localStorage.getItem('user_id'),
+      role: localStorage.getItem('role')
     }
     return config
   },

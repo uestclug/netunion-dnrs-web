@@ -130,11 +130,10 @@ export default {
             localStorage.setItem('user_id', userId)
             localStorage.setItem('role', role)
             localStorage.setItem('token', token)
+            // 获取用户资料
             /* 对于 user 用户组 */
             if (role == $common.role.user) {
-              this.axios.post('/api/user/queryUserInfo', { // 获取用户资料
-                user_id: userId
-              }).then((Response) => {
+              this.axios.post('/api/user/queryUserInfo').then((Response) => {
                 // console.log(Response.data)
                 const resData = Response.data
                 // 将得到的用户资料保存到 localStorage 中

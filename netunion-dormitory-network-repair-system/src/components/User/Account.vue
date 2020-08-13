@@ -306,8 +306,7 @@ export default {
           gender: this.gender,
           campus: this.campus,
           dormitory: this.dormitory,
-          telephone: this.telephone,
-          user_id: localStorage.getItem('user_id')
+          telephone: this.telephone
         })
         if (modifyResponse.data === true) { // 修改成功，更新 localStorage
           localStorage.setItem('name', this.name)
@@ -339,7 +338,6 @@ export default {
         }
 
         this.axios.post('/api/user/modifyPassword', { // 调用修改密码接口
-          user_id: localStorage.getItem('user_id'),
           presentPassword: md5(Base64.encode(this.presentPassword)),
           modifiedPassword: md5(Base64.encode(this.modifiedPassword))
         }).then((Response) => {

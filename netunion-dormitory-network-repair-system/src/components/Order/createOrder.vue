@@ -241,8 +241,7 @@ export default {
           user_telephone: this.telephone,
           user_campus: this.campus,
           user_dormitory: this.dormitory,
-          user_description: this.description,
-          user_id: localStorage.getItem('user_id')
+          user_description: this.description
         }).then((Response) => {
           if (Response.data === false) { // 订单提交失败，刷新页面
             Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.createFailed'))
@@ -266,7 +265,15 @@ export default {
   },
   mounted () {
     Bus.$on('openOrderSheet', (msg) => {
-      this.sheet = true
+      this.axios.post('/api/order/getLatestOrderStatus').then((Response) => {
+        const res = Response.data
+        if (res) {
+          this.sheet = true
+        } else {
+          // 存在进行中的订单时不可新建订单
+          Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.orderStatusErr'))
+        }
+      })
     })
   }
 }

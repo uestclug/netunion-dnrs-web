@@ -8,7 +8,7 @@ const sqlMap = {
     // 设置用户 token 信息
     setToken: 'INSERT INTO' + tokenTable + '(token, expiration_date, user_id) VALUES ($1, $2, $3) ON CONFLICT (user_id) DO UPDATE SET token = $1, expiration_date= $2',
     // 通过 user_id 获取 token 信息
-    getToken: 'SELECT * FROM' + tokenTable + 'WHERE user_id = $1'
+    getTokenAndRole: 'SELECT t.token, t.expiration_date, a.role FROM' + tokenTable + 'AS t LEFT JOIN' + accountTable + 'AS a ON t.user_id = a.user_id WHERE t.user_id = $1'
   },
   account: {
     // 通过 std_id 获取 password 和 user_id
@@ -51,11 +51,11 @@ const sqlMap = {
     // 通过 order_id 查询所有订单信息
     queryOrderInfoByOrderId: 'SELECT * FROM' + orderTable + 'WHERE order_id = $1',
     // 通过 user_id 和 order_status 查询订单信息
-    getSelectedOrder: 'SELECT * FROM' + orderTable + 'WHERE(user_id = $1 and order_status = $2)',
+    getSelectedOrder: 'SELECT * FROM' + orderTable + 'WHERE (user_id = $1 AND order_status = $2)',
     // 通过 order_id 设置订单状态
     setOrderStatus: 'UPDATE' + orderTable + 'SET order_status = $1 WHERE order_id = $2',
     // 通过 solver_id 查询 solver 信息
-    querySolverInfo: 'SELECT name, telephone, intro, nickname FROM' + accountTable + 'WHERE user_id = $1'
+    querySolverInfo: 'SELECT a.name, a.telephone, a.intro, a.nickname FROM' + accountTable + 'AS a,' + orderTable + 'AS o WHERE a.user_id = o.solver_id AND o.solver_id = $1'
   }
 }
 
