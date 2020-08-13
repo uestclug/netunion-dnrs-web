@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state = { // 全局访问的 state 对象
-  user_group: null
+  role: null
 }
 
 const getters = { // 计算 state 属性变化
@@ -13,8 +13,8 @@ const getters = { // 计算 state 属性变化
 
 const mutations = { // 自定义 state 方法
   // 用户登录时设置用户组
-  setUserGroup (state, userGroup) {
-    state.user_group = userGroup
+  setUserGroup (state, role) {
+    state.role = role
   }
 }
 

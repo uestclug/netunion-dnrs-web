@@ -13,7 +13,11 @@ const apiUtils = require('./apiUtils')
 const conn = new pgsql.Pool(db.pgsql)
 conn.connect()
 
-// 用户 token 验证接口
+/**
+ * 用户 token 验证接口
+ * 当用户的 token 信息有效且 role 有效时，返回 true；
+ * 其它情况返回 false。
+ */
 router.post('/checkToken', async function (req, res) {
   const flag = await apiUtils.checkToken(req)
   if (flag) {

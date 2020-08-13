@@ -15,7 +15,7 @@ conn.connect()
 
 /**
  * 用户新建订单接口
- * 当
+ * 当 token 验证成功且用户能够创建订单时访问数据库进行操作。
  */
 router.post('/createOrder', async function (req, res) {
   const reqBody = req.body
@@ -71,7 +71,10 @@ router.post('/getLatestOrderStatus', async function (req, res) {
   }
 })
 
-// 获取最近订单信息接口
+/**
+ * 获取最近订单信息接口
+ * 返回用户最近的订单信息。
+ */
 router.post('/getLatestOrderInfo', async function (req, res) {
   const flag = await apiUtils.checkToken(req)
   if (flag) {
@@ -88,7 +91,10 @@ router.post('/getLatestOrderInfo', async function (req, res) {
 
 // 查看历史订单接口
 
-// 删除订单接口
+/**
+ * 删除订单接口
+ * 用户删除最近的订单
+ */
 router.post('/cancelOrderByUser', async function (req, res) {
   const flag = await apiUtils.checkToken(req)
   if (flag) {

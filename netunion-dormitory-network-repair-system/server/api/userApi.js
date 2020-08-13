@@ -20,7 +20,9 @@ router.post('/register', (req, res) => {
   res.send(false)
 })
 
-// 用户登录接口
+/**
+ * 用户登录接口
+ */
 router.post('/login', (req, res) => {
   const reqBody = req.body
   const std_id = reqBody.std_id
@@ -49,7 +51,9 @@ router.post('/login', (req, res) => {
   })
 })
 
-// 登录成功时获取用户资料接口
+/**
+ * 登录成功时获取用户资料接口
+ */
 router.post('/queryUserInfo', async function (req, res) {
   const user_id = req.body.user_id
   const sqlData = [user_id]
@@ -77,7 +81,9 @@ router.post('/queryUserInfo', async function (req, res) {
   })
 })
 
-// 修改 user 用户组用户资料接口
+/**
+ * 修改 user 用户组用户资料接口
+ */
 router.post('/modifyUserAccountInfo', async function (req, res) {
   const flag = await apiUtils.checkToken(req)
   if (flag) {
@@ -103,7 +109,9 @@ router.post('/modifyUserAccountInfo', async function (req, res) {
   }
 })
 
-// 修改用户密码接口
+/**
+ * 修改用户密码接口
+ */
 router.post('/modifyPassword', async function (req, res) {
   const flag = await apiUtils.checkToken(req)
   if (flag) {
@@ -131,7 +139,9 @@ router.post('/modifyPassword', async function (req, res) {
   }
 })
 
-// 用户统计资料接口
+/**
+ * 获取用户统计资料接口
+ */
 router.post('/getUserStatisticsInfo', async function (req, res) {
   const flag = await apiUtils.checkToken(req)
   if (flag) {
