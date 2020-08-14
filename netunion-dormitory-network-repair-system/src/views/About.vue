@@ -6,6 +6,13 @@
 
 <script>
 export default {
-  name: 'About'
+  data: () => ({
+    role: null
+  }),
+  name: 'About',
+  created () {
+    this.role = this.$store.state.role
+    console.log('about page role: ' + this.role)
+  }
 }
 </script>

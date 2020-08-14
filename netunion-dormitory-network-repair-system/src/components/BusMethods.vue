@@ -4,6 +4,7 @@
 
 <script>
 import Bus from '@/Bus'
+import store from '@/store'
 const $common = require('@/../server/common')
 
 export default {
@@ -39,23 +40,29 @@ export default {
       if (response.data !== true) {
         Bus.$emit('modifyLoginStatus', 'tokenErr')
       }
+      console.log('token check.')
     })
 
     Bus.$on('infoCheck', function () { // 检查用户信息是否完整
-      const role = localStorage.getItem('role')
-      if (role == $common.role.user) {
-        if (!localStorage.getItem('name') || !localStorage.getItem('gender') ||
-        !localStorage.getItem('telephone') || !localStorage.getItem('campus') ||
-        !localStorage.getItem('dormitory') || !localStorage.getItem('std_id') ||
-        !localStorage.getItem('user_id')) {
+      const userId = store.state.user_id
+      const role = store.state.role
+      const token = store.state.token
+      if (userId == null || role == null || token == null) {
+        Bus.$emit('modifyLoginStatus', 'infoErr')
+      } else {
+        if (role == $common.role.user) {
+          if (!localStorage.getItem('name') || !localStorage.getItem('gender') ||
+          !localStorage.getItem('telephone') || !localStorage.getItem('campus') ||
+          !localStorage.getItem('dormitory') || !localStorage.getItem('std_id')) {
+            Bus.$emit('modifyLoginStatus', 'infoErr')
+          }
+        } else if (role == $common.role.solver) {
+          //
+        } else if (role == $common.role.admin) {
+          //
+        } else {
           Bus.$emit('modifyLoginStatus', 'infoErr')
         }
-      } else if (role == $common.role.solver) {
-        //
-      } else if (role == $common.role.admin) {
-        //
-      } else {
-        Bus.$emit('modifyLoginStatus', 'infoErr')
       }
     })
   }

@@ -170,6 +170,7 @@ export default {
         }
       } else {
         this.defaultLanguage = '简体中文'
+        localStorage.setItem('defaultLanguage', '简体中文')
       }
     },
     switchLanguage (id) { // 选择语言
@@ -191,6 +192,8 @@ export default {
         } else {
           this.changeMode(false)
         }
+      } else {
+        localStorage.setItem('defaultDarkMode', 'false')
       }
     },
     changeMode (value) { // 设置夜间模式

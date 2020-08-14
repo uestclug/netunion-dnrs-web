@@ -126,10 +126,10 @@ export default {
             const userId = resData.user_id
             const role = resData.role
             const token = resData.token
-            // this.$store.commit('setUserrole', role) // 存储用户组至 store
-            localStorage.setItem('user_id', userId)
-            localStorage.setItem('role', role)
-            localStorage.setItem('token', token)
+            // 存储用户信息至 vuex 和 localStorage
+            this.$store.commit('setUserId', userId)
+            this.$store.commit('setRole', role)
+            this.$store.commit('setToken', token)
             // 获取用户资料
             /* 对于 user 用户组 */
             if (role == $common.role.user) {

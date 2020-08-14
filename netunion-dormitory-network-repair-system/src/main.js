@@ -25,7 +25,7 @@ const i18n = new VueI18n({
 
 // 设置路由拦截
 router.beforeEach(function (to, from, next) {
-  if (to.path === '/login') { // 如果跳转到登录页面，则直接放行
+  if (to.path === '/login' && !localStorage.getItem('token')) { // 如果跳转到登录页面且用户未登录，则放行
     next()
   } else {
     if (to.meta.needLogin && !localStorage.getItem('token')) { // 如果页面需要登录且没有 token 则跳转登录页面
@@ -42,12 +42,12 @@ router.beforeEach(function (to, from, next) {
 axios.interceptors.request.use(
   config => {
     // 设置请求头带有 token
-    config.headers.Authorization = localStorage.getItem('token')
+    config.headers.Authorization = store.state.token
     // 设置请求 data 包含 user_id 和 role
     config.data = {
       ...config.data,
-      user_id: localStorage.getItem('user_id'),
-      role: localStorage.getItem('role')
+      user_id: store.state.user_id,
+      role: store.state.role
     }
     return config
   },
@@ -64,7 +64,7 @@ axios.interceptors.response.use(
     if (error.response) {
       switch (error.response.status) { // 如果响应错误码为 401，则清空 token，回到 login 页面
         case 401:
-          localStorage.removeItem('token')
+          store.commit('removeToken')
           router.push({
             name: 'login'
           })

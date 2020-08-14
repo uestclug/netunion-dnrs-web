@@ -8,9 +8,16 @@
 import Bus from '@/Bus'
 
 export default {
+  data: () => ({
+    role: null
+  }),
   name: 'Order',
-  created () {
+  beforeCreate () {
     Bus.$emit('tokenCheck')
+  },
+  created () {
+    this.role = this.$store.state.role
+    console.log('order page role: ' + this.role)
   }
 }
 </script>

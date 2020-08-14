@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <InfoNote/>
+    <InfoNote v-if="role === 'user'"/>
     <Welcome/>
     <LatestOrder/>
   </div>
@@ -13,14 +13,21 @@ import Welcome from '@/components/Home/Welcome'
 import LatestOrder from '@/components/Order/LatestOrder'
 
 export default {
+  data: () => ({
+    role: null
+  }),
   name: 'Home',
   components: {
     InfoNote,
     Welcome,
     LatestOrder
   },
-  created () {
+  beforeCreate () {
     Bus.$emit('tokenCheck')
+  },
+  created () {
+    this.role = this.$store.state.role
+    console.log('home page role: ' + this.role)
   }
 }
 </script>
