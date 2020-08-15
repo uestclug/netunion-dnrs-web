@@ -69,9 +69,6 @@
 import { validationMixin } from 'vuelidate'
 import { required } from 'vuelidate/lib/validators'
 import Bus from '@/Bus'
-import md5 from 'js-md5'
-const Base64 = require('js-base64').Base64
-const $common = require('@/../server/common')
 
 export default {
   name: 'Login',
@@ -113,7 +110,7 @@ export default {
     submit () { // 登录验证
       this.$v.$touch()
       if (this.usernameErrors.length === 0 && this.pwdErrors.length === 0) { // 无报错内容时
-        const password = md5(Base64.encode(this.pwd)) // 加密密码
+        const password = this.pwd // 加密密码
         const stdId = this.username
         localStorage.setItem('std_id', stdId)
         this.axios.post('/api/user/login', {
@@ -131,36 +128,24 @@ export default {
             this.$store.commit('setRole', role)
             this.$store.commit('setToken', token)
             // 获取用户资料
-            /* 对于 user 用户组 */
-            if (role == $common.role.user) {
-              this.axios.post('/api/user/queryUserInfo').then((Response) => {
-                // console.log(Response.data)
-                const resData = Response.data
-                // 将得到的用户资料保存到 localStorage 中
-                localStorage.setItem('name', resData.name)
-                localStorage.setItem('gender', resData.gender)
-                localStorage.setItem('telephone', resData.telephone)
-                localStorage.setItem('campus', resData.campus)
-                localStorage.setItem('dormitory', resData.dormitory)
-                // 显示提示登录成功的信息条
-                Bus.$emit('setSnackbar', this.$i18n.t('login.loginSucceed') + Response.data.name)
-                // 回到主页
-                this.$router.push({
-                  name: 'home'
-                })
+            this.axios.post('/api/user/queryUserInfo').then((Response) => {
+              // console.log(Response.data)
+              const resData = Response.data
+              // 将得到的用户资料保存到 localStorage 中
+              localStorage.setItem('name', resData.name)
+              localStorage.setItem('nickname', resData.nickname)
+              localStorage.setItem('gender', resData.gender)
+              localStorage.setItem('telephone', resData.telephone)
+              localStorage.setItem('campus', resData.campus)
+              localStorage.setItem('dormitory', resData.dormitory)
+              localStorage.setItem('intro', resData.intro)
+              // 显示提示登录成功的信息条
+              Bus.$emit('setSnackbar', this.$i18n.t('login.loginSucceed') + Response.data.name)
+              // 回到主页
+              this.$router.push({
+                name: 'home'
               })
-            /* 对于 solver 用户组 */
-            } else if (role == $common.role.solver) {
-              //
-            /* 对于 admin 用户组 */
-            } else if (role == $common.role.admin) {
-              //
-            /* 获取用户组失败 */
-            } else {
-              console.log('获取用户组失败')
-              this.pwd = ''
-              Bus.$emit('setSnackbar', this.$i18n.t('login.loginFailed'))
-            }
+            })
           } else { // 登录失败
             this.pwd = ''
             // 显示提示登录失败的消息条

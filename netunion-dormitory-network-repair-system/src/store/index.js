@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import $common from '@/../server/common'
+import common from '@/../server/common'
 
 Vue.use(Vuex)
 
@@ -24,7 +24,7 @@ const mutations = { // 自定义 state 方法
     }
   },
   setRole (state, role) {
-    if (role === $common.role.user || role === $common.role.solver || role === $common.role.admin) {
+    if (role === common.role.user || role === common.role.solver || role === common.role.admin) {
       state.role = role
       localStorage.setItem('role', role)
     } else {

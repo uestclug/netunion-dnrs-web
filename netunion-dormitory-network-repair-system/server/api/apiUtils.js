@@ -110,6 +110,14 @@ function generateToken () {
 }
 
 /**
+ * 将传入的密码进行加密
+ * 返回加密后的密码
+ */
+function generateEncryptedPassword (password) {
+  return md5(Base64.encode(password))
+}
+
+/**
  * 设置数据库中的 token 信息
  * 将用户的登录信息存储到数据库中
  */
@@ -132,5 +140,6 @@ module.exports = {
   generateOrderId,
   checkToken,
   generateToken,
+  generateEncryptedPassword,
   setToken
 }

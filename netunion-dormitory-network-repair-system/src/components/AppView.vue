@@ -23,7 +23,7 @@
             <v-list-item-title>{{ $t('viewTitle.user') }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <!--
+
         <v-list-item router-link to="/Order">
           <v-list-item-action>
             <v-icon>mdi-clipboard-check-multiple</v-icon>
@@ -32,7 +32,6 @@
             <v-list-item-title>{{ $t('viewTitle.order') }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        -->
 
         <v-list-item router-link to="/About">
           <v-list-item-action>
@@ -123,8 +122,11 @@
     <!-- Snackbar -->
     <Snackbar/>
 
-    <!-- Create Oreder -->
-    <CreateOrder/>
+    <!-- USER: Create Oreder -->
+    <CreateOrderUser v-if="role === GLOBAL.role.user"/>
+
+    <!-- Solver: Create Oreder -->
+    <CreateOrderSolver v-else-if="role === GLOBAL.role.solver"/>
 
     <!-- Global Bus Methods -->
     <BusMethods/>
@@ -134,19 +136,22 @@
 <script>
 import BusMethods from '@/components/BusMethods'
 import Snackbar from '@/components/Snackbar'
-import CreateOrder from '@/components/Order/CreateOrder'
+import CreateOrderUser from '@/components/Order/CreateOrderUser'
+import CreateOrderSolver from '@/components/Order/CreateOrderSolver'
 
 export default {
   name: 'AppView',
   components: {
     BusMethods,
     Snackbar,
-    CreateOrder
+    CreateOrderUser,
+    CreateOrderSolver
   },
   props: {
     source: String
   },
   data: () => ({
+    role: null,
     drawer: null,
     languages: [
       { text: '简体中文' },
@@ -155,6 +160,7 @@ export default {
     darkModeSwitch: false
   }),
   created: function () {
+    this.role = this.$store.state.role
     this.setDefaultLanguage()
     this.setDefaultMode()
   },

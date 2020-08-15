@@ -26,7 +26,7 @@ router.post('/register', (req, res) => {
 router.post('/login', (req, res) => {
   const reqBody = req.body
   const std_id = reqBody.std_id
-  const password = reqBody.password
+  const password = apiUtils.generateEncryptedPassword(reqBody.password)
   const sqlData = [std_id]
 
   conn.query($sql.account.getLoginResponse, sqlData, (error, result) => {
@@ -62,17 +62,22 @@ router.post('/queryUserInfo', async function (req, res) {
       console.log(error)
       res.send(false)
     } else if (result.rowCount === 1) { // 查询到用户结果时
-      const name = result.rows[0].name
-      const gender = result.rows[0].gender
-      const telephone = result.rows[0].telephone
-      const campus = result.rows[0].campus
-      const dormitory = result.rows[0].dormitory
+      const resultSet = result.rows[0]
+      const name = resultSet.name
+      const nickname = resultSet.nickname
+      const gender = resultSet.gender
+      const telephone = resultSet.telephone
+      const campus = resultSet.campus
+      const dormitory = resultSet.dormitory
+      const intro = resultSet.intro
       const response = {
         name: name,
+        nickname: nickname,
         gender: gender,
         telephone: telephone,
         campus: campus,
-        dormitory: dormitory
+        dormitory: dormitory,
+        intro: intro
       }
       res.send(response)
     } else { // 未查询到用户结果
@@ -84,19 +89,21 @@ router.post('/queryUserInfo', async function (req, res) {
 /**
  * 修改 user 用户组用户资料接口
  */
-router.post('/modifyUserAccountInfo', async function (req, res) {
+router.post('/modifyAccountInfo', async function (req, res) {
   const flag = await apiUtils.checkToken(req)
   if (flag) {
     const reqBody = req.body
     const name = reqBody.name
+    const nickname = reqBody.nickname
     const gender = reqBody.gender
     const campus = reqBody.campus
-    const dormitory = reqBody.dormitory
     const telephone = reqBody.telephone
+    const dormitory = reqBody.dormitory
+    const intro = reqBody.intro
     const user_id = reqBody.user_id
-    const sqlData = [name, gender, campus, dormitory, telephone, user_id]
+    const sqlData = [name, nickname, gender, campus, dormitory, telephone, intro, user_id]
 
-    conn.query($sql.account.user.modifyAccountInfo, sqlData, (error, result) => {
+    conn.query($sql.account.modifyAccountInfo, sqlData, (error, result) => {
       if (error) {
         console.log(error)
         res.send(false)
@@ -115,9 +122,10 @@ router.post('/modifyUserAccountInfo', async function (req, res) {
 router.post('/modifyPassword', async function (req, res) {
   const flag = await apiUtils.checkToken(req)
   if (flag) {
-    const presentPassword = req.body.presentPassword
-    const modifiedPassword = req.body.modifiedPassword
-    const user_id = req.body.user_id
+    const reqBody = req.body
+    const presentPassword = apiUtils.generateEncryptedPassword(reqBody.presentPassword)
+    const modifiedPassword = apiUtils.generateEncryptedPassword(reqBody.modifiedPassword)
+    const user_id = reqBody.user_id
     const flagData = [user_id]
     const sqlData = [modifiedPassword, user_id]
 

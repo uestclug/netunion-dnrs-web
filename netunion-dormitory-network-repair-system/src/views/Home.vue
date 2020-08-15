@@ -1,16 +1,24 @@
 <template>
   <div class="home">
-    <InfoNote v-if="role === 'user'"/>
-    <Welcome/>
-    <LatestOrder/>
+    <div v-if="role === GLOBAL.role.user">
+      <InfoNoteUser/>
+      <WelcomeUser/>
+      <LatestOrder/>
+    </div>
+    <div v-else-if="role === GLOBAL.role.solver">
+      <WelcomeSolver/>
+      <AcceptedOrder/>
+    </div>
   </div>
 </template>
 
 <script>
 import Bus from '@/Bus'
-import InfoNote from '@/components/Home/InfoNote'
-import Welcome from '@/components/Home/Welcome'
+import InfoNoteUser from '@/components/Home/InfoNoteUser'
+import WelcomeUser from '@/components/Home/WelcomeUser'
 import LatestOrder from '@/components/Order/LatestOrder'
+import WelcomeSolver from '@/components/Home/WelcomeSolver.vue'
+import AcceptedOrder from '@/components/Order/AcceptedOrder'
 
 export default {
   data: () => ({
@@ -18,9 +26,11 @@ export default {
   }),
   name: 'Home',
   components: {
-    InfoNote,
-    Welcome,
-    LatestOrder
+    InfoNoteUser,
+    WelcomeUser,
+    LatestOrder,
+    WelcomeSolver,
+    AcceptedOrder
   },
   beforeCreate () {
     Bus.$emit('tokenCheck')

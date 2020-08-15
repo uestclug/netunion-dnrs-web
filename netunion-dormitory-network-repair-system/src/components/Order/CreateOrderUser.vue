@@ -142,7 +142,7 @@ import { required, maxLength } from 'vuelidate/lib/validators'
 import Bus from '@/Bus'
 
 export default {
-  name: 'CreateOrder',
+  name: 'CreateOrderUser',
   data: () => ({
     sheet: false,
     name: '',

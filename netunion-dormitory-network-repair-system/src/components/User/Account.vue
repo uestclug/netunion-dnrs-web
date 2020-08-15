@@ -23,6 +23,26 @@
                 v-model="name"
                 class="body-1 pt-0 pb-0"
                 :disabled="disabled"
+                :counter="!disabled"
+                :error-messages="nameErrors"
+                @input="$v.name.$touch()"
+                @blur="$v.name.$touch()"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="6" v-if="role === GLOBAL.role.solver">
+              <p class="body-1 pt-2"><v-icon>mdi-account-tie-outline</v-icon>
+                {{ $t('user.account.nickname') }}
+              </p>
+            </v-col>
+            <v-col cols="6" v-if="role === GLOBAL.role.solver">
+              <v-text-field
+                v-model="nickname"
+                class="body-1 pt-0 pb-0"
+                :disabled="disabled"
+                :counter="!disabled"
+                :error-messages="nicknameErrors"
+                @input="$v.nickname.$touch()"
+                @blur="$v.nickname.$touch()"
               ></v-text-field>
             </v-col>
             <v-col cols="6">
@@ -51,12 +71,12 @@
                 :disabled="disabled"
               ></v-select>
             </v-col>
-            <v-col cols="6">
+            <v-col cols="6" v-if="role === GLOBAL.role.user">
               <p class="body-1 pt-2"><v-icon>mdi-map-marker-outline</v-icon>
                 {{ $t('user.account.location') }}
               </p>
             </v-col>
-            <v-col cols="6">
+            <v-col cols="6" v-if="role === GLOBAL.role.user">
               <v-text-field
                 v-model="dormitory"
                 class="body-1 pt-0 pb-0"
@@ -74,6 +94,24 @@
                 class="body-1 pt-0 pb-0"
                 :disabled="disabled"
               ></v-text-field>
+            </v-col>
+            <v-col cols="6" v-if="role === GLOBAL.role.solver">
+              <p class="body-1 pt-2"><v-icon>mdi-badge-account-horizontal-outline</v-icon>
+                {{ $t('user.account.intro') }}
+              </p>
+            </v-col>
+            <v-col cols="6" v-if="role === GLOBAL.role.solver">
+              <v-textarea
+                v-model="intro"
+                class="body-1 pt-0 pb-0"
+                :disabled="disabled"
+                auto-grow
+                rows="1"
+                :counter="!disabled"
+                :error-messages="introErrors"
+                @input="$v.intro.$touch()"
+                @blur="$v.intro.$touch()"
+              ></v-textarea>
             </v-col>
           </v-row>
 
@@ -122,6 +160,7 @@
                 <v-col cols="12">
                   <v-text-field
                     v-model="presentPassword"
+                    class="body-1 pt-0 pb-0"
                     :label="presentPasswordLabel"
                     :error-messages="presentPasswordErrors"
                     @input="$v.presentPassword.$touch()"
@@ -132,6 +171,7 @@
                 <v-col cols="12">
                   <v-text-field
                     v-model="modifiedPassword"
+                    class="body-1 pt-0 pb-0"
                     :label="modifiedPasswordLabel"
                     :error-messages="modifiedPasswordErrors"
                     @input="$v.modifiedPassword.$touch()"
@@ -142,6 +182,7 @@
                 <v-col cols="12">
                   <v-text-field
                     v-model="reModifiedPassword"
+                    class="body-1 pt-0 pb-0"
                     :label="reModifiedPasswordLabel"
                     :error-messages="reModifiedPasswordErrors"
                     @input="$v.reModifiedPassword.$touch()"
@@ -206,23 +247,21 @@
 import { validationMixin } from 'vuelidate'
 import { required, maxLength, minLength } from 'vuelidate/lib/validators'
 import Bus from '@/Bus'
-import md5 from 'js-md5'
-const Base64 = require('js-base64').Base64
 
 export default {
   name: 'Account',
   data: () => ({
+    role: null,
     name: '',
     gender: null,
     campus: null,
     telephone: '',
-    dormitory: '',
-    // 设置修改用户资料内容默认不可修改
-    disabled: true,
-    // 设置修改密码 Dialog 默认不可见
-    modifyPasswordDialog: false,
-    // 设置登出 Dialog 默认不可见
-    logoutDialog: false,
+    dormitory: '', // *user
+    nickname: '', // *solver
+    intro: '', // *solver
+    disabled: true, // 设置修改用户资料内容默认不可修改
+    modifyPasswordDialog: false, // 设置修改密码 Dialog 默认不可见
+    logoutDialog: false, // 设置登出 Dialog 默认不可见
     modifyBtnColor: 'brown darken-1',
     genderItems: ['男(Male)', '女(Female)'],
     campusItems: ['清水河校区(Qingshuihe Campus)', '沙河校区(Shahe Campus)'],
@@ -232,6 +271,15 @@ export default {
   }),
   mixins: [validationMixin],
   validations: {
+    name: {
+      maxLength: maxLength(20)
+    },
+    nickname: {
+      maxLength: maxLength(30)
+    },
+    intro: {
+      maxLength: maxLength(50)
+    },
     presentPassword: {
       required,
       maxLength: maxLength(32),
@@ -249,16 +297,39 @@ export default {
     }
   },
   created: function () {
-    // 检查用户信息是否完整
-    Bus.$emit('infoCheck')
+    // 获取用户组
+    this.role = this.$store.state.role
     // 设置页面 dom
     this.name = localStorage.getItem('name')
     this.gender = localStorage.getItem('gender')
     this.campus = localStorage.getItem('campus')
     this.telephone = localStorage.getItem('telephone')
-    this.dormitory = localStorage.getItem('dormitory')
+    if (this.role === this.GLOBAL.role.user) {
+      this.dormitory = localStorage.getItem('dormitory')
+    } else if (this.role === this.GLOBAL.role.solver) {
+      this.nickname = localStorage.getItem('nickname')
+      this.intro = localStorage.getItem('intro')
+    }
   },
   computed: {
+    nameErrors () {
+      const errors = []
+      if (!this.$v.name.$dirty) return errors
+      !this.$v.name.maxLength && errors.push(this.$i18n.t('user.account.nameMaxLengthErr'))
+      return errors
+    },
+    nicknameErrors () {
+      const errors = []
+      if (!this.$v.nickname.$dirty) return errors
+      !this.$v.nickname.maxLength && errors.push(this.$i18n.t('user.account.nicknameMaxLengthErr'))
+      return errors
+    },
+    introErrors () {
+      const errors = []
+      if (!this.$v.intro.$dirty) return errors
+      !this.$v.intro.maxLength && errors.push(this.$i18n.t('user.account.introMaxLengthErr'))
+      return errors
+    },
     presentPasswordErrors () {
       const errors = []
       if (!this.$v.presentPassword.$dirty) return errors
@@ -301,19 +372,45 @@ export default {
         Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyAccountInfoNote'))
         this.disabled = false
       } else { // 第二次点击，保存修改内容到数据库中
-        const modifyResponse = await this.axios.post('/api/user/modifyUserAccountInfo', {
-          name: this.name,
-          gender: this.gender,
-          campus: this.campus,
-          dormitory: this.dormitory,
-          telephone: this.telephone
-        })
-        if (modifyResponse.data === true) { // 修改成功，更新 localStorage
+        this.$v.$touch()
+        let modifyResponse = false
+        if (this.role === this.GLOBAL.role.user) { // 对于 user 用户组
+          if (this.nameErrors.length === 0) {
+            modifyResponse = await this.axios.post('/api/user/modifyAccountInfo', {
+              name: this.name,
+              gender: this.gender,
+              campus: this.campus,
+              dormitory: this.dormitory,
+              telephone: this.telephone
+            })
+          } else {
+            return
+          }
+        } else if (this.role === this.GLOBAL.role.solver) { // 对于 solver 用户组
+          if (this.nameErrors.length === 0 && this.nicknameErrors.length === 0 && this.introErrors.length === 0) {
+            modifyResponse = await this.axios.post('/api/user/modifyAccountInfo', {
+              name: this.name,
+              nickname: this.nickname,
+              gender: this.gender,
+              campus: this.campus,
+              telephone: this.telephone,
+              intro: this.intro
+            })
+          } else {
+            return
+          }
+        }
+        if (modifyResponse.data === true) {
           localStorage.setItem('name', this.name)
           localStorage.setItem('gender', this.gender)
           localStorage.setItem('campus', this.campus)
           localStorage.setItem('telephone', this.telephone)
-          localStorage.setItem('dormitory', this.dormitory)
+          if (this.role === this.GLOBAL.role.user) {
+            localStorage.setItem('dormitory', this.dormitory)
+          } else if (this.role === this.GLOBAL.role.solver) {
+            localStorage.setItem('nickname', this.nickname)
+            localStorage.setItem('intro', this.intro)
+          }
           this.modifyBtnColor = 'brown darken-1'
           Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyAccountInfoSucceed'))
           this.disabled = true
@@ -338,8 +435,8 @@ export default {
         }
 
         this.axios.post('/api/user/modifyPassword', { // 调用修改密码接口
-          presentPassword: md5(Base64.encode(this.presentPassword)),
-          modifiedPassword: md5(Base64.encode(this.modifiedPassword))
+          presentPassword: this.presentPassword,
+          modifiedPassword: this.modifiedPassword
         }).then((Response) => {
           if (Response.data === true) {
             Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyPasswordSucceed'))

@@ -33,7 +33,7 @@
 import Bus from '@/Bus'
 
 export default {
-  name: 'Welcome',
+  name: 'WelcomeUser',
   methods: {
     openOrderSheet: function () {
       Bus.$emit('openOrderSheet')

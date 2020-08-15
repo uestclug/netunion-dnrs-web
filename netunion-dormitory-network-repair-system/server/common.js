@@ -1,4 +1,4 @@
-/* 存储全局变量 */
+/* 存储前后端通用的全局变量 */
 const common = {
   status: {
     waiting: 'waiting',

@@ -17,6 +17,6 @@
 
 <script>
 export default {
-  name: 'InfoNote'
+  name: 'InfoNoteUser'
 }
 </script>

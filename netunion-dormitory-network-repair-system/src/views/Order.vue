@@ -1,17 +1,31 @@
 <template>
   <div class="order">
-    <h1>this is order page</h1>
+    <div v-if="role === GLOBAL.role.user">
+      <LatestOrder/>
+    </div>
+    <div v-else-if="role === GLOBAL.role.solver">
+      <OrderList/>
+      <AcceptedOrder/>
+    </div>
   </div>
 </template>
 
 <script>
 import Bus from '@/Bus'
+import LatestOrder from '@/components/Order/LatestOrder'
+import AcceptedOrder from '@/components/Order/AcceptedOrder'
+import OrderList from '@/components/Order/OrderList'
 
 export default {
   data: () => ({
     role: null
   }),
   name: 'Order',
+  components: {
+    LatestOrder,
+    AcceptedOrder,
+    OrderList
+  },
   beforeCreate () {
     Bus.$emit('tokenCheck')
   },

@@ -16,12 +16,13 @@ const sqlMap = {
     // 通过 user_id 获取 password
     getLoginPassword: 'SELECT password FROM' + accountTable + 'WHERE user_id = $1',
     // 通过 user_id 获取用户资料
-    queryUserInfo: 'SELECT name, gender, telephone, campus, dormitory FROM' + accountTable + 'WHERE user_id = $1',
+    queryUserInfo: 'SELECT name, nickname, gender, telephone, campus, dormitory, intro FROM' + accountTable + 'WHERE user_id = $1',
     // 修改用户密码
     modifyPassword: 'UPDATE' + accountTable + 'SET password=$1 WHERE user_id = $2',
+    // 修改用户资料
+    modifyAccountInfo: 'UPDATE' + accountTable + 'SET name=$1, nickname=$2, gender=$3, campus=$4, dormitory=$5, telephone=$6, intro=$7 WHERE user_id = $8',
     user: { // 对于 user 用户组
-      // 修改用户资料
-      modifyAccountInfo: 'UPDATE' + accountTable + 'SET name=$1, gender=$2, campus=$3, dormitory=$4, telephone=$5 WHERE user_id = $6'
+
     },
     solver: { // 对于 solver 用户组
 

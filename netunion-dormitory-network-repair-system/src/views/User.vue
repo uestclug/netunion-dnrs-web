@@ -1,7 +1,9 @@
 <template>
   <div class="user">
-    <Account/>
-    <Statistics/>
+    <div v-if="role === GLOBAL.role.user || role === GLOBAL.role.solver">
+      <Account/>
+      <Statistics/>
+    </div>
   </div>
 </template>
 

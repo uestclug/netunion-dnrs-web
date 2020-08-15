@@ -197,7 +197,6 @@
 
 <script>
 import Bus from '@/Bus'
-const $common = require('@/../server/common')
 
 export default {
   name: 'LatestOrder',
@@ -246,17 +245,17 @@ export default {
       if (orderInfo.order_user_description !== '') this.orderDescription = orderInfo.order_user_description
       this.createDate = orderInfo.create_date
       const status = orderInfo.order_status
-      if (status === $common.status.waiting) { // 用户可以取消订单
+      if (status === this.GLOBAL.status.waiting) { // 用户可以取消订单
         this.orderStatus = this.$i18n.t('order.waitingStatus')
         this.cancelDisabled = false
       } else { // 用户不可以取消订单
-        if (status === $common.status.receipted) {
+        if (status === this.GLOBAL.status.receipted) {
           this.orderStatus = this.$i18n.t('order.receiptedStatus')
-        } else if (status === $common.status.canceledByUser) {
+        } else if (status === this.GLOBAL.status.canceledByUser) {
           this.orderStatus = this.$i18n.t('order.canceledByUserStatus')
-        } else if (status === $common.status.canceledBySolver) {
+        } else if (status === this.GLOBAL.status.canceledBySolver) {
           this.orderStatus = this.$i18n.t('order.canceledBySolverStatus')
-        } else if (status === $common.status.finished) {
+        } else if (status === this.GLOBAL.status.finished) {
           this.orderStatus = this.$i18n.t('order.finishedStatus')
         } else {
           this.orderStatus = this.$i18n.t('order.unknownStatus')

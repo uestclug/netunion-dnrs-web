@@ -23,7 +23,7 @@ export default {
   data: () => ({
     snackbar: false,
     timeout: 3000,
-    snackbarText: 'Nothing ever happen'
+    snackbarText: 'Nothing ever happened'
   }),
   mounted () {
     Bus.$on('setSnackbar', (msg) => { // 弹出显示 msg 内容的 snackbar
