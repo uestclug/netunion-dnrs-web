@@ -2,12 +2,14 @@
   <div class="about">
     <AboutUs/>
     <Contact/>
+    <Footer/>
   </div>
 </template>
 
 <script>
 import AboutUs from '@/components/About/AboutUs'
 import Contact from '@/components/About/Contact'
+import Footer from '@/components/About/Footer'
 
 export default {
   data: () => ({
@@ -16,7 +18,8 @@ export default {
   name: 'About',
   components: {
     AboutUs,
-    Contact
+    Contact,
+    Footer
   },
   created () {
     this.role = this.$store.state.role

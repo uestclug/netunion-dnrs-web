@@ -106,18 +106,8 @@
 
     <!-- Main View -->
     <div style="margin: 40px 0px 40px 0px">
-      <router-view></router-view>
+      <router-view/>
     </div>
-
-    <!-- Footer -->
-    <!--
-    <div class="hideOnPhone">
-      <v-footer>
-        <v-spacer></v-spacer>
-        <div>{{ $t('app.name') }} &copy; {{ new Date().getFullYear() }}</div>
-      </v-footer>
-    </div>
-    -->
 
     <!-- Snackbar -->
     <Snackbar/>
@@ -215,7 +205,3 @@ export default {
   }
 }
 </script>
-
-<style lang="sass">
-  @import '@/common/sass/main.scss'
-</style>
