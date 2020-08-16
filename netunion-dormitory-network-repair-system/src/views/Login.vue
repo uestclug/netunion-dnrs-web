@@ -68,7 +68,6 @@
 <script>
 import { validationMixin } from 'vuelidate'
 import { required } from 'vuelidate/lib/validators'
-import Bus from '@/Bus'
 
 export default {
   name: 'Login',
@@ -140,7 +139,7 @@ export default {
               localStorage.setItem('dormitory', resData.dormitory)
               localStorage.setItem('intro', resData.intro)
               // 显示提示登录成功的信息条
-              Bus.$emit('setSnackbar', this.$i18n.t('login.loginSucceed') + Response.data.name)
+              this.Bus.$emit('setSnackbar', this.$i18n.t('login.loginSucceed') + Response.data.name)
               // 回到主页
               this.$router.push({
                 name: 'home'
@@ -149,7 +148,7 @@ export default {
           } else { // 登录失败
             this.pwd = ''
             // 显示提示登录失败的消息条
-            Bus.$emit('setSnackbar', this.$i18n.t('login.loginFailed'))
+            this.Bus.$emit('setSnackbar', this.$i18n.t('login.loginFailed'))
           }
         })
       }

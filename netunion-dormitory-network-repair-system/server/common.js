@@ -5,7 +5,8 @@ const common = {
     receipted: 'receipted',
     canceledByUser: 'canceled by user',
     canceledBySolver: 'canceled by solver',
-    finished: 'finished'
+    finished: 'finished',
+    recorded: 'recorded'
   },
   password: {
     presentErr: 'present password error'

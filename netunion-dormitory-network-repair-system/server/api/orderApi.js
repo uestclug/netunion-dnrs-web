@@ -17,10 +17,10 @@ conn.connect()
  * 用户新建订单接口
  * 当 token 验证成功且用户能够创建订单时访问数据库进行操作。
  */
-router.post('/createOrder', async function (req, res) {
-  const reqBody = req.body
+router.post('/createOrderUser', async function (req, res) {
   const checkTokenFlag = await apiUtils.checkToken(req)
   if (checkTokenFlag) {
+    const reqBody = req.body
     const checkLatestOrderStatusFlag = await apiUtils.latestOrderStatusCheck(reqBody.user_id)
     if (checkLatestOrderStatusFlag && reqBody.role == $common.role.user) {
       const user_name = reqBody.user_name
@@ -30,10 +30,9 @@ router.post('/createOrder', async function (req, res) {
       const user_dormitory = reqBody.user_dormitory
       const user_description = reqBody.user_description
       const order_status = $common.status.waiting // 设置等待接单
-      const nowDate = new Date()
       const user_id = reqBody.user_id
-      const order_id = apiUtils.generateOrderId(nowDate, user_id) // 生成订单号
-      const create_date = nowDate.toLocaleString()
+      const order_id = apiUtils.generateOrderId(user_id) // 根据用户的 user_id 生成订单号
+      const create_date = new Date().toLocaleString()
       const sqlData = [user_name, user_gender, user_telephone, user_campus, user_dormitory, user_description, create_date, order_status, order_id, user_id]
 
       conn.query($sql.order.user.createOrder, sqlData, (error) => {
@@ -47,6 +46,56 @@ router.post('/createOrder', async function (req, res) {
     } else {
       res.send(false)
     }
+  } else {
+    res.send(false)
+  }
+})
+
+/**
+ * 处理者记录订单接口
+ * 当 token 验证成功时访问数据库进行操作。
+ */
+router.post('/createOrderSolver', async function (req, res) {
+  const flag = await apiUtils.checkToken(req)
+  if (flag) {
+    const reqBody = req.body
+    const user_name = reqBody.user_name
+    const user_gender = reqBody.user_gender
+    const user_telephone = reqBody.user_telephone
+    const user_campus = reqBody.user_campus
+    const user_dormitory = reqBody.user_dormitory
+    const order_status = reqBody.order_status
+    const user_description = reqBody.user_description
+    const solver_record = reqBody.solver_record
+    const nowDate = new Date()
+    let solver_id = reqBody.user_id
+    const order_id = apiUtils.generateOrderId(solver_id) // 根据处理者的 user_id 生成订单号
+    const create_date = nowDate.toLocaleString()
+
+    let notes = null
+    let close_date = null
+    if (order_status === $common.status.waiting) { // 如果设置订单待接取
+      notes = 'The order is created by solver_id: ' + solver_id
+      solver_id = null
+    } else if (order_status === $common.status.receipted) { // 如果设置订单已接取
+      notes = 'The order is created and receipted by solver_id: ' + solver_id
+    } else if (order_status === $common.status.recorded) { // 如果设置订单已完成
+      notes = 'The order is created and finished by solver_id: ' + solver_id
+      close_date = create_date
+    } else { // 订单状态预料之外
+      res.send(false)
+    }
+
+    const sqlData = [user_name, user_gender, user_telephone, user_campus, user_dormitory, user_description, solver_record, order_status, order_id, solver_id, create_date, close_date, notes]
+
+    conn.query($sql.order.solver.createOrder, sqlData, (error) => {
+      if (error) {
+        console.log(error)
+        res.send(false)
+      } else {
+        res.send(true)
+      }
+    })
   } else {
     res.send(false)
   }
@@ -92,8 +141,8 @@ router.post('/getLatestOrderInfo', async function (req, res) {
 // 查看历史订单接口
 
 /**
- * 删除订单接口
- * 用户删除最近的订单
+ * 用户取消订单接口
+ * 当订单尚未接取时，用户可以取消最近的订单
  */
 router.post('/cancelOrderByUser', async function (req, res) {
   const flag = await apiUtils.checkToken(req)

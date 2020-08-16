@@ -9,7 +9,7 @@
         colored-border
         type="info"
       >
-        {{ $t('home.infoNote.note') }}
+        {{ $t('home.infoNoteUser.note') }}
       </v-alert>
     </v-card>
   </v-container>

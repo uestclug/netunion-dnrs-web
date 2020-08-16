@@ -198,4 +198,15 @@ router.post('/getUserStatisticsInfo', async function (req, res) {
   }
 })
 
+/**
+ * todo: 获取处理者统计资料接口
+ */
+router.post('/getSolverStatisticsInfo', async function (req, res) {
+  const flag = await apiUtils.checkToken(req)
+  if (flag) {
+    console.log('get solver statistics info.')
+    res.send(true)
+  }
+})
+
 module.exports = router

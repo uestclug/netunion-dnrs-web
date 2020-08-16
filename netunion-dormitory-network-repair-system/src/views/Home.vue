@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import Bus from '@/Bus'
 import InfoNoteUser from '@/components/Home/InfoNoteUser'
 import WelcomeUser from '@/components/Home/WelcomeUser'
 import LatestOrder from '@/components/Order/LatestOrder'
@@ -33,7 +32,7 @@ export default {
     AcceptedOrder
   },
   beforeCreate () {
-    Bus.$emit('tokenCheck')
+    this.Bus.$emit('tokenCheck')
   },
   created () {
     this.role = this.$store.state.role

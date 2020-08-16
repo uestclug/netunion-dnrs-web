@@ -10,8 +10,8 @@
         max-width="800"
       >
         <v-card-text>
-          <p class="subtitle-1">{{ $t('home.welcome.words') }}<v-divider></v-divider></p>
-          <p class="headline text--primary font-weight-medium">{{ $t('home.welcome.slogan') }}</p>
+          <p class="subtitle-1">{{ $t('home.welcomeUser.words') }}<v-divider></v-divider></p>
+          <p class="headline text--primary font-weight-medium">{{ $t('home.welcomeUser.slogan') }}</p>
         </v-card-text>
 
         <v-card-actions>
@@ -19,9 +19,9 @@
             color="success"
             outlined
             style="margin: 0px 0px 10px 10px"
-            @click="openOrderSheet"
+            @click="openCreateOrderUserSheet"
           >
-            <v-icon left>mdi-pencil</v-icon> {{ $t('order.createOrder.create') }}
+            <v-icon left>mdi-pencil</v-icon> {{ $t('order.createOrder.user.create') }}
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -30,13 +30,11 @@
 </template>
 
 <script>
-import Bus from '@/Bus'
-
 export default {
   name: 'WelcomeUser',
   methods: {
-    openOrderSheet: function () {
-      Bus.$emit('openOrderSheet')
+    openCreateOrderUserSheet () {
+      this.Bus.$emit('openCreateOrderUserSheet')
     }
   }
 }

@@ -23,7 +23,7 @@
                 v-model="name"
                 class="body-1 pt-0 pb-0"
                 :disabled="disabled"
-                :counter="!disabled"
+                :counter="nameCounter"
                 :error-messages="nameErrors"
                 @input="$v.name.$touch()"
                 @blur="$v.name.$touch()"
@@ -39,7 +39,7 @@
                 v-model="nickname"
                 class="body-1 pt-0 pb-0"
                 :disabled="disabled"
-                :counter="!disabled"
+                :counter="nicknameCounter"
                 :error-messages="nicknameErrors"
                 @input="$v.nickname.$touch()"
                 @blur="$v.nickname.$touch()"
@@ -93,6 +93,10 @@
                 v-model="telephone"
                 class="body-1 pt-0 pb-0"
                 :disabled="disabled"
+                :counter="telephoneCounter"
+                :error-messages="telephoneErrors"
+                @input="$v.telephone.$touch()"
+                @blur="$v.telephone.$touch()"
               ></v-text-field>
             </v-col>
             <v-col cols="6" v-if="role === GLOBAL.role.solver">
@@ -107,7 +111,7 @@
                 :disabled="disabled"
                 auto-grow
                 rows="1"
-                :counter="!disabled"
+                :counter="introCounter"
                 :error-messages="introErrors"
                 @input="$v.intro.$touch()"
                 @blur="$v.intro.$touch()"
@@ -123,6 +127,8 @@
             style="margin: 0px 0px 10px 10px"
             @click="modifyAccountInfo"
             class="subtitle-2"
+            :loading="modifyAccountInfoLoading"
+            :disabled="modifyAccountInfoLoading"
           >
             <v-icon left>mdi-account-edit-outline</v-icon>{{ $t('user.account.modify') }}
           </v-btn>
@@ -205,6 +211,8 @@
             color="success"
             @click="submitNewPassword"
             class="subtitle-2"
+            :loading="submitNewPasswordLoading"
+            :disabled="submitNewPasswordLoading"
           >{{ $t('user.account.submit') }}<v-icon right>mdi-check</v-icon></v-btn>
         </v-card-actions>
       </v-card>
@@ -245,8 +253,7 @@
 
 <script>
 import { validationMixin } from 'vuelidate'
-import { required, maxLength, minLength } from 'vuelidate/lib/validators'
-import Bus from '@/Bus'
+import { required, maxLength, minLength, numeric } from 'vuelidate/lib/validators'
 
 export default {
   name: 'Account',
@@ -267,7 +274,13 @@ export default {
     campusItems: ['清水河校区(Qingshuihe Campus)', '沙河校区(Shahe Campus)'],
     presentPassword: '',
     modifiedPassword: '',
-    reModifiedPassword: ''
+    reModifiedPassword: '',
+    modifyAccountInfoLoading: false,
+    submitNewPasswordLoading: false,
+    nameCounter: false,
+    nicknameCounter: false,
+    telephoneCounter: false,
+    introCounter: false
   }),
   mixins: [validationMixin],
   validations: {
@@ -276,6 +289,10 @@ export default {
     },
     nickname: {
       maxLength: maxLength(30)
+    },
+    telephone: {
+      numeric,
+      maxLength: maxLength(11)
     },
     intro: {
       maxLength: maxLength(50)
@@ -324,6 +341,13 @@ export default {
       !this.$v.nickname.maxLength && errors.push(this.$i18n.t('user.account.nicknameMaxLengthErr'))
       return errors
     },
+    telephoneErrors () {
+      const errors = []
+      if (!this.$v.telephone.$dirty) return errors
+      !this.$v.telephone.numeric && errors.push(this.$i18n.t('user.account.telephoneNumericErr'))
+      !this.$v.telephone.maxLength && errors.push(this.$i18n.t('user.account.telephoneMaxLengthErr'))
+      return errors
+    },
     introErrors () {
       const errors = []
       if (!this.$v.intro.$dirty) return errors
@@ -367,15 +391,22 @@ export default {
   methods: {
     modifyAccountInfo: async function () {
       if (this.disabled === true) { // 第一次点击，进入修改模式
-        Bus.$emit('tokenCheck')
+        this.Bus.$emit('tokenCheck')
         this.modifyBtnColor = 'success' // 设置按钮颜色
-        Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyAccountInfoNote'))
+        this.Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyAccountInfoNote'))
         this.disabled = false
+        this.nameCounter = 20
+        this.nicknameCounter = 30
+        this.telephoneCounter = 11
+        this.introCounter = 50
       } else { // 第二次点击，保存修改内容到数据库中
         this.$v.$touch()
-        let modifyResponse = false
-        if (this.role === this.GLOBAL.role.user) { // 对于 user 用户组
-          if (this.nameErrors.length === 0) {
+        if (this.nameErrors.length === 0 && this.nicknameErrors.length === 0 &&
+        this.telephoneErrors.length === 0 && this.introErrors.length === 0) {
+          this.modifyAccountInfoLoading = true
+
+          let modifyResponse = false
+          if (this.role === this.GLOBAL.role.user) { // 对于 user 用户组
             modifyResponse = await this.axios.post('/api/user/modifyAccountInfo', {
               name: this.name,
               gender: this.gender,
@@ -383,11 +414,7 @@ export default {
               dormitory: this.dormitory,
               telephone: this.telephone
             })
-          } else {
-            return
-          }
-        } else if (this.role === this.GLOBAL.role.solver) { // 对于 solver 用户组
-          if (this.nameErrors.length === 0 && this.nicknameErrors.length === 0 && this.introErrors.length === 0) {
+          } else if (this.role === this.GLOBAL.role.solver) { // 对于 solver 用户组
             modifyResponse = await this.axios.post('/api/user/modifyAccountInfo', {
               name: this.name,
               nickname: this.nickname,
@@ -396,57 +423,72 @@ export default {
               telephone: this.telephone,
               intro: this.intro
             })
-          } else {
-            return
           }
-        }
-        if (modifyResponse.data === true) {
-          localStorage.setItem('name', this.name)
-          localStorage.setItem('gender', this.gender)
-          localStorage.setItem('campus', this.campus)
-          localStorage.setItem('telephone', this.telephone)
-          if (this.role === this.GLOBAL.role.user) {
-            localStorage.setItem('dormitory', this.dormitory)
-          } else if (this.role === this.GLOBAL.role.solver) {
-            localStorage.setItem('nickname', this.nickname)
-            localStorage.setItem('intro', this.intro)
+          if (modifyResponse.data === true) {
+            localStorage.setItem('name', this.name)
+            localStorage.setItem('gender', this.gender)
+            localStorage.setItem('campus', this.campus)
+            localStorage.setItem('telephone', this.telephone)
+            if (this.role === this.GLOBAL.role.user) {
+              localStorage.setItem('dormitory', this.dormitory)
+            } else if (this.role === this.GLOBAL.role.solver) {
+              localStorage.setItem('nickname', this.nickname)
+              localStorage.setItem('intro', this.intro)
+            }
+            this.modifyBtnColor = 'brown darken-1'
+            this.Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyAccountInfoSucceed'))
+            this.modifyAccountInfoLoading = false
+            this.disabled = true
+            this.nameCounter = false
+            this.nicknameCounter = false
+            this.telephoneCounter = false
+            this.introCounter = false
+          } else { // 修改失败，显示提示信息并刷新页面
+            this.Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyAccountInfoFailed'))
+            location.reload()
           }
-          this.modifyBtnColor = 'brown darken-1'
-          Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyAccountInfoSucceed'))
-          this.disabled = true
-        } else { // 修改失败，显示提示信息并刷新页面
-          Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyAccountInfoFailed'))
-          location.reload()
         }
       }
     },
     modifyPassword: function () {
-      Bus.$emit('tokenCheck')
+      this.Bus.$emit('tokenCheck')
       this.modifyPasswordDialog = true
     },
     submitNewPassword: async function () {
-      this.$v.$touch()
+      this.$v.presentPassword.$touch()
+      this.$v.modifiedPassword.$touch()
+      this.$v.reModifiedPassword.$touch()
       if (this.presentPasswordErrors.length === 0 && this.modifiedPasswordErrors.length === 0 && this.reModifiedPasswordErrors.length === 0) {
         if (this.modifiedPassword !== this.reModifiedPassword) { // 当两次输入的新密码不一样时
           this.modifiedPassword = ''
           this.reModifiedPassword = ''
-          Bus.$emit('setSnackbar', this.$i18n.t('user.account.reModifiedPasswordErr'))
+          this.Bus.$emit('setSnackbar', this.$i18n.t('user.account.reModifiedPasswordErr'))
           return
         }
+
+        if (this.modifiedPassword === this.presentPassword) {
+          this.modifiedPassword = ''
+          this.reModifiedPassword = ''
+          this.Bus.$emit('setSnackbar', this.$i18n.t('user.account.sameModifiedPasswordErr'))
+          return
+        }
+
+        this.submitNewPasswordLoading = true
 
         this.axios.post('/api/user/modifyPassword', { // 调用修改密码接口
           presentPassword: this.presentPassword,
           modifiedPassword: this.modifiedPassword
         }).then((Response) => {
+          this.submitNewPasswordLoading = false
           if (Response.data === true) {
-            Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyPasswordSucceed'))
+            this.Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyPasswordSucceed'))
             this.$refs.passwordForm.reset() // 重置表单
             this.modifyPasswordDialog = false
           } else if (Response.data === 'present password error') {
-            Bus.$emit('setSnackbar', this.$i18n.t('user.account.presentPasswordErr'))
+            this.Bus.$emit('setSnackbar', this.$i18n.t('user.account.presentPasswordErr'))
             this.presentPassword = ''
           } else {
-            Bus.$emit('setSnackbar', this.$i18n.t('user.account.unknownErr'))
+            this.Bus.$emit('setSnackbar', this.$i18n.t('user.account.unknownErr'))
           }
         })
       }
@@ -455,7 +497,7 @@ export default {
       this.logoutDialog = true
     },
     logout () {
-      Bus.$emit('modifyLoginStatus', 'logout')
+      this.Bus.$emit('modifyLoginStatus', 'logout')
     }
   }
 }

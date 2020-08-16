@@ -7,9 +7,11 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import common from '@/../server/common'
 import store from '@/store'
+import Bus from './Bus'
 
 Vue.config.productionTip = false
 Vue.prototype.GLOBAL = common // 引入全局变量
+Vue.prototype.Bus = Bus
 
 Vue.use(VueI18n)
 Vue.use(VueAxios, axios)

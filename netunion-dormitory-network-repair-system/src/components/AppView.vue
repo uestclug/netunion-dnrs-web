@@ -123,10 +123,10 @@
     <Snackbar/>
 
     <!-- USER: Create Oreder -->
-    <CreateOrderUser v-if="role === GLOBAL.role.user"/>
+    <CreateOrderUser/>
 
     <!-- Solver: Create Oreder -->
-    <CreateOrderSolver v-else-if="role === GLOBAL.role.solver"/>
+    <CreateOrderSolver/>
 
     <!-- Global Bus Methods -->
     <BusMethods/>
@@ -151,7 +151,6 @@ export default {
     source: String
   },
   data: () => ({
-    role: null,
     drawer: null,
     languages: [
       { text: '简体中文' },
@@ -159,8 +158,9 @@ export default {
     ],
     darkModeSwitch: false
   }),
-  created: function () {
-    this.role = this.$store.state.role
+  beforeCreate () {
+  },
+  created () {
     this.setDefaultLanguage()
     this.setDefaultMode()
   },

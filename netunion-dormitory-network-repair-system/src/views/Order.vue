@@ -11,7 +11,6 @@
 </template>
 
 <script>
-import Bus from '@/Bus'
 import LatestOrder from '@/components/Order/LatestOrder'
 import AcceptedOrder from '@/components/Order/AcceptedOrder'
 import OrderList from '@/components/Order/OrderList'
@@ -27,7 +26,7 @@ export default {
     OrderList
   },
   beforeCreate () {
-    Bus.$emit('tokenCheck')
+    this.Bus.$emit('tokenCheck')
   },
   created () {
     this.role = this.$store.state.role

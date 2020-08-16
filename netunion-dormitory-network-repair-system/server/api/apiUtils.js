@@ -56,7 +56,8 @@ async function latestOrderStatusCheck (user_id) {
  * 生成随机订单号
  * 通过当前时间和 user_id 和随机数拼接成随机订单号。
  */
-function generateOrderId (nowDate, userId) {
+function generateOrderId (userId) {
+  const nowDate = new Date()
   const year = nowDate.getFullYear()
   const month = utils.prefixZero(nowDate.getMonth() + 1, 2)
   const day = utils.prefixZero(nowDate.getDate(), 2)

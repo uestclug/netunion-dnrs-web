@@ -196,8 +196,6 @@
 </template>
 
 <script>
-import Bus from '@/Bus'
-
 export default {
   name: 'LatestOrder',
   data: () => ({
@@ -216,7 +214,7 @@ export default {
   }),
   methods: {
     toCancelOrderDialog () {
-      Bus.$emit('tokenCheck')
+      this.Bus.$emit('tokenCheck')
       this.cancelDialog = true
     },
     cancelOrder: async function () {
@@ -225,11 +223,11 @@ export default {
       })
       if (Response.data === true) {
         this.orderStatus = this.$i18n.t('order.canceledByUserStatus')
-        Bus.$emit('setSnackbar', this.$i18n.t('order.cancelSucceed'))
+        this.Bus.$emit('setSnackbar', this.$i18n.t('order.cancelSucceed'))
         this.cancelDialog = false
         this.cancelDisabled = true
       } else {
-        Bus.$emit('modifyLoginStatus', 'unknownErr')
+        this.Bus.$emit('modifyLoginStatus', 'unknownErr')
       }
     }
   },

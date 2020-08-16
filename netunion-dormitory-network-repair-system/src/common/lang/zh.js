@@ -13,12 +13,16 @@ module.exports = {
     darkMode: '夜间模式'
   },
   home: {
-    welcome: {
+    welcomeUser: {
       words: '别担心，',
       slogan: '宿舍网络问题找我们！'
     },
-    infoNote: {
+    infoNoteUser: {
       note: '我们建议您首先检查网络是否欠费并试着重启路由器'
+    },
+    welcomeSolver: {
+      words: '现在，',
+      slogan: '去做一些平凡却有意义的事吧！'
     }
   },
   user: {
@@ -37,6 +41,8 @@ module.exports = {
       intro: '个人简介',
       nameMaxLengthErr: '姓名最长 20 字符',
       nicknameMaxLengthErr: '昵称最长 30 字符',
+      telephoneNumericErr: '联系电话应该由数字组成',
+      telephoneMaxLengthErr: '联系电话最长输入 11 字符',
       introMaxLengthErr: '个人简介最长 50 字符',
       modifyAccountInfoNote: '再次点击按钮可保存修改信息。',
       modifyAccountInfoSucceed: '已保存修改信息！',
@@ -50,6 +56,7 @@ module.exports = {
       modifiedPasswordRequiredErr: '您需要输入新的密码',
       reModifiedPasswordRequiredErr: '您需要再次输入新密码',
       reModifiedPasswordErr: '两次输入的新密码不相同，请重新输入',
+      sameModifiedPasswordErr: '修改后的密码和当前密码相同，请重新输入',
       modifyPasswordSucceed: '修改密码成功！',
       presentPasswordErr: '当前密码错误，请重新输入',
       unknownErr: '发生不明错误，密码修改失败',
@@ -82,33 +89,69 @@ module.exports = {
     canceledByUserStatus: '订单取消',
     canceledBySolverStatus: '订单被取消',
     finishedStatus: '订单完成',
+    recordedStatus: '登记完成',
     unknownStatus: '订单穿越了银河系',
     cancelSucceed: '订单取消成功',
     createOrder: {
-      create: '新建网络报修订单',
-      cancelTip: '已填写内容不会消失',
-      submit: '提交',
-      cancel: '取消',
-      nameLabel: '姓名',
-      genderLabel: '性别',
-      telephoneLabel: '联系电话',
-      campusLabel: '所处校区',
-      dormitoryLabel: '寝室地址',
-      descriptionLabel: '描述（可选）',
-      nameMaxLengthErr: '姓名最长输入 20 字符',
-      nameRequiredErr: '嗨，请告诉我们您的姓名',
-      telephoneMaxLengthErr: '电话最长输入 11 字符',
-      telephoneRequiredErr: '联系电话是我们沟通的桥梁',
-      genderRequiredErr: '我们会为您指配正确的 SOLVER',
-      campusRequiredErr: '两个校区的 SOLVER 同样尽心尽责',
-      dormitoryRequiredErr: '填写您的宿舍楼栋与寝室号，我们整装待发',
-      descriptionHint: '添加您的空闲时间或对具体情况的描述可以帮助我们更好地解决问题',
-      autoEnter: '自动填写',
-      autoEnterNote: '将根据您的个人资料自动填写表单',
-      orderStatusErr: '您有正在进行中的订单，无法创建新的订单',
-      orderStatusCheckErr: '订单信息获取失败',
-      createFailed: '订单创建失败，请来电抱怨！',
-      createSucceed: '订单创建成功，我们会尽快为您处理！'
+      user: {
+        create: '新建网络报修订单',
+        cancelTip: '已填写内容不会消失',
+        submit: '提交',
+        cancel: '取消',
+        nameLabel: '姓名',
+        genderLabel: '性别',
+        telephoneLabel: '联系电话',
+        campusLabel: '所处校区',
+        dormitoryLabel: '寝室地址',
+        descriptionLabel: '描述（可选）',
+        nameMaxLengthErr: '姓名最长输入 20 字符',
+        nameRequiredErr: '嗨，请告诉我们您的姓名',
+        telephoneNumericErr: '联系电话应该由数字组成',
+        telephoneMaxLengthErr: '联系电话最长输入 11 字符',
+        telephoneRequiredErr: '联系电话是我们沟通的桥梁',
+        genderRequiredErr: '我们会为您指配正确的 SOLVER',
+        campusRequiredErr: '两个校区的 SOLVER 同样尽心尽责',
+        dormitoryRequiredErr: '填写您的宿舍楼栋与寝室号，我们整装待发',
+        descriptionHint: '添加您的空闲时间或对具体情况的描述可以帮助我们更好地解决问题',
+        autoEnter: '自动填写',
+        autoEnterNote: '将根据您的个人资料自动填写表单',
+        orderStatusErr: '您有正在进行中的订单，无法创建新的订单',
+        orderStatusCheckErr: '订单信息获取失败',
+        createFailed: '订单创建失败，请来电抱怨！',
+        createSucceed: '订单创建成功，我们会尽快为您处理！'
+      },
+      solver: {
+        reset: '重置表单',
+        resetTip: '是否将已填写内容清空？',
+        resetConfirm: '确认重置',
+        create: '添加网络报修记录',
+        cancelTip: '已填写内容不会消失',
+        submit: '提交',
+        cancel: '取消',
+        nameLabel: '用户姓名（可选）',
+        genderLabel: '用户性别（可选）',
+        telephoneLabel: '用户联系电话（可选）',
+        campusLabel: '用户所处校区',
+        dormitoryLabel: '用户寝室地址',
+        statusLabel: '订单状态',
+        descriptionLabel: '用户情况描述（可选）',
+        recordLabel: '网络维修记录（可选）',
+        nameMaxLengthErr: '姓名最长输入 20 字符',
+        telephoneNumericErr: '希望……电话是数字就好了',
+        telephoneMaxLengthErr: '电话最长输入 11 字符',
+        campusRequiredErr: '您需要选择目标寝室的所处校区',
+        dormitoryRequiredErr: '您需要填写宿舍楼栋与寝室号',
+        statusRequiredErr: '您需要选择订单状态',
+        descriptionHint: '添加用户网络的具体情况可以帮助处理者更快找到解决方案',
+        recordHint: '添加网络维修的具体情况可以帮助我们更好地记录与进步',
+        createFailed: '记录订单失败，也许是服务器炸了！',
+        createSucceed: '记录订单成功，感谢您的付出！',
+        statusTooltipDefault: '在此处选择订单状态',
+        statusTooltipWaiting: '此订单可以被所有处理者接取',
+        statusTooltipReceipted: '此订单由您创建并接取',
+        statusTooltipRecorded: '此订单由您创建并完成',
+        statusTooltipUnexpected: '此订单状态值为预期之外的值，建议刷新页面'
+      }
     },
     latestOrder: {
       title: '最近的订单',
@@ -145,5 +188,9 @@ module.exports = {
     infoCheckFailed: '用户信息检查失败，请重新登陆！',
     unknownFailed: '时代变了！请重新登陆。',
     tokenCheckFailed: '账户凭证过期或错误，请重新登录！'
+  },
+  error: {
+    underControl: '发生了意料之内的状况，正在刷新页面！',
+    beyondControl: '天哪发生了意外之料的错误误误，快关页闭面，别回头！'
   }
 }

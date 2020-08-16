@@ -16,8 +16,6 @@
 </template>
 
 <script>
-import Bus from '@/Bus'
-
 export default {
   name: 'Snackbar',
   data: () => ({
@@ -26,7 +24,7 @@ export default {
     snackbarText: 'Nothing ever happened'
   }),
   mounted () {
-    Bus.$on('setSnackbar', (msg) => { // 弹出显示 msg 内容的 snackbar
+    this.Bus.$on('setSnackbar', (msg) => { // 弹出显示 msg 内容的 snackbar
       this.snackbarText = msg
       this.snackbar = true
     })

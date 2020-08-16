@@ -13,12 +13,16 @@ module.exports = {
     darkMode: 'DARK MODE'
   },
   home: {
-    welcome: {
+    welcomeUser: {
       words: 'Don\'t worry.',
       slogan: 'We are the solvers of dormitory network problems!'
     },
-    infoNote: {
+    infoNoteUser: {
       note: 'We highly recommend you to check if the network is in arrears and try to restart the router'
+    },
+    welcomeSolver: {
+      words: 'Hey, sir!',
+      slogan: 'How about do something ordinary but meaningful.'
     }
   },
   user: {
@@ -37,6 +41,8 @@ module.exports = {
       intro: 'Introduction',
       nameMaxLengthErr: 'Name no more than 20 characters',
       nicknameMaxLengthErr: 'Nickname no more than 30 characters',
+      telephoneNumericErr: 'Telephone should be numeric',
+      telephoneMaxLengthErr: 'Telephone must be at most 11 characters long',
       introMaxLengthErr: 'Personal intro no more than 50 characters',
       modifyAccountInfoNote: 'Click botton again to save changes.',
       modifyAccountInfoSucceed: 'Save successfully!',
@@ -50,6 +56,7 @@ module.exports = {
       modifiedPasswordRequiredErr: 'New password needed',
       reModifiedPasswordRequiredErr: 'Please input your new password again',
       reModifiedPasswordErr: 'The new passwords you entered are different. Please re-enter',
+      sameModifiedPasswordErr: 'The new password you entered are same with the present. Please re-enter',
       modifyPasswordSucceed: 'You have modified your password!',
       presentPasswordErr: 'Present password wrong, please enter again',
       unknownErr: 'Unknown errors happened. Modify password failed',
@@ -80,35 +87,71 @@ module.exports = {
     waitingStatus: 'waiting',
     receiptedStatus: 'receipted',
     canceledByUserStatus: 'canceled by user',
-    canceledBySolverStatus: 'canceled',
+    canceledBySolverStatus: 'canceled by solver',
     finishedStatus: 'finished',
+    recordedStatus: 'recorded',
     unknownStatus: 'unknown',
     cancelSucceed: 'You cancelled this order successfully',
     createOrder: {
-      create: 'CREATE NEW ORDER',
-      cancelTip: 'completed content will not reset',
-      submit: 'SUBMIT',
-      cancel: 'CANCEL',
-      nameLabel: 'Name',
-      genderLabel: 'Gender',
-      telephoneLabel: 'Telephone',
-      campusLabel: 'Campus',
-      dormitoryLabel: 'Dormitory',
-      descriptionLabel: 'Description (optional)',
-      nameMaxLengthErr: 'Name must be at most 20 characters long',
-      nameRequiredErr: 'Name is required',
-      telephoneMaxLengthErr: 'Telephone must be at most 11 characters long',
-      telephoneRequiredErr: 'Telephone is required',
-      campusRequiredErr: 'Campus location is required',
-      genderRequiredErr: 'Make sure to meet right solver',
-      dormitoryRequiredErr: 'Dormitory location and number is required',
-      descriptionHint: 'Adding your free time or a description of the situation can help us solve the problem better',
-      autoEnter: 'AUTO',
-      autoEnterNote: 'base on your own information',
-      orderStatusErr: 'You have an order in progress and cannot create a new one',
-      orderStatusCheckErr: 'Failed to get order information',
-      createFailed: 'Order creation failed, please call us to complain!',
-      createSucceed: 'Order created successfully, we will deal with it as soon as possible!'
+      user: {
+        create: 'CREATE NEW ORDER',
+        cancelTip: 'completed content will not reset',
+        submit: 'SUBMIT',
+        cancel: 'CANCEL',
+        nameLabel: 'Name',
+        genderLabel: 'Gender',
+        telephoneLabel: 'Telephone',
+        campusLabel: 'Campus',
+        dormitoryLabel: 'Dormitory',
+        descriptionLabel: 'Description (optional)',
+        nameMaxLengthErr: 'Name must be at most 20 characters long',
+        nameRequiredErr: 'Name is required',
+        telephoneNumericErr: 'Telephone should be numeric',
+        telephoneMaxLengthErr: 'Telephone must be at most 11 characters long',
+        telephoneRequiredErr: 'Telephone is required',
+        campusRequiredErr: 'Campus location is required',
+        genderRequiredErr: 'Make sure to meet right solver',
+        dormitoryRequiredErr: 'Dormitory location and number is required',
+        descriptionHint: 'Adding your free time or a description of the situation can help us solve the problem better',
+        autoEnter: 'AUTO',
+        autoEnterNote: 'base on your own information',
+        orderStatusErr: 'You have an order in progress and cannot create a new one',
+        orderStatusCheckErr: 'Failed to get order information',
+        createFailed: 'Order creation failed, please call us to complain!',
+        createSucceed: 'Order created successfully, we will deal with it as soon as possible!'
+      },
+      solver: {
+        reset: 'RESET',
+        resetTip: 'Confirm to reset the sheet?',
+        resetConfirm: 'CONFIRM',
+        create: 'NEW ORDER RECORD',
+        cancelTip: 'completed content will not reset',
+        submit: 'SUBMIT',
+        cancel: 'CANCEL',
+        nameLabel: 'User Name (optional)',
+        genderLabel: 'User Gender (optional)',
+        telephoneLabel: 'User Telephone (optional)',
+        campusLabel: 'User Campus',
+        dormitoryLabel: 'User Dormitory',
+        statusLabel: 'Order Status',
+        descriptionLabel: 'User Description (optional)',
+        recordLabel: 'Solver Record (optional)',
+        nameMaxLengthErr: 'Name must be at most 20 characters long',
+        telephoneNumericErr: 'Telephone should be numeric',
+        telephoneMaxLengthErr: 'Telephone must be at most 11 characters long',
+        campusRequiredErr: 'Campus location is required',
+        dormitoryRequiredErr: 'Dormitory location and number is required',
+        statusRequiredErr: 'Order status is required',
+        descriptionHint: 'Adding user network details may help solvers find solutions faster',
+        recordHint: 'Adding the specific situation of network maintenance can help us better record and progress',
+        createFailed: 'Failed to record the order, maybe the server exploded!',
+        createSucceed: 'Record order successfully, thanks for your effort!',
+        statusTooltipDefault: 'Select order status here',
+        statusTooltipWaiting: 'The order can be receipted by any solver',
+        statusTooltipReceipted: 'The order is created and receipted by you',
+        statusTooltipRecorded: 'The order is created and finished by you',
+        statusTooltipUnexpected: 'Unexpected order status, try reload the page'
+      }
     },
     latestOrder: {
       title: 'Latest order',
@@ -145,5 +188,9 @@ module.exports = {
     infoCheckFailed: 'User information check failed, please login again!',
     unknownFailed: 'Time has changed! Please login again.',
     tokenCheckFailed: 'Account voucher expired or wrong, please login again!'
+  },
+  error: {
+    underControl: 'The error is UNDER CONTROL, don\'t worry!',
+    beyondControl: 'The error is BEYOND CONTROLLLLL, go, go, don\'t look back!'
   }
 }

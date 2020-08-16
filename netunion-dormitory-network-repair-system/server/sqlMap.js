@@ -39,6 +39,7 @@ const sqlMap = {
       queryOrderInfoByUserId: 'SELECT * FROM' + orderTable + 'WHERE user_id = $1'
     },
     solver: { // 对于 solver 用户组
+      createOrder: 'INSERT INTO' + orderTable + '(order_user_name, order_user_gender, order_user_telephone, order_user_campus, order_user_dormitory, order_user_description, order_solver_record, order_status, order_id, solver_id, create_date, close_date, order_notes) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)',
       // 通过 order_id 接取订单
       setOrderSolver: 'UPDATE' + orderTable + 'SET solver_id = $1 WHERE order_id = $2',
       // 通过 order_user_gender 和 user_campus 查询订单信息
