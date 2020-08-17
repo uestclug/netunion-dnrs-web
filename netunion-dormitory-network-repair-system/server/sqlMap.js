@@ -57,7 +57,11 @@ const sqlMap = {
     // 通过 order_id 设置订单状态
     setOrderStatus: 'UPDATE' + orderTable + 'SET order_status = $1 WHERE order_id = $2',
     // 通过 solver_id 查询 solver 信息
-    querySolverInfo: 'SELECT a.name, a.telephone, a.intro, a.nickname FROM' + accountTable + 'AS a,' + orderTable + 'AS o WHERE a.user_id = o.solver_id AND o.solver_id = $1'
+    querySolverInfo: 'SELECT a.name, a.telephone, a.intro, a.nickname FROM' + accountTable + 'AS a,' + orderTable + 'AS o WHERE a.user_id = o.solver_id AND o.solver_id = $1',
+    // 获取 order 总数
+    countOrderLength: 'SELECT count(*) FROM' + orderTable,
+    // 获取 orderList 中的数据
+    queryOrderList: 'SELECT o.*, a.name AS solver_name, a.nickname AS solver_nickname FROM' + orderTable + 'AS o LEFT JOIN' + accountTable + 'AS a ON a.user_id = o.solver_id ORDER BY o.create_date DESC LIMIT $1 OFFSET $2'
   }
 }
 

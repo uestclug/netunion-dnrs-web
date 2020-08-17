@@ -9,87 +9,17 @@
         class="mx-auto"
         max-width="800"
       >
+        <v-toolbar flat class="body-1 pt-2">
+          <v-toolbar-title>{{ $t('user.statistics.title') }}</v-toolbar-title>
+          <v-divider class="mx-4"/>
+        </v-toolbar>
         <v-card-text>
-          <p class="subtitle-1">{{ $t('user.statistics.title') }}<v-divider></v-divider></p>
-
-          <v-simple-table>
-            <tbody v-if="role === GLOBAL.role.user">
-              <tr>
-                <td>{{ $t('user.statistics.finishedOrderTime') }}</td>
-                <td>{{ finishedOrderTime }}</td>
-              </tr>
-              <tr>
-                <td>{{ $t('user.statistics.firstOrderDate') }}</td>
-                <td>{{ firstOrderDate }}</td>
-              </tr>
-              <tr>
-                <td>{{ $t('user.statistics.firstOrderSolver') }}</td>
-                <td>{{ firstOrderSolver }}</td>
-              </tr>
-              <tr>
-                <td>{{ $t('user.statistics.lastOrderDate') }}</td>
-                <td>{{ lastOrderDate }}</td>
-              </tr>
-              <tr>
-                <td>{{ $t('user.statistics.lastOrderSolver') }}</td>
-                <td>{{ lastOrderSolver }}</td>
-              </tr>
-              <!--
-              <tr>
-                <td>{{ $t('user.statistics.unlockedSolver') }}</td>
-                <td>2 人</td>
-              </tr>
-              <tr>
-                <td>{{ $t('user.statistics.bestSolver') }}</td>
-                <td>Mary</td>
-              </tr>
-              <tr>
-                <td>{{ $t('user.statistics.bestSolverOrderedTime') }}</td>
-                <td>3 次</td>
-              </tr>
-              -->
-            </tbody>
-            <tbody v-else-if="role === GLOBAL.role.solver">
-              <tr>
-                <td>{{ $t('user.statistics.finishedOrderTimeTotally') }}</td>
-                <td>{{ finishedOrderTimeTotally }}</td>
-              </tr>
-              <tr>
-                <td>{{ $t('user.statistics.finishedOrderTimeMonthly') }}</td>
-                <td>{{ finishedOrderTimeMonthly }}</td>
-              </tr>
-              <tr>
-                <td>{{ $t('user.statistics.firstOrderDate') }}</td>
-                <td>{{ firstOrderDate }}</td>
-              </tr>
-              <tr>
-                <td>{{ $t('user.statistics.firstOrderUser') }}</td>
-                <td>{{ firstOrderUser }}</td>
-              </tr>
-              <tr>
-                <td>{{ $t('user.statistics.lastOrderDate') }}</td>
-                <td>{{ lastOrderDate }}</td>
-              </tr>
-              <tr>
-                <td>{{ $t('user.statistics.lastOrderUser') }}</td>
-                <td>{{ lastOrderUser }}</td>
-              </tr>
-              <!--
-              <tr>
-                <td>{{ $t('user.statistics.unlockedUser') }}</td>
-                <td>2 人</td>
-              </tr>
-              <tr>
-                <td>{{ $t('user.statistics.bestUser') }}</td>
-                <td>Mary</td>
-              </tr>
-              <tr>
-                <td>{{ $t('user.statistics.bestUserOrderedTime') }}</td>
-                <td>3 次</td>
-              </tr>
-              -->
-            </tbody>
-          </v-simple-table>
+          <v-data-table
+            :headers="statisticsHeaders"
+            :items="statistics"
+            hide-default-footer
+          >
+          </v-data-table>
         </v-card-text>
       </v-card>
     </v-hover>
@@ -109,7 +39,10 @@ export default {
     firstOrderSolver: '-',
     lastOrderDate: '-',
     lastOrderUser: '-',
-    lastOrderSolver: '-'
+    lastOrderSolver: '-',
+    unlockedUser: '-',
+    bestUser: '-',
+    bestUserOrderedTime: '-'
   }),
   created: async function () {
     this.role = this.$store.state.role
@@ -134,7 +67,95 @@ export default {
         this.firstOrderUser = statisticsInfo.first_finished_order_user_name
         this.lastOrderDate = statisticsInfo.latest_finished_order_date
         this.lastOrderUser = statisticsInfo.latest_finished_order_user_name
+        this.unlockedUser = statisticsInfo.unlocked_user
+        this.bestUser = statisticsInfo.best_user
+        this.bestUserOrderedTime = statisticsInfo.best_user_ordered_time
       }
+    }
+  },
+  computed: {
+    statisticsHeaders () { // 统计表格的头部
+      const headers = [
+        {
+          text: this.$i18n.t('user.statistics.statisticsTitle'),
+          align: 'start',
+          sortable: false,
+          value: 'statisticsTitle'
+        },
+        {
+          text: this.$i18n.t('user.statistics.statisticsValue'),
+          sortable: false,
+          value: 'statisticsValue'
+        }
+      ]
+      return headers
+    },
+    statistics () {
+      let statistics
+      if (this.role === this.GLOBAL.role.user) {
+        statistics = [
+          {
+            statisticsTitle: this.$i18n.t('user.statistics.finishedOrderTime'),
+            statisticsValue: this.finishedOrderTime + this.$i18n.t('user.statistics.orders')
+          },
+          {
+            statisticsTitle: this.$i18n.t('user.statistics.firstOrderDate'),
+            statisticsValue: this.firstOrderDate
+          },
+          {
+            statisticsTitle: this.$i18n.t('user.statistics.firstOrderSolver'),
+            statisticsValue: this.firstOrderSolver
+          },
+          {
+            statisticsTitle: this.$i18n.t('user.statistics.lastOrderDate'),
+            statisticsValue: this.lastOrderDate
+          },
+          {
+            statisticsTitle: this.$i18n.t('user.statistics.lastOrderSolver'),
+            statisticsValue: this.lastOrderSolver
+          }
+        ]
+      } else if (this.role === this.GLOBAL.role.solver) {
+        statistics = [
+          {
+            statisticsTitle: this.$i18n.t('user.statistics.finishedOrderTimeTotally'),
+            statisticsValue: this.finishedOrderTimeTotally + this.$i18n.t('user.statistics.orders')
+          },
+          {
+            statisticsTitle: this.$i18n.t('user.statistics.finishedOrderTimeMonthly'),
+            statisticsValue: this.finishedOrderTimeMonthly + this.$i18n.t('user.statistics.orders')
+          },
+          {
+            statisticsTitle: this.$i18n.t('user.statistics.firstOrderDate'),
+            statisticsValue: this.firstOrderDate
+          },
+          {
+            statisticsTitle: this.$i18n.t('user.statistics.firstOrderUser'),
+            statisticsValue: this.firstOrderUser
+          },
+          {
+            statisticsTitle: this.$i18n.t('user.statistics.lastOrderDate'),
+            statisticsValue: this.lastOrderDate
+          },
+          {
+            statisticsTitle: this.$i18n.t('user.statistics.lastOrderUser'),
+            statisticsValue: this.lastOrderUser
+          },
+          {
+            statisticsTitle: this.$i18n.t('user.statistics.unlockedUser'),
+            statisticsValue: this.unlockedUser + this.$i18n.t('user.statistics.people')
+          },
+          {
+            statisticsTitle: this.$i18n.t('user.statistics.bestUser'),
+            statisticsValue: this.bestUser
+          },
+          {
+            statisticsTitle: this.$i18n.t('user.statistics.bestUserOrderedTime'),
+            statisticsValue: this.bestUserOrderedTime + this.$i18n.t('user.statistics.times')
+          }
+        ]
+      }
+      return statistics
     }
   }
 }

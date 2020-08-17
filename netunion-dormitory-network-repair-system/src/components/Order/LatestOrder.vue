@@ -9,9 +9,11 @@
         class="mx-auto"
         max-width="800"
       >
+        <v-toolbar flat class="body-1 pt-2">
+          <v-toolbar-title>{{ $t('order.latestOrder.title') }}</v-toolbar-title>
+          <v-divider class="mx-4"/>
+        </v-toolbar>
         <v-card-text>
-          <p class="subtitle-1">{{ $t('order.latestOrder.title') }}<v-divider></v-divider></p>
-
           <v-row>
             <v-col
               cols="6"

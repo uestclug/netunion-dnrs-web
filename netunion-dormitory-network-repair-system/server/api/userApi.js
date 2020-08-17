@@ -204,7 +204,7 @@ router.post('/getUserStatisticsInfo', async function (req, res) {
 router.post('/getSolverStatisticsInfo', async function (req, res) {
   const flag = await apiUtils.checkToken(req)
   if (flag) {
-    console.log('get solver statistics info.')
+    // console.log('get solver statistics info.')
     res.send(true)
   }
 })

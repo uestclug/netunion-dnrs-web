@@ -66,6 +66,8 @@ module.exports = {
     },
     statistics: {
       title: 'Statistics',
+      statisticsTitle: 'TITLE',
+      statisticsValue: 'VALUE',
       finishedOrderTime: 'Order Time',
       firstOrderDate: 'First Order Date',
       firstOrderSolver: 'First Order Solver',
@@ -80,7 +82,10 @@ module.exports = {
       lastOrderUser: 'Last Order User',
       unlockedUser: 'Unlocked User Number',
       bestUser: 'Best User of You',
-      bestUserOrderedTime: 'and You Helped He/She'
+      bestUserOrderedTime: 'and You Helped He/She',
+      orders: ' times',
+      times: ' times',
+      people: ''
     }
   },
   order: {
@@ -91,6 +96,7 @@ module.exports = {
     finishedStatus: 'finished',
     recordedStatus: 'recorded',
     unknownStatus: 'unknown',
+    viewAllOrders: 'VIEW ALL ORDERS',
     cancelSucceed: 'You cancelled this order successfully',
     createOrder: {
       user: {
@@ -129,7 +135,7 @@ module.exports = {
         submit: 'SUBMIT',
         cancel: 'CANCEL',
         nameLabel: 'User Name (optional)',
-        genderLabel: 'User Gender (optional)',
+        genderLabel: 'User Gender',
         telephoneLabel: 'User Telephone (optional)',
         campusLabel: 'User Campus',
         dormitoryLabel: 'User Dormitory',
@@ -137,6 +143,7 @@ module.exports = {
         descriptionLabel: 'User Description (optional)',
         recordLabel: 'Solver Record (optional)',
         nameMaxLengthErr: 'Name must be at most 20 characters long',
+        genderRequiredErr: 'Gender is required',
         telephoneNumericErr: 'Telephone should be numeric',
         telephoneMaxLengthErr: 'Telephone must be at most 11 characters long',
         campusRequiredErr: 'Campus location is required',

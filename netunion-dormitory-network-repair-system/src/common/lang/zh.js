@@ -66,6 +66,8 @@ module.exports = {
     },
     statistics: {
       title: '统计信息',
+      statisticsTitle: '项目',
+      statisticsValue: '统计',
       finishedOrderTime: '完成订单次数',
       firstOrderDate: '第一次完成订单日期',
       firstOrderSolver: '第一次的处理者',
@@ -80,7 +82,10 @@ module.exports = {
       lastOrderUser: '最近一次用户名',
       unlockedUser: '遇见的用户数（不重复）',
       bestUser: '最佳用户',
-      bestUserOrderedTime: '以及你帮助 Ta 的次数'
+      bestUserOrderedTime: '以及你帮助 Ta 的次数',
+      orders: ' 个',
+      times: ' 次',
+      people: ' 人'
     }
   },
   order: {
@@ -92,6 +97,7 @@ module.exports = {
     recordedStatus: '登记完成',
     unknownStatus: '订单穿越了银河系',
     cancelSucceed: '订单取消成功',
+    viewAllOrders: '查看所有订单',
     createOrder: {
       user: {
         create: '新建网络报修订单',
@@ -129,7 +135,7 @@ module.exports = {
         submit: '提交',
         cancel: '取消',
         nameLabel: '用户姓名（可选）',
-        genderLabel: '用户性别（可选）',
+        genderLabel: '用户性别',
         telephoneLabel: '用户联系电话（可选）',
         campusLabel: '用户所处校区',
         dormitoryLabel: '用户寝室地址',
@@ -137,6 +143,7 @@ module.exports = {
         descriptionLabel: '用户情况描述（可选）',
         recordLabel: '网络维修记录（可选）',
         nameMaxLengthErr: '姓名最长输入 20 字符',
+        genderRequiredErr: '您需要选择用户的性别',
         telephoneNumericErr: '希望……电话是数字就好了',
         telephoneMaxLengthErr: '电话最长输入 11 字符',
         campusRequiredErr: '您需要选择目标寝室的所处校区',
@@ -174,6 +181,18 @@ module.exports = {
       description: '订单描述',
       telephone: '联系电话',
       date: '订单日期'
+    },
+    orderList: {
+      title: '订单列表',
+      header: {
+        userName: '用户名',
+        userGender: '性别',
+        userCampus: '校区',
+        userDormitory: '寝室',
+        status: '订单状态',
+        solverName: '处理者',
+        actions: '操作'
+      }
     }
   },
   login: {

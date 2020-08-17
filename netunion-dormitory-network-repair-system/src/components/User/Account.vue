@@ -9,9 +9,11 @@
         class="mx-auto"
         max-width="800"
       >
+        <v-toolbar flat class="body-1 pt-2">
+          <v-toolbar-title>{{ $t('user.account.title') }}</v-toolbar-title>
+          <v-divider class="mx-4"/>
+        </v-toolbar>
         <v-card-text>
-          <p class="subtitle-1">{{ $t('user.account.title') }}<v-divider></v-divider></p>
-
           <v-row>
             <v-col cols="6">
               <p class="body-1 pt-2"><v-icon>mdi-account-outline</v-icon>

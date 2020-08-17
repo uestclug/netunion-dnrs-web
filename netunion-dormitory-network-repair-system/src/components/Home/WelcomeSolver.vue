@@ -23,6 +23,13 @@
           >
             <v-icon left>mdi-pencil</v-icon> {{ $t('order.createOrder.solver.create') }}
           </v-btn>
+          <v-btn
+            text
+            color="blue-grey lighten-2"
+            style="margin: 0px 0px 10px 10px"
+            router-link
+            to="/Order"
+          >{{ $t('order.viewAllOrders') }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-hover>

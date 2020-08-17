@@ -176,4 +176,45 @@ router.post('/cancelOrderByUser', async function (req, res) {
   }
 })
 
+/**
+ * 获取订单总数
+ */
+router.post('/countOrderLength', (req, res) => {
+  conn.query($sql.order.countOrderLength, (error, result) => {
+    if (error) {
+      console.log(error)
+      res.send(false)
+    } else {
+      res.send(result.rows[0].count)
+    }
+  })
+})
+
+/**
+ * 获取订单列表
+ * 默认每页获取十条订单记录
+ */
+router.post('/queryOrderList', async function (req, res) {
+  const flag = await apiUtils.checkToken(req)
+  if (flag) {
+    const reqBody = req.body
+    const page = reqBody.page
+    const limitNum = 10
+    const offsetNum = (page - 1) * limitNum
+    const sqlData = [limitNum, offsetNum]
+
+    conn.query($sql.order.queryOrderList, sqlData, (error, result) => {
+      if (error) {
+        console.log(error)
+        res.send(false)
+      } else {
+        const orderItems = result.rows
+        res.send(orderItems)
+      }
+    })
+  } else {
+    res.send(false)
+  }
+})
+
 module.exports = router

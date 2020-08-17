@@ -59,7 +59,7 @@
                   ></v-text-field>
                 </v-col>
 
-                <!-- 性别表单 -->
+                <!-- 性别选择器 -->
                 <v-col
                   cols="3"
                 >
@@ -67,6 +67,9 @@
                     v-model="gender"
                     :items="genderItems"
                     :label="genderLabel"
+                    :error-messages="genderErrors"
+                    @input="$v.gender.$touch()"
+                    @blur="$v.gender.$touch()"
                   ></v-select>
                 </v-col>
 
@@ -214,6 +217,9 @@ export default {
     name: {
       maxLength: maxLength(20)
     },
+    gender: {
+      required
+    },
     campus: {
       required
     },
@@ -233,6 +239,12 @@ export default {
       const errors = []
       if (!this.$v.name.$dirty) return errors
       !this.$v.name.maxLength && errors.push(this.$i18n.t('order.createOrder.solver.nameMaxLengthErr'))
+      return errors
+    },
+    genderErrors () {
+      const errors = []
+      if (!this.$v.gender.$dirty) return errors
+      !this.$v.gender.required && errors.push(this.$i18n.t('order.createOrder.solver.genderRequiredErr'))
       return errors
     },
     campusErrors () {
@@ -291,7 +303,7 @@ export default {
       } else if (this.status === this.$i18n.t('order.recordedStatus')) {
         return this.$i18n.t('order.createOrder.solver.statusTooltipRecorded')
       } else {
-        return this.$i18n.t('order.createOrder.solver.statusTooltipUnexpected')
+        return this.$i18n.t('order.createOrder.solver.statusTooltipDefault')
       }
     },
     descriptionLabel () {
@@ -310,9 +322,9 @@ export default {
   methods: {
     submit () {
       this.$v.$touch()
-      if (this.nameErrors.length === 0 && this.campusErrors.length === 0 &&
-      this.dormitoryErrors.length === 0 && this.telephoneErrors.length === 0 &&
-      this.statusErrors.length === 0) {
+      if (this.nameErrors.length === 0 && this.genderErrors.length === 0 &&
+      this.campusErrors.length === 0 && this.dormitoryErrors.length === 0 &&
+      this.telephoneErrors.length === 0 && this.statusErrors.length === 0) {
         this.submitLoading = true // 设置加载状态
 
         let description = this.description
