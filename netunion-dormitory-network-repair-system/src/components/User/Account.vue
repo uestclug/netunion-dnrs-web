@@ -246,6 +246,8 @@
             color="success"
             @click="logout"
             class="subtitle-2"
+            :loading="logoutLoading"
+            :disabled="logoutLoading"
           >{{ $t('user.account.confirm') }}</v-btn>
         </v-card-actions>
       </v-card>
@@ -279,6 +281,7 @@ export default {
     reModifiedPassword: '',
     modifyAccountInfoLoading: false,
     submitNewPasswordLoading: false,
+    logoutLoading: false,
     nameCounter: false,
     nicknameCounter: false,
     telephoneCounter: false,
@@ -499,6 +502,7 @@ export default {
       this.logoutDialog = true
     },
     logout () {
+      this.logoutLoading = true
       this.Bus.$emit('modifyLoginStatus', 'logout')
     }
   }

@@ -57,6 +57,8 @@
             <v-btn
               color="success"
               @click="submit"
+              :loading="loading"
+              :disabled="loading"
             >{{ $t('login.submit') }}<v-icon right>mdi-arrow-right</v-icon></v-btn>
           </v-row>
         </v-card-actions>
@@ -74,7 +76,8 @@ export default {
   data: () => ({
     username: '',
     pwd: '',
-    showPassword: false
+    showPassword: false,
+    loading: false
   }),
   mixins: [validationMixin],
   validations: {
@@ -109,6 +112,7 @@ export default {
     submit () { // 登录验证
       this.$v.$touch()
       if (this.usernameErrors.length === 0 && this.pwdErrors.length === 0) { // 无报错内容时
+        this.loading = true
         const password = this.pwd // 加密密码
         const stdId = this.username
         localStorage.setItem('std_id', stdId)
@@ -147,8 +151,8 @@ export default {
             })
           } else { // 登录失败
             this.pwd = ''
-            // 显示提示登录失败的消息条
-            this.Bus.$emit('setSnackbar', this.$i18n.t('login.loginFailed'))
+            this.Bus.$emit('setSnackbar', this.$i18n.t('login.loginFailed')) // 显示提示登录失败的消息条
+            this.loading = false
           }
         })
       }

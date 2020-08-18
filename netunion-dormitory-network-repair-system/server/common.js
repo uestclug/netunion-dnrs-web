@@ -1,5 +1,13 @@
 /* 存储前后端通用的全局变量 */
 const common = {
+  gender: { // 用户性别
+    male: '男(Male)',
+    female: '女(Female)'
+  },
+  campus: { // 用户所在校区
+    qingshuihe: '清水河校区(Qingshuihe Campus)',
+    shahe: '沙河校区(Shahe Campus)'
+  },
   status: { // 订单状态
     waiting: 'waiting',
     receipted: 'receipted',

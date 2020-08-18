@@ -181,6 +181,20 @@ module.exports = {
       description: 'Description',
       telephone: 'Telephone',
       date: 'Date'
+    },
+    orderList: {
+      title: 'ORDER LIST',
+      header: {
+        userName: 'USER',
+        userGender: 'GENDER',
+        userCampus: 'CAMPUS',
+        userDormitory: 'DORMITORY',
+        status: 'STATUS',
+        solverName: 'SOLVER',
+        actions: 'ACTIONS',
+        createDate: 'CREATE DATE',
+        orderOpenTime: 'OPEN TIME'
+      }
     }
   },
   login: {

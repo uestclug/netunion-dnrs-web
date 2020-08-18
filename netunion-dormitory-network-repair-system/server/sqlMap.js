@@ -36,7 +36,9 @@ const sqlMap = {
       // 添加新的订单
       createOrder: 'INSERT INTO' + orderTable + '(order_user_name, order_user_gender, order_user_telephone, order_user_campus, order_user_dormitory, order_user_description, create_date, order_status, order_id, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)',
       // 通过 user_id 查询所有该用户创建的订单信息
-      queryOrderInfoByUserId: 'SELECT * FROM' + orderTable + 'WHERE user_id = $1'
+      queryOrderInfoByUserId: 'SELECT * FROM' + orderTable + 'WHERE user_id = $1',
+      // 将等待中的订单关闭
+      closeOrder: 'UPDATE' + orderTable + 'SET solver_id = null, order_status = \'canceled by user\', close_date = $1 WHERE order_id = $2'
     },
     solver: { // 对于 solver 用户组
       createOrder: 'INSERT INTO' + orderTable + '(order_user_name, order_user_gender, order_user_telephone, order_user_campus, order_user_dormitory, order_user_description, order_solver_record, order_status, order_id, solver_id, create_date, close_date, order_notes) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)',

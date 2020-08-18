@@ -191,7 +191,9 @@ module.exports = {
         userDormitory: '寝室',
         status: '订单状态',
         solverName: '处理者',
-        actions: '操作'
+        actions: '操作',
+        createDate: '创建日期',
+        orderOpenTime: '进行时间'
       }
     }
   },

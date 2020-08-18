@@ -122,17 +122,6 @@
                     </v-chip>
                     {{ item.order_user_description }}
                   </v-col>
-                  <v-col cols="12" v-if="item.create_date">
-                    <v-chip
-                      small
-                      label
-                      outlined
-                    >
-                      <v-icon small left>mdi-clock-fast</v-icon>
-                      订单创建日期
-                    </v-chip>
-                    {{ item.create_date }}
-                  </v-col>
                   <v-col cols="12" v-if="item.solver_name">
                     <v-chip
                       small
@@ -465,6 +454,14 @@ export default {
         {
           text: this.$i18n.t('order.orderList.header.userCampus'),
           value: 'order_user_campus'
+        },
+        {
+          text: this.$i18n.t('order.orderList.header.createDate'),
+          value: 'create_date'
+        },
+        {
+          text: this.$i18n.t('order.orderList.header.orderOpenTime'),
+          value: 'order_open_time'
         },
         {
           text: this.$i18n.t('order.orderList.header.status'),

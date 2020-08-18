@@ -32,7 +32,7 @@ router.post('/createOrderUser', async function (req, res) {
       const order_status = $common.status.waiting // 设置等待接单
       const user_id = reqBody.user_id
       const order_id = apiUtils.generateOrderId(user_id) // 根据用户的 user_id 生成订单号
-      const create_date = new Date().toLocaleString()
+      const create_date = new Date().getTime()
       const sqlData = [user_name, user_gender, user_telephone, user_campus, user_dormitory, user_description, create_date, order_status, order_id, user_id]
 
       conn.query($sql.order.user.createOrder, sqlData, (error) => {
@@ -67,10 +67,9 @@ router.post('/createOrderSolver', async function (req, res) {
     const order_status = reqBody.order_status
     const user_description = reqBody.user_description
     const solver_record = reqBody.solver_record
-    const nowDate = new Date()
     let solver_id = reqBody.user_id
     const order_id = apiUtils.generateOrderId(solver_id) // 根据处理者的 user_id 生成订单号
-    const create_date = nowDate.toLocaleString()
+    const create_date = new Date().getTime()
 
     let notes = null
     let close_date = null
@@ -131,6 +130,8 @@ router.post('/getLatestOrderInfo', async function (req, res) {
     const latestOrder = await apiUtils.getLatestOrderInfo(user_id)
 
     if (latestOrder) { // 获取到最近订单信息
+      latestOrder.create_date = new Date(parseInt(latestOrder.create_date)).toLocaleString()
+      latestOrder.close_date = new Date(parseInt(latestOrder.close_date)).toLocaleString()
       res.send(latestOrder)
     } else { // 用户无最近的订单记录或查询失败
       res.send(false)
@@ -150,14 +151,15 @@ router.post('/cancelOrderByUser', async function (req, res) {
     const user_id = req.body.user_id
     const order_id = req.body.order_id
 
-    const sqlData = [order_id]
-    conn.query($sql.order.queryOrderInfoByOrderId, sqlData, (error, result) => {
+    conn.query($sql.order.queryOrderInfoByOrderId, [order_id], (error, result) => {
       if (error) {
         console.log(error)
         res.send(false)
       } else { // 查询订单信息成功
         if (result.rowCount == 1 && result.rows[0].user_id == user_id) { // 当订单号属于该用户时
-          conn.query($sql.order.setOrderStatus, [$common.status.canceledByUser, order_id], (error) => {
+          const close_date = new Date().getTime()
+
+          conn.query($sql.order.user.closeOrder, [close_date, order_id], (error) => {
             if (error) {
               console.log(error)
               res.send(false)
@@ -223,6 +225,9 @@ router.post('/queryOrderList', async function (req, res) {
         res.send(false)
       } else {
         const orderItems = result.rows
+        const min = 60000 // 60 * 1000 ms
+        const hour = 3600000 // 60 * 60 * 1000 ms
+        const day = 86400000 // 24 * 60 * 60 * 1000 ms
         for (let i = 0; i < orderItems.length; i++) {
           // 添加 is_solver 项
           let is_solver = false
@@ -235,6 +240,41 @@ router.post('/queryOrderList', async function (req, res) {
           if (orderItems[i].order_user_name == '') {
             orderItems[i].order_user_name = '[未填写]'
           }
+
+          // 简化订单用户性别项
+          if (orderItems[i].order_user_gender == $common.gender.male) {
+            orderItems[i].order_user_gender = '男'
+          } else if (orderItems[i].order_user_gender == $common.gender.female) {
+            orderItems[i].order_user_gender = '女'
+          }
+
+          // 简化订单用户所处校区项
+          if (orderItems[i].order_user_campus == $common.campus.qingshuihe) {
+            orderItems[i].order_user_campus = '清水河校区'
+          } else if (orderItems[i].order_user_campus == $common.campus.shahe) {
+            orderItems[i].order_user_campus = '沙河校区'
+          }
+
+          // 根据时间计算并添加 order_open_time 项
+          let orderOpenTime = null
+          if (orderItems[i].close_date != null) {
+            orderOpenTime = orderItems[i].close_date - orderItems[i].create_date
+          } else {
+            orderOpenTime = new Date().getTime() - orderItems[i].create_date
+          }
+          if (orderOpenTime < hour) {
+            orderItems[i].order_open_time = Math.floor(orderOpenTime / min) + ' min'
+          } else if (orderOpenTime < day) {
+            orderItems[i].order_open_time = Math.floor(orderOpenTime / hour) + ' hour'
+          } else {
+            const valueDay = Math.floor(orderOpenTime / day) + ' d'
+            const valueHour = (Math.floor(orderOpenTime / hour) - 24 * valueDay) + ' h'
+            orderItems[i].order_open_time = valueDay + ' ' + valueHour
+          }
+
+          // 实例化当前时间
+          orderItems[i].create_date = new Date(parseInt(orderItems[i].create_date)).toLocaleString()
+          if (orderItems[i].close_date != null) orderItems[i].close_date = new Date(parseInt(orderItems[i].close_date)).toLocaleString()
         }
         res.send(orderItems)
       }
@@ -290,7 +330,7 @@ router.post('/finishOrder', async function (req, res) {
     const order = await apiUtils.queryOrderInfoByOrderId(order_id)
     if (order !== null) {
       if (order.solver_id == user_id && order.order_status === $common.status.receipted) {
-        const close_date = new Date().toLocaleString()
+        const close_date = new Date().getTime()
         const sqlData = [close_date, order_id]
         conn.query($sql.order.solver.finishOrder, sqlData, (error, result) => {
           if (error) {
@@ -393,7 +433,7 @@ router.post('/closeOrder', async function (req, res) {
     if (order !== null) {
       if (order.order_status === $common.status.waiting ||
         (order.solver_id == user_id && order.order_status === $common.status.receipted)) {
-        const close_date = new Date().toLocaleString()
+        const close_date = new Date().getTime()
         const notes = 'The order is closed by solver_id: ' + user_id
         const sqlData = [close_date, notes, order_id]
         conn.query($sql.order.solver.closeOrder, sqlData, (error, result) => {

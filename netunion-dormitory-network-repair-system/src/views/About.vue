@@ -23,7 +23,6 @@ export default {
   },
   created () {
     this.role = this.$store.state.role
-    console.log('about page role: ' + this.role)
   }
 }
 </script>
