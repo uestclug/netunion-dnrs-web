@@ -68,39 +68,16 @@
       <v-toolbar-title>{{ $t($route.meta.viewTitle) }}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-app-bar-nav-icon>
-        <div class='hideOnPhone'>
-          <v-select
-            v-model="defaultLanguage"
-            :items="languages"
-            hide-details
-            prepend-icon="mdi-translate"
-            @change="switchLanguage"
-            style="width: 140px; margin: auto 120px auto auto"
-          >
-          </v-select>
-        </div>
-        <div class="showOnlyOnPhone">
-          <v-menu bottom left>
-            <template v-slot:activator="{ on }">
-              <v-btn
-                icon
-                v-on="on"
-              >
-                <v-icon>mdi-translate</v-icon>
-              </v-btn>
-            </template>
-
-            <v-list>
-              <v-list-item
-                v-for="(language, i) in languages"
-                :key="i"
-                @click="switchLanguage(language.text)"
-              >
-                <v-list-item-title>{{ language.text }}</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </div>
+        <v-select
+          v-model="defaultLanguage"
+          :items="languages"
+          hide-details
+          prepend-icon="mdi-translate"
+          @click:prepend="changeLanguage"
+          @change="switchLanguage"
+          style="width: 140px; margin: auto 120px auto auto"
+        >
+        </v-select>
       </v-app-bar-nav-icon>
     </v-app-bar>
 
@@ -177,6 +154,17 @@ export default {
         this.$i18n.locale = 'en-US'
       }
       localStorage.setItem('defaultLanguage', id)
+    },
+    changeLanguage () { // 点击 icon 一键切换语言
+      if (this.$i18n.locale === 'zh-CN') {
+        this.$i18n.locale = 'en-US'
+        this.defaultLanguage = 'ENGLISH'
+        localStorage.setItem('defaultLanguage', 'ENGLISH')
+      } else {
+        this.$i18n.locale = 'zh-CN'
+        this.defaultLanguage = '简体中文'
+        localStorage.setItem('defaultLanguage', '简体中文')
+      }
     },
     setDefaultMode () { // 使用 localStorage 保存界面夜间模式
       const ddm = localStorage.getItem('defaultDarkMode')

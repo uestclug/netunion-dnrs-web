@@ -191,27 +191,225 @@ router.post('/countOrderLength', (req, res) => {
 })
 
 /**
- * 获取订单列表
+ * 获取订单接口
  * 默认每页获取十条订单记录
  */
 router.post('/queryOrderList', async function (req, res) {
   const flag = await apiUtils.checkToken(req)
   if (flag) {
     const reqBody = req.body
+    const userId = reqBody.user_id
     const page = reqBody.page
+    const filter = reqBody.filter
     const limitNum = 10
     const offsetNum = (page - 1) * limitNum
-    const sqlData = [limitNum, offsetNum]
+    let sql
+    let sqlData
 
-    conn.query($sql.order.queryOrderList, sqlData, (error, result) => {
+    if (filter === $common.filter.relevant) {
+      sql = $sql.order.queryOrderListRelevant
+      sqlData = [userId, limitNum, offsetNum]
+    } else if (filter === $common.filter.all) {
+      sql = $sql.order.queryOrderListAll
+      sqlData = [limitNum, offsetNum]
+    } else if (filter === $common.filter.available) {
+      sql = $sql.order.queryOrderListAvailable
+      sqlData = [userId, limitNum, offsetNum]
+    }
+
+    conn.query(sql, sqlData, (error, result) => {
       if (error) {
         console.log(error)
         res.send(false)
       } else {
         const orderItems = result.rows
+        for (let i = 0; i < orderItems.length; i++) {
+          // 添加 is_solver 项
+          let is_solver = false
+          if (orderItems[i].solver_id == userId) {
+            is_solver = true
+          }
+          orderItems[i].is_solver = is_solver
+
+          // 若用户名为空，则修改本项
+          if (orderItems[i].order_user_name == '') {
+            orderItems[i].order_user_name = '[未填写]'
+          }
+        }
         res.send(orderItems)
       }
     })
+  } else {
+    res.send(false)
+  }
+})
+
+/**
+ * 处理者接取订单接口
+ */
+router.post('/receiptOrder', async function (req, res) {
+  const flag = await apiUtils.checkToken(req)
+  if (flag) {
+    const reqBody = req.body
+    const order_id = reqBody.order_id
+    const user_id = reqBody.user_id
+
+    const order = await apiUtils.queryOrderInfoByOrderId(order_id)
+    if (order !== null) {
+      if (order.solver_id == null && order.order_status === $common.status.waiting) {
+        const sqlData = [user_id, order_id]
+        conn.query($sql.order.solver.receiptOrder, sqlData, (error, result) => {
+          if (error) {
+            console.log(error)
+            res.send(false)
+          } else {
+            res.send(true)
+          }
+        })
+      } else {
+        res.send(false)
+      }
+    } else {
+      res.send(false)
+    }
+  } else {
+    res.send(false)
+  }
+})
+
+/**
+ * 处理者设置订单完成接口
+ */
+router.post('/finishOrder', async function (req, res) {
+  const flag = await apiUtils.checkToken(req)
+  if (flag) {
+    const reqBody = req.body
+    const order_id = reqBody.order_id
+    const user_id = reqBody.user_id
+
+    const order = await apiUtils.queryOrderInfoByOrderId(order_id)
+    if (order !== null) {
+      if (order.solver_id == user_id && order.order_status === $common.status.receipted) {
+        const close_date = new Date().toLocaleString()
+        const sqlData = [close_date, order_id]
+        conn.query($sql.order.solver.finishOrder, sqlData, (error, result) => {
+          if (error) {
+            console.log(error)
+            res.send(false)
+          } else {
+            res.send(true)
+          }
+        })
+      } else {
+        res.send(false)
+      }
+    } else {
+      res.send(false)
+    }
+  } else {
+    res.send(false)
+  }
+})
+
+/**
+ * 重置处理者关闭的订单接口
+ */
+router.post('/restoreOrder', async function (req, res) {
+  const flag = await apiUtils.checkToken(req)
+  if (flag) {
+    const reqBody = req.body
+    const order_id = reqBody.order_id
+    const user_id = reqBody.user_id
+
+    const order = await apiUtils.queryOrderInfoByOrderId(order_id)
+    if (order !== null) {
+      if (order.order_status === $common.status.canceledBySolver) {
+        const notes = 'The order is restored by solver_id: ' + user_id
+        const sqlData = [notes, order_id]
+        conn.query($sql.order.solver.restoreOrder, sqlData, (error, result) => {
+          if (error) {
+            console.log(error)
+            res.send(false)
+          } else {
+            res.send(true)
+          }
+        })
+      } else {
+        res.send(false)
+      }
+    } else {
+      res.send(false)
+    }
+  } else {
+    res.send(false)
+  }
+})
+
+/**
+ * 处理者取消已接取的订单接口
+ */
+router.post('/cancelOrder', async function (req, res) {
+  const flag = await apiUtils.checkToken(req)
+  if (flag) {
+    const reqBody = req.body
+    const order_id = reqBody.order_id
+    const user_id = reqBody.user_id
+
+    const order = await apiUtils.queryOrderInfoByOrderId(order_id)
+    if (order !== null) {
+      if (order.solver_id == user_id && order.order_status === $common.status.receipted) {
+        const notes = 'The order is receipted but canceled by solver_id: ' + user_id
+        const sqlData = [notes, order_id]
+        conn.query($sql.order.solver.cancelOrder, sqlData, (error, result) => {
+          if (error) {
+            console.log(error)
+            res.send(false)
+          } else {
+            res.send(true)
+          }
+        })
+      } else {
+        res.send(false)
+      }
+    } else {
+      res.send(false)
+    }
+  } else {
+    res.send(false)
+  }
+})
+
+/**
+ * 处理者关闭订单接口
+ */
+router.post('/closeOrder', async function (req, res) {
+  const flag = await apiUtils.checkToken(req)
+  if (flag) {
+    const reqBody = req.body
+    const order_id = reqBody.order_id
+    const user_id = reqBody.user_id
+
+    const order = await apiUtils.queryOrderInfoByOrderId(order_id)
+    if (order !== null) {
+      if (order.order_status === $common.status.waiting ||
+        (order.solver_id == user_id && order.order_status === $common.status.receipted)) {
+        const close_date = new Date().toLocaleString()
+        const notes = 'The order is closed by solver_id: ' + user_id
+        const sqlData = [close_date, notes, order_id]
+        conn.query($sql.order.solver.closeOrder, sqlData, (error, result) => {
+          if (error) {
+            console.log(error)
+            res.send(false)
+          } else {
+            res.send(true)
+          }
+        })
+      } else {
+        res.send(false)
+      }
+    } else {
+      res.send(false)
+    }
   } else {
     res.send(false)
   }

@@ -135,6 +135,18 @@ function setToken (user_id, token, expiration_date) {
   })
 }
 
+/**
+ * 获取订单信息
+ */
+async function queryOrderInfoByOrderId (order_id) {
+  const sqlData = [order_id]
+
+  const response = await conn.query($sql.order.queryOrderInfoByOrderId, sqlData)
+
+  if (response.rowCount && response.rowCount === 1) return response.rows[0]
+  else return null
+}
+
 module.exports = {
   getLatestOrderInfo,
   latestOrderStatusCheck,
@@ -142,5 +154,6 @@ module.exports = {
   checkToken,
   generateToken,
   generateEncryptedPassword,
-  setToken
+  setToken,
+  queryOrderInfoByOrderId
 }

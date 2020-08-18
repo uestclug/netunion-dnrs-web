@@ -40,17 +40,25 @@ const sqlMap = {
     },
     solver: { // 对于 solver 用户组
       createOrder: 'INSERT INTO' + orderTable + '(order_user_name, order_user_gender, order_user_telephone, order_user_campus, order_user_dormitory, order_user_description, order_solver_record, order_status, order_id, solver_id, create_date, close_date, order_notes) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)',
-      // 通过 order_id 接取订单
-      setOrderSolver: 'UPDATE' + orderTable + 'SET solver_id = $1 WHERE order_id = $2',
       // 通过 order_user_gender 和 user_campus 查询订单信息
       queryOrderInfoByGenderAndCampus: 'SELECT * FROM' + orderTable + 'WHERE order_user_gender = $1 AND order_user_campus = $2',
       // 通过 solver_id 查询所有订单信息
-      queryOrderInfoBySolverId: 'SELECT * FROM' + orderTable + 'WHERE solver_id = $1'
+      queryOrderInfoBySolverId: 'SELECT * FROM' + orderTable + 'WHERE solver_id = $1',
+      // 通过 order_id 接取订单
+      receiptOrder: 'UPDATE' + orderTable + 'SET solver_id = $1, order_status = \'receipted\' WHERE order_id = $2',
+      // 通过 order_id 设置订单完成
+      finishOrder: 'UPDATE' + orderTable + 'SET order_status = \'finished\', close_date = $1 WHERE order_id = $2',
+      // 将处理者关闭的订单重置
+      restoreOrder: 'UPDATE' + orderTable + 'SET solver_id = null, order_status = \'waiting\', close_date = null, order_notes = $1 WHERE order_id = $2',
+      // 将处理者接取的订单取消，回到等待接单状态
+      cancelOrder: 'UPDATE' + orderTable + 'SET solver_id = null, order_status = \'waiting\', order_notes = $1 WHERE order_id = $2',
+      // 将等待中的订单或处理者接取的订单关闭
+      closeOrder: 'UPDATE' + orderTable + 'SET solver_id = null, order_status = \'canceled by solver\', close_date = $1, order_notes = $2 WHERE order_id = $3'
     },
     admin: { // 对于 admin 用户组
 
     },
-    // 通过 order_id 查询所有订单信息
+    // 通过 order_id 查询订单信息
     queryOrderInfoByOrderId: 'SELECT * FROM' + orderTable + 'WHERE order_id = $1',
     // 通过 user_id 和 order_status 查询订单信息
     getSelectedOrder: 'SELECT * FROM' + orderTable + 'WHERE (user_id = $1 AND order_status = $2)',
@@ -60,8 +68,12 @@ const sqlMap = {
     querySolverInfo: 'SELECT a.name, a.telephone, a.intro, a.nickname FROM' + accountTable + 'AS a,' + orderTable + 'AS o WHERE a.user_id = o.solver_id AND o.solver_id = $1',
     // 获取 order 总数
     countOrderLength: 'SELECT count(*) FROM' + orderTable,
-    // 获取 orderList 中的数据
-    queryOrderList: 'SELECT o.*, a.name AS solver_name, a.nickname AS solver_nickname FROM' + orderTable + 'AS o LEFT JOIN' + accountTable + 'AS a ON a.user_id = o.solver_id ORDER BY o.create_date DESC LIMIT $1 OFFSET $2'
+    // 获取 orderList 中的数据（显示可用）
+    queryOrderListAvailable: 'SELECT o.*, a.name AS solver_name, a.nickname AS solver_nickname FROM' + orderTable + 'AS o LEFT JOIN' + accountTable + 'AS a ON a.user_id = o.solver_id WHERE o.order_status = \'waiting\' OR (o.order_status = \'receipted\' AND o.solver_id = $1) ORDER BY o.create_date DESC LIMIT $2 OFFSET $3',
+    // 获取 orderList 中的数据（显示相关）
+    queryOrderListRelevant: 'SELECT o.*, a.name AS solver_name, a.nickname AS solver_nickname FROM' + orderTable + 'AS o LEFT JOIN' + accountTable + 'AS a ON a.user_id = o.solver_id WHERE o.order_status = \'waiting\' OR o.solver_id = $1 ORDER BY o.create_date DESC LIMIT $2 OFFSET $3',
+    // 获取 orderList 中的数据（显示全部）
+    queryOrderListAll: 'SELECT o.*, a.name AS solver_name, a.nickname AS solver_nickname FROM' + orderTable + 'AS o LEFT JOIN' + accountTable + 'AS a ON a.user_id = o.solver_id ORDER BY o.create_date DESC LIMIT $1 OFFSET $2'
   }
 }
 
