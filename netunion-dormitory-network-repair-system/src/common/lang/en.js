@@ -184,6 +184,8 @@ module.exports = {
     },
     orderList: {
       title: 'ORDER LIST',
+      filterLabel: 'ORDER FILTER',
+      loadingMore: 'LOADING MORE',
       header: {
         userName: 'USER',
         userGender: 'GENDER',
@@ -194,6 +196,44 @@ module.exports = {
         actions: 'ACTIONS',
         createDate: 'CREATE DATE',
         orderOpenTime: 'OPEN TIME'
+      },
+      expanded: {
+        telephone: 'TELEPHONE',
+        dormitory: 'DORMITORY',
+        description: 'DESCRIPTION',
+        solverName: 'SOLVER NAME',
+        record: 'SOLVER RECORD',
+        closeDate: 'CLOSE DATE',
+        notes: 'ORDER NOTES',
+        cancelOrder: 'CANCEL ORDER',
+        closeOrder: 'CLOSE ORDER'
+      },
+      actions: {
+        receiptOrderConfirm: 'Are you sure to receive this order?',
+        receiptOrderSucceed: 'Order received successfully! Please deal with it as soon as possible.',
+        receiptOrderFailed: 'Failed to receive the order. Please try again later.',
+        finishOrderConfirm: 'Are you sure to set this order finished?',
+        finishOrderSucceed: 'Order completed! good job!',
+        finishOrderFailed: 'Failed to complete the order. Please try again later.',
+        restoreOrderConfirm: 'The order will return to the status of waiting to be received. Are you sure you want to restore this order?',
+        restoreOrderSucceed: 'Order restore!',
+        restoreOrderFailed: 'Order restore failed. Please try again later.',
+        cancelOrderConfirm: 'The order will return to the status of waiting. Are you sure to cancel this order?',
+        cancelOrderSucceed: 'Order cancelled! Now other solvers can take this order.',
+        cancelOrderFailed: 'Order cancellation failed. Please try again later.',
+        closeOrderConfirm: 'The order will be set to closed status (which does not mean finished). Are you sure you want to close this order?',
+        closeOrderSucceed: 'Order closed!',
+        closeOrderFailed: 'Order closing failed. Please try again later.',
+        deleteOrderConfirm: 'The order will be completely deleted and cannot be restored. Are you sure you want to delete this order?',
+        deleteOrderSucceed: 'Order deleted!',
+        deleteOrderFailed: 'Order deletion failed. Please try again later.'
+      },
+      status: {
+        waiting: 'WAITING',
+        receiptedByYou: 'RECEIVED BY YOU',
+        receipted: 'RECEIVED',
+        closed: 'CLOSED',
+        finished: 'FINISHED'
       }
     }
   },

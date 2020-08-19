@@ -184,6 +184,8 @@ module.exports = {
     },
     orderList: {
       title: '订单列表',
+      filterLabel: '订单过滤',
+      loadingMore: '加载更多',
       header: {
         userName: '用户名',
         userGender: '性别',
@@ -194,6 +196,44 @@ module.exports = {
         actions: '操作',
         createDate: '创建日期',
         orderOpenTime: '进行时间'
+      },
+      expanded: {
+        telephone: '用户联系电话',
+        dormitory: '用户寝室地址',
+        description: '用户情况描述',
+        solverName: '处理者的姓名',
+        record: '处理情况记录',
+        closeDate: '订单关闭日期',
+        notes: '订单备注信息',
+        cancelOrder: '取消此订单',
+        closeOrder: '关闭此订单'
+      },
+      actions: {
+        receiptOrderConfirm: '您确定要接取此订单吗?',
+        receiptOrderSucceed: '接单成功！请尽快处理。',
+        receiptOrderFailed: '接单失败，请稍后重试。',
+        finishOrderConfirm: '您确定要设置本订单已完成吗？',
+        finishOrderSucceed: '订单已完成！干得好！',
+        finishOrderFailed: '设置完成订单失败，请稍后重试。',
+        restoreOrderConfirm: '订单将回到待接取状态，您确定要重置本订单吗？',
+        restoreOrderSucceed: '订单已重置！',
+        restoreOrderFailed: '订单重置失败，请稍后重试。',
+        cancelOrderConfirm: '订单将回到待接取状态，您确定取消本订单吗？',
+        cancelOrderSucceed: '订单已取消！现在其他人可以接取本订单。',
+        cancelOrderFailed: '订单取消失败，请稍后重试。',
+        closeOrderConfirm: '订单将设置为关闭状态（并不意味着已完成），您确定要关闭本订单吗？',
+        closeOrderSucceed: '订单已关闭！',
+        closeOrderFailed: '订单关闭失败，请稍后重试。',
+        deleteOrderConfirm: '订单将被彻底删除并无法复原，您确定要删除本订单吗？',
+        deleteOrderSucceed: '订单已删除！',
+        deleteOrderFailed: '订单删除失败，请稍后重试。'
+      },
+      status: {
+        waiting: '等待',
+        receiptedByYou: '您已接单',
+        receipted: '进行',
+        closed: '关闭',
+        finished: '完成'
       }
     }
   },

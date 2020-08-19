@@ -18,7 +18,7 @@
             v-model="filterSelect"
             dense
             :items="filterItems"
-            label="订单过滤"
+            :label="filterLabel"
             class="mt-5"
             outlined
             @change="changeOrderListFilter"
@@ -52,7 +52,7 @@
                 depressed
                 block
                 @click="loadMoreOrderListItems"
-              >加载更多</v-btn>
+              >{{ $t('order.orderList.loadingMore') }}</v-btn>
             </template>
             <!-- 订单 status 项内容 -->
             <template v-slot:item.order_status="{ item }">
@@ -96,7 +96,7 @@
                       outlined
                     >
                       <v-icon small left>mdi-cellphone</v-icon>
-                      用户联系电话
+                      {{ $t('order.orderList.expanded.telephone') }}
                     </v-chip>
                     {{ item.order_user_telephone }}
                   </v-col>
@@ -107,7 +107,7 @@
                       outlined
                     >
                       <v-icon small left>mdi-map-marker-outline</v-icon>
-                      用户寝室地址
+                      {{ $t('order.orderList.expanded.dormitory') }}
                     </v-chip>
                     {{ item.order_user_dormitory }}
                   </v-col>
@@ -118,7 +118,7 @@
                       outlined
                     >
                       <v-icon small left>mdi-calendar-blank-outline</v-icon>
-                      用户情况描述
+                      {{ $t('order.orderList.expanded.description') }}
                     </v-chip>
                     {{ item.order_user_description }}
                   </v-col>
@@ -129,7 +129,7 @@
                       outlined
                     >
                       <v-icon small left>mdi-card-account-details-outline</v-icon>
-                      处理者的姓名
+                      {{ $t('order.orderList.expanded.solverName') }}
                     </v-chip>
                     {{ item.solver_name }}
                   </v-col>
@@ -140,7 +140,7 @@
                       outlined
                     >
                       <v-icon small left>mdi-calendar-check-outline</v-icon>
-                      处理情况记录
+                      {{ $t('order.orderList.expanded.record') }}
                     </v-chip>
                     {{ item.order_solver_record }}
                   </v-col>
@@ -151,7 +151,7 @@
                       outlined
                     >
                       <v-icon small left>mdi-clock-check-outline</v-icon>
-                      订单关闭日期
+                      {{ $t('order.orderList.expanded.closeDate') }}
                     </v-chip>
                     {{ item.close_date }}
                   </v-col>
@@ -162,7 +162,7 @@
                       outlined
                     >
                       <v-icon small left>mdi-comment-processing-outline</v-icon>
-                      订单备注信息
+                      {{ $t('order.orderList.expanded.notes') }}
                     </v-chip>
                     {{ item.order_notes }}
                   </v-col>
@@ -186,7 +186,7 @@
                     <v-chip
                       label
                       @click="cancelOrder(item)"
-                    >取消此订单</v-chip>
+                    >{{ $t('order.orderList.expanded.cancelOrder') }}</v-chip>
                   </v-col>
                   <v-col
                     cols="auto"
@@ -196,7 +196,7 @@
                     <v-chip
                       label
                       @click="closeOrder(item)"
-                    >关闭此订单</v-chip>
+                    >{{ $t('order.orderList.expanded.closeOrder') }}</v-chip>
                   </v-col>
                   <!--
                   <v-col
@@ -262,45 +262,45 @@ export default {
       this.Bus.$emit('openCreateOrderSolverSheet')
     },
     receiptOrder (item) { // 接取订单，设置订单状态为已接取
-      if (confirm('您确定要接取此订单吗?')) {
+      if (confirm(this.$i18n.t('order.orderList.actions.receiptOrderConfirm'))) {
         this.axios.post('/api/order/receiptOrder', {
           order_id: item.order_id
         }).then((Response) => {
           if (Response.data) {
-            this.Bus.$emit('setSnackbar', '接单成功！')
+            this.Bus.$emit('setSnackbar', this.$i18n.t('order.orderList.actions.receiptOrderSucceed'))
             this.refreshRouter()
           } else {
-            this.Bus.$emit('setSnackbar', '接单失败，请稍后重试。')
+            this.Bus.$emit('setSnackbar', this.$i18n.t('order.orderList.actions.receiptOrderFailed'))
             this.refreshRouter()
           }
         })
       }
     },
     finishOrder (item) { // 设置订单状态为已完成
-      if (confirm('您确定要设置本订单已完成吗？')) {
+      if (confirm(this.$i18n.t('order.orderList.actions.finishOrderConfirm'))) {
         this.axios.post('/api/order/finishOrder', {
           order_id: item.order_id
         }).then((Response) => {
           if (Response.data) {
-            this.Bus.$emit('setSnackbar', '订单已完成！干得好！')
+            this.Bus.$emit('setSnackbar', this.$i18n.t('order.orderList.actions.finishOrderSucceed'))
             this.refreshRouter()
           } else {
-            this.Bus.$emit('setSnackbar', '设置完成订单失败，请稍后重试。')
+            this.Bus.$emit('setSnackbar', this.$i18n.t('order.orderList.actions.finishOrderFailed'))
             this.refreshRouter()
           }
         })
       }
     },
     restoreOrder (item) { // 将 solver 关闭订单的状态设置为待接取
-      if (confirm('订单将回到待接取状态，您确定要重置本订单吗？')) {
+      if (confirm(this.$i18n.t('order.orderList.actions.restoreOrderConfirm'))) {
         this.axios.post('/api/order/restoreOrder', {
           order_id: item.order_id
         }).then((Response) => {
           if (Response.data) {
-            this.Bus.$emit('setSnackbar', '订单已重置！')
+            this.Bus.$emit('setSnackbar', this.$i18n.t('order.orderList.actions.restoreOrderSucceed'))
             this.refreshRouter()
           } else {
-            this.Bus.$emit('setSnackbar', '订单重置失败，请稍后重试。')
+            this.Bus.$emit('setSnackbar', this.$i18n.t('order.orderList.actions.restoreOrderFailed'))
             this.refreshRouter()
           }
         })
@@ -310,37 +310,37 @@ export default {
       console.log('modify')
     },
     cancelOrder (item) { // 取消订单，并设置订单状态为待接取
-      if (confirm('订单将回到待接取状态，您确定取消本订单吗？')) {
+      if (confirm(this.$i18n.t('order.orderList.actions.cancelOrderConfirm'))) {
         this.axios.post('/api/order/cancelOrder', {
           order_id: item.order_id
         }).then((Response) => {
           if (Response.data) {
-            this.Bus.$emit('setSnackbar', '订单已取消！现在其他人可以接取本订单。')
+            this.Bus.$emit('setSnackbar', this.$i18n.t('order.orderList.actions.cancelOrderSucceed'))
             this.refreshRouter()
           } else {
-            this.Bus.$emit('setSnackbar', '订单取消失败，请稍后重试。')
+            this.Bus.$emit('setSnackbar', this.$i18n.t('order.orderList.actions.cancelOrderFailed'))
             this.refreshRouter()
           }
         })
       }
     },
     closeOrder (item) { // 关闭订单，并设置订单状态为处理者关闭
-      if (confirm('订单将设置为关闭状态（并不意味着已完成），您确定要关闭本订单吗？')) {
+      if (confirm(this.$i18n.t('order.orderList.actions.closeOrderConfirm'))) {
         this.axios.post('/api/order/closeOrder', {
           order_id: item.order_id
         }).then((Response) => {
           if (Response.data) {
-            this.Bus.$emit('setSnackbar', '订单已关闭！')
+            this.Bus.$emit('setSnackbar', this.$i18n.t('order.orderList.actions.closeOrderSucceed'))
             this.refreshRouter()
           } else {
-            this.Bus.$emit('setSnackbar', '订单关闭失败，请稍后重试。')
+            this.Bus.$emit('setSnackbar', this.$i18n.t('order.orderList.actions.closeOrderFailed'))
             this.refreshRouter()
           }
         })
       }
     },
     deleteOrder (item) { // 删除订单
-      if (confirm('订单将被彻底删除并无法复原，您确定要删除本订单吗？')) {
+      if (confirm()) {
         console.log('deleted')
       }
     },
@@ -414,21 +414,18 @@ export default {
     },
     getStatusText (status, isSolver) {
       if (status === this.GLOBAL.status.waiting) {
-        return '等待'
+        return this.$i18n.t('order.orderList.status.waiting')
       } else if (status === this.GLOBAL.status.receipted) {
-        if (isSolver) return '您已接单'
-        else return '进行'
+        if (isSolver) return this.$i18n.t('order.orderList.status.receiptedByYou')
+        else return this.$i18n.t('order.orderList.status.receipted')
       } else if (status === this.GLOBAL.status.canceledByUser) {
-        return '关闭'
+        return this.$i18n.t('order.orderList.status.closed')
       } else if (status === this.GLOBAL.status.canceledBySolver) {
-        if (isSolver) return '关闭'
-        else return '关闭'
+        return this.$i18n.t('order.orderList.status.closed')
       } else if (status === this.GLOBAL.status.finished) {
-        if (isSolver) return '完成'
-        else return '完成'
+        return this.$i18n.t('order.orderList.status.finished')
       } else if (status === this.GLOBAL.status.recorded) {
-        if (isSolver) return '完成'
-        else return '完成'
+        return this.$i18n.t('order.orderList.status.finished')
       } else {
         return null
       }
@@ -439,6 +436,9 @@ export default {
     }
   },
   computed: {
+    filterLabel () {
+      return this.$i18n.t('order.orderList.filterLabel')
+    },
     orderListHeaders () {
       const headers = [
         {
