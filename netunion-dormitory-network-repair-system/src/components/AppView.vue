@@ -68,17 +68,22 @@
       <v-toolbar-title>{{ $t($route.meta.viewTitle) }}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-app-bar-nav-icon>
-        <v-select
-          v-model="defaultLanguage"
-          :items="languages"
-          hide-details
-          prepend-icon="mdi-translate"
-          @click:prepend="changeLanguage"
-          @change="switchLanguage"
-          style="width: 140px; margin: auto 120px auto auto"
+        <v-icon
+          @click="changeLanguage"
         >
-        </v-select>
+          mdi-translate
+        </v-icon>
       </v-app-bar-nav-icon>
+      <!-- 小屏幕不显示语言选择器 -->
+      <v-select
+        v-model="defaultLanguage"
+        :items="languages"
+        hide-details
+        @change="switchLanguage"
+        style="max-width: 140px;"
+        class="d-none d-sm-flex"
+      >
+      </v-select>
     </v-app-bar>
 
     <!-- Main View -->

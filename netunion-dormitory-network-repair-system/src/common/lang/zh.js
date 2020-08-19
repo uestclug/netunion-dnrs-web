@@ -185,6 +185,7 @@ module.exports = {
     orderList: {
       title: '订单列表',
       filterLabel: '订单过滤',
+      loadingText: '你电的某台服务器正在拼命加载订单中...',
       loadingMore: '加载更多',
       header: {
         userName: '用户名',

@@ -2,7 +2,7 @@
   display: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   .showOnlyOnPhone {
     display: block !important;
   }
@@ -12,7 +12,7 @@
   display: block;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   .hideOnPhone {
     display: none;
   }

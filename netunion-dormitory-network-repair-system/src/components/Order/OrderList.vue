@@ -42,6 +42,7 @@
             :expanded.sync="expandedOrder"
             calculate-widths
             :loading="orderListLoading"
+            :loading-text="orderListLoadingText"
             hide-default-footer
             multi-sort
           >
@@ -199,13 +200,13 @@
                       depressed
                       v-if="(item.order_status === GLOBAL.status.receipted && item.is_solver)"
                       @click="cancelOrder(item)"
+                      class="mr-2"
                     >{{ $t('order.orderList.expanded.cancelOrder') }}</v-btn>
                     <v-btn
                       small
                       depressed
                       v-if="item.order_status === GLOBAL.status.waiting ||
                       (item.order_status === GLOBAL.status.receipted && item.is_solver)"
-                      class="ml-2"
                       @click="closeOrder(item)"
                     >{{ $t('order.orderList.expanded.closeOrder') }}</v-btn>
                   <!--
@@ -447,6 +448,9 @@ export default {
   computed: {
     filterLabel () {
       return this.$i18n.t('order.orderList.filterLabel')
+    },
+    orderListLoadingText () {
+      return this.$i18n.t('order.orderList.loadingText')
     },
     orderListHeaders () {
       const headers = [

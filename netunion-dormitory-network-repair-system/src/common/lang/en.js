@@ -185,6 +185,7 @@ module.exports = {
     orderList: {
       title: 'ORDER LIST',
       filterLabel: 'ORDER FILTER',
+      loadingText: 'Your Dian\'s server is loading orders...',
       loadingMore: 'LOADING MORE',
       header: {
         userName: 'USER',
