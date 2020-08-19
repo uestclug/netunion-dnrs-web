@@ -41,11 +41,16 @@ const sqlMap = {
       closeOrder: 'UPDATE' + orderTable + 'SET solver_id = null, order_status = \'canceled by user\', close_date = $1 WHERE order_id = $2'
     },
     solver: { // 对于 solver 用户组
+      // 处理者创建新的订单
       createOrder: 'INSERT INTO' + orderTable + '(order_user_name, order_user_gender, order_user_telephone, order_user_campus, order_user_dormitory, order_user_description, order_solver_record, order_status, order_id, solver_id, create_date, close_date, order_notes) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)',
       // 通过 order_user_gender 和 user_campus 查询订单信息
       queryOrderInfoByGenderAndCampus: 'SELECT * FROM' + orderTable + 'WHERE order_user_gender = $1 AND order_user_campus = $2',
       // 通过 solver_id 查询所有订单信息
       queryOrderInfoBySolverId: 'SELECT * FROM' + orderTable + 'WHERE solver_id = $1',
+      // 通过 solver_id 查询进行中的订单信息
+      queryAcceptedOrder: 'SELECT * FROM' + orderTable + 'WHERE order_status = \'receipted\' AND solver_id = $1 ORDER BY create_date',
+      // 获取 orderList 中的数据（显示全部）
+      queryOrderListAll: 'SELECT o.*, a.name AS solver_name, a.nickname AS solver_nickname FROM' + orderTable + 'AS o LEFT JOIN' + accountTable + 'AS a ON a.user_id = o.solver_id ORDER BY o.create_date',
       // 通过 order_id 接取订单
       receiptOrder: 'UPDATE' + orderTable + 'SET solver_id = $1, order_status = \'receipted\' WHERE order_id = $2',
       // 通过 order_id 设置订单完成

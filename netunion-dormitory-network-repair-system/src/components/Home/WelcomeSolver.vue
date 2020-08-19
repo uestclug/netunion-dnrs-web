@@ -25,7 +25,7 @@
           </v-btn>
           <v-btn
             text
-            color="blue-grey lighten-2"
+            color="blue-grey"
             style="margin: 0px 0px 10px 10px"
             router-link
             to="/Order"

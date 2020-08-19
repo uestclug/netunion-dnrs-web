@@ -235,6 +235,21 @@ module.exports = {
         closed: '关闭',
         finished: '完成'
       }
+    },
+    acceptedOrder: {
+      title: '您的订单',
+      telephoneCall: '拨打电话',
+      finishOrder: '完成订单',
+      noOrderTitle: 'Ops,',
+      noOrderSubTitle: '似乎您没有进行中的订单',
+      expanded: {
+        orderId: '订单编号：',
+        description: '订单描述',
+        createDate: '创建日期',
+        openTime: '经过时间',
+        cancelOrder: '取消订单',
+        closeOrder: '关闭订单'
+      }
     }
   },
   login: {

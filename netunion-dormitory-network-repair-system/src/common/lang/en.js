@@ -205,8 +205,8 @@ module.exports = {
         record: 'SOLVER RECORD',
         closeDate: 'CLOSE DATE',
         notes: 'ORDER NOTES',
-        cancelOrder: 'CANCEL ORDER',
-        closeOrder: 'CLOSE ORDER'
+        cancelOrder: 'CANCEL',
+        closeOrder: 'CLOSE'
       },
       actions: {
         receiptOrderConfirm: 'Are you sure to receive this order?',
@@ -234,6 +234,21 @@ module.exports = {
         receipted: 'RECEIVED',
         closed: 'CLOSED',
         finished: 'FINISHED'
+      }
+    },
+    acceptedOrder: {
+      title: 'YOUR ORDERS',
+      telephoneCall: 'CALL',
+      finishOrder: 'FINISH',
+      noOrderTitle: 'Ops,',
+      noOrderSubTitle: 'it seems that you have no order ongoing.',
+      expanded: {
+        orderId: 'ORDER ID: ',
+        description: 'DESCRIPTION',
+        createDate: 'CREATE DATE',
+        openTime: 'OPEN TIME',
+        cancelOrder: 'CANCEL',
+        closeOrder: 'CLOSE'
       }
     }
   },

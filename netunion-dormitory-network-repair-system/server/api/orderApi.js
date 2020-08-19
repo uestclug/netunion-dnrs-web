@@ -179,7 +179,7 @@ router.post('/cancelOrderByUser', async function (req, res) {
 })
 
 /**
- * 获取订单总数
+ * 获取订单总数接口
  */
 router.post('/countOrderLength', (req, res) => {
   conn.query($sql.order.countOrderLength, (error, result) => {
@@ -193,7 +193,74 @@ router.post('/countOrderLength', (req, res) => {
 })
 
 /**
- * 获取订单接口
+ * 处理者获取已接受订单接口
+ */
+router.post('/queryAcceptedOrder', async function (req, res) {
+  const flag = await apiUtils.checkToken(req)
+  if (flag) {
+    const reqBody = req.body
+    const userId = reqBody.user_id
+    const sqlData = [userId]
+
+    conn.query($sql.order.solver.queryAcceptedOrder, sqlData, (error, result) => {
+      if (error) {
+        console.log(error)
+        res.send(false)
+      } else {
+        const orderItems = result.rows
+        const min = 60000 // 60 * 1000 ms
+        const hour = 3600000 // 60 * 60 * 1000 ms
+        const day = 86400000 // 24 * 60 * 60 * 1000 ms
+        for (let i = 0; i < orderItems.length; i++) {
+          // 若用户名为空，则修改本项
+          if (orderItems[i].order_user_name == '') {
+            orderItems[i].order_user_name = '[匿名用户]'
+          }
+
+          // 若寝室地址为空，则修改本项
+          if (orderItems[i].order_user_dormitory == '') {
+            orderItems[i].order_user_dormitory = '[未透露寝室地址]'
+          }
+
+          // 简化订单用户性别项
+          if (orderItems[i].order_user_gender == $common.gender.male) {
+            orderItems[i].order_user_gender = '男'
+          } else if (orderItems[i].order_user_gender == $common.gender.female) {
+            orderItems[i].order_user_gender = '女'
+          }
+
+          // 简化订单用户所处校区项
+          if (orderItems[i].order_user_campus == $common.campus.qingshuihe) {
+            orderItems[i].order_user_campus = '清水河校区'
+          } else if (orderItems[i].order_user_campus == $common.campus.shahe) {
+            orderItems[i].order_user_campus = '沙河校区'
+          }
+
+          // 根据时间计算并添加 order_open_time 项
+          const orderOpenTime = new Date().getTime() - orderItems[i].create_date
+          if (orderOpenTime < hour) {
+            orderItems[i].order_open_time = Math.floor(orderOpenTime / min) + ' min'
+          } else if (orderOpenTime < day) {
+            orderItems[i].order_open_time = Math.floor(orderOpenTime / hour) + ' hour'
+          } else {
+            const valueDay = Math.floor(orderOpenTime / day) + ' d'
+            const valueHour = (Math.floor(orderOpenTime / hour) - 24 * valueDay) + ' h'
+            orderItems[i].order_open_time = valueDay + ' ' + valueHour
+          }
+
+          // 实例化当前时间
+          orderItems[i].create_date = new Date(parseInt(orderItems[i].create_date)).toLocaleString()
+        }
+        res.send(orderItems)
+      }
+    })
+  } else {
+    res.send(false)
+  }
+})
+
+/**
+ * 订单列表获取订单接口
  * 默认每页获取十条订单记录
  */
 router.post('/queryOrderList', async function (req, res) {

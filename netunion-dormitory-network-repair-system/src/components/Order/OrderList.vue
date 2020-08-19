@@ -88,130 +88,139 @@
               >
                 <div class="mt-3"/>
                 <v-row style="word-wrap: break-word; word-break: break-all">
-                  <!-- 订单描述 -->
+                  <!-- 订单用户联系电话 -->
                   <v-col cols="12" v-if="item.order_user_telephone">
                     <v-chip
                       small
                       label
                       outlined
+                      class="mr-1"
                     >
                       <v-icon small left>mdi-cellphone</v-icon>
                       {{ $t('order.orderList.expanded.telephone') }}
                     </v-chip>
-                    {{ item.order_user_telephone }}
+                    <span style="display: inline-block;">{{ item.order_user_telephone }}</span>
                   </v-col>
+                  <!-- 订单寝室地址 -->
                   <v-col cols="12" v-if="item.order_user_dormitory">
                     <v-chip
                       small
                       label
                       outlined
+                      class="mr-1"
                     >
                       <v-icon small left>mdi-map-marker-outline</v-icon>
-                      {{ $t('order.orderList.expanded.dormitory') }}
+                      <span style="display: inline-block;">{{ $t('order.orderList.expanded.dormitory') }}</span>
                     </v-chip>
                     {{ item.order_user_dormitory }}
                   </v-col>
+                  <!-- 订单描述 -->
                   <v-col cols="12" v-if="item.order_user_description">
                     <v-chip
                       small
                       label
                       outlined
+                      class="mr-1"
                     >
                       <v-icon small left>mdi-calendar-blank-outline</v-icon>
                       {{ $t('order.orderList.expanded.description') }}
                     </v-chip>
-                    {{ item.order_user_description }}
+                    <span style="display: inline-block;">{{ item.order_user_description }}</span>
                   </v-col>
+                  <!-- 订单处理者姓名 -->
                   <v-col cols="12" v-if="item.solver_name">
                     <v-chip
                       small
                       label
                       outlined
+                      class="mr-1"
                     >
                       <v-icon small left>mdi-card-account-details-outline</v-icon>
                       {{ $t('order.orderList.expanded.solverName') }}
                     </v-chip>
-                    {{ item.solver_name }}
+                    <span style="display: inline-block;">{{ item.solver_name }}</span>
                   </v-col>
+                  <!-- 订单处理者记录 -->
                   <v-col cols="12" v-if="item.order_solver_record">
                     <v-chip
                       small
                       label
                       outlined
+                      class="mr-1"
                     >
                       <v-icon small left>mdi-calendar-check-outline</v-icon>
                       {{ $t('order.orderList.expanded.record') }}
                     </v-chip>
-                    {{ item.order_solver_record }}
+                    <span style="display: inline-block;">{{ item.order_solver_record }}</span>
                   </v-col>
+                  <!-- 订单关闭日期 -->
                   <v-col cols="12" v-if="item.close_date">
                     <v-chip
                       small
                       label
                       outlined
+                      class="mr-1"
                     >
                       <v-icon small left>mdi-clock-check-outline</v-icon>
                       {{ $t('order.orderList.expanded.closeDate') }}
                     </v-chip>
-                    {{ item.close_date }}
+                    <span style="display: inline-block;">{{ item.close_date }}</span>
                   </v-col>
+                  <!-- 订单备注信息 -->
                   <v-col cols="12" v-if="item.order_notes">
                     <v-chip
                       small
                       label
                       outlined
+                      class="mr-1"
                     >
                       <v-icon small left>mdi-comment-processing-outline</v-icon>
                       {{ $t('order.orderList.expanded.notes') }}
                     </v-chip>
-                    {{ item.order_notes }}
+                    <span style="display: inline-block;">{{ item.order_notes }}</span>
                   </v-col>
                   <!-- 订单额外操作 -->
-                  <!--
                   <v-col
-                    cols="auto"
-                    v-if="item.order_status === GLOBAL.status.waiting ||
-                    (item.order_status === GLOBAL.status.receipted && item.is_solver)"
+                    cols="12"
                   >
-                    <v-chip
+                  <!--
+                    <v-btn
+                      small
+                      depressed
+                      v-if="item.order_status === GLOBAL.status.waiting ||
+                      (item.order_status === GLOBAL.status.receipted && item.is_solver)"
                       label
                       @click="modifyOrder(item)"
-                    >修改订单信息</v-chip>
+                    >修改订单信息</v-btn>
                   </v-col>
                   -->
-                  <v-col
-                    cols="auto"
-                    v-if="(item.order_status === GLOBAL.status.receipted && item.is_solver)"
-                  >
-                    <v-chip
-                      label
+                    <v-btn
+                      small
+                      depressed
+                      v-if="(item.order_status === GLOBAL.status.receipted && item.is_solver)"
                       @click="cancelOrder(item)"
-                    >{{ $t('order.orderList.expanded.cancelOrder') }}</v-chip>
-                  </v-col>
-                  <v-col
-                    cols="auto"
-                    v-if="item.order_status === GLOBAL.status.waiting ||
-                    (item.order_status === GLOBAL.status.receipted && item.is_solver)"
-                  >
-                    <v-chip
-                      label
+                    >{{ $t('order.orderList.expanded.cancelOrder') }}</v-btn>
+                    <v-btn
+                      small
+                      depressed
+                      v-if="item.order_status === GLOBAL.status.waiting ||
+                      (item.order_status === GLOBAL.status.receipted && item.is_solver)"
+                      class="ml-2"
                       @click="closeOrder(item)"
-                    >{{ $t('order.orderList.expanded.closeOrder') }}</v-chip>
-                  </v-col>
+                    >{{ $t('order.orderList.expanded.closeOrder') }}</v-btn>
                   <!--
-                  <v-col
-                    cols="auto"
-                    v-if="item.order_status === GLOBAL.status.canceledByUser ||
-                    item.order_status === GLOBAL.status.canceledBySolver ||
-                    (item.order_status === GLOBAL.status.finished && item.is_solver) ||
-                    (item.order_status === GLOBAL.status.recorded && item.is_solver)"
-                  >
-                    <v-chip
+                    <v-btn
+                      small
+                      depressed
+                      v-if="item.order_status === GLOBAL.status.canceledByUser ||
+                      item.order_status === GLOBAL.status.canceledBySolver ||
+                      (item.order_status === GLOBAL.status.finished && item.is_solver) ||
+                      (item.order_status === GLOBAL.status.recorded && item.is_solver)"
                       label
                       @click="deleteOrder(item)"
-                    >删除此订单</v-chip>
-                  </v-col>
+                    >删除此订单</v-btn>
                   -->
+                  </v-col>
                 </v-row>
                 <div class="mb-3"/>
               </td>

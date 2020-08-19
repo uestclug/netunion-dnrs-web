@@ -5,14 +5,12 @@
     </div>
     <div v-else-if="role === GLOBAL.role.solver">
       <OrderList/>
-      <AcceptedOrder/>
     </div>
   </div>
 </template>
 
 <script>
 import LatestOrder from '@/components/Order/LatestOrder'
-import AcceptedOrder from '@/components/Order/AcceptedOrder'
 import OrderList from '@/components/Order/OrderList'
 
 export default {
@@ -22,7 +20,6 @@ export default {
   name: 'Order',
   components: {
     LatestOrder,
-    AcceptedOrder,
     OrderList
   },
   beforeCreate () {
