@@ -22,7 +22,7 @@ module.exports = {
     },
     welcomeSolver: {
       words: '现在，',
-      slogan: '去做一些平凡却有意义的事吧！'
+      slogan: '予身处至暗时刻者以无边慈光！暗の時まで来た者には限りない慈悲を！'
     }
   },
   user: {
