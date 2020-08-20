@@ -269,5 +269,19 @@ module.exports = {
   error: {
     underControl: 'The error is UNDER CONTROL, don\'t worry!',
     beyondControl: 'The error is BEYOND CONTROLLLLL, go, go, don\'t look back!'
+  },
+  about: {
+    aboutUs: {
+      title: 'WE ARE'
+    },
+    sparklines: {
+      title: 'IN THE PAST 30 DAYS',
+      orders: 'ORDERS',
+      contributor: 'CONTRIBUTOR',
+      createOrder: 'CREATE',
+      createOrderSimple: 'CREATE',
+      finishOrder: 'COMPLETE',
+      finishOrderSimple: 'COMPLETE'
+    }
   }
 }

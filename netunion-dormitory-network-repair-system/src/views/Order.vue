@@ -1,5 +1,5 @@
 <template>
-  <div class="order">
+  <div class="order mt-6 mb-6">
     <div v-if="role === GLOBAL.role.user">
       <LatestOrder/>
     </div>
@@ -22,10 +22,8 @@ export default {
     LatestOrder,
     OrderList
   },
-  beforeCreate () {
-    this.Bus.$emit('tokenCheck')
-  },
   created () {
+    this.Bus.$emit('tokenCheck')
     this.role = this.$store.state.role
   }
 }

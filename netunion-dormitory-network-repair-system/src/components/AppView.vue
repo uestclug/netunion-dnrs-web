@@ -87,9 +87,7 @@
     </v-app-bar>
 
     <!-- Main View -->
-    <div style="margin: 40px 0px 40px 0px">
-      <router-view/>
-    </div>
+    <router-view/>
 
     <!-- Snackbar -->
     <Snackbar/>

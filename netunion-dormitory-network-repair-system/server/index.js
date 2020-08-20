@@ -1,3 +1,4 @@
+const aboutApi = require('./api/aboutApi')
 const logApi = require('./api/logApi')
 const orderApi = require('./api/orderApi')
 const tokenApi = require('./api/tokenApi')
@@ -22,6 +23,7 @@ app.all('*', function (req, res, next) {
 })
 
 // 添加 api 路由
+app.use('/api/about', aboutApi)
 app.use('/api/log', logApi)
 app.use('/api/order', orderApi)
 app.use('/api/token', tokenApi)

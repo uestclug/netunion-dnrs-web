@@ -1,8 +1,8 @@
 <template>
-  <div class="user">
+  <div class="user mt-6 mb-6">
     <div v-if="role === GLOBAL.role.user || role === GLOBAL.role.solver">
       <Account/>
-      <Statistics/>
+      <Statistics v-if="false"/>
     </div>
   </div>
 </template>
@@ -20,10 +20,8 @@ export default {
     Account,
     Statistics
   },
-  beforeCreate () {
-    this.Bus.$emit('tokenCheck')
-  },
   created () {
+    this.Bus.$emit('tokenCheck')
     this.role = this.$store.state.role
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+  <div class="login mt-10">
     <v-container>
       <v-card
         class="mx-auto"
@@ -7,15 +7,25 @@
       >
         <v-card-text>
           <v-row
-            justify="center"
             no-gutters
-            class="mt-3"
+            style="text-align: center"
           >
             <v-col
-              lg="6"
+              class="title mt-4 mb-4"
+            >
+              {{ $t('app.name') }}
+            </v-col>
+          </v-row>
+          <v-row
+            justify="center"
+            no-gutters
+          >
+            <v-col
+              md="6"
             >
               <v-text-field
                 v-model="username"
+                prepend-icon="mdi-account-circle"
                 :error-messages="usernameErrors"
                 :label="usernameLabel"
                 required
@@ -24,17 +34,16 @@
               ></v-text-field>
             </v-col>
           </v-row>
-
           <v-row
             justify="center"
             no-gutters
-            class="mt-3"
           >
             <v-col
-              lg="6"
+              md="6"
             >
               <v-text-field
                 v-model="pwd"
+                prepend-icon="mdi-key"
                 :error-messages="pwdErrors"
                 :label="pwdLabel"
                 required
@@ -48,20 +57,18 @@
           </v-row>
         </v-card-text>
 
-        <v-card-actions>
-          <v-row
-            justify="center"
-            no-gutters
-            class="mb-3"
-          >
-            <v-btn
-              color="success"
-              @click="submit"
-              :loading="loading"
-              :disabled="loading"
-            >{{ $t('login.submit') }}<v-icon right>mdi-arrow-right</v-icon></v-btn>
-          </v-row>
-        </v-card-actions>
+        <v-row
+          justify="center"
+          no-gutters
+        >
+          <v-btn
+            color="success"
+            @click="submit"
+            :loading="loading"
+            :disabled="loading"
+            class="mb-6"
+          >{{ $t('login.submit') }}<v-icon right>mdi-arrow-right</v-icon></v-btn>
+        </v-row>
       </v-card>
     </v-container>
   </div>

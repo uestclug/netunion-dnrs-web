@@ -1,6 +1,6 @@
 module.exports = {
   app: {
-    name: 'UESTC | 学生宿舍网络报修平台'
+    name: '电子科技大学 | 学生宿舍网络报修平台'
   },
   viewTitle: {
     home: '主页',
@@ -260,14 +260,28 @@ module.exports = {
     usernameRequiredErr: '您需要输入您的学号作为用户名',
     pwdRequiredErr: '您需要输入正确的密码进行登录',
     loginFailed: '学号或密码错误，请检查！',
-    loginSucceed: '欢迎你，',
+    loginSucceed: '欢迎回来，',
     logoutSuccess: '您已成功登出。',
     infoCheckFailed: '用户信息检查失败，请重新登陆！',
-    unknownFailed: '时代变了！请重新登陆。',
+    unknownFailed: '时代变了！总而言之请重新登陆。',
     tokenCheckFailed: '账户凭证过期或错误，请重新登录！'
   },
   error: {
     underControl: '发生了意料之内的状况，正在刷新页面！',
     beyondControl: '天哪发生了意外之料的错误误误，快关页闭面，别回头！'
+  },
+  about: {
+    aboutUs: {
+      title: '我们是'
+    },
+    sparklines: {
+      title: '在过去的 30 天里',
+      orders: '份',
+      contributor: '贡献者',
+      createOrder: '创建有效订单',
+      createOrderSimple: '创建订单',
+      finishOrder: '完成有效订单',
+      finishOrderSimple: '完成订单'
+    }
   }
 }

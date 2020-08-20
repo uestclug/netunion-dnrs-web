@@ -17,9 +17,11 @@ NetUnion - 电子科技大学 | 宿舍网络在线报修平台
   - [x] “登录”页面
   - [x] 学生“主页”页面
   - [x] 学生“账户”页面
+  - [x] 学生“订单”页面
   - [ ] 学生“关于我们”页面
-  - [ ] NetUnion成员“主页”页面
-  - [ ] NetUnion成员“账户”页面
+  - [x] NetUnion成员“主页”页面
+  - [x] NetUnion成员“账户”页面
+  - [x] NetUnion成员“订单”页面
   - [ ] NetUnion成员“关于我们”页面
 
 - **语言支持**
@@ -49,7 +51,7 @@ NetUnion - 电子科技大学 | 宿舍网络在线报修平台
 
 - **数据库设计**
 
-  使用 [postgreSQL 11.7](https://www.postgresql.org/) 数据库；
+  使用 [postgreSQL](https://www.postgresql.org/) 数据库；
 
   前端用 [axios](http://www.axios-js.com/) 发送请求，后端 `post` 使用 [body-parser](https://github.com/expressjs/body-parser) 接受请求。
 
@@ -76,9 +78,9 @@ NetUnion - 电子科技大学 | 宿舍网络在线报修平台
 
 - **运维部成员操作**
 
-  - [ ] 自助添加电话报修信息
-  - [ ] 确认完成
-  - [ ] 添加报修服务处理流程
+  - [x] 自助添加电话报修信息
+  - [x] 确认完成
+  - [x] 添加报修服务处理流程
 
 - **报修订单**
 

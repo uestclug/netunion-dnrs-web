@@ -2,6 +2,7 @@
 const accountTable = ' public.account '
 const orderTable = ' public.order '
 const tokenTable = ' public.token '
+const storageTable = ' public.storage '
 
 const sqlMap = {
   token: {
@@ -81,6 +82,26 @@ const sqlMap = {
     queryOrderListRelevant: 'SELECT o.*, a.name AS solver_name, a.nickname AS solver_nickname FROM' + orderTable + 'AS o LEFT JOIN' + accountTable + 'AS a ON a.user_id = o.solver_id WHERE o.order_status = \'waiting\' OR o.solver_id = $1 ORDER BY o.create_date DESC LIMIT $2 OFFSET $3',
     // 获取 orderList 中的数据（显示全部）
     queryOrderListAll: 'SELECT o.*, a.name AS solver_name, a.nickname AS solver_nickname FROM' + orderTable + 'AS o LEFT JOIN' + accountTable + 'AS a ON a.user_id = o.solver_id ORDER BY o.create_date DESC LIMIT $1 OFFSET $2'
+  },
+  about: {
+    // 获取近一个月创建的有效订单
+    queryCreateOrderInfo: 'SELECT order_id, order_status, create_date FROM' + orderTable + 'WHERE create_date > $1 AND order_status <> \'canceled by solver\' AND order_status <> \'canceled by user\' ORDER BY create_date',
+    // 从 storage 中获取近一个月创建订单数
+    queryCreateOrderMonthly: '',
+    // 向 storage 中更新近一个月创建订单数
+    updateCreateOrderMonthly: '',
+    // 获取近一个月完成的有效订单
+    queryFinishedOrderInfo: 'SELECT order_id, order_status, create_date FROM' + orderTable + 'WHERE create_date > $1 AND (order_status = \'finished\' OR order_status = \'recorded\') ORDER BY create_date',
+    // 从 storage 中获取近一个月完成订单数
+    queryFinishedOrderMonthly: '',
+    // 向 storage 中更新近一个月完成订单数
+    updateFinishedOrderMonthly: '',
+    // 获取处理者近一个月完成的有效订单数（从完成数多到少排序）
+    queryMostValuableSolverInfo: 'SELECT count(o.*) AS finish_order_count, a.user_id , a.name, a.nickname, a.intro FROM' + orderTable + 'AS o LEFT JOIN' + accountTable + 'AS a ON o.solver_id = a.user_id WHERE o.close_date > $1 AND (o.order_status = \'finished\' OR o.order_status = \'recorded\') GROUP BY a.user_id, a.name, a.nickname, a.intro ORDER BY finish_order_count DESC',
+    // 从 storage 中获取近一个月的最佳处理者
+    queryMostValuableSolverMonthly: '',
+    // 向 storage 中更新近一个月的最佳处理者
+    updateMostValuableSolverMonthly: ''
   }
 }
 
