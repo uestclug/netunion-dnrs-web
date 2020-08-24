@@ -5,7 +5,7 @@
       app
       v-model="drawer"
     >
-    <v-list-item>
+      <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="title mb-2">
             {{ $t('app.shortName') }}

@@ -1,6 +1,6 @@
 <template>
   <v-main>
-    <AppView/>
+    <AppView style="cursor: default"/>
   </v-main>
 </template>
 

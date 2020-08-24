@@ -16,8 +16,8 @@
         <v-card-text>
           <v-row>
             <v-col cols="6">
-              <p class="body-1 pt-2"><v-icon>mdi-account-outline</v-icon>
-                {{ $t('user.account.name') }}
+              <p class="body-1 pt-2">
+                <v-icon left>mdi-account-outline</v-icon>{{ $t('user.account.name') }}
               </p>
             </v-col>
             <v-col cols="6">
@@ -32,8 +32,8 @@
               ></v-text-field>
             </v-col>
             <v-col cols="6" v-if="role === GLOBAL.role.solver">
-              <p class="body-1 pt-2"><v-icon>mdi-account-tie-outline</v-icon>
-                {{ $t('user.account.nickname') }}
+              <p class="body-1 pt-2">
+                <v-icon left>mdi-account-tie-outline</v-icon>{{ $t('user.account.nickname') }}
               </p>
             </v-col>
             <v-col cols="6" v-if="role === GLOBAL.role.solver">
@@ -48,8 +48,8 @@
               ></v-text-field>
             </v-col>
             <v-col cols="6">
-              <p class="body-1 pt-2"><v-icon>mdi-gender-male-female</v-icon>
-                {{ $t('user.account.gender') }}
+              <p class="body-1 pt-2">
+                <v-icon left>mdi-gender-male-female</v-icon>{{ $t('user.account.gender') }}
               </p>
             </v-col>
             <v-col cols="6">
@@ -61,8 +61,8 @@
               ></v-select>
             </v-col>
             <v-col cols="6">
-              <p class="body-1 pt-2"><v-icon>mdi-domain</v-icon>
-                {{ $t('user.account.campus') }}
+              <p class="body-1 pt-2">
+                <v-icon left>mdi-domain</v-icon>{{ $t('user.account.campus') }}
               </p>
             </v-col>
             <v-col cols="6">
@@ -74,8 +74,8 @@
               ></v-select>
             </v-col>
             <v-col cols="6" v-if="role === GLOBAL.role.user">
-              <p class="body-1 pt-2"><v-icon>mdi-map-marker-outline</v-icon>
-                {{ $t('user.account.location') }}
+              <p class="body-1 pt-2">
+                <v-icon left>mdi-map-marker-outline</v-icon>{{ $t('user.account.location') }}
               </p>
             </v-col>
             <v-col cols="6" v-if="role === GLOBAL.role.user">
@@ -86,8 +86,8 @@
               ></v-text-field>
             </v-col>
             <v-col cols="6">
-              <p class="body-1 pt-2"><v-icon>mdi-cellphone</v-icon>
-                {{ $t('user.account.telephone') }}
+              <p class="body-1 pt-2">
+                <v-icon left>mdi-cellphone</v-icon>{{ $t('user.account.telephone') }}
               </p>
             </v-col>
             <v-col cols="6">
@@ -102,8 +102,8 @@
               ></v-text-field>
             </v-col>
             <v-col cols="6" v-if="role === GLOBAL.role.solver">
-              <p class="body-1 pt-2"><v-icon>mdi-badge-account-horizontal-outline</v-icon>
-                {{ $t('user.account.intro') }}
+              <p class="body-1 pt-2">
+                <v-icon left>mdi-badge-account-horizontal-outline</v-icon>{{ $t('user.account.intro') }}
               </p>
             </v-col>
             <v-col cols="6" v-if="role === GLOBAL.role.solver">
