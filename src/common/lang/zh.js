@@ -1,6 +1,7 @@
 module.exports = {
   app: {
-    name: '电子科技大学 | 学生宿舍网络报修平台'
+    name: '电子科技大学 | 学生宿舍网络报修平台',
+    shortName: '网络报修平台'
   },
   viewTitle: {
     home: '主页',

@@ -6,7 +6,7 @@
     >
       <v-card
         :elevation="hover ? 16 : 2"
-        class="mx-auto"
+        class="mx-auto transition-swing"
         max-width="800"
       >
         <v-toolbar flat class="body-1 pt-2">
