@@ -1,6 +1,50 @@
-# 网络在线报修系统
+# netunion-dormitory-network-repair-system
 
 NetUnion - 电子科技大学 | 宿舍网络在线报修平台
+
+![networkOff](./src/assets/networkOff.jpg)
+
+## Project setup
+
+``` node
+npm install
+```
+
+### Compiles and hot-reloads for development
+
+``` node
+npm run serve
+```
+
+### 启动后端服务器
+
+在 `NetUnion-InternetRepairSys\netunion-dormitory-network-repair-system\server` 目录下执行：
+
+``` node
+node index.js
+```
+
+### 接下来如何
+
+用户用户：使用 `2020091202000` 作为账号， `123123` 作为密码进行登录。
+
+处理者用户：默认使用 `2018091202000` 作为账号， `123123` 作为密码进行登录。
+
+### Compiles and minifies for production
+
+``` node
+npm run build
+```
+
+### Lints and fixes files
+
+``` node
+npm run lint
+```
+
+### Customize configuration
+
+See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ## TO DO LIST
 
@@ -18,11 +62,11 @@ NetUnion - 电子科技大学 | 宿舍网络在线报修平台
   - [x] 学生“主页”页面
   - [x] 学生“账户”页面
   - [x] 学生“订单”页面
-  - [ ] 学生“关于我们”页面
+  - [x] 学生“关于我们”页面
   - [x] NetUnion成员“主页”页面
   - [x] NetUnion成员“账户”页面
   - [x] NetUnion成员“订单”页面
-  - [ ] NetUnion成员“关于我们”页面
+  - [x] NetUnion成员“关于我们”页面
 
 - **语言支持**
 
@@ -55,8 +99,8 @@ NetUnion - 电子科技大学 | 宿舍网络在线报修平台
 
   前端用 [axios](http://www.axios-js.com/) 发送请求，后端 `post` 使用 [body-parser](https://github.com/expressjs/body-parser) 接受请求。
 
-  - [ ] 用户资料数据库
-  - [ ] 订单资料数据库
+  - [x] 用户资料数据库
+  - [x] 订单资料数据库
   - [ ] 操作日记数据库
 
 - **数据库维护**
