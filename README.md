@@ -1,6 +1,50 @@
-# 网络在线报修系统
+# netunion-dormitory-network-repair-system
 
 NetUnion - 电子科技大学 | 宿舍网络在线报修平台
+
+![networkOff](./src/assets/networkOff.jpg)
+
+## Project setup
+
+``` node
+npm install
+```
+
+### Compiles and hot-reloads for development
+
+``` node
+npm run serve
+```
+
+### 启动后端服务器
+
+在 `NetUnion-InternetRepairSys\netunion-dormitory-network-repair-system\server` 目录下执行：
+
+``` node
+node index.js
+```
+
+### 接下来如何
+
+用户用户：使用 `2020091202000` 作为账号， `123123` 作为密码进行登录。
+
+处理者用户：默认使用 `2018091202000` 作为账号， `123123` 作为密码进行登录。
+
+### Compiles and minifies for production
+
+``` node
+npm run build
+```
+
+### Lints and fixes files
+
+``` node
+npm run lint
+```
+
+### Customize configuration
+
+See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ## TO DO LIST
 
@@ -14,15 +58,15 @@ NetUnion - 电子科技大学 | 宿舍网络在线报修平台
 
   不同的用户应有不同的页面设计和操作按钮，Vue动态加载页面，根据不同用户跳转不同页面。
 
-  - [x] “登陆”页面
+  - [x] “登录”页面
   - [x] 学生“主页”页面
   - [x] 学生“账户”页面
-  - [ ] 学生“订单”页面
-  - [ ] 学生“关于我们”页面
-  - [ ] NetUnion成员“主页”页面
-  - [ ] NetUnion成员“账户”页面
-  - [ ] NetUnion成员“订单”页面
-  - [ ] NetUnion成员“关于我们”页面
+  - [x] 学生“订单”页面
+  - [x] 学生“关于我们”页面
+  - [x] NetUnion成员“主页”页面
+  - [x] NetUnion成员“账户”页面
+  - [x] NetUnion成员“订单”页面
+  - [x] NetUnion成员“关于我们”页面
 
 - **语言支持**
 
@@ -42,40 +86,50 @@ NetUnion - 电子科技大学 | 宿舍网络在线报修平台
 
 - **用户使用偏好**
 
-  采用 HTML5 的特性 LocalStorage 存储用户使用偏好。
+  采用 LocalStorage 存储用户使用偏好。
 
   - [x] 记忆用户语言使用偏好
   - [x] 记忆用户主题使用偏好
-  - [ ] 记忆用户其它使用偏好
 
 ### 后端
 
 - **数据库设计**
 
-  使用 [postgreSQL 11.7](https://www.postgresql.org/) 数据库；
+  使用 [postgreSQL](https://www.postgresql.org/) 数据库；
 
-  前端用 [axios](http://www.axios-js.com/) 发送请求，后端使用 [body-parser](https://github.com/expressjs/body-parser) 接受请求。
+  前端用 [axios](http://www.axios-js.com/) 发送请求，后端 `post` 使用 [body-parser](https://github.com/expressjs/body-parser) 接受请求。
 
-  - [ ] 用户资料数据库
-  - [ ] 订单资料数据库
+  - [x] 用户资料数据库
+  - [x] 订单资料数据库
   - [ ] 操作日记数据库
 
-- **登陆功能**
+- **数据库维护**
+  
+  数据库的正常运转需要服务器自动维护更新。
 
-  - [x] 实现登录功能
+  - [ ] 自动删除过期 token 信息的脚本
+  - [ ] 自动备份数据库
+
+- **后端功能**
+
+  - [x] 登录
+  - [ ] 注册
+  - [x] 修改用户资料
+  - [x] 修改密码
+  - [ ] 忘记密码
 
 ### 核心功能
 
 - **运维部成员操作**
 
-  - [ ] 自助添加电话报修信息
-  - [ ] 确认完成
-  - [ ] 添加报修服务处理流程
+  - [x] 自助添加电话报修信息
+  - [x] 确认完成
+  - [x] 添加报修服务处理流程
 
 - **报修订单**
 
   - [x] 选择寝室号
   - [ ] 空闲时间（选择时间段）
   - [x] 描述（可选）
-  - [ ] 取消订单
+  - [x] 取消订单
   - [x] 预留人性化提醒（重启路由器、确认是否欠费等）
