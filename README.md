@@ -1,8 +1,11 @@
 # netunion-dormitory-network-repair-system
+<div align=center>
 
 NetUnion - 电子科技大学 | 宿舍网络在线报修平台
 
-<div align=center><img src="./src/assets/networkOff.jpg" alt="你没网啦？"/></div>
+<img src="./src/assets/networkOff.jpg" alt="你没网啦？"/>
+
+</div>
 
 ## Project setup
 
