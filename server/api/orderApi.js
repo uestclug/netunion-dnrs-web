@@ -243,9 +243,9 @@ router.post('/queryAcceptedOrder', async function (req, res) {
           } else if (orderOpenTime < day) {
             orderItems[i].order_open_time = Math.floor(orderOpenTime / hour) + ' hour'
           } else {
-            const valueDay = Math.floor(orderOpenTime / day) + ' d'
-            const valueHour = (Math.floor(orderOpenTime / hour) - 24 * valueDay) + ' h'
-            orderItems[i].order_open_time = valueDay + ' ' + valueHour
+            const valueDay = Math.floor(orderOpenTime / day)
+            const valueHour = (Math.floor(orderOpenTime / hour) - 24 * valueDay)
+            orderItems[i].order_open_time = valueDay + ' d ' + valueHour + ' h'
           }
 
           // 实例化当前时间
@@ -334,9 +334,9 @@ router.post('/queryOrderList', async function (req, res) {
           } else if (orderOpenTime < day) {
             orderItems[i].order_open_time = Math.floor(orderOpenTime / hour) + ' hour'
           } else {
-            const valueDay = Math.floor(orderOpenTime / day) + ' d'
-            const valueHour = (Math.floor(orderOpenTime / hour) - 24 * valueDay) + ' h'
-            orderItems[i].order_open_time = valueDay + ' ' + valueHour
+            const valueDay = Math.floor(orderOpenTime / day)
+            const valueHour = (Math.floor(orderOpenTime / hour) - 24 * valueDay)
+            orderItems[i].order_open_time = valueDay + ' d ' + valueHour + ' h'
           }
 
           // 实例化当前时间

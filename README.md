@@ -2,7 +2,7 @@
 
 NetUnion - 电子科技大学 | 宿舍网络在线报修平台
 
-![networkOff](./src/assets/networkOff.jpg)
+<div align=center><img src="./src/assets/networkOff.jpg" alt="你没网啦？"/></div>
 
 ## Project setup
 
