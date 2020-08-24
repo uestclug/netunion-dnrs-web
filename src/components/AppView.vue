@@ -5,6 +5,19 @@
       app
       v-model="drawer"
     >
+    <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title class="title mb-2">
+            {{ $t('app.shortName') }}
+          </v-list-item-title>
+          <v-list-item-subtitle>
+            {{ $t('home.welcomeUser.slogan') }}
+          </v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-divider></v-divider>
+
       <v-list>
         <v-list-item router-link to="/">
           <v-list-item-action>
@@ -48,6 +61,7 @@
           class="mx-auto"
           style="padding: 10px; text-align: center"
         >
+        <v-icon>{{darkModeSwitch?'mdi-brightness-4':'mdi-brightness-7'}}</v-icon>
           {{ $t('theme.darkMode') }}
           <v-switch
             v-model="darkModeSwitch"
