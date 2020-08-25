@@ -1,9 +1,10 @@
 # netunion-dormitory-network-repair-system
+
 <div align=center>
 
-NetUnion - 电子科技大学 | 宿舍网络在线报修平台
+  NetUnion - 电子科技大学 | 宿舍网络在线报修平台
 
-<img src="./src/assets/networkOff.jpg" alt="你没网啦？"/>
+  <img src="./src/assets/networkOff.jpg" alt="你没网啦？"/>
 
 </div>
 
@@ -31,7 +32,7 @@ node index.js
 
 用户用户：使用 `2020091202000` 作为账号， `123123` 作为密码进行登录。
 
-处理者用户：默认使用 `2018091202000` 作为账号， `123123` 作为密码进行登录。
+处理者用户：使用 `2018091202000` 作为账号， `123123` 作为密码进行登录。
 
 ### Compiles and minifies for production
 
