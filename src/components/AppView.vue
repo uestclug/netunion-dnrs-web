@@ -148,6 +148,11 @@ export default {
     this.setDefaultLanguage()
     this.setDefaultMode()
   },
+  mounted () {
+    if (localStorage.getItem('token')) {
+      this.Bus.$emit('tokenCheck')
+    }
+  },
   methods: {
     setDefaultLanguage () { // 使用 localStorage 保存用户使用语言习惯
       const dl = localStorage.getItem('defaultLanguage')

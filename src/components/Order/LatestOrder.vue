@@ -13,154 +13,172 @@
           <v-toolbar-title>{{ $t('order.latestOrder.title') }}</v-toolbar-title>
           <v-divider class="mx-4"/>
         </v-toolbar>
-        <v-card-text>
-          <v-row>
-            <v-col
-              cols="6"
-            >
-              <p class="body-1"><v-icon>mdi-map-marker-outline</v-icon>
-                {{ $t('order.latestOrder.location') }}
-              </p>
-            </v-col>
-            <v-col
-              cols="6"
-            >
-              <p class="body-1 text--primary">{{ orderDormitory }}</p>
-            </v-col>
-            <v-col
-              cols="6"
-            >
-              <p class="body-1"><v-icon>mdi-account-tie-outline</v-icon>
-                {{ $t('order.latestOrder.solver') }}
-              </p>
-            </v-col>
-            <v-col
-              cols="6"
-            >
-              <p class="body-1 text--primary">{{ orderSolverName }}</p>
-            </v-col>
-            <v-col
-              cols="6"
-            >
-              <p class="body-1"><v-icon>mdi-phone</v-icon>
-                {{ $t('order.latestOrder.solverTelephone') }}
-              </p>
-            </v-col>
-            <v-col
-              cols="6"
-            >
-              <p class="body-1 text--primary">{{ orderSolverTelephone }}</p>
-            </v-col>
-            <v-col
-              cols="6"
-            >
-              <p class="body-1"><v-icon>mdi-bell-ring-outline</v-icon>
-                {{ $t('order.latestOrder.status') }}
-              </p>
-            </v-col>
-            <v-col
-              cols="6"
-            >
-              <p class="body-1 text--primary">{{ orderStatus }}</p>
-            </v-col>
-          </v-row>
-        </v-card-text>
 
-        <v-card-actions>
-          <v-btn
-            color="red"
-            outlined
-            style="margin: 0px 0px 10px 10px"
-            @click="toCancelOrderDialog"
-            :disabled="cancelDisabled"
-            class="subtitle-2"
-          >
-            <v-icon left>mdi-close</v-icon> {{ $t('order.latestOrder.cancelOrder') }}
-          </v-btn>
+        <v-container v-if="infoLoading" style="text-align: center;">
+          <div class="loadingio-spinner-ripple-s9nf2nweyv"><div class="ldio-62v9m71m4dc">
+          <div></div><div></div>
+          </div></div>
+        </v-container>
 
-          <v-spacer></v-spacer>
+        <div v-else>
+          <v-card-text>
+            <v-row>
+              <v-col
+                cols="6"
+              >
+                <p class="body-1"><v-icon>mdi-map-marker-outline</v-icon>
+                  {{ $t('order.latestOrder.location') }}
+                </p>
+              </v-col>
+              <v-col
+                cols="6"
+              >
+                <p class="body-1 text--primary">{{ orderDormitory }}</p>
+              </v-col>
+              <v-col
+                cols="6"
+              >
+                <p class="body-1"><v-icon>mdi-account-tie-outline</v-icon>
+                  {{ $t('order.latestOrder.solver') }}
+                </p>
+              </v-col>
+              <v-col
+                cols="6"
+              >
+                <p class="body-1 text--primary">{{ orderSolverName }}</p>
+              </v-col>
+              <v-col
+                cols="6"
+              >
+                <p class="body-1"><v-icon>mdi-phone</v-icon>
+                  {{ $t('order.latestOrder.solverTelephone') }}
+                </p>
+              </v-col>
+              <v-col
+                cols="6"
+              >
+                <p class="body-1 text--primary">{{ orderSolverTelephone }}</p>
+              </v-col>
+              <v-col
+                cols="6"
+              >
+                <p class="body-1"><v-icon>mdi-bell-ring-outline</v-icon>
+                  {{ $t('order.latestOrder.status') }}
+                </p>
+              </v-col>
+              <v-col
+                cols="6"
+              >
+                <p class="body-1 text--primary">{{ orderStatus }}</p>
+              </v-col>
+            </v-row>
+          </v-card-text>
 
-          <v-btn
-            icon
-            @click="showDetails = !showDetails"
-            class="subtitle-2"
-          >
-            <v-icon>{{ showDetails ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-          </v-btn>
-        </v-card-actions>
+          <v-card-actions>
+            <v-btn
+              outlined
+              color="blue-grey"
+              @click="telephoneCall(orderSolverTelephone)"
+              :disabled="telephoneCallDisabled"
+              class="ml-2 mb-2"
+            >
+              <v-icon left>mdi-phone-in-talk-outline</v-icon> {{ $t('order.acceptedOrder.telephoneCall') }}
+            </v-btn>
 
-        <v-expand-transition>
-          <div v-show="showDetails">
-            <v-card flat>
-              <v-card-text>
-                <p class="subtitle-1">{{ $t('order.latestOrder.orderInfo') }}<v-divider></v-divider></p>
+            <v-btn
+              color="red"
+              outlined
+              @click="toCancelOrderDialog"
+              :disabled="cancelDisabled"
+              class="ml-2 mb-2"
+            >
+              <v-icon left>mdi-close</v-icon> {{ $t('order.latestOrder.cancelOrder') }}
+            </v-btn>
 
-                <v-row>
-                  <v-col
-                    cols="6"
-                  >
-                    <p class="subtitle-1"><v-icon>mdi-account-outline</v-icon>
-                      {{ $t('order.latestOrder.name') }}
-                    </p>
-                  </v-col>
-                  <v-col
-                    cols="6"
-                  >
-                    <p class="body-1 text--primary">{{ orderName }}</p>
-                  </v-col>
-                  <v-col
-                    cols="6"
-                  >
-                    <p class="body-1"><v-icon>mdi-domain</v-icon>
-                      {{ $t('order.latestOrder.campus') }}
-                    </p>
-                  </v-col>
-                  <v-col
-                    cols="6"
-                  >
-                    <p class="body-1 text--primary">{{ orderCampus }}</p>
-                  </v-col>
-                  <v-col
-                    cols="6"
-                  >
-                    <p class="body-1"><v-icon>mdi-cellphone</v-icon>
-                      {{ $t('order.latestOrder.telephone') }}
-                    </p>
-                  </v-col>
-                  <v-col
-                    cols="6"
-                  >
-                    <p class="body-1 text--primary">{{ orderTelephone }}</p>
-                  </v-col>
-                  <v-col
-                    cols="6"
-                  >
-                    <p class="body-1"><v-icon>mdi-forum-outline</v-icon>
-                      {{ $t('order.latestOrder.description') }}
-                    </p>
-                  </v-col>
-                  <v-col
-                    cols="6"
-                  >
-                    <p class="body-1 text--primary">{{ orderDescription }}</p>
-                  </v-col>
-                  <v-col
-                    cols="6"
-                  >
-                    <p class="body-1"><v-icon>mdi-clock-outline</v-icon>
-                      {{ $t('order.latestOrder.date') }}
-                    </p>
-                  </v-col>
-                  <v-col
-                    cols="6"
-                  >
-                    <p class="body-1 text--primary">{{ createDate }}</p>
-                  </v-col>
-                </v-row>
-              </v-card-text>
-            </v-card>
-          </div>
-        </v-expand-transition>
+            <v-spacer></v-spacer>
+
+            <v-btn
+              icon
+              @click="showDetails = !showDetails"
+              class="subtitle-2"
+            >
+              <v-icon>{{ showDetails ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+            </v-btn>
+          </v-card-actions>
+
+          <v-expand-transition>
+            <div v-show="showDetails">
+              <v-card flat>
+                <v-card-text>
+                  <p class="subtitle-1">{{ $t('order.latestOrder.orderInfo') }}<v-divider></v-divider></p>
+
+                  <v-row>
+                    <v-col
+                      cols="6"
+                    >
+                      <p class="subtitle-1"><v-icon>mdi-account-outline</v-icon>
+                        {{ $t('order.latestOrder.name') }}
+                      </p>
+                    </v-col>
+                    <v-col
+                      cols="6"
+                    >
+                      <p class="body-1 text--primary">{{ orderName }}</p>
+                    </v-col>
+                    <v-col
+                      cols="6"
+                    >
+                      <p class="body-1"><v-icon>mdi-domain</v-icon>
+                        {{ $t('order.latestOrder.campus') }}
+                      </p>
+                    </v-col>
+                    <v-col
+                      cols="6"
+                    >
+                      <p class="body-1 text--primary">{{ orderCampus }}</p>
+                    </v-col>
+                    <v-col
+                      cols="6"
+                    >
+                      <p class="body-1"><v-icon>mdi-cellphone</v-icon>
+                        {{ $t('order.latestOrder.telephone') }}
+                      </p>
+                    </v-col>
+                    <v-col
+                      cols="6"
+                    >
+                      <p class="body-1 text--primary">{{ orderTelephone }}</p>
+                    </v-col>
+                    <v-col
+                      cols="6"
+                    >
+                      <p class="body-1"><v-icon>mdi-forum-outline</v-icon>
+                        {{ $t('order.latestOrder.description') }}
+                      </p>
+                    </v-col>
+                    <v-col
+                      cols="6"
+                    >
+                      <p class="body-1 text--primary">{{ orderDescription }}</p>
+                    </v-col>
+                    <v-col
+                      cols="6"
+                    >
+                      <p class="body-1"><v-icon>mdi-clock-outline</v-icon>
+                        {{ $t('order.latestOrder.date') }}
+                      </p>
+                    </v-col>
+                    <v-col
+                      cols="6"
+                    >
+                      <p class="body-1 text--primary">{{ createDate }}</p>
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+              </v-card>
+            </div>
+          </v-expand-transition>
+        </div>
       </v-card>
     </v-hover>
 
@@ -206,6 +224,7 @@ export default {
     showDetails: false,
     cancelDialog: false,
     cancelDisabled: true,
+    telephoneCallDisabled: true,
     orderDormitory: '-',
     orderSolverName: '-',
     orderSolverTelephone: '-',
@@ -215,11 +234,11 @@ export default {
     orderTelephone: '-',
     orderDescription: '-',
     createDate: '-',
+    infoLoading: true,
     loading: false
   }),
   methods: {
     toCancelOrderDialog () {
-      this.Bus.$emit('tokenCheck')
       this.cancelDialog = true
     },
     cancelOrder: async function () {
@@ -236,6 +255,9 @@ export default {
       } else {
         this.Bus.$emit('modifyLoginStatus', 'unknownErr')
       }
+    },
+    telephoneCall (telephone) {
+      window.location.href = 'tel:' + telephone
     }
   },
   created: async function () { // 获取最近的订单信息
@@ -270,12 +292,17 @@ export default {
       }
       localStorage.setItem('latest_order_id', orderInfo.order_id)
       if (orderInfo.solver_id !== null) { // 存在接单者时
-        if (orderInfo.order_solver_nickname !== null) {
+        if (orderInfo.order_solver_nickname !== null && orderInfo.order_solver_nickname !== '') {
           this.orderSolverName = orderInfo.order_solver_nickname
         } else {
           this.orderSolverName = orderInfo.order_solver_name
         }
         this.orderSolverTelephone = orderInfo.order_solver_telephone
+        if (this.orderStatus == this.$i18n.t('order.receiptedStatus') &&
+        this.orderSolverTelephone.length >= 4) { // 联系方式应至少为 4 位号码
+          this.telephoneCallDisabled = false
+        }
+        this.infoLoading = false
       }
     }
   }
