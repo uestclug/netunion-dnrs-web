@@ -130,9 +130,21 @@ router.post('/getLatestOrderInfo', async function (req, res) {
     const latestOrder = await apiUtils.getLatestOrderInfo(user_id)
 
     if (latestOrder) { // 获取到最近订单信息
-      latestOrder.create_date = new Date(parseInt(latestOrder.create_date)).toLocaleString()
-      latestOrder.close_date = new Date(parseInt(latestOrder.close_date)).toLocaleString()
-      res.send(latestOrder)
+      const solver_id = latestOrder.solver_id
+      conn.query($sql.order.querySolverInfo, [solver_id], (error, result) => {
+        if (error) {
+          console.log(error)
+          res.send(false)
+        } else {
+          latestOrder.order_solver_name = result.rows[0].name
+          latestOrder.order_solver_nickname = result.rows[0].nickname
+          latestOrder.order_solver_telephone = result.rows[0].telephone
+          latestOrder.order_solver_intro = result.rows[0].intro
+          latestOrder.create_date = new Date(parseInt(latestOrder.create_date)).toLocaleString()
+          latestOrder.close_date = new Date(parseInt(latestOrder.close_date)).toLocaleString()
+          res.send(latestOrder)
+        }
+      }) 
     } else { // 用户无最近的订单记录或查询失败
       res.send(false)
     }
