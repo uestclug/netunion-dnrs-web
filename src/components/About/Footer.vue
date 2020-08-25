@@ -15,3 +15,7 @@ export default {
   name: 'Footer'
 }
 </script>
+
+<style lang="sass">
+  @import '@/common/sass/main.scss'
+</style>

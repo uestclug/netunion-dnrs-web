@@ -32,6 +32,7 @@ export default {
     AcceptedOrder
   },
   created () {
+    this.Bus.$emit('tokenCheck')
     this.role = this.$store.state.role
   }
 }

@@ -22,8 +22,8 @@ module.exports = {
       note: 'We highly recommend you to check if the network is in arrears and try to restart the router'
     },
     welcomeSolver: {
-      words: 'Nice day.',
-      slogan: 'How about do something ordinary but meaningful ?'
+      words: 'Hey, sir!',
+      slogan: 'How about do something ordinary but meaningful.'
     }
   },
   user: {

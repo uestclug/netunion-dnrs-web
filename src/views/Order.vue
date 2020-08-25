@@ -23,6 +23,7 @@ export default {
     OrderList
   },
   created () {
+    this.Bus.$emit('tokenCheck')
     this.role = this.$store.state.role
   }
 }
