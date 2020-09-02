@@ -7,8 +7,7 @@ const pgsql = require('pg')
 // const $sql = require('../sqlMap')
 // const $common = require('../common')
 
-const conn = new pgsql.Pool(db.pgsql)
-conn.connect()
+// const conn = new pgsql.Pool(db.pgsql)
 
 // 添加操作日志接口
 

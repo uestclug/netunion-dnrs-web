@@ -5,13 +5,12 @@ const express = require('express')
 const router = express.Router()
 const pgsql = require('pg')
 // const utils = require('../utils')
-const apiUtils = require('./apiUtils')
+// const apiUtils = require('./apiUtils')
 
 const $sql = require('../sqlMap')
-const $common = require('../common')
+// const $common = require('../common')
 
 const conn = new pgsql.Pool(db.pgsql)
-conn.connect()
 
 const monthCount = 30 // 众所周知，一个月我们可以认为有 30 天
 const monthTime = 2592000000 // 一个月的时间用毫秒表示：1000ms * 60 * 60 * 24 * 30
@@ -21,7 +20,7 @@ const dayTime = 86400000 // 一天的时间用毫秒表示：1000ms * 60 * 60 * 
  * 获取三十天里每日创建有效订单数的接口
  * 返回存储有每天创建有效订单数的数组
  */
-router.post('/queryCreateOrderMonthly', (req, res) => {
+router.post('/queryCreateOrderMonthly', async function (req, res) {
   const nowTime = new Date().getTime()
   const beforeTime = nowTime - monthTime
 
@@ -53,7 +52,7 @@ router.post('/queryCreateOrderMonthly', (req, res) => {
  * 获取三十天里每日完成有效订单数的接口
  * 返回存储有每天完成有效订单数的数组
  */
-router.post('/queryFinishedOrderMonthly', (req, res) => {
+router.post('/queryFinishedOrderMonthly', async function (req, res) {
   const nowTime = new Date().getTime()
   const beforeTime = nowTime - monthTime
 
@@ -85,7 +84,7 @@ router.post('/queryFinishedOrderMonthly', (req, res) => {
  * 获取三十天里存在完成订单数的处理者的接口
  * 返回存储有 {user_id, name, nickname, intro, finish_order_count} 对象的数组
  */
-router.post('/queryMostValuableSolverMonthly', (req, res) => {
+router.post('/queryMostValuableSolverMonthly', async function (req, res) {
   const nowTime = new Date().getTime()
   const beforeTime = nowTime - monthTime
 

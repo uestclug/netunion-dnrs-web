@@ -11,7 +11,6 @@ const $sql = require('../sqlMap')
 const $common = require('../common')
 
 const conn = new pgsql.Pool(db.pgsql)
-conn.connect()
 
 /**
  * 用户新建订单接口

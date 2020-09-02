@@ -11,7 +11,6 @@ const $sql = require('../sqlMap')
 const $common = require('../common')
 
 const conn = new pgsql.Pool(db.pgsql)
-conn.connect()
 
 /**
  * 获取用户最近的订单信息

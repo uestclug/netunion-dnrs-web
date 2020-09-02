@@ -6,6 +6,8 @@ module.exports = {
     user: 'netunion_dnrs_visitor',
     password: 'root',
     database: 'netunion_dnrs',
-    poolSize: 100
+    max: 5,
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 2000,
   }
 }

@@ -1,17 +1,16 @@
 /* eslint-disable camelcase */
 /* Token 接口文件 */
-const db = require('../db')
+// const db = require('../db')
 const express = require('express')
 const router = express.Router()
-const pgsql = require('pg')
+// const pgsql = require('pg')
 // const utils = require('../utils')
 const apiUtils = require('./apiUtils')
 
 // const $sql = require('../sqlMap')
 // const $common = require('../common')
 
-const conn = new pgsql.Pool(db.pgsql)
-conn.connect()
+// const conn = new pgsql.Pool(db.pgsql)
 
 /**
  * 用户 token 验证接口

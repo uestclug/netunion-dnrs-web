@@ -11,7 +11,6 @@ const $sql = require('../sqlMap')
 const $common = require('../common')
 
 const conn = new pgsql.Pool(db.pgsql)
-conn.connect()
 
 // todo: 用户注册接口
 router.post('/register', (req, res) => {

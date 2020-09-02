@@ -22,13 +22,13 @@ npm run serve
 
 ### 启动后端服务器
 
-在 `NetUnion-InternetRepairSys\netunion-dormitory-network-repair-system\server` 目录下执行：
-
 ``` node
-node index.js
+node ./server/index.js
 ```
 
 ### 接下来如何
+
+已经连接上测试服务器和数据库，使用账号和密码登录到系统吧。
 
 用户用户：使用 `2020091202000` 作为账号， `123123` 作为密码进行登录。
 
