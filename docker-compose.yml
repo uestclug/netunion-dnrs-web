@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  frontend:
+    build: ./
+    image: repair-system-frontend
+    ports:
+      - 8080:80
+
+  backend:
+    build: ./server
+    image: repair-system-backend
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_USER=netunion_dnrs_visitor
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=netunion_dnrs
+
+  postgres:
+    image: postgres:alpine
+    volumes:
+      - database:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=netunion_dnrs_visitor
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=netunion_dnrs
+
+volumes:
+  database: {}
