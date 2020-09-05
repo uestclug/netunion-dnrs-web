@@ -11,28 +11,39 @@
 ## Project setup
 
 ``` node
+// 根目录下
+npm install
+
+// server 目录下
 npm install
 ```
+
+### Init PostgreSQL & Run backend server
+
+根据 ./server/db.js 创建 PostgreSQL 数据库登录账号信息。
+
+还原测试用备份文件 ./server/netunion_dnrs_sql .
+
+启动后端服务器：
+
+``` node
+// 根目录下
+npm run backend
+
+// 或者 server 目录下
+node index.js
+```
+
+之后您可以：
+
+- 用户组：使用 `2020091202000` 作为账号， `123123` 作为密码登录。
+- 处理者组：使用 `2018091202000` 作为账号， `123123` 作为密码登录。
 
 ### Compiles and hot-reloads for development
 
 ``` node
 npm run serve
 ```
-
-### 启动后端服务器
-
-``` node
-node ./server/index.js
-```
-
-### 接下来如何
-
-已经连接上测试服务器和数据库，使用账号和密码登录到系统吧。
-
-用户用户：使用 `2020091202000` 作为账号， `123123` 作为密码进行登录。
-
-处理者用户：使用 `2018091202000` 作为账号， `123123` 作为密码进行登录。
 
 ### Compiles and minifies for production
 

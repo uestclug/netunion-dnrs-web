@@ -31,7 +31,7 @@
               v-bind:key="order.order_id"
               class="mx-auto mb-6"
               max-width="calc(100% - 36px)"
-              elevation="1"
+              elevation="2"
             >
 
               <v-card-title>

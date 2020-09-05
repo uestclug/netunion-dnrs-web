@@ -1,8 +1,8 @@
 /* 数据库 model */
 module.exports = {
   pgsql: {
-    host: process.env.POSTGRS_HOST || 'localhost',
-    port: process.env.POSTGRS_PORT || 5432,
+    host: process.env.POSTGRES_HOST || 'localhost',
+    port: process.env.POSTGRES_PORT || 5432,
     user: process.env.POSTGRES_USER || 'netunion_dnrs_visitor',
     password: process.env.POSTGRES_PASSWORD || 'root',
     database: process.env.POSTGRES_DB || 'netunion_dnrs',
