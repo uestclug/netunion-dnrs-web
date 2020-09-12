@@ -7,7 +7,7 @@
     >
       <v-list-item>
         <v-list-item-content>
-          <v-list-item-title class="title mb-2">
+          <v-list-item-title class="title mb-2 mt-2">
             {{ $t('app.shortName') }}
           </v-list-item-title>
           <v-list-item-subtitle>
@@ -16,44 +16,46 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-divider></v-divider>
+      <v-divider class="mr-3 mb-1" />
 
-      <v-list>
-        <v-list-item router-link to="/">
-          <v-list-item-action>
-            <v-icon>mdi-home</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>{{ $t('viewTitle.home') }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+      <v-list shaped>
+        <v-list-item-group color="success">
+          <v-list-item router-link to="/">
+            <v-list-item-action>
+              <v-icon>mdi-home</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>{{ $t('viewTitle.home') }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
 
-        <v-list-item router-link to="/User">
-          <v-list-item-action>
-            <v-icon>mdi-account</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>{{ $t('viewTitle.user') }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+          <v-list-item router-link to="/User">
+            <v-list-item-action>
+              <v-icon>mdi-account-circle</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>{{ $t('viewTitle.user') }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
 
-        <v-list-item router-link to="/Order">
-          <v-list-item-action>
-            <v-icon>mdi-clipboard-check-multiple</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>{{ $t('viewTitle.order') }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+          <v-list-item router-link to="/Order">
+            <v-list-item-action>
+              <v-icon>mdi-clipboard-check-multiple</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>{{ $t('viewTitle.order') }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
 
-        <v-list-item router-link to="/About">
-          <v-list-item-action>
-            <v-icon>mdi-iframe</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>{{ $t('viewTitle.about') }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+          <v-list-item router-link to="/About">
+            <v-list-item-action>
+              <v-icon>mdi-iframe</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>{{ $t('viewTitle.about') }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
       </v-list>
 
       <template v-slot:append>

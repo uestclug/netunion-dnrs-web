@@ -23,7 +23,7 @@ module.exports = {
     },
     welcomeSolver: {
       words: 'Nice day.',
-      slogan: 'How about do something ordinary but meaningful ?'
+      slogan: 'How about doing something meaningful now!'
     }
   },
   user: {
@@ -97,11 +97,11 @@ module.exports = {
     finishedStatus: 'finished',
     recordedStatus: 'recorded',
     unknownStatus: 'unknown',
-    viewAllOrders: 'VIEW ALL ORDERS',
+    viewAllOrders: 'VIEW ALL',
     cancelSucceed: 'You cancelled this order successfully',
     createOrder: {
       user: {
-        create: 'CREATE NEW ORDER',
+        create: 'NEW ORDER',
         cancelTip: 'completed content will not reset',
         submit: 'SUBMIT',
         cancel: 'CANCEL',
@@ -131,7 +131,7 @@ module.exports = {
         reset: 'RESET',
         resetTip: 'Confirm to reset the sheet?',
         resetConfirm: 'CONFIRM',
-        create: 'NEW ORDER RECORD',
+        create: 'NEW RECORD',
         cancelTip: 'completed content will not reset',
         submit: 'SUBMIT',
         cancel: 'CANCEL',
