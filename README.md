@@ -27,11 +27,7 @@ npm install
 启动后端服务器：
 
 ``` node
-// 根目录下
 npm run backend
-
-// 或者 server 目录下
-node index.js
 ```
 
 之后您可以：
@@ -39,7 +35,7 @@ node index.js
 - 用户组：使用 `2020091202000` 作为账号， `123123` 作为密码登录。
 - 处理者组：使用 `2018091202000` 作为账号， `123123` 作为密码登录。
 
-### Compiles and hot-reloads for development
+### Run frontend server
 
 ``` node
 npm run serve
@@ -56,10 +52,6 @@ npm run build
 ``` node
 npm run lint
 ```
-
-### Customize configuration
-
-See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ## TO DO LIST
 
@@ -140,6 +132,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
   - [x] 自助添加电话报修信息
   - [x] 确认完成
   - [x] 添加报修服务处理流程
+  - [ ] 在订单页面添加报修信息
 
 - **报修订单**
 
@@ -148,3 +141,4 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
   - [x] 描述（可选）
   - [x] 取消订单
   - [x] 预留人性化提醒（重启路由器、确认是否欠费等）
+  - [ ] 用户可以对尚未结束的订单进行修改
