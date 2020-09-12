@@ -2,15 +2,12 @@
 /* api 公用函数 */
 const md5 = require('js-md5')
 
-const db = require('../db')
-const pgsql = require('pg')
+const pool = require('../db')
 const utils = require('../utils')
 const Base64 = require('js-base64').Base64
 
 const $sql = require('../sqlMap')
 const $common = require('../common')
-
-const conn = new pgsql.Pool(db.pgsql)
 
 /**
  * 获取用户最近的订单信息
@@ -19,7 +16,10 @@ const conn = new pgsql.Pool(db.pgsql)
  */
 async function getLatestOrderInfo (user_id) {
   const sqlData = [user_id]
-  const response = await conn.query($sql.order.user.queryOrderInfoByUserId, sqlData)
+
+  const client = await pool.connect()
+  const response = await client.query($sql.order.user.queryOrderInfoByUserId, sqlData)
+  client.release()
   const orderNum = response.rowCount
   if (orderNum != null && orderNum > 0) { // 用户有最近的订单记录，返回最近订单信息
     return response.rows[orderNum - 1]
@@ -35,7 +35,10 @@ async function getLatestOrderInfo (user_id) {
  */
 async function latestOrderStatusCheck (user_id) {
   const sqlData = [user_id]
-  const response = await conn.query($sql.order.user.queryOrderInfoByUserId, sqlData)
+
+  const client = await pool.connect()
+  const response = await client.query($sql.order.user.queryOrderInfoByUserId, sqlData)
+  client.release()
   const orderNum = response.rowCount
   if (orderNum > 0) { // 存在最近订单
     const latestOrder = response.rows[orderNum - 1]
@@ -82,7 +85,9 @@ async function checkToken (req) { // 用户 token 验证
   const token = req.headers.authorization // 从请求头获取 token
   const sqlData = [user_id]
 
-  const response = await conn.query($sql.token.getTokenAndRole, sqlData)
+  const client = await pool.connect()
+  const response = await client.query($sql.token.getTokenAndRole, sqlData)
+  client.release()
   if (response.rowCount === 1) { // 数据库包含该 uesr_id 对应的 token 信息
     const resData = response.rows[0]
     const savedToken = resData.token
@@ -121,10 +126,12 @@ function generateEncryptedPassword (password) {
  * 设置数据库中的 token 信息
  * 将用户的登录信息存储到数据库中
  */
-function setToken (user_id, token, expiration_date) {
+async function setToken (user_id, token, expiration_date) {
   const sqlData = [token, expiration_date, user_id]
 
-  conn.query($sql.token.setToken, sqlData, (error) => {
+  const client = await pool.connect()
+  client.query($sql.token.setToken, sqlData, (error) => {
+    client.release()
     if (error) {
       console.log(error)
       return false
@@ -140,7 +147,9 @@ function setToken (user_id, token, expiration_date) {
 async function queryOrderInfoByOrderId (order_id) {
   const sqlData = [order_id]
 
-  const response = await conn.query($sql.order.queryOrderInfoByOrderId, sqlData)
+  const client = await pool.connect()
+  const response = await client.query($sql.order.queryOrderInfoByOrderId, sqlData)
+  client.release()
 
   if (response.rowCount && response.rowCount === 1) return response.rows[0]
   else return null

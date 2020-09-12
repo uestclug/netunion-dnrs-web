@@ -1,16 +1,13 @@
 /* eslint-disable camelcase */
 /* 订单接口文件 */
-const db = require('../db')
+const pool = require('../db')
 const express = require('express')
 const router = express.Router()
-const pgsql = require('pg')
 // const utils = require('../utils')
 const apiUtils = require('./apiUtils')
 
 const $sql = require('../sqlMap')
 const $common = require('../common')
-
-const conn = new pgsql.Pool(db.pgsql)
 
 /**
  * 用户新建订单接口
@@ -34,7 +31,9 @@ router.post('/createOrderUser', async function (req, res) {
       const create_date = new Date().getTime()
       const sqlData = [user_name, user_gender, user_telephone, user_campus, user_dormitory, user_description, create_date, order_status, order_id, user_id]
 
-      conn.query($sql.order.user.createOrder, sqlData, (error) => {
+      const client = await pool.connect()
+      client.query($sql.order.user.createOrder, sqlData, (error) => {
+        client.release()
         if (error) {
           console.log(error)
           res.send(false)
@@ -86,7 +85,9 @@ router.post('/createOrderSolver', async function (req, res) {
 
     const sqlData = [user_name, user_gender, user_telephone, user_campus, user_dormitory, user_description, solver_record, order_status, order_id, solver_id, create_date, close_date, notes]
 
-    conn.query($sql.order.solver.createOrder, sqlData, (error) => {
+    const client = await pool.connect()
+    client.query($sql.order.solver.createOrder, sqlData, (error) => {
+      client.release()
       if (error) {
         console.log(error)
         res.send(false)
@@ -130,7 +131,10 @@ router.post('/getLatestOrderInfo', async function (req, res) {
 
     if (latestOrder) { // 获取到最近订单信息
       const solver_id = latestOrder.solver_id
-      conn.query($sql.order.querySolverInfo, [solver_id], (error, result) => {
+
+      const client = await pool.connect()
+      client.query($sql.order.querySolverInfo, [solver_id], (error, result) => {
+        client.release()
         if (error) {
           console.log(error)
           res.send(false)
@@ -162,7 +166,9 @@ router.post('/cancelOrderByUser', async function (req, res) {
     const user_id = req.body.user_id
     const order_id = req.body.order_id
 
-    conn.query($sql.order.queryOrderInfoByOrderId, [order_id], (error, result) => {
+    const client = await pool.connect()
+    client.query($sql.order.queryOrderInfoByOrderId, [order_id], async function (error, result) {
+      client.release()
       if (error) {
         console.log(error)
         res.send(false)
@@ -170,7 +176,9 @@ router.post('/cancelOrderByUser', async function (req, res) {
         if (result.rowCount == 1 && result.rows[0].user_id == user_id) { // 当订单号属于该用户时
           const close_date = new Date().getTime()
 
-          conn.query($sql.order.user.closeOrder, [close_date, order_id], (error) => {
+          const client = await pool.connect()
+          client.query($sql.order.user.closeOrder, [close_date, order_id], (error) => {
+            client.release()
             if (error) {
               console.log(error)
               res.send(false)
@@ -192,8 +200,10 @@ router.post('/cancelOrderByUser', async function (req, res) {
 /**
  * 获取订单总数接口
  */
-router.post('/countOrderLength', (req, res) => {
-  conn.query($sql.order.countOrderLength, (error, result) => {
+router.post('/countOrderLength', async function (req, res) {
+  const client = await pool.connect()
+  client.query($sql.order.countOrderLength, (error, result) => {
+    client.release()
     if (error) {
       console.log(error)
       res.send(false)
@@ -213,7 +223,9 @@ router.post('/queryAcceptedOrder', async function (req, res) {
     const userId = reqBody.user_id
     const sqlData = [userId]
 
-    conn.query($sql.order.solver.queryAcceptedOrder, sqlData, (error, result) => {
+    const client = await pool.connect()
+    client.query($sql.order.solver.queryAcceptedOrder, sqlData, (error, result) => {
+      client.release()
       if (error) {
         console.log(error)
         res.send(false)
@@ -297,7 +309,9 @@ router.post('/queryOrderList', async function (req, res) {
       sqlData = [userId, limitNum, offsetNum]
     }
 
-    conn.query(sql, sqlData, (error, result) => {
+    const client = await pool.connect()
+    client.query(sql, sqlData, (error, result) => {
+      client.release()
       if (error) {
         console.log(error)
         res.send(false)
@@ -376,7 +390,9 @@ router.post('/receiptOrder', async function (req, res) {
     if (order !== null) {
       if (order.solver_id == null && order.order_status === $common.status.waiting) {
         const sqlData = [user_id, order_id]
-        conn.query($sql.order.solver.receiptOrder, sqlData, (error, result) => {
+        const client = await pool.connect()
+        client.query($sql.order.solver.receiptOrder, sqlData, (error, result) => {
+          client.release()
           if (error) {
             console.log(error)
             res.send(false)
@@ -410,7 +426,9 @@ router.post('/finishOrder', async function (req, res) {
       if (order.solver_id == user_id && order.order_status === $common.status.receipted) {
         const close_date = new Date().getTime()
         const sqlData = [close_date, order_id]
-        conn.query($sql.order.solver.finishOrder, sqlData, (error, result) => {
+        const client = await pool.connect()
+        client.query($sql.order.solver.finishOrder, sqlData, (error, result) => {
+          client.release()
           if (error) {
             console.log(error)
             res.send(false)
@@ -444,7 +462,9 @@ router.post('/restoreOrder', async function (req, res) {
       if (order.order_status === $common.status.canceledBySolver) {
         const notes = 'The order is restored by solver_id: ' + user_id
         const sqlData = [notes, order_id]
-        conn.query($sql.order.solver.restoreOrder, sqlData, (error, result) => {
+        const client = await pool.connect()
+        client.query($sql.order.solver.restoreOrder, sqlData, (error, result) => {
+          client.release()
           if (error) {
             console.log(error)
             res.send(false)
@@ -478,7 +498,9 @@ router.post('/cancelOrder', async function (req, res) {
       if (order.solver_id == user_id && order.order_status === $common.status.receipted) {
         const notes = 'The order is receipted but canceled by solver_id: ' + user_id
         const sqlData = [notes, order_id]
-        conn.query($sql.order.solver.cancelOrder, sqlData, (error, result) => {
+        const client = await pool.connect()
+        client.query($sql.order.solver.cancelOrder, sqlData, (error, result) => {
+          client.release()
           if (error) {
             console.log(error)
             res.send(false)
@@ -514,7 +536,9 @@ router.post('/closeOrder', async function (req, res) {
         const close_date = new Date().getTime()
         const notes = 'The order is closed by solver_id: ' + user_id
         const sqlData = [close_date, notes, order_id]
-        conn.query($sql.order.solver.closeOrder, sqlData, (error, result) => {
+        const client = await pool.connect()
+        client.query($sql.order.solver.closeOrder, sqlData, (error, result) => {
+          client.release()
           if (error) {
             console.log(error)
             res.send(false)

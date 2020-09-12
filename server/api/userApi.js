@@ -1,16 +1,13 @@
 /* eslint-disable camelcase */
 /* 用户接口文件 */
-const db = require('../db')
+const pool = require('../db')
 const express = require('express')
 const router = express.Router()
-const pgsql = require('pg')
 // const utils = require('../utils')
 const apiUtils = require('./apiUtils')
 
 const $sql = require('../sqlMap')
 const $common = require('../common')
-
-const conn = new pgsql.Pool(db.pgsql)
 
 // todo: 用户注册接口
 router.post('/register', (req, res) => {
@@ -22,13 +19,15 @@ router.post('/register', (req, res) => {
 /**
  * 用户登录接口
  */
-router.post('/login', (req, res) => {
+router.post('/login', async function (req, res) {
   const reqBody = req.body
   const std_id = reqBody.std_id
   const password = apiUtils.generateEncryptedPassword(reqBody.password)
   const sqlData = [std_id]
 
-  conn.query($sql.account.getLoginResponse, sqlData, (error, result) => {
+  const client = await pool.connect()
+  client.query($sql.account.getLoginResponse, sqlData, (error, result) => {
+    client.release()
     if (error) {
       console.log(error)
       res.send(false)
@@ -56,7 +55,10 @@ router.post('/login', (req, res) => {
 router.post('/queryUserInfo', async function (req, res) {
   const user_id = req.body.user_id
   const sqlData = [user_id]
-  conn.query($sql.account.queryUserInfo, sqlData, (error, result) => {
+
+  const client = await pool.connect()
+  client.query($sql.account.queryUserInfo, sqlData, (error, result) => {
+    client.release()
     if (error) {
       console.log(error)
       res.send(false)
@@ -102,7 +104,9 @@ router.post('/modifyAccountInfo', async function (req, res) {
     const user_id = reqBody.user_id
     const sqlData = [name, nickname, gender, campus, dormitory, telephone, intro, user_id]
 
-    conn.query($sql.account.modifyAccountInfo, sqlData, (error, result) => {
+    const client = await pool.connect()
+    client.query($sql.account.modifyAccountInfo, sqlData, (error, result) => {
+      client.release()
       if (error) {
         console.log(error)
         res.send(false)
@@ -128,9 +132,11 @@ router.post('/modifyPassword', async function (req, res) {
     const flagData = [user_id]
     const sqlData = [modifiedPassword, user_id]
 
-    const loginPasswordResult = await conn.query($sql.account.getLoginPassword, flagData)
+    const client = await pool.connect()
+    const loginPasswordResult = await client.query($sql.account.getLoginPassword, flagData)
     if (presentPassword === loginPasswordResult.rows[0].password) {
-      conn.query($sql.account.modifyPassword, sqlData, (error) => {
+      client.query($sql.account.modifyPassword, sqlData, (error) => {
+        client.release()
         if (error) {
           console.log(error)
           res.send(false)
@@ -139,6 +145,7 @@ router.post('/modifyPassword', async function (req, res) {
         }
       })
     } else { // 输入的密码和数据库密码不同时
+      client.release()
       res.send($common.password.presentErr)
     }
   } else {
@@ -156,8 +163,10 @@ router.post('/getUserStatisticsInfo', async function (req, res) {
     const user_id = reqBody.user_id
     const sqlMap = [user_id, $common.status.finished]
 
-    conn.query($sql.order.getSelectedOrder, sqlMap, async function (error, result) {
+    const client = await pool.connect()
+    client.query($sql.order.getSelectedOrder, sqlMap, async function (error, result) {
       if (error) {
+        client.release()
         console.log(error)
         res.send(false)
       } else {
@@ -171,11 +180,11 @@ router.post('/getUserStatisticsInfo', async function (req, res) {
         // let best_solver_time = 0
         if (finished_order_time !== 0) { // 存在历史完成订单记录时
           const first_finished_order_solver_id = result[0].order_solver_id
-          const first_finished_order_solver = await conn.query($sql.solver.querySolverInfo, [first_finished_order_solver_id])
+          const first_finished_order_solver = await client.query($sql.solver.querySolverInfo, [first_finished_order_solver_id])
           first_finished_order_solver_name = first_finished_order_solver.rows[0].name
           first_finished_order_date = result[0].order_date
           const latest_finished_order_solver_id = result[finished_order_time - 1].order_solver_id
-          const latest_finished_order_solver = await conn.query($sql.solver.querySolverInfo, [latest_finished_order_solver_id])
+          const latest_finished_order_solver = await client.query($sql.solver.querySolverInfo, [latest_finished_order_solver_id])
           latest_finished_order_solver_name = latest_finished_order_solver.rows[0].name
           latest_finished_order_date = result[finished_order_time - 1].order_date
         }
@@ -189,6 +198,7 @@ router.post('/getUserStatisticsInfo', async function (req, res) {
           // best_solver: best_solver,
           // best_solver_time: best_solver_time
         }
+        client.release()
         res.send(response)
       }
     })
@@ -203,7 +213,9 @@ router.post('/getUserStatisticsInfo', async function (req, res) {
 router.post('/getSolverStatisticsInfo', async function (req, res) {
   const flag = await apiUtils.checkToken(req)
   if (flag) {
+    const client = await pool.connect()
     // console.log('get solver statistics info.')
+    client.release()
     res.send(true)
   }
 })

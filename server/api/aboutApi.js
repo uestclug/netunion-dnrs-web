@@ -1,16 +1,13 @@
 /* eslint-disable camelcase */
 /* 关于页面接口文件 */
-const db = require('../db')
+const pool = require('../db')
 const express = require('express')
 const router = express.Router()
-const pgsql = require('pg')
 // const utils = require('../utils')
 // const apiUtils = require('./apiUtils')
 
 const $sql = require('../sqlMap')
 // const $common = require('../common')
-
-const conn = new pgsql.Pool(db.pgsql)
 
 const monthCount = 30 // 众所周知，一个月我们可以认为有 30 天
 const monthTime = 2592000000 // 一个月的时间用毫秒表示：1000ms * 60 * 60 * 24 * 30
@@ -25,7 +22,9 @@ router.post('/queryCreateOrderMonthly', async function (req, res) {
   const beforeTime = nowTime - monthTime
 
   // todo: 先从数据库获取信息，若信息过期则获取数据返回并存储到数据库
-  conn.query($sql.about.queryCreateOrderInfo, [beforeTime], (error, result) => {
+  const client = await pool.connect()
+  client.query($sql.about.queryCreateOrderInfo, [beforeTime], (error, result) => {
+    client.release()
     if (error) {
       console.log(error)
       res.send(false)
@@ -57,7 +56,9 @@ router.post('/queryFinishedOrderMonthly', async function (req, res) {
   const beforeTime = nowTime - monthTime
 
   // todo: 先从数据库获取信息，若信息过期则获取数据返回并存储到数据库
-  conn.query($sql.about.queryFinishedOrderInfo, [beforeTime], (error, result) => {
+  const client = await pool.connect()
+  client.query($sql.about.queryFinishedOrderInfo, [beforeTime], (error, result) => {
+    client.release()
     if (error) {
       console.log(error)
       res.send(false)
@@ -88,7 +89,9 @@ router.post('/queryMostValuableSolverMonthly', async function (req, res) {
   const nowTime = new Date().getTime()
   const beforeTime = nowTime - monthTime
 
-  conn.query($sql.about.queryMostValuableSolverInfo, [beforeTime], (error, result) => {
+  const client = await pool.connect()
+  client.query($sql.about.queryMostValuableSolverInfo, [beforeTime], (error, result) => {
+    client.release()
     if (error) {
       console.log(error)
       res.send(false)
