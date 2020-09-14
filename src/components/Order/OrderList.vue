@@ -96,7 +96,7 @@
                         style="display: inline-block;"
                       >{{ $t('order.orderList.expanded.dormitory') }}</span>
                     </v-chip>
-                    {{ item.order_user_dormitory }}
+                    <span style="display: inline-block;">{{ item.order_user_dormitory }}</span>
                   </v-col>
                   <!-- 订单描述 -->
                   <v-col cols="12" v-if="item.order_user_description">
