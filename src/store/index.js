@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import common from '@/../server/common'
+import common from '@/../common.js'
 
 Vue.use(Vuex)
 

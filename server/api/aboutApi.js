@@ -7,7 +7,7 @@ const router = express.Router()
 // const apiUtils = require('./apiUtils')
 
 const $sql = require('../sqlMap')
-// const $common = require('../common')
+// const $common = require('../../common.js')
 
 const monthCount = 30 // 众所周知，一个月我们可以认为有 30 天
 const monthTime = 2592000000 // 一个月的时间用毫秒表示：1000ms * 60 * 60 * 24 * 30

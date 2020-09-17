@@ -36,6 +36,7 @@
             calculate-widths
             :loading="orderListLoading"
             :loading-text="orderListLoadingText"
+            :no-data-text="orderListNoDataText"
             hide-default-footer
             multi-sort
           >
@@ -43,6 +44,8 @@
             <template v-slot:footer>
               <v-btn
                 v-show="showLoadMore"
+                :disabled="orderListLoading"
+                :loading="orderListLoading"
                 depressed
                 block
                 @click="loadMoreOrderListItems"
@@ -78,8 +81,8 @@
             <!-- 订单展开内容 -->
             <template v-slot:expanded-item="{ headers, item }">
               <td :colspan="headers.length">
-                <div class="mt-3" />
-                <v-row style="word-wrap: break-word; word-break: break-all">
+                <!-- 订单详细信息 -->
+                <v-row style="word-wrap: break-word; word-break: break-all" class="mt-3">
                   <!-- 订单用户联系电话 -->
                   <v-col cols="12" v-if="item.order_user_telephone">
                     <v-chip small label outlined class="mr-1">
@@ -114,6 +117,26 @@
                     </v-chip>
                     <span style="display: inline-block;">{{ item.solver_name }}</span>
                   </v-col>
+                  <!-- 订单协作者姓名
+                  <v-col cols="12" v-if="item.assignee.length > 0">
+                    <v-chip small label outlined class="mr-1">
+                      <v-icon small left>mdi-comment-account-outline</v-icon>
+                      {{ $t('order.orderList.expanded.assigneeName') }}
+                    </v-chip>
+                    <span style="display: inline-block;">
+                      <span v-for="asgn in item.assignee" v-bind:key="asgn.solver_id">{{ asgn.solver_name }} </span>
+                    </span>
+                  </v-col>
+                  -->
+                  <!-- 订单出勤信息记录
+                  <v-col cols="12" v-if="item.attendance_record">
+                    <v-chip small label outlined class="mr-1">
+                      <v-icon small left>mdi-briefcase-edit-outline</v-icon>
+                      {{ $t('order.orderList.expanded.attendanceRecord') }}
+                    </v-chip>
+                    <span style="display: inline-block;">{{ item.attendance_record }}</span>
+                  </v-col>
+                  -->
                   <!-- 订单处理者记录 -->
                   <v-col cols="12" v-if="item.order_solver_record">
                     <v-chip small label outlined class="mr-1">
@@ -130,17 +153,26 @@
                     </v-chip>
                     <span style="display: inline-block;">{{ item.close_date }}</span>
                   </v-col>
-                  <!-- 订单备注信息 -->
-                  <v-col cols="12" v-if="item.order_notes">
-                    <v-chip small label outlined class="mr-1">
-                      <v-icon small left>mdi-comment-processing-outline</v-icon>
-                      {{ $t('order.orderList.expanded.notes') }}
-                    </v-chip>
-                    <span style="display: inline-block;">{{ item.order_notes }}</span>
-                  </v-col>
-                  <!-- 订单额外操作 -->
-                  <v-col cols="12">
-                    <!--
+                </v-row>
+
+                <!-- 订单额外操作 -->
+                <v-row class="mb-3">
+                  <v-col v-if="item.order_status !== GLOBAL.status.recorded">
+                    <!-- 查看出勤记录 -->
+                    <v-btn
+                      small
+                      depressed
+                      @click="openAttnDialog(item)"
+                      class="mr-2"
+                    >{{ $t('order.orderList.expanded.viewAttendance') }}</v-btn>
+                    <!-- 查看协作人 -->
+                    <v-btn
+                      small
+                      depressed
+                      @click="openAssigneeDialog(item)"
+                      class="mr-2"
+                    >{{ $t('order.orderList.expanded.viewAssignee') }}</v-btn>
+                    <!-- 修改订单信息
                     <v-btn
                       small
                       depressed
@@ -149,23 +181,34 @@
                       label
                       @click="modifyOrder(item)"
                     >修改订单信息</v-btn>
-                  </v-col>
                     -->
+                    <!-- 显示更多操作 -->
+                    <v-btn
+                      @click="showExtraActions = !showExtraActions"
+                      class="mr-2"
+                      icon
+                    >
+                      <v-icon>mdi-{{ showExtraActions ? "chevron-left-circle-outline" : "chevron-right-circle-outline" }}</v-icon>
+                    </v-btn>
+                    <!-- 取消订单 -->
                     <v-btn
                       small
                       depressed
-                      v-if="(item.order_status === GLOBAL.status.receipted && item.is_solver)"
+                      v-show="showExtraActions"
+                      :disabled="!(item.order_status === GLOBAL.status.receipted && item.is_solver)"
                       @click="cancelOrder(item)"
                       class="mr-2"
                     >{{ $t('order.orderList.expanded.cancelOrder') }}</v-btn>
+                    <!-- 关闭订单 -->
                     <v-btn
                       small
                       depressed
-                      v-if="item.order_status === GLOBAL.status.waiting ||
-                      (item.order_status === GLOBAL.status.receipted && item.is_solver)"
+                      v-show="showExtraActions"
+                      :disabled="!(item.order_status === GLOBAL.status.waiting ||
+                      (item.order_status === GLOBAL.status.receipted && item.is_solver))"
                       @click="closeOrder(item)"
                     >{{ $t('order.orderList.expanded.closeOrder') }}</v-btn>
-                    <!--
+                    <!-- 删除订单记录
                     <v-btn
                       small
                       depressed
@@ -179,7 +222,6 @@
                     -->
                   </v-col>
                 </v-row>
-                <div class="mb-3" />
               </td>
             </template>
           </v-data-table>
@@ -200,7 +242,8 @@ export default {
     orderListLoading: true,
     showLoadMore: false,
     expandedOrder: [],
-    orderListItems: []
+    orderListItems: [],
+    showExtraActions: false
   }),
   created () {
     this.axios
@@ -228,6 +271,12 @@ export default {
     },
     openCreateOrderSolverSheet () {
       this.Bus.$emit('openCreateOrderSolverSheet')
+    },
+    openAttnDialog (item) {
+      this.Bus.$emit('openAttnDialog', item)
+    },
+    openAssigneeDialog (item) {
+      this.Bus.$emit('openAssigneeDialog', item)
     },
     receiptOrder (item) {
       // 接取订单，设置订单状态为已接取
@@ -365,7 +414,6 @@ export default {
     },
     loadMoreOrderListItems () {
       // 点击加载更多按钮载入更多订单信息
-      this.showLoadMore = false
       this.page = this.page + 1
       this.orderListLoading = true
 
@@ -390,6 +438,8 @@ export default {
           }
           if (orderItems.length === 10) {
             this.showLoadMore = true
+          } else {
+            this.showLoadMore = false
           }
           this.orderListLoading = false
         })
@@ -449,7 +499,7 @@ export default {
       } else if (status === this.GLOBAL.status.finished) {
         return this.$i18n.t('order.orderList.status.finished')
       } else if (status === this.GLOBAL.status.recorded) {
-        return this.$i18n.t('order.orderList.status.finished')
+        return this.$i18n.t('order.orderList.status.recorded')
       } else {
         return null
       }
@@ -465,6 +515,9 @@ export default {
     },
     orderListLoadingText () {
       return this.$i18n.t('order.orderList.loadingText')
+    },
+    orderListNoDataText () {
+      return this.$i18n.t('order.orderList.noDataText')
     },
     orderListHeaders () {
       const headers = [

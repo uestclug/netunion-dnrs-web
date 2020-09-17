@@ -7,7 +7,7 @@ const utils = require('../utils')
 const Base64 = require('js-base64').Base64
 
 const $sql = require('../sqlMap')
-const $common = require('../common')
+const $common = require('../../common.js')
 
 /**
  * 获取用户最近的订单信息
@@ -79,6 +79,7 @@ function generateOrderId (userId) {
  * 其它情况返回 false。
  */
 async function checkToken (req) { // 用户 token 验证
+  const nowDate = new Date().getTime()
   const reqBody = req.body
   const user_id = reqBody.user_id // 从请求体获取 user_id
   const role = reqBody.role
@@ -93,7 +94,6 @@ async function checkToken (req) { // 用户 token 验证
     const savedToken = resData.token
     const savedExpirationDate = resData.expiration_date
     const savedRole = resData.role
-    const nowDate = new Date().getTime()
     if (token === savedToken && nowDate < savedExpirationDate && role === savedRole) { // 数据库保存的 token 与 localStorage 存储相同且 token 未过期，用户组正确
       return true
     } else {

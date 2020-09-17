@@ -7,7 +7,7 @@ const router = express.Router()
 const apiUtils = require('./apiUtils')
 
 const $sql = require('../sqlMap')
-const $common = require('../common')
+const $common = require('../../common.js')
 
 // todo: 用户注册接口
 router.post('/register', (req, res) => {
@@ -200,6 +200,33 @@ router.post('/getUserStatisticsInfo', async function (req, res) {
         }
         client.release()
         res.send(response)
+      }
+    })
+  } else {
+    res.send(false)
+  }
+})
+
+/**
+ * 通过处理者学号获取处理者信息接口
+ */
+router.post('/getSolverInfoByStdId', async function (req, res) {
+  const flag = await apiUtils.checkToken(req)
+  if (flag) {
+    const std_id = req.body.std_id
+    const sqlMap = [std_id]
+
+    const client = await pool.connect()
+    client.query($sql.account.getSolverInfoByStdId, sqlMap, (error, result) => {
+      client.release()
+      if (error) {
+        console.log(error)
+        res.send(false)
+      } else if (result.rowCount === 0) {
+        res.send(false)
+      } else {
+        if (result.rows[0].role !== $common.role.solver) res.send(false) // 非处理者账户
+        else res.send(result.rows[0])
       }
     })
   } else {

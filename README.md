@@ -18,11 +18,15 @@ npm install
 npm install
 ```
 
+### Run frontend server
+
+``` node
+npm run frontend
+```
+
 ### Init PostgreSQL & Run backend server
 
-根据 ./server/db.js 创建 PostgreSQL 数据库登录账号信息。
-
-还原测试用备份文件 ./server/netunion_dnrs_sql .
+向项目组成员获取测试数据库登录信息。
 
 启动后端服务器：
 
@@ -34,12 +38,6 @@ npm run backend
 
 - 用户组：使用 `2020091202000` 作为账号， `123123` 作为密码登录。
 - 处理者组：使用 `2018091202000` 作为账号， `123123` 作为密码登录。
-
-### Run frontend server
-
-``` node
-npm run serve
-```
 
 ### Compiles and minifies for production
 
@@ -60,6 +58,6 @@ npm run lint
 - [ ] 可以在订单列表页面添加或修改报修信息、处理情况
 - [ ] 添加新的记录状态：无需上门（由师傅处理 | 仅记录）
 
-### 报修订单**
+### 报修订单
 
 - [ ] 用户可以对尚未结束的订单进行修改

@@ -83,12 +83,8 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title>{{ $t($route.meta.viewTitle) }}</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-app-bar-nav-icon>
-        <v-icon
-          @click="changeLanguage"
-        >
-          mdi-translate
-        </v-icon>
+      <v-app-bar-nav-icon @click="changeLanguage">
+        <v-icon>mdi-translate</v-icon>
       </v-app-bar-nav-icon>
       <!-- 小屏幕不显示语言选择器 -->
       <v-select
@@ -103,35 +99,45 @@
     </v-app-bar>
 
     <!-- Main View -->
-    <router-view/>
+    <router-view />
 
     <!-- Snackbar -->
-    <Snackbar/>
+    <Snackbar />
 
     <!-- USER: Create Oreder -->
-    <CreateOrderUser/>
+    <CreateOrderUser />
 
     <!-- Solver: Create Oreder -->
-    <CreateOrderSolver/>
+    <CreateOrderSolver />
+
+    <!-- Solver: Add Assignee -->
+    <AssigneeDialog />
+
+    <!-- Solver: Add Attendance -->
+    <AttendanceDialog />
 
     <!-- Global Bus Methods -->
-    <BusMethods/>
+    <BusMethods />
   </v-app>
 </template>
 
 <script>
-import BusMethods from '@/components/BusMethods'
 import Snackbar from '@/components/Snackbar'
 import CreateOrderUser from '@/components/Order/CreateOrderUser'
 import CreateOrderSolver from '@/components/Order/CreateOrderSolver'
+import AssigneeDialog from '@/components/Order/AssigneeDialog'
+import AttendanceDialog from '@/components/Order/AttendanceDialog'
+import BusMethods from '@/components/BusMethods'
 
 export default {
   name: 'AppView',
   components: {
-    BusMethods,
     Snackbar,
     CreateOrderUser,
-    CreateOrderSolver
+    CreateOrderSolver,
+    AssigneeDialog,
+    AttendanceDialog,
+    BusMethods
   },
   props: {
     source: String

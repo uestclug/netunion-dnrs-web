@@ -33,10 +33,10 @@ export default {
 
     this.Bus.$on('tokenCheck', async function () { // 检查用户 token 是否有效
       const response = await this.axios.post('/api/token/checkToken')
-      if (response.data !== true) {
+      console.log('We have checked saved token just before.')
+      if (response.data != true) {
         this.Bus.$emit('modifyLoginStatus', 'tokenErr')
       }
-      console.log('token check.')
     })
   }
 }

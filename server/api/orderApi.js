@@ -7,13 +7,14 @@ const router = express.Router()
 const apiUtils = require('./apiUtils')
 
 const $sql = require('../sqlMap')
-const $common = require('../common')
+const $common = require('../../common.js')
 
 /**
  * 用户新建订单接口
  * 当 token 验证成功且用户能够创建订单时访问数据库进行操作。
  */
 router.post('/createOrderUser', async function (req, res) {
+  const create_date = new Date().getTime()
   const checkTokenFlag = await apiUtils.checkToken(req)
   if (checkTokenFlag) {
     const reqBody = req.body
@@ -28,7 +29,6 @@ router.post('/createOrderUser', async function (req, res) {
       const order_status = $common.status.waiting // 设置等待接单
       const user_id = reqBody.user_id
       const order_id = apiUtils.generateOrderId(user_id) // 根据用户的 user_id 生成订单号
-      const create_date = new Date().getTime()
       const sqlData = [user_name, user_gender, user_telephone, user_campus, user_dormitory, user_description, create_date, order_status, order_id, user_id]
 
       const client = await pool.connect()
@@ -54,6 +54,7 @@ router.post('/createOrderUser', async function (req, res) {
  * 当 token 验证成功时访问数据库进行操作。
  */
 router.post('/createOrderSolver', async function (req, res) {
+  const create_date = new Date().getTime()
   const flag = await apiUtils.checkToken(req)
   if (flag) {
     const reqBody = req.body
@@ -67,23 +68,19 @@ router.post('/createOrderSolver', async function (req, res) {
     const solver_record = reqBody.solver_record
     let solver_id = reqBody.user_id
     const order_id = apiUtils.generateOrderId(solver_id) // 根据处理者的 user_id 生成订单号
-    const create_date = new Date().getTime()
 
-    let notes = null
     let close_date = null
     if (order_status === $common.status.waiting) { // 如果设置订单待接取
-      notes = 'The order is created by solver_id: ' + solver_id
       solver_id = null
     } else if (order_status === $common.status.receipted) { // 如果设置订单已接取
-      notes = 'The order is created and receipted by solver_id: ' + solver_id
+      // do nothing
     } else if (order_status === $common.status.recorded) { // 如果设置订单已完成
-      notes = 'The order is created and finished by solver_id: ' + solver_id
       close_date = create_date
     } else { // 订单状态预料之外
       res.send(false)
     }
 
-    const sqlData = [user_name, user_gender, user_telephone, user_campus, user_dormitory, user_description, solver_record, order_status, order_id, solver_id, create_date, close_date, notes]
+    const sqlData = [user_name, user_gender, user_telephone, user_campus, user_dormitory, user_description, solver_record, order_status, order_id, solver_id, create_date, close_date]
 
     const client = await pool.connect()
     client.query($sql.order.solver.createOrder, sqlData, (error) => {
@@ -161,6 +158,7 @@ router.post('/getLatestOrderInfo', async function (req, res) {
  * 当订单尚未接取时，用户可以取消最近的订单
  */
 router.post('/cancelOrderByUser', async function (req, res) {
+  const close_date = new Date().getTime()
   const flag = await apiUtils.checkToken(req)
   if (flag) {
     const user_id = req.body.user_id
@@ -173,8 +171,10 @@ router.post('/cancelOrderByUser', async function (req, res) {
         console.log(error)
         res.send(false)
       } else { // 查询订单信息成功
-        if (result.rowCount == 1 && result.rows[0].user_id == user_id) { // 当订单号属于该用户时
-          const close_date = new Date().getTime()
+        if (result.rowCount == 1 &&
+          result.rows[0].user_id == user_id &&
+          result.rows[0].status == $common.status.waiting) {
+          // 当订单号属于该用户且订单尚未接取时
 
           const client = await pool.connect()
           client.query($sql.order.user.closeOrder, [close_date, order_id], (error) => {
@@ -310,7 +310,7 @@ router.post('/queryOrderList', async function (req, res) {
     }
 
     const client = await pool.connect()
-    client.query(sql, sqlData, (error, result) => {
+    client.query(sql, sqlData, async function (error, result) {
       client.release()
       if (error) {
         console.log(error)
@@ -348,22 +348,26 @@ router.post('/queryOrderList', async function (req, res) {
           }
 
           // 根据时间计算并添加 order_open_time 项
-          let orderOpenTime = null
-          if (orderItems[i].close_date != null) {
-            orderOpenTime = orderItems[i].close_date - orderItems[i].create_date
+          if (orderItems[i].order_status != $common.status.recorded) {
+            let orderOpenTime
+            if (orderItems[i].close_date != null) {
+              orderOpenTime = orderItems[i].close_date - orderItems[i].create_date
+            } else {
+              orderOpenTime = new Date().getTime() - orderItems[i].create_date
+            }
+            if (orderOpenTime < hour) {
+              orderItems[i].order_open_time = Math.floor(orderOpenTime / min) + ' min'
+            } else if (orderOpenTime < day) {
+              orderItems[i].order_open_time = Math.floor(orderOpenTime / hour) + ' hour'
+            } else {
+              const valueDay = Math.floor(orderOpenTime / day)
+              const valueHour = (Math.floor(orderOpenTime / hour) - 24 * valueDay)
+              orderItems[i].order_open_time = valueDay + ' d ' + valueHour + ' h'
+            }
           } else {
-            orderOpenTime = new Date().getTime() - orderItems[i].create_date
+            orderItems[i].order_open_time = '-'
           }
-          if (orderOpenTime < hour) {
-            orderItems[i].order_open_time = Math.floor(orderOpenTime / min) + ' min'
-          } else if (orderOpenTime < day) {
-            orderItems[i].order_open_time = Math.floor(orderOpenTime / hour) + ' hour'
-          } else {
-            const valueDay = Math.floor(orderOpenTime / day)
-            const valueHour = (Math.floor(orderOpenTime / hour) - 24 * valueDay)
-            orderItems[i].order_open_time = valueDay + ' d ' + valueHour + ' h'
-          }
-
+          
           // 实例化当前时间
           orderItems[i].create_date = new Date(parseInt(orderItems[i].create_date)).toLocaleString()
           if (orderItems[i].close_date != null) orderItems[i].close_date = new Date(parseInt(orderItems[i].close_date)).toLocaleString()
@@ -387,7 +391,7 @@ router.post('/receiptOrder', async function (req, res) {
     const user_id = reqBody.user_id
 
     const order = await apiUtils.queryOrderInfoByOrderId(order_id)
-    if (order !== null) {
+    if (order) {
       if (order.solver_id == null && order.order_status === $common.status.waiting) {
         const sqlData = [user_id, order_id]
         const client = await pool.connect()
@@ -415,6 +419,7 @@ router.post('/receiptOrder', async function (req, res) {
  * 处理者设置订单完成接口
  */
 router.post('/finishOrder', async function (req, res) {
+  const close_date = new Date().getTime()
   const flag = await apiUtils.checkToken(req)
   if (flag) {
     const reqBody = req.body
@@ -424,7 +429,6 @@ router.post('/finishOrder', async function (req, res) {
     const order = await apiUtils.queryOrderInfoByOrderId(order_id)
     if (order !== null) {
       if (order.solver_id == user_id && order.order_status === $common.status.receipted) {
-        const close_date = new Date().getTime()
         const sqlData = [close_date, order_id]
         const client = await pool.connect()
         client.query($sql.order.solver.finishOrder, sqlData, (error, result) => {
@@ -460,8 +464,7 @@ router.post('/restoreOrder', async function (req, res) {
     const order = await apiUtils.queryOrderInfoByOrderId(order_id)
     if (order !== null) {
       if (order.order_status === $common.status.canceledBySolver) {
-        const notes = 'The order is restored by solver_id: ' + user_id
-        const sqlData = [notes, order_id]
+        const sqlData = [order_id]
         const client = await pool.connect()
         client.query($sql.order.solver.restoreOrder, sqlData, (error, result) => {
           client.release()
@@ -496,16 +499,23 @@ router.post('/cancelOrder', async function (req, res) {
     const order = await apiUtils.queryOrderInfoByOrderId(order_id)
     if (order !== null) {
       if (order.solver_id == user_id && order.order_status === $common.status.receipted) {
-        const notes = 'The order is receipted but canceled by solver_id: ' + user_id
-        const sqlData = [notes, order_id]
+        const sqlData = [order_id]
         const client = await pool.connect()
         client.query($sql.order.solver.cancelOrder, sqlData, (error, result) => {
-          client.release()
           if (error) {
             console.log(error)
+            client.release()
             res.send(false)
           } else {
-            res.send(true)
+            client.query($sql.order.assignee.removeAllAssignee, [order_id], (error, result) => {
+              client.release()
+              if (error) {
+                console.log(error)
+                res.send(false)
+              } else {
+                res.send(true)
+              }
+            })
           }
         })
       } else {
@@ -523,6 +533,7 @@ router.post('/cancelOrder', async function (req, res) {
  * 处理者关闭订单接口
  */
 router.post('/closeOrder', async function (req, res) {
+  const close_date = new Date().getTime()
   const flag = await apiUtils.checkToken(req)
   if (flag) {
     const reqBody = req.body
@@ -533,17 +544,23 @@ router.post('/closeOrder', async function (req, res) {
     if (order !== null) {
       if (order.order_status === $common.status.waiting ||
         (order.solver_id == user_id && order.order_status === $common.status.receipted)) {
-        const close_date = new Date().getTime()
-        const notes = 'The order is closed by solver_id: ' + user_id
-        const sqlData = [close_date, notes, order_id]
+        const sqlData = [close_date, order_id]
         const client = await pool.connect()
         client.query($sql.order.solver.closeOrder, sqlData, (error, result) => {
-          client.release()
           if (error) {
             console.log(error)
+            client.release()
             res.send(false)
           } else {
-            res.send(true)
+            client.query($sql.order.assignee.removeAllAssignee, [order_id], (error, result) => {
+              client.release()
+              if (error) {
+                console.log(error)
+                res.send(false)
+              } else {
+                res.send(true)
+              }
+            })
           }
         })
       } else {
@@ -552,6 +569,149 @@ router.post('/closeOrder', async function (req, res) {
     } else {
       res.send(false)
     }
+  } else {
+    res.send(false)
+  }
+})
+
+/**
+ * 查询订单出勤记录信息接口
+ */
+router.post('/queryAttendance', async function (req, res) {
+  const flag = await apiUtils.checkToken(req)
+  if (flag) {
+    const order_id = req.body.order_id
+
+    const client = await pool.connect()
+    client.query($sql.order.attendance.queryAttendanceInfo, [order_id], (error, result) => {
+      client.release()
+      if (error) {
+        console.log(error)
+        res.send(false)
+      } else {
+        for (let i = 0; i < result.rowCount; i++) {
+          result.rows[i].attn_date = new Date(parseInt(result.rows[i].attn_date)).toLocaleString()
+        }
+        res.send(result.rows)
+      }
+    })
+  } else {
+    res.send(false)
+  }
+})
+
+/**
+ * 处理者添加出勤记录接口
+ */
+router.post('/addAttendance', async function (req, res) {
+  const attn_date = new Date().getTime()
+  const flag = await apiUtils.checkToken(req)
+  if (flag) {
+    const reqBody = req.body
+    if (!reqBody.is_solver) { // 操作者应为处理者
+      res.send(false)
+    }
+
+    const order_id = reqBody.order_id
+    const solver_id = reqBody.user_id
+    const attn_description = reqBody.attn_description
+    const sqlMap = [order_id, solver_id, attn_description, attn_date]
+
+    const client = await pool.connect()
+    client.query($sql.order.attendance.addAttendance, sqlMap, (error, result) => {
+      client.release()
+      if (error) {
+        console.log(error)
+        res.send(false)
+      } else { // 返回添加的出勤信息进行前端渲染
+        const attn_date_frontend = new Date(attn_date).toLocaleString()
+        const solver_name = reqBody.solver_name
+        res.send(
+          {
+            order_id: order_id,
+            solver_id: solver_id,
+            solver_name: solver_name,
+            attn_description: attn_description,
+            attn_date: attn_date_frontend
+          }
+        )
+      }
+    })
+  } else {
+    res.send(false)
+  }
+})
+
+/**
+ * 查询订单协作者信息接口
+ */
+router.post('/queryAssignee', async function (req, res) {
+  const flag = await apiUtils.checkToken(req)
+  if (flag) {
+    const order_id = req.body.order_id
+    
+    const client = await pool.connect()
+    client.query($sql.order.assignee.queryAssigneeInfo, [order_id], (error, result) => {
+      client.release()
+      if (error) {
+        console.log(error)
+        res.send(false)
+      } else {
+        res.send(result.rows)
+      }
+    })
+  } else {
+    res.send(false)
+  }
+})
+
+/**
+ * 处理者添加订单协作者接口
+ */
+router.post('/addAssignee', async function (req, res) {
+  const flag = await apiUtils.checkToken(req)
+  const reqBody = req.body
+  if (flag && reqBody.is_solver) {
+    const order_id = reqBody.order_id
+    const assignee_id = reqBody.assignee_id
+    const sqlMap = [order_id, assignee_id]
+
+    const client = await pool.connect()
+    client.query($sql.order.assignee.addAssignee, sqlMap, (error, result) => {
+      client.release()
+      if (error) {
+        console.log(error)
+        res.send(false)
+      } else {
+        res.send(true)
+      }
+    })
+  } else {
+    res.send(false)
+  }
+})
+
+/**
+ * 处理者移除订单协作者接口
+ */
+router.post('/removeAssignee', async function (req, res) {
+  const flag = await apiUtils.checkToken(req)
+  if (flag) {
+    const reqBody = req.body
+    const order_id = reqBody.order_id
+    const assignee_id = reqBody.assignee_id
+    const sqlMap = [order_id, assignee_id]
+
+    const client = await pool.connect()
+    client.query($sql.order.assignee.removeAssignee, sqlMap, (error, result) => {
+      client.release()
+      if (error) {
+        console.log(error)
+        res.send(false)
+      } else {
+        res.send(true)
+      }
+    })
   } else {
     res.send(false)
   }

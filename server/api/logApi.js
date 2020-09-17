@@ -4,7 +4,7 @@ const express = require('express')
 const router = express.Router()
 // const utils = require('../utils')
 // const $sql = require('../sqlMap')
-// const $common = require('../common')
+// const $common = require('../../common.js')
 
 // 添加操作日志接口
 

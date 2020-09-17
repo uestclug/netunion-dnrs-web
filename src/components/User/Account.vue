@@ -154,74 +154,79 @@
       </v-card>
     </v-hover>
     <!-- 修改密码 Dialog -->
-    <v-dialog v-model="modifyPasswordDialog" persistent max-width="600px">
+    <v-dialog
+      v-model="modifyPasswordDialog"
+      :persistent="presentPassword != ''"
+      max-width="600"
+    >
       <v-card>
         <v-card-title>
           <span class="headline">{{ $t('user.account.modifyPassword') }}</span>
         </v-card-title>
-        <v-card-text>
-          <v-container>
-            <v-form
-              ref="passwordForm"
-            >
-              <v-row>
-                <v-col cols="12">
-                  <v-text-field
-                    v-model="presentPassword"
-                    class="body-1 pt-0 pb-0"
-                    :label="presentPasswordLabel"
-                    :error-messages="presentPasswordErrors"
-                    @input="$v.presentPassword.$touch()"
-                    @blur="$v.presentPassword.$touch()"
-                    type='password'
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12">
-                  <v-text-field
-                    v-model="modifiedPassword"
-                    class="body-1 pt-0 pb-0"
-                    :label="modifiedPasswordLabel"
-                    :error-messages="modifiedPasswordErrors"
-                    @input="$v.modifiedPassword.$touch()"
-                    @blur="$v.modifiedPassword.$touch()"
-                    type='password'
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12">
-                  <v-text-field
-                    v-model="reModifiedPassword"
-                    class="body-1 pt-0 pb-0"
-                    :label="reModifiedPasswordLabel"
-                    :error-messages="reModifiedPasswordErrors"
-                    @input="$v.reModifiedPassword.$touch()"
-                    @blur="$v.reModifiedPassword.$touch()"
-                    type='password'
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-form>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
+        <v-form
+          ref="passwordForm"
+          class="ml-6 mr-6"
+        >
+          <v-row>
+            <v-col cols="12">
+              <v-text-field
+                v-model="presentPassword"
+                class="body-1 pt-0 pb-0"
+                :label="presentPasswordLabel"
+                :error-messages="presentPasswordErrors"
+                @input="$v.presentPassword.$touch()"
+                @blur="$v.presentPassword.$touch()"
+                type='password'
+                clearable
+                counter
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                v-model="modifiedPassword"
+                class="body-1 pt-0 pb-0"
+                :label="modifiedPasswordLabel"
+                :error-messages="modifiedPasswordErrors"
+                @input="$v.modifiedPassword.$touch()"
+                @blur="$v.modifiedPassword.$touch()"
+                type='password'
+                clearable
+                counter
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                v-model="reModifiedPassword"
+                class="body-1 pt-0 pb-0"
+                :label="reModifiedPasswordLabel"
+                :error-messages="reModifiedPasswordErrors"
+                @input="$v.reModifiedPassword.$touch()"
+                @blur="$v.reModifiedPassword.$touch()"
+                type='password'
+                clearable
+                counter
+              ></v-text-field>
+            </v-col>
+          </v-row>
+        </v-form>
+        <v-card-actions class="mr-4">
           <v-spacer></v-spacer>
           <v-btn
-            color="error"
             @click="modifyPasswordDialog = false"
-            class="subtitle-2"
           >{{ $t('user.account.cancel') }}</v-btn>
           <v-btn
             color="success"
             @click="submitNewPassword"
-            class="subtitle-2"
             :loading="submitNewPasswordLoading"
-            :disabled="submitNewPasswordLoading"
-          >{{ $t('user.account.submit') }}<v-icon right>mdi-check</v-icon></v-btn>
+            :disabled="presentPassword == '' || modifiedPassword == '' ||
+            reModifiedPassword == '' || submitNewPasswordLoading"
+          >{{ $t('user.account.submit') }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
 
     <!-- 登出 Dialog -->
-    <v-dialog v-model="logoutDialog" max-width="600px">
+    <v-dialog v-model="logoutDialog" max-width="600">
       <v-card>
         <v-card-title>
           <span class="headline">{{ $t('user.account.logout') }}</span>
@@ -235,17 +240,15 @@
             </v-row>
           </v-container>
         </v-card-text>
-        <v-card-actions>
+        <v-card-actions class="mr-4">
           <v-spacer></v-spacer>
           <v-btn
             color="info"
             @click="logoutDialog = false"
-            class="subtitle-2"
           >{{ $t('user.account.cancel') }}</v-btn>
           <v-btn
             color="success"
             @click="logout"
-            class="subtitle-2"
             :loading="logoutLoading"
             :disabled="logoutLoading"
           >{{ $t('user.account.confirm') }}</v-btn>

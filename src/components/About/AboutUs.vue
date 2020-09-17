@@ -21,7 +21,7 @@
         联系我们：<a href="mailto:recruit@dormforce.net?body=MAIL FROM INTERNET REPAIR SYSTEM">recruit@dormforce.net</a>
       </v-card-text>
       <v-card-actions>
-        <v-btn class="ma-2" depressed href="https://github.com/LolipopJ/netunion-dormitory-network-repair-system" target="_blank">
+        <v-btn class="ma-2" depressed href="https://github.com/uestclug/netunion-dormitory-network-repair-system" target="_blank">
           <v-icon left>mdi-github</v-icon>
           提交 PR
         </v-btn>

@@ -1,5 +1,5 @@
 /* 公用函数 */
-// const $common = require('./common')
+// const $common = require('../common.js')
 
 const jsonWrite = function (res, ret) {
   if (typeof ret === 'undefined') {

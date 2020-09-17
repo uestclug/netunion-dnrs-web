@@ -1,4 +1,3 @@
-/* 存储前后端通用的全局变量 */
 const common = {
   gender: { // 用户性别
     male: '男(Male)',

@@ -272,7 +272,7 @@ export default {
       if (orderInfo.order_user_description !== '') this.orderDescription = orderInfo.order_user_description
       this.createDate = orderInfo.create_date
       const status = orderInfo.order_status
-      console.log(status)
+
       if (status === this.GLOBAL.status.waiting) { // 用户可以取消订单
         this.orderStatus = this.$i18n.t('order.waitingStatus')
         this.cancelDisabled = false

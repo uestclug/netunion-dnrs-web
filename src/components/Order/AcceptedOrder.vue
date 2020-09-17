@@ -113,7 +113,7 @@
                         </v-chip>
                         <span class="body-1" style="display: inline-block;">{{ order.order_open_time }}</span>
                       </v-col>
-                      <!-- 订单额外操作 -->
+                      <!-- 订单额外操作
                       <v-col cols="12">
                         <v-btn
                           small
@@ -127,6 +127,7 @@
                           @click="closeOrder(order)"
                         >{{ $t('order.acceptedOrder.expanded.closeOrder') }}</v-btn>
                       </v-col>
+                      -->
                     </v-row>
                   </v-card-text>
                 </div>
@@ -166,6 +167,7 @@ export default {
         this.expandShow = orderId
       }
     },
+    /*
     finishOrder (order) { // 设置订单状态为已完成
       if (confirm(this.$i18n.t('order.orderList.actions.finishOrderConfirm'))) {
         this.axios.post('/api/order/finishOrder', {
@@ -211,6 +213,7 @@ export default {
         })
       }
     },
+    */
     telephoneCall (telephone) { // QQ 浏览器似乎不行
       window.location.href = 'tel:' + telephone
     },

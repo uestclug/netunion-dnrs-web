@@ -22,8 +22,7 @@
                   <v-btn
                     v-on="on"
                     v-bind="attrs"
-                    color="error"
-                    class="mr-2 subtitle-2"
+                    class="mr-2"
                     @click="sheet = false"
                   >{{ $t('order.createOrder.solver.cancel') }}</v-btn>
                 </template>
@@ -34,7 +33,6 @@
               <v-btn
                 color="success"
                 @click="submit"
-                class="subtitle-2"
                 :loading="submitLoading"
                 :disabled="submitLoading"
               >{{ $t('order.createOrder.solver.submit') }}<v-icon right>mdi-check</v-icon>
