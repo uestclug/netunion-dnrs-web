@@ -45,9 +45,10 @@
               <v-card-actions>
                 <v-btn
                   v-if="order.order_user_telephone"
-                  outlined
                   color="blue-grey"
+                  dark
                   @click="telephoneCall(order.order_user_telephone)"
+                  class="ml-2"
                 >
                   <v-icon left>mdi-phone-in-talk-outline</v-icon> {{ $t('order.acceptedOrder.telephoneCall') }}
                 </v-btn>
@@ -55,6 +56,7 @@
                 <v-btn
                   color="success"
                   @click="finishOrder(order)"
+                  class="ml-2"
                 >
                   <v-icon left>mdi-checkbox-multiple-marked</v-icon> {{ $t('order.acceptedOrder.finishOrder') }}
                 </v-btn>
@@ -167,22 +169,31 @@ export default {
         this.expandShow = orderId
       }
     },
-    /*
-    finishOrder (order) { // 设置订单状态为已完成
+    finishOrder (item) {
+      // 设置订单状态为已完成
       if (confirm(this.$i18n.t('order.orderList.actions.finishOrderConfirm'))) {
-        this.axios.post('/api/order/finishOrder', {
-          order_id: order.order_id
-        }).then((Response) => {
-          if (Response.data) {
-            this.Bus.$emit('setSnackbar', this.$i18n.t('order.orderList.actions.finishOrderSucceed'))
-            this.refreshRouter()
-          } else {
-            this.Bus.$emit('setSnackbar', this.$i18n.t('order.orderList.actions.finishOrderFailed'))
-            this.refreshRouter()
-          }
-        })
+        this.axios
+          .post('/api/order/finishOrder', {
+            order_id: item.order_id
+          })
+          .then((Response) => {
+            if (Response.data) {
+              this.Bus.$emit(
+                'setSnackbar',
+                this.$i18n.t('order.orderList.actions.finishOrderSucceed')
+              )
+              this.refreshRouter()
+            } else {
+              this.Bus.$emit(
+                'setSnackbar',
+                this.$i18n.t('order.orderList.actions.finishOrderFailed')
+              )
+              this.refreshRouter()
+            }
+          })
       }
     },
+    /*
     cancelOrder (order) { // 取消订单
       if (confirm(this.$i18n.t('order.orderList.actions.cancelOrderConfirm'))) {
         this.axios.post('/api/order/cancelOrder', {

@@ -232,6 +232,10 @@ export default {
       required
     }
   },
+  created () {
+    this.campus = localStorage.campus
+    this.status = this.status = this.$i18n.t('order.waitingStatus')
+  },
   computed: {
     nameErrors () {
       const errors = []
@@ -346,6 +350,14 @@ export default {
           location.reload()
         }
 
+        /* v-select 自带校验功能
+        if (this.campus != '清水河校区(Qingshuihe Campus)' &&
+        this.campus != '沙河校区(Shahe Campus)') { // 校验订单校区是否正确
+          this.Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.solver.createFailed'))
+          location.reload()
+        }
+        */
+
         this.axios.post('/api/order/createOrderSolver', {
           user_name: this.name,
           user_gender: this.gender,
@@ -377,9 +389,9 @@ export default {
       this.name = ''
       this.gender = null
       this.telephone = ''
-      this.campus = null
+      this.campus = localStorage.campus
       this.dormitory = ''
-      this.status = null
+      this.status = this.$i18n.t('order.waitingStatus')
       this.description = ''
       this.record = ''
       this.resetConfirmDialog = false
