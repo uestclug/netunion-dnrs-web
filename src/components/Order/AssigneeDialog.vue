@@ -12,30 +12,20 @@
         <!-- 订单协作人 -->
         <v-card-text>
           <div>{{ $t('order.assigneeDialog.nowAssignee') }}</div>
-          <div v-if="queryAssigneeLoading">
+          <div v-if="queryAssigneeLoading" class="text--primary">
             {{ $t('order.assigneeDialog.nowAssigneeLoading') }}
           </div>
-          <div v-else-if="assignee.length == 0" class="body-1 black--text">
+          <div v-else-if="assignee.length == 0" class="body-1 text--primary">
             {{ $t('order.assigneeDialog.nowAssigneeNotFound') }}
-          </div>
-          <div v-else-if="order.is_solver && order.order_status === GLOBAL.status.receipted">
-            <template v-for="asgn in assignee">
-              <v-chip
-                v-bind:key="asgn.solver_id"
-                label
-                close
-                @click:close="toConfirmRemoveAsgnDialog(asgn)"
-                class="mr-2 mt-1"
-              >{{ asgn.solver_name }}</v-chip>
-            </template>
           </div>
           <div v-else>
             <template v-for="asgn in assignee">
               <v-chip
                 v-bind:key="asgn.solver_id"
-                :color="asgn.solver_id == userId ? 'orange' : ''"
-                :dark="asgn.solver_id == userId ? true : false"
+                :color="asgn.solver_id == userId ? 'primary' : ''"
                 label
+                :close="order.is_solver && order.order_status === GLOBAL.status.receipted"
+                @click:close="toConfirmRemoveAsgnDialog(asgn)"
                 class="mr-2 mt-1"
               >{{ asgn.solver_name }}</v-chip>
             </template>
@@ -120,9 +110,6 @@ export default {
     removeAssigneeLoading: false,
     addAssigneeLoading: false
   }),
-  created () {
-    this.userId = localStorage.user_id
-  },
   methods: {
     queryAssigneeInfo () { // 获取此订单的协作人信息
       this.queryAssigneeLoading = true
@@ -233,6 +220,7 @@ export default {
   },
   mounted () {
     this.Bus.$on('openAssigneeDialog', (msg) => {
+      this.userId = localStorage.user_id
       if (this.order != msg) {
         this.assignee = []
         this.searchTextField = ''

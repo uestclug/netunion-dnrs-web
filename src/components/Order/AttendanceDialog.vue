@@ -10,10 +10,10 @@
       </v-card-title>
       <v-card-text>
         <div>{{ $t('order.attendanceDialog.nowAttnTitle') }}</div>
-        <div v-if="queryAttnloading">
+        <div v-if="queryAttnloading" class="text--primary">
           {{ $t('order.attendanceDialog.nowAttnLoading') }}
         </div>
-        <div v-else-if="attendance.length == 0" class="body-1 black--text">
+        <div v-else-if="attendance.length == 0" class="body-1 text--primary">
           {{ $t('order.attendanceDialog.nowAttnNotFound') }}
         </div>
         <div v-else>
@@ -26,10 +26,9 @@
                     class="mr-2"
                     v-bind="attrs"
                     v-on="on"
+                    :color="attn.solver_id == userId ? 'primary' : ''"
                   >{{ attn.attn_date }}</v-chip>
-                  <span
-                    class="black--text"
-                  >{{ attn.attn_description }}</span>
+                  <span class="text--primary">{{ attn.attn_description }}</span>
                 </template>
                 <!--
                   处理者取消或关闭订单时，不会清除已有的出勤记录
@@ -76,6 +75,7 @@
 export default {
   name: 'AttendanceDialog',
   data: () => ({
+    userId: null,
     dialog: false,
     description: '',
     addAttnResultText: '',
@@ -130,6 +130,7 @@ export default {
   },
   mounted () {
     this.Bus.$on('openAttnDialog', (msg) => {
+      this.userId = localStorage.user_id
       if (this.order != msg) {
         this.attendance = []
         this.description = ''
