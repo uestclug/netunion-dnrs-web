@@ -28,7 +28,7 @@ router.post('/createOrderUser', async function (req, res) {
       const user_description = reqBody.user_description
       const order_status = $common.status.waiting // 设置等待接单
       const user_id = reqBody.user_id
-      const order_id = apiUtils.generateOrderId(user_id) // 根据用户的 user_id 生成订单号
+      const order_id = apiUtils.generateOrderId(user_id) // 根据用户的 user_id 等生成订单号
       const sqlData = [user_name, user_gender, user_telephone, user_campus, user_dormitory, user_description, create_date, order_status, order_id, user_id]
 
       const client = await pool.connect()
@@ -38,6 +38,9 @@ router.post('/createOrderUser', async function (req, res) {
           console.log(error)
           res.send(false)
         } else {
+          apiUtils.addOrderActionNotes(
+            order_id, reqBody.user_id, $common.actionNotes.userCreateOrder, create_date
+          )
           res.send(true)
         }
       })
@@ -68,14 +71,17 @@ router.post('/createOrderSolver', async function (req, res) {
     const solver_record = reqBody.solver_record
     let solver_id = reqBody.user_id
     const order_id = apiUtils.generateOrderId(solver_id) // 根据处理者的 user_id 生成订单号
-
     let close_date = null
+    let action_notes_text = ''
+
     if (order_status === $common.status.waiting) { // 如果设置订单待接取
       solver_id = null
+      action_notes_text = $common.actionNotes.solverCreateOrder
     } else if (order_status === $common.status.receipted) { // 如果设置订单已接取
-      // do nothing
+      action_notes_text = $common.actionNotes.solverCreateAndAcceptOrder
     } else if (order_status === $common.status.recorded) { // 如果设置订单已完成
       close_date = create_date
+      action_notes_text = $common.actionNotes.solverRecordOrder
     } else { // 订单状态预料之外
       res.send(false)
     }
@@ -89,6 +95,9 @@ router.post('/createOrderSolver', async function (req, res) {
         console.log(error)
         res.send(false)
       } else {
+        apiUtils.addOrderActionNotes(
+          order_id, reqBody.user_id, action_notes_text, create_date
+        )
         res.send(true)
       }
     })
@@ -151,7 +160,18 @@ router.post('/getLatestOrderInfo', async function (req, res) {
   }
 })
 
-// 查看历史订单接口
+/**
+ * 用户查看历史订单接口
+ */
+router.post('/queryHistoryOrderByUser', async function (req, res) {
+  const flag = await apiUtils.checkToken(req)
+  if (flag) {
+    // todo
+    res.send(true)
+  } else {
+    res.send(false)
+  }
+})
 
 /**
  * 用户取消订单接口
@@ -183,6 +203,9 @@ router.post('/cancelOrderByUser', async function (req, res) {
               console.log(error)
               res.send(false)
             } else {
+              apiUtils.addOrderActionNotes(
+                order_id, user_id, $common.actionNotes.userCloseOrder, close_date
+              )
               res.send(true)
             }
           })
@@ -401,6 +424,9 @@ router.post('/receiptOrder', async function (req, res) {
             console.log(error)
             res.send(false)
           } else {
+            apiUtils.addOrderActionNotes(
+              order_id, user_id, $common.actionNotes.solverAcceptOrder, null
+            )
             res.send(true)
           }
         })
@@ -437,6 +463,9 @@ router.post('/finishOrder', async function (req, res) {
             console.log(error)
             res.send(false)
           } else {
+            apiUtils.addOrderActionNotes(
+              order_id, user_id, $common.actionNotes.solverFinishOrder, close_date
+            )
             res.send(true)
           }
         })
@@ -472,6 +501,9 @@ router.post('/restoreOrder', async function (req, res) {
             console.log(error)
             res.send(false)
           } else {
+            apiUtils.addOrderActionNotes(
+              order_id, user_id, $common.actionNotes.solverRestoreOrder, null
+            )
             res.send(true)
           }
         })
@@ -507,6 +539,9 @@ router.post('/cancelOrder', async function (req, res) {
             client.release()
             res.send(false)
           } else {
+            apiUtils.addOrderActionNotes(
+              order_id, user_id, $common.actionNotes.solverCancelOrder, null
+            )
             client.query($sql.order.assignee.removeAllAssignee, [order_id], (error, result) => {
               client.release()
               if (error) {
@@ -552,6 +587,9 @@ router.post('/closeOrder', async function (req, res) {
             client.release()
             res.send(false)
           } else {
+            apiUtils.addOrderActionNotes(
+              order_id, user_id, $common.actionNotes.solverCloseOrder, close_date
+            )
             client.query($sql.order.assignee.removeAllAssignee, [order_id], (error, result) => {
               client.release()
               if (error) {
@@ -615,15 +653,20 @@ router.post('/addAttendance', async function (req, res) {
     const order_id = reqBody.order_id
     const solver_id = reqBody.user_id
     const attn_description = reqBody.attn_description
-    const sqlMap = [order_id, solver_id, attn_description, attn_date]
+    const sqlData = [order_id, solver_id, attn_description, attn_date]
 
     const client = await pool.connect()
-    client.query($sql.order.attendance.addAttendance, sqlMap, (error, result) => {
+    client.query($sql.order.attendance.addAttendance, sqlData, (error, result) => {
       client.release()
       if (error) {
         console.log(error)
         res.send(false)
-      } else { // 返回添加的出勤信息进行前端渲染
+      } else {
+        apiUtils.addOrderActionNotes(
+          order_id, solver_id, $common.actionNotes.solverAddAttn, attn_date
+        )
+
+        // 返回添加的出勤信息进行前端渲染
         const attn_date_frontend = new Date(attn_date).toLocaleString()
         const solver_name = reqBody.solver_name
         res.send(
@@ -674,15 +717,19 @@ router.post('/addAssignee', async function (req, res) {
   if (flag && reqBody.is_solver) {
     const order_id = reqBody.order_id
     const assignee_id = reqBody.assignee_id
-    const sqlMap = [order_id, assignee_id]
+    const assignee_name = reqBody.assignee_name
+    const sqlData = [order_id, assignee_id]
 
     const client = await pool.connect()
-    client.query($sql.order.assignee.addAssignee, sqlMap, (error, result) => {
+    client.query($sql.order.assignee.addAssignee, sqlData, (error, result) => {
       client.release()
       if (error) {
         console.log(error)
         res.send(false)
       } else {
+        apiUtils.addOrderActionNotes(
+          order_id, reqBody.user_id, $common.actionNotes.solverAddAsgn + ' ' + assignee_name, null
+        )
         res.send(true)
       }
     })
@@ -700,16 +747,46 @@ router.post('/removeAssignee', async function (req, res) {
     const reqBody = req.body
     const order_id = reqBody.order_id
     const assignee_id = reqBody.assignee_id
-    const sqlMap = [order_id, assignee_id]
+    const assignee_name = reqBody.assignee_name
+    const sqlData = [order_id, assignee_id]
 
     const client = await pool.connect()
-    client.query($sql.order.assignee.removeAssignee, sqlMap, (error, result) => {
+    client.query($sql.order.assignee.removeAssignee, sqlData, (error, result) => {
       client.release()
       if (error) {
         console.log(error)
         res.send(false)
       } else {
+        apiUtils.addOrderActionNotes(
+          order_id, reqBody.user_id, $common.actionNotes.solverRemoveAsgn + ' ' + assignee_name, null
+        )
         res.send(true)
+      }
+    })
+  } else {
+    res.send(false)
+  }
+})
+
+/**
+ * 处理者查询订单操作记录接口
+ */
+router.post('/queryOrderActionNotes', async function (req, res) {
+  const flag = await apiUtils.checkToken(req)
+  if (flag) {
+    const sqlData = [req.body.order_id]
+
+    const client = await pool.connect()
+    client.query($sql.order.actionNotes.queryActionNotesByOrderId, sqlData, (error, result) => {
+      client.release()
+      if (error) {
+        console.log(error)
+        res.send(false)
+      } else {
+        for (let i = 0; i < result.rowCount; i++) {
+          result.rows[i].action_date = new Date(parseInt(result.rows[i].action_date)).toLocaleString()
+        }
+        res.send(result.rows)
       }
     })
   } else {

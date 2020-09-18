@@ -17,14 +17,13 @@
         <v-card-actions>
           <v-btn
             color="success"
-            outlined
             style="margin: 0px 0px 10px 10px"
             @click="openCreateOrderSolverSheet"
           >
             <v-icon left>mdi-pencil</v-icon> {{ $t('order.createOrder.solver.create') }}
           </v-btn>
           <v-btn
-            text
+            outlined
             color="blue-grey"
             style="margin: 0px 0px 10px 10px"
             router-link

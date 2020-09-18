@@ -322,6 +322,16 @@ export default {
     }
   },
   created: function () {
+    this.axios.post('/api/user/queryUserInfo').then((Response) => {
+      const resData = Response.data
+      localStorage.setItem('name', resData.name)
+      localStorage.setItem('nickname', resData.nickname)
+      localStorage.setItem('gender', resData.gender)
+      localStorage.setItem('telephone', resData.telephone)
+      localStorage.setItem('campus', resData.campus)
+      localStorage.setItem('dormitory', resData.dormitory)
+      localStorage.setItem('intro', resData.intro)
+    })
     // 获取用户组
     this.role = this.$store.state.role
     // 设置页面 dom

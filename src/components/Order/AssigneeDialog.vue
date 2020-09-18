@@ -101,6 +101,7 @@ export default {
     assigneeDialog: false,
     confirmDialog: false,
     confirmRemovedAsgnId: null,
+    confirmRemovedAsgnName: null,
     confirmDialogText: '',
     order: null,
     assignee: [],
@@ -124,16 +125,18 @@ export default {
     },
     toConfirmRemoveAsgnDialog (asgn) { // 进入确认移除协作人界面
       this.confirmRemovedAsgnId = asgn.solver_id
+      this.confirmRemovedAsgnName = asgn.solver_name
       this.confirmDialogText =
         this.$i18n.t('order.assigneeDialog.confirmRemoveAsgnDialogTextFront') +
-        asgn.solver_name + this.$i18n.t('order.assigneeDialog.confirmRemoveAsgnDialogTextEnd')
+        this.confirmRemovedAsgnName + this.$i18n.t('order.assigneeDialog.confirmRemoveAsgnDialogTextEnd')
       this.confirmDialog = true
     },
     removeAssignee () { // 移除协作人
       this.removeAssigneeLoading = true
       this.axios.post('api/order/removeAssignee', {
         order_id: this.order.order_id,
-        assignee_id: this.confirmRemovedAsgnId
+        assignee_id: this.confirmRemovedAsgnId,
+        assignee_name: this.confirmRemovedAsgnName
       }).then((Response) => {
         if (Response.data) { // 成功移除此协作人
           for (let i = 0; i < this.assignee.length; i++) {
@@ -186,6 +189,7 @@ export default {
           this.axios.post('/api/order/addAssignee', { // 添加协作人记录到数据库
             order_id: this.order.order_id,
             assignee_id: assigneeId,
+            assignee_name: newAssignee.solver_name,
             is_solver: this.order.is_solver
           }).then((Response) => {
             if (Response.data) { // 成功添加协作人记录
@@ -221,7 +225,7 @@ export default {
   mounted () {
     this.Bus.$on('openAssigneeDialog', (msg) => {
       this.userId = localStorage.user_id
-      if (this.order != msg) {
+      if (this.order == null || this.order != msg) {
         this.assignee = []
         this.searchTextField = ''
         this.searchResultText = ''

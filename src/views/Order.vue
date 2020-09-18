@@ -1,10 +1,11 @@
 <template>
   <div class="order mt-6 mb-6">
     <div v-if="role === GLOBAL.role.user">
-      <LatestOrder/>
+      <LatestOrder />
     </div>
     <div v-else-if="role === GLOBAL.role.solver">
-      <OrderList/>
+      <OrderList />
+      <ExportOrderRecords />
     </div>
   </div>
 </template>
@@ -12,6 +13,7 @@
 <script>
 import LatestOrder from '@/components/Order/LatestOrder'
 import OrderList from '@/components/Order/OrderList'
+import ExportOrderRecords from '@/components/Order/ExportOrderRecords'
 
 export default {
   data: () => ({
@@ -20,7 +22,8 @@ export default {
   name: 'Order',
   components: {
     LatestOrder,
-    OrderList
+    OrderList,
+    ExportOrderRecords
   },
   created () {
     this.role = this.$store.state.role

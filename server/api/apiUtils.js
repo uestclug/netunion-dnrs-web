@@ -155,6 +155,25 @@ async function queryOrderInfoByOrderId (order_id) {
   else return null
 }
 
+/**
+ * 添加订单操作记录
+ */
+async function addOrderActionNotes (order_id, user_id, notes_text, action_date) {
+  if (action_date == null) action_date = new Date().getTime()
+  const sqlData = [order_id, user_id, notes_text, action_date]
+
+  const client = await pool.connect()
+  client.query($sql.order.actionNotes.addActionNotes, sqlData, (error, result) => {
+    client.release()
+    if (error) {
+      console.log(error)
+      return false
+    } else {
+      return true
+    }
+  })
+}
+
 module.exports = {
   getLatestOrderInfo,
   latestOrderStatusCheck,
@@ -163,5 +182,6 @@ module.exports = {
   generateToken,
   generateEncryptedPassword,
   setToken,
-  queryOrderInfoByOrderId
+  queryOrderInfoByOrderId,
+  addOrderActionNotes
 }

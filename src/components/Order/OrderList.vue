@@ -21,7 +21,9 @@
             color="success"
             class="mb-2"
             @click="openCreateOrderSolverSheet"
-          >{{ $t('order.createOrder.solver.create') }}</v-btn>
+          >
+            <v-icon left>mdi-pencil</v-icon> {{ $t('order.createOrder.solver.create') }}
+          </v-btn>
         </v-toolbar>
         <v-card-text>
           <!-- 表格主体 -->
@@ -190,6 +192,14 @@
                     >
                       <v-icon>mdi-{{ showExtraActions ? "chevron-left-circle-outline" : "chevron-right-circle-outline" }}</v-icon>
                     </v-btn>
+                    <!-- 查看订单操作记录 -->
+                    <v-btn
+                      small
+                      depressed
+                      v-show="showExtraActions"
+                      @click="openOrderActionNotesDialog(item)"
+                      class="mr-2"
+                    >{{ $t('order.orderList.expanded.viewActionNotes') }}</v-btn>
                     <!-- 取消订单 -->
                     <v-btn
                       small
@@ -228,12 +238,25 @@
         </v-card-text>
       </v-card>
     </v-hover>
+
+    <AssigneeDialog />
+    <AttendanceDialog />
+    <OrderActionNotesDialog />
   </v-container>
 </template>
 
 <script>
+import AssigneeDialog from '@/components/Order/AssigneeDialog'
+import AttendanceDialog from '@/components/Order/AttendanceDialog'
+import OrderActionNotesDialog from '@/components/Order/OrderActionNotesDialog'
+
 export default {
   name: 'OrderList',
+  components: {
+    AssigneeDialog,
+    AttendanceDialog,
+    OrderActionNotesDialog
+  },
   data: () => ({
     filterSelect: '显示可用',
     filterItems: ['显示可用', '与我相关', '显示全部'],
@@ -277,6 +300,9 @@ export default {
     },
     openAssigneeDialog (item) {
       this.Bus.$emit('openAssigneeDialog', item)
+    },
+    openOrderActionNotesDialog (item) {
+      this.Bus.$emit('openOrderActionNotesDialog', item)
     },
     receiptOrder (item) {
       // 接取订单，设置订单状态为已接取

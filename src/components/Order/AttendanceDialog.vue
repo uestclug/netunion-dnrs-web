@@ -131,7 +131,7 @@ export default {
   mounted () {
     this.Bus.$on('openAttnDialog', (msg) => {
       this.userId = localStorage.user_id
-      if (this.order != msg) {
+      if (this.order == null || this.order != msg) {
         this.attendance = []
         this.description = ''
         this.addAttnResultText = ''

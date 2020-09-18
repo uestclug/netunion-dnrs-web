@@ -1,8 +1,8 @@
 <template>
   <div class="user mt-6 mb-6">
     <div v-if="role === GLOBAL.role.user || role === GLOBAL.role.solver">
-      <Account/>
-      <Statistics v-if="false"/>
+      <Account />
+      <Statistics v-if="false" />
     </div>
   </div>
 </template>

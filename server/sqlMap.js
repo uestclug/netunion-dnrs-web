@@ -134,7 +134,7 @@ const sqlMap = {
     admin: { // 对于 admin 用户组
 
     },
-    assignee: {
+    assignee: { // 订单的协作人
       // 通过 order_id 和 user_id 删除此订单的 assignee 信息
       removeAssignee: '\
         DELETE FROM' + orderAssigneeTable + '\
@@ -155,7 +155,7 @@ const sqlMap = {
         DELETE FROM' + orderAssigneeTable + '\
         WHERE order_id = $1'
     },
-    attendance: {
+    attendance: { // 订单的出勤记录
       // 通过 order_id 查询此订单的 attendance 信息
       queryAttendanceInfo: '\
         SELECT oattn.*, a.name AS solver_name \
@@ -168,6 +168,36 @@ const sqlMap = {
       addAttendance: '\
         INSERT INTO' + orderAttendanceTable + '(order_id, solver_id, attn_description, attn_date) \
         VALUES ($1, $2, $3, $4)'
+    },
+    actionNotes: { // 订单的操作记录
+      // 添加订单的操作记录
+      addActionNotes: '\
+        INSERT INTO' + orderActionNotesTable + '(order_id, user_id, notes_text, action_date) \
+        VALUES ($1, $2, $3, $4)',
+      // 通过 order_id 查询所有用户对此订单的操作记录
+      queryActionNotesByOrderId: '\
+        SELECT oan.*, a.name AS user_name \
+        FROM' + orderActionNotesTable + 'AS oan \
+        LEFT JOIN' + accountTable + 'AS a \
+        ON oan.user_id = a.user_id \
+        WHERE oan.order_id = $1 \
+        ORDER BY oan.action_date DESC',
+      // 通过 user_id 查询指定用户对所有订单的操作记录信息
+      queryActionNotesByUserId: '\
+        SELECT oan.*, a.name AS user_name \
+        FROM' + orderActionNotesTable + 'AS oan \
+        LEFT JOIN' + accountTable + 'AS a \
+        ON oan.user_id = a.user_id \
+        WHERE oan.user_id = $1 \
+        ORDER BY oan.action_date DESC',
+      // 通过 order_id 和 user_id 查询指定用户对此订单的操作记录
+      queryActionNotesByOrderIdAndUserId: '\
+        SELECT oan.*, a.name AS user_name \
+        FROM' + orderActionNotesTable + 'AS oan \
+        LEFT JOIN' + accountTable + 'AS a \
+        ON oan.user_id = a.user_id \
+        WHERE oan.order_id = $1 AND oan.user_id = $2 \
+        ORDER BY oan.action_date DESC'
     },
     // 通过 order_id 查询订单信息
     queryOrderInfoByOrderId: '\

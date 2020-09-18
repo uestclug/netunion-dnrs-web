@@ -110,12 +110,6 @@
     <!-- Solver: Create Oreder -->
     <CreateOrderSolver />
 
-    <!-- Solver: Add Assignee -->
-    <AssigneeDialog />
-
-    <!-- Solver: Add Attendance -->
-    <AttendanceDialog />
-
     <!-- Global Bus Methods -->
     <BusMethods />
   </v-app>
@@ -125,8 +119,6 @@
 import Snackbar from '@/components/Snackbar'
 import CreateOrderUser from '@/components/Order/CreateOrderUser'
 import CreateOrderSolver from '@/components/Order/CreateOrderSolver'
-import AssigneeDialog from '@/components/Order/AssigneeDialog'
-import AttendanceDialog from '@/components/Order/AttendanceDialog'
 import BusMethods from '@/components/BusMethods'
 
 export default {
@@ -135,8 +127,6 @@ export default {
     Snackbar,
     CreateOrderUser,
     CreateOrderSolver,
-    AssigneeDialog,
-    AttendanceDialog,
     BusMethods
   },
   props: {
@@ -151,6 +141,7 @@ export default {
     darkModeSwitch: false
   }),
   beforeCreate () {
+    // do nothing
   },
   created () {
     this.setDefaultLanguage()

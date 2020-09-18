@@ -213,7 +213,8 @@
         "assigneeName": "Assignee Name",
         "attendanceRecord": "Attendance Record",
         "viewAssignee": "View Assignee",
-        "viewAttendance": "View Attendance"
+        "viewAttendance": "View Attendance",
+        "viewActionNotes": "ACTION NOTES"
       },
       "actions": {
         "receiptOrderConfirm": "Are you sure to receive this order?",
@@ -296,6 +297,13 @@
       "searchLabel": "Input assignee's student ID",
       "searchNullError": "You will need to enter the student ID of the assignee to add",
       "title": "Assignee"
+    },
+    "actionNotesDialog": {
+      "title": "Order Action Log",
+      "subtitle": "The system will automatically record the action log.",
+      "actionNotesLoading": "Loading the action log for this order...",
+      "actionNotesNotFound": "It appears that you were unsuccessful in obtaining the notes of the action of this order, please try again later.",
+      "close": "CLOSE"
     }
   },
   "login": {

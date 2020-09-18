@@ -161,10 +161,10 @@ router.post('/getUserStatisticsInfo', async function (req, res) {
   if (flag) {
     const reqBody = req.body
     const user_id = reqBody.user_id
-    const sqlMap = [user_id, $common.status.finished]
+    const sqlData = [user_id, $common.status.finished]
 
     const client = await pool.connect()
-    client.query($sql.order.getSelectedOrder, sqlMap, async function (error, result) {
+    client.query($sql.order.getSelectedOrder, sqlData, async function (error, result) {
       if (error) {
         client.release()
         console.log(error)
@@ -214,10 +214,10 @@ router.post('/getSolverInfoByStdId', async function (req, res) {
   const flag = await apiUtils.checkToken(req)
   if (flag) {
     const std_id = req.body.std_id
-    const sqlMap = [std_id]
+    const sqlData = [std_id]
 
     const client = await pool.connect()
-    client.query($sql.account.getSolverInfoByStdId, sqlMap, (error, result) => {
+    client.query($sql.account.getSolverInfoByStdId, sqlData, (error, result) => {
       client.release()
       if (error) {
         console.log(error)
