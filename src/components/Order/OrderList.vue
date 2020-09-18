@@ -166,14 +166,18 @@
                       depressed
                       @click="openAttnDialog(item)"
                       class="mr-2"
-                    >{{ $t('order.orderList.expanded.viewAttendance') }}</v-btn>
+                    ><v-icon small left>mdi-briefcase-outline</v-icon
+                      >{{ $t('order.orderList.expanded.viewAttendance') }}</v-btn
+                    >
                     <!-- 查看协作人 -->
                     <v-btn
                       small
                       depressed
                       @click="openAssigneeDialog(item)"
                       class="mr-2"
-                    >{{ $t('order.orderList.expanded.viewAssignee') }}</v-btn>
+                    ><v-icon small left>mdi-comment-account-outline</v-icon
+                      >{{ $t('order.orderList.expanded.viewAssignee') }}</v-btn
+                    >
                     <!-- 修改订单信息
                     <v-btn
                       small
@@ -199,7 +203,9 @@
                       v-show="showExtraActions"
                       @click="openOrderActionNotesDialog(item)"
                       class="mr-2"
-                    >{{ $t('order.orderList.expanded.viewActionNotes') }}</v-btn>
+                    ><v-icon small left>mdi-calendar-clock</v-icon
+                      >{{ $t('order.orderList.expanded.viewActionNotes') }}</v-btn
+                    >
                     <!-- 取消订单 -->
                     <v-btn
                       small
@@ -208,7 +214,9 @@
                       :disabled="!(item.order_status === GLOBAL.status.receipted && item.is_solver)"
                       @click="cancelOrder(item)"
                       class="mr-2"
-                    >{{ $t('order.orderList.expanded.cancelOrder') }}</v-btn>
+                    ><v-icon small left>mdi-close-circle-outline</v-icon
+                      >{{ $t('order.orderList.expanded.cancelOrder') }}</v-btn
+                    >
                     <!-- 关闭订单 -->
                     <v-btn
                       small
@@ -217,7 +225,9 @@
                       :disabled="!(item.order_status === GLOBAL.status.waiting ||
                       (item.order_status === GLOBAL.status.receipted && item.is_solver))"
                       @click="closeOrder(item)"
-                    >{{ $t('order.orderList.expanded.closeOrder') }}</v-btn>
+                    ><v-icon small left>mdi-delete-circle-outline</v-icon
+                      >{{ $t('order.orderList.expanded.closeOrder') }}</v-btn
+                    >
                     <!-- 删除订单记录
                     <v-btn
                       small
