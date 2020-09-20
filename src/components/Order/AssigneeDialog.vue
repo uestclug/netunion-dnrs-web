@@ -11,7 +11,7 @@
         </v-card-title>
         <!-- 订单协作人 -->
         <v-card-text>
-          <div>{{ $t('order.assigneeDialog.nowAssignee') }}</div>
+          <div class="subtitle-1">{{ $t('order.assigneeDialog.nowAssignee') }}</div>
           <div v-if="queryAssigneeLoading" class="text--primary">
             {{ $t('order.assigneeDialog.nowAssigneeLoading') }}
           </div>
@@ -35,12 +35,12 @@
         <v-card-text v-if="order != null && order.is_solver &&
           order.order_status === GLOBAL.status.receipted"
         >
-          <div>{{ $t('order.assigneeDialog.addAssignee') }}</div>
+          <div class="subtitle-1">{{ $t('order.assigneeDialog.addAssignee') }}</div>
           <v-btn
             @click="addMasterAsAssignee"
             depressed
             :disabled="addAssigneeLoading"
-            class="mt-1"
+            small
           >{{ $t('order.assigneeDialog.addMasterAsAssignee') }}</v-btn>
           <v-text-field
             v-model="searchTextField"

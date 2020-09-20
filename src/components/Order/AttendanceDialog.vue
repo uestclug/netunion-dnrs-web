@@ -9,7 +9,7 @@
         {{ $t('order.attendanceDialog.title') }}
       </v-card-title>
       <v-card-text>
-        <div>{{ $t('order.attendanceDialog.nowAttnTitle') }}</div>
+        <div class="subtitle-1">{{ $t('order.attendanceDialog.nowAttnTitle') }}</div>
         <div v-if="queryAttnloading" class="text--primary">
           {{ $t('order.attendanceDialog.nowAttnLoading') }}
         </div>
@@ -43,7 +43,7 @@
       <v-card-text v-if="order != null && order.is_solver &&
         order.order_status === GLOBAL.status.receipted"
       >
-        <div>{{ $t('order.attendanceDialog.addAttnTitle') }}</div>
+        <div class="subtitle-1">{{ $t('order.attendanceDialog.addAttnTitle') }}</div>
         <v-text-field
           v-model="description"
           :label="label"

@@ -21,9 +21,7 @@
             color="success"
             class="mb-2"
             @click="openCreateOrderSolverSheet"
-          >
-            <v-icon left>mdi-pencil</v-icon> {{ $t('order.createOrder.solver.create') }}
-          </v-btn>
+          >{{ $t('order.createOrder.solver.create') }}</v-btn>
         </v-toolbar>
         <v-card-text>
           <!-- 表格主体 -->
@@ -67,6 +65,11 @@
             </template>
             <!-- 订单 actions 项内容 -->
             <template v-slot:item.actions="{ item }">
+              <v-icon
+                v-if="item.is_solver"
+                @click="modifyOrder(item)"
+                class="mr-2"
+              >mdi-pencil-outline</v-icon>
               <v-icon
                 v-if="item.order_status === GLOBAL.status.waiting"
                 @click="receiptOrder(item)"
@@ -178,16 +181,6 @@
                     ><v-icon small left>mdi-comment-account-outline</v-icon
                       >{{ $t('order.orderList.expanded.viewAssignee') }}</v-btn
                     >
-                    <!-- 修改订单信息
-                    <v-btn
-                      small
-                      depressed
-                      v-if="item.order_status === GLOBAL.status.waiting ||
-                      (item.order_status === GLOBAL.status.receipted && item.is_solver)"
-                      label
-                      @click="modifyOrder(item)"
-                    >修改订单信息</v-btn>
-                    -->
                     <!-- 显示更多操作 -->
                     <v-btn
                       @click="showExtraActions = !showExtraActions"
@@ -392,7 +385,7 @@ export default {
     },
     modifyOrder (item) {
       // 修改订单信息
-      console.log('modify')
+      this.Bus.$emit('openModifyOrderSolverSheet', item)
     },
     cancelOrder (item) {
       // 取消订单，并设置订单状态为待接取

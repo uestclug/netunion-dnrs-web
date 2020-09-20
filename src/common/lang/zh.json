@@ -274,7 +274,8 @@
       "addAttnSuccessfully": "您成功添加了新的出勤记录！",
       "addAttnLoading": "正在添加出勤记录...",
       "addAttnFailed": "出勤记录添加失败，这可能是服务器的问题，请稍后重试。",
-      "addAttnNeedDescription": "至少添加一点描述吧！"
+      "addAttnNeedDescription": "至少添加一点描述吧！",
+      "subtitle": "查看此订单的出勤记录或其它处理信息"
     },
     "assigneeDialog": {
       "title": "协助人",
@@ -304,6 +305,16 @@
       "actionNotesLoading": "此订单的操作记录信息正在加载中...",
       "actionNotesNotFound": "似乎未能成功获取到本订单的操作记录，请稍后重试。",
       "close": "关闭"
+    },
+    "modifyOrder": {
+      "solver": {
+        "cancelTip": "您对订单的修改内容将不会被保存",
+        "resetTip": "您确定要将表单重置为修改前状态吗？",
+        "submit": "修改订单",
+        "modifyFailed": "修改订单失败，也许是服务器炸了！",
+        "modifySucceed": "修改订单信息成功！",
+        "getOrderStatusFailed": "获取订单的状态信息失败，页面正在刷新！"
+      }
     }
   },
   "login": {

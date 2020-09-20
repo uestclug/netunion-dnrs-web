@@ -7,7 +7,7 @@
       <v-card-title>
         {{ $t('order.actionNotesDialog.title') }}
       </v-card-title>
-      <v-card-subtitle>
+      <v-card-subtitle class="pt-1">
         {{ $t('order.actionNotesDialog.subtitle') }}
       </v-card-subtitle>
       <v-card-text>

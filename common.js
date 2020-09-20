@@ -34,6 +34,7 @@ const common = {
     solverCreateOrder: '创建了订单',
     solverCreateAndAcceptOrder: '创建并接取了订单',
     solverRecordOrder: '添加了订单记录',
+    solverModifyOrder: '修改了订单信息',
     solverAcceptOrder: '接取了订单',
     solverFinishOrder: '设置订单已完成',
     solverRestoreOrder: '重置订单为可接取状态',

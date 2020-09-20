@@ -73,9 +73,9 @@
           {{ $t('about.sparklines.finishOrder') }} {{ finishedOrderCount }} {{ $t('about.sparklines.orders') }}
         </p>
 
-        <v-divider class="mx-4 mb-4"/>
+        <v-divider class="mx-4 mb-4" v-if="mvsolvers.length != 0" />
 
-        <div class="title orange--text">
+        <div class="title orange--text" v-if="mvsolvers.length != 0">
           <v-icon
             color="orange"
           >mdi-card-account-details-star-outline
@@ -83,7 +83,7 @@
           {{ $t('about.sparklines.contributor') }}
         </div>
 
-        <v-row class="mt-3">
+        <v-row class="mt-3" v-if="mvsolvers.length != 0">
           <template v-for="solver in mvsolvers">
             <v-col
               cols="auto"

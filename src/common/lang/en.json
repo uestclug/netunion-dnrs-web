@@ -132,7 +132,7 @@
         "resetTip": "Confirm to reset the sheet?",
         "resetConfirm": "CONFIRM",
         "create": "NEW RECORD",
-        "cancelTip": "completed content will not reset",
+        "cancelTip": "Completed content will not reset",
         "submit": "SUBMIT",
         "cancel": "CANCEL",
         "nameLabel": "User Name (optional)",
@@ -274,7 +274,8 @@
       "nowAttnLoading": "Attendance records are being obtained for this order...",
       "nowAttnNotFound": "It appears that no attendance records have been added to this order",
       "nowAttnTitle": "Attendance Record",
-      "title": "Attendance"
+      "title": "Attendance",
+      "subtitle": "View attendance records or other processing information for this order."
     },
     "assigneeDialog": {
       "addAssignee": "Add Assignee",
@@ -304,6 +305,13 @@
       "actionNotesLoading": "Loading the action log for this order...",
       "actionNotesNotFound": "It appears that you were unsuccessful in obtaining the notes of the action of this order, please try again later.",
       "close": "CLOSE"
+    },
+    "modifyOrder": {
+      "solver": {
+        "cancelTip": "Your changes to the order will NOT be saved.",
+        "resetTip": "Are you sure you want to reset the form to its pre-modified state?",
+        "submit": "MODIFY ORDER"
+      }
     }
   },
   "login": {

@@ -107,6 +107,52 @@ router.post('/createOrderSolver', async function (req, res) {
 })
 
 /**
+ * 处理者修改订单接口
+ */
+router.post('/modifyOrderSolver', async function (req, res) {
+  const modifyDate = new Date().getTime()
+  const flag = await apiUtils.checkToken(req)
+  if (flag) {
+    const reqBody = req.body
+    const order_id = reqBody.order_id
+    const solver_id = reqBody.user_id
+    const user_name = reqBody.user_name
+    const user_gender = reqBody.user_gender
+    const user_telephone = reqBody.user_telephone
+    const user_campus = reqBody.user_campus
+    const user_dormitory = reqBody.user_dormitory
+    const user_description = reqBody.user_description
+    const solver_record = reqBody.solver_record
+
+    const orderInfo = await apiUtils.queryOrderInfoByOrderId(order_id)
+    if (orderInfo != null) {
+      if (orderInfo.solver_id == solver_id) {
+        const sqlData = [order_id, user_name, user_gender, user_telephone, user_campus, user_dormitory, user_description, solver_record]
+        const client = await pool.connect()
+        client.query($sql.order.solver.modifyOrder, sqlData, (error, result) => {
+          client.release()
+          if (error) {
+            console.log(error)
+            res.send(false)
+          } else {
+            apiUtils.addOrderActionNotes(
+              order_id, solver_id, $common.actionNotes.solverModifyOrder, modifyDate
+            )
+            res.send(true)
+          }
+        })
+      } else {
+        res.send(false)
+      }
+    } else {
+      res.send(false)
+    }
+  } else {
+    res.send(false)
+  }
+})
+
+/**
  * 获取最近订单状态接口
  * 用户可以创建新订单时返回 true；
  * 用户无法创建新订单时返回 false。
@@ -353,7 +399,7 @@ router.post('/queryOrderList', async function (req, res) {
 
           // 若用户名为空，则修改本项
           if (orderItems[i].order_user_name == '') {
-            orderItems[i].order_user_name = '[未填写]'
+            orderItems[i].order_user_name = '[匿名用户]'
           }
 
           // 简化订单用户性别项
