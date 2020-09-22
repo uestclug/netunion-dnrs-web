@@ -232,12 +232,13 @@ export default {
       const Response = await this.axios.post('/api/order/cancelOrderByUser', {
         order_id: localStorage.getItem('latest_order_id')
       })
-      if (Response.data === true) {
+      if (Response.data) {
         this.orderStatus = this.$i18n.t('order.canceledByUserStatus')
         this.Bus.$emit('setSnackbar', this.$i18n.t('order.cancelSucceed'))
-        this.loading = true
+        this.loading = false
         this.cancelDialog = false
         this.cancelDisabled = true
+        this.Bus.$emit('enableUserCreateOrder')
       } else {
         this.Bus.$emit('modifyLoginStatus', 'unknownErr')
       }
@@ -249,8 +250,7 @@ export default {
   created: async function () { // 获取最近的订单信息
     const Response = await this.axios.post('/api/order/getLatestOrderInfo')
     const orderInfo = Response.data
-    // console.log(orderInfo)
-    if (orderInfo) {
+    if (orderInfo) { // 用户存在最近的订单
       this.orderDormitory = orderInfo.order_user_dormitory
       this.orderName = orderInfo.order_user_name
       this.orderCampus = orderInfo.order_user_campus
@@ -258,6 +258,7 @@ export default {
       if (orderInfo.order_user_description !== '') this.orderDescription = orderInfo.order_user_description
       this.createDate = orderInfo.create_date
       const status = orderInfo.order_status
+      localStorage.setItem('latest_order_id', orderInfo.order_id)
 
       if (status === this.GLOBAL.status.waiting) { // 用户可以取消订单
         this.orderStatus = this.$i18n.t('order.waitingStatus')
@@ -267,16 +268,18 @@ export default {
           this.orderStatus = this.$i18n.t('order.receiptedStatus')
         } else if (status === this.GLOBAL.status.canceledByUser) {
           this.orderStatus = this.$i18n.t('order.canceledByUserStatus')
+          this.Bus.$emit('enableUserCreateOrder')
         } else if (status === this.GLOBAL.status.canceledBySolver) {
           this.orderStatus = this.$i18n.t('order.canceledBySolverStatus')
+          this.Bus.$emit('enableUserCreateOrder')
         } else if (status === this.GLOBAL.status.finished) {
           this.orderStatus = this.$i18n.t('order.finishedStatus')
+          this.Bus.$emit('enableUserCreateOrder')
         } else {
           this.orderStatus = this.$i18n.t('order.unknownStatus')
         }
         this.cancelDisabled = true
       }
-      localStorage.setItem('latest_order_id', orderInfo.order_id)
       if (orderInfo.solver_id !== null) { // 存在接单者时
         if (orderInfo.order_solver_nickname !== null && orderInfo.order_solver_nickname !== '') {
           this.orderSolverName = orderInfo.order_solver_nickname
@@ -288,8 +291,10 @@ export default {
           this.orderSolverTelephone.length >= 4) { // 联系方式应至少为 4 位号码
           this.telephoneCallDisabled = false
         }
-        this.infoLoading = false
       }
+      this.infoLoading = false
+    } else { // 用户不存在最近的订单
+      this.Bus.$emit('enableUserCreateOrder')
     }
   }
 }

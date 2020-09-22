@@ -3,6 +3,7 @@
     <v-bottom-sheet
       v-model="sheet"
       inset
+      :persistent="submitLoading"
     >
       <v-sheet height="1200px">
         <v-form ref="bottomForm">
@@ -237,15 +238,14 @@ export default {
           user_dormitory: this.dormitory,
           user_description: this.description
         }).then((Response) => {
-          if (Response.data === false) { // 订单提交失败，刷新页面
-            this.Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.createFailed'))
-            location.reload()
-          } else { // 订单提交成功，通过切换路由更新页面
+          if (Response.data) { // 订单提交成功，通过切换路由更新页面
             this.Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.createSucceed'))
             this.sheet = false
             this.submitLoading = false
-            this.$router.push({ path: '/_empty' })
-            this.$router.back(-1)
+            this.refreshRouter()
+          } else { // 订单提交失败，刷新页面
+            this.Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.createFailed'))
+            location.reload()
           }
         })
       }
@@ -256,19 +256,15 @@ export default {
       this.telephone = localStorage.getItem('telephone')
       this.dormitory = localStorage.getItem('dormitory')
       this.campus = localStorage.getItem('campus')
+    },
+    refreshRouter () {
+      this.$router.push({ path: '/_empty' })
+      this.$router.back(-1)
     }
   },
   mounted () {
     this.Bus.$on('openCreateOrderUserSheet', (msg) => {
-      this.axios.post('/api/order/getLatestOrderStatus').then((Response) => {
-        const res = Response.data
-        if (res) {
-          this.sheet = true
-        } else {
-          // 存在进行中的订单时不可新建订单
-          this.Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.orderStatusErr'))
-        }
-      })
+      this.sheet = true
     })
   }
 }

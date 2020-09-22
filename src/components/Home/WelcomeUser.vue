@@ -21,6 +21,7 @@
             outlined
             style="margin: 0px 0px 10px 10px"
             @click="openCreateOrderUserSheet"
+            :disabled="disableCreateOrder"
           >
             <v-icon left>mdi-pencil</v-icon> {{ $t('order.createOrder.user.create') }}
           </v-btn>
@@ -33,10 +34,18 @@
 <script>
 export default {
   name: 'WelcomeUser',
+  data: () => ({
+    disableCreateOrder: true
+  }),
   methods: {
     openCreateOrderUserSheet () {
       this.Bus.$emit('openCreateOrderUserSheet')
     }
+  },
+  mounted () {
+    this.Bus.$on('enableUserCreateOrder', (msg) => {
+      this.disableCreateOrder = false
+    })
   }
 }
 </script>

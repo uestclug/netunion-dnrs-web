@@ -180,29 +180,37 @@ router.post('/getLatestOrderInfo', async function (req, res) {
   if (flag) {
     const user_id = req.body.user_id
     const latestOrder = await apiUtils.getLatestOrderInfo(user_id)
+    console.log(latestOrder)
 
     if (latestOrder) { // 获取到最近订单信息
       const solver_id = latestOrder.solver_id
-
-      const client = await pool.connect()
-      client.query($sql.order.querySolverInfo, [solver_id], (error, result) => {
-        client.release()
-        if (error) {
-          console.log(error)
-          res.send(false)
-        } else {
-          latestOrder.order_solver_name = result.rows[0].name
-          latestOrder.order_solver_nickname = result.rows[0].nickname
-          latestOrder.order_solver_telephone = result.rows[0].telephone
-          latestOrder.order_solver_intro = result.rows[0].intro
-          latestOrder.create_date = new Date(parseInt(latestOrder.create_date)).toLocaleString()
-          latestOrder.close_date = new Date(parseInt(latestOrder.close_date)).toLocaleString()
-          res.send(latestOrder)
-        }
-      }) 
+      
+      if (solver_id != null && solver_id != '') { // 处理者已接单
+        const client = await pool.connect()
+        client.query($sql.order.querySolverInfo, [solver_id], (error, result) => {
+          client.release()
+          if (error) {
+            console.log(error)
+            res.send(false)
+          } else {
+            latestOrder.order_solver_name = result.rows[0].name
+            latestOrder.order_solver_nickname = result.rows[0].nickname
+            latestOrder.order_solver_telephone = result.rows[0].telephone
+            latestOrder.order_solver_intro = result.rows[0].intro
+            latestOrder.create_date = new Date(parseInt(latestOrder.create_date)).toLocaleString()
+            latestOrder.close_date = new Date(parseInt(latestOrder.close_date)).toLocaleString()
+            res.send(latestOrder)
+          }
+        }) 
+      } else { // 处理者未接单
+        latestOrder.create_date = new Date(parseInt(latestOrder.create_date)).toLocaleString()
+        res.send(latestOrder)
+      }
     } else { // 用户无最近的订单记录或查询失败
       res.send(false)
     }
+  } else {
+    res.send(false)
   }
 })
 
@@ -237,9 +245,10 @@ router.post('/cancelOrderByUser', async function (req, res) {
         console.log(error)
         res.send(false)
       } else { // 查询订单信息成功
+        console.log(result)
         if (result.rowCount == 1 &&
           result.rows[0].user_id == user_id &&
-          result.rows[0].status == $common.status.waiting) {
+          result.rows[0].order_status == $common.status.waiting) {
           // 当订单号属于该用户且订单尚未接取时
 
           const client = await pool.connect()
