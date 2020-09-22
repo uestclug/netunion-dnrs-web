@@ -12,10 +12,16 @@
         <!-- 订单协作人 -->
         <v-card-text>
           <div class="subtitle-1">{{ $t('order.assigneeDialog.nowAssignee') }}</div>
-          <div v-if="queryAssigneeLoading" class="text--primary">
+          <div
+            v-if="queryAssigneeLoading"
+            class="text--primary"
+          >
             {{ $t('order.assigneeDialog.nowAssigneeLoading') }}
           </div>
-          <div v-else-if="assignee.length == 0" class="body-1 text--primary">
+          <div
+            v-else-if="assignee.length == 0"
+            class="body-1 text--primary"
+          >
             {{ $t('order.assigneeDialog.nowAssigneeNotFound') }}
           </div>
           <div v-else>
@@ -33,8 +39,7 @@
         </v-card-text>
         <!-- 添加协作人 -->
         <v-card-text v-if="order != null && order.is_solver &&
-          order.order_status === GLOBAL.status.receipted"
-        >
+          order.order_status === GLOBAL.status.receipted">
           <div class="subtitle-1">{{ $t('order.assigneeDialog.addAssignee') }}</div>
           <v-btn
             @click="addMasterAsAssignee"

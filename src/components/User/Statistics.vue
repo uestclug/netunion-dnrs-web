@@ -9,9 +9,12 @@
         class="mx-auto"
         max-width="800"
       >
-        <v-toolbar flat class="body-1 pt-2">
+        <v-toolbar
+          flat
+          class="body-1 pt-2"
+        >
           <v-toolbar-title>{{ $t('user.statistics.title') }}</v-toolbar-title>
-          <v-divider class="mx-4"/>
+          <v-divider class="mx-4" />
         </v-toolbar>
         <v-card-text>
           <v-data-table

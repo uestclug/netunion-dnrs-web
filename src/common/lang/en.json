@@ -310,8 +310,30 @@
       "solver": {
         "cancelTip": "Your changes to the order will NOT be saved.",
         "resetTip": "Are you sure you want to reset the form to its pre-modified state?",
-        "submit": "MODIFY ORDER"
+        "submit": "MODIFY ORDER",
+        "getOrderStatusFailed": "Failed to get status information about the order, the page is refreshing!",
+        "modifyFailed": "Failed to modify the order, maybe the server blew up!",
+        "modifySucceed": "Modify order information successfully!"
       }
+    },
+    "exportDialog": {
+      "additionalSettings": "More Settings",
+      "back": "BACK",
+      "cancel": "CANCEL",
+      "confirm": "CLICK TO EXPORT",
+      "confirmText": "Click the button below to export order records!",
+      "continue": "CONTINUE",
+      "emailErrors": "You need to enter a correct email address",
+      "emailLabel": "Also sent to my email (optional)",
+      "emailTitle": "Send to Email",
+      "exportFailed": "Exporting order records failed, this may be due to server network fluctuations or the query month has no order records, please try again later",
+      "exportRecords": "Export",
+      "exportSuccessfully": "Export order records successfully! The download will begin immediately.",
+      "formatTitle": "File Format",
+      "onExportingRecords": "In the process of exporting order records...",
+      "pickDate": "Select Month",
+      "title": "Export Order Records",
+      "formatToCsvNotes": "Multiple .csv files will be exported."
     }
   },
   "login": {

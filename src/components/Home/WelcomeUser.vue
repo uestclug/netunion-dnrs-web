@@ -10,7 +10,8 @@
         max-width="800"
       >
         <v-card-text>
-          <p class="subtitle-1">{{ $t('home.welcomeUser.words') }}<v-divider></v-divider></p>
+          <p class="subtitle-1">{{ $t('home.welcomeUser.words') }}<v-divider></v-divider>
+          </p>
           <p class="headline text--primary font-weight-medium">{{ $t('home.welcomeUser.slogan') }}</p>
         </v-card-text>
 

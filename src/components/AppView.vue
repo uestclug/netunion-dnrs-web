@@ -20,7 +20,10 @@
 
       <v-list shaped>
         <v-list-item-group color="success">
-          <v-list-item router-link to="/">
+          <v-list-item
+            router-link
+            to="/"
+          >
             <v-list-item-action>
               <v-icon>mdi-home</v-icon>
             </v-list-item-action>
@@ -29,7 +32,10 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item router-link to="/User">
+          <v-list-item
+            router-link
+            to="/User"
+          >
             <v-list-item-action>
               <v-icon>mdi-account-circle</v-icon>
             </v-list-item-action>
@@ -38,7 +44,10 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item router-link to="/Order">
+          <v-list-item
+            router-link
+            to="/Order"
+          >
             <v-list-item-action>
               <v-icon>mdi-clipboard-check-multiple</v-icon>
             </v-list-item-action>
@@ -47,7 +56,10 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item router-link to="/About">
+          <v-list-item
+            router-link
+            to="/About"
+          >
             <v-list-item-action>
               <v-icon>mdi-iframe</v-icon>
             </v-list-item-action>
@@ -63,7 +75,7 @@
           class="mx-auto"
           style="padding: 10px; text-align: center"
         >
-        <v-icon>{{darkModeSwitch?'mdi-brightness-4':'mdi-brightness-7'}}</v-icon>
+          <v-icon>{{darkModeSwitch?'mdi-brightness-4':'mdi-brightness-7'}}</v-icon>
           {{ $t('theme.darkMode') }}
           <v-switch
             v-model="darkModeSwitch"

@@ -4,6 +4,6 @@
 
 <script>
 export default {
-  name: 'ExportOrderRecords'
+  name: 'News'
 }
 </script>

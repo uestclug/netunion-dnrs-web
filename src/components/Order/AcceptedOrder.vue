@@ -9,15 +9,24 @@
         class="mx-auto transition-swing"
         max-width="800"
       >
-        <v-toolbar flat class="body-1 pt-2">
+        <v-toolbar
+          flat
+          class="body-1 pt-2"
+        >
           <v-toolbar-title>{{ $t('order.acceptedOrder.title') }}</v-toolbar-title>
-          <v-divider class="mx-4"/>
+          <v-divider class="mx-4" />
         </v-toolbar>
 
-        <v-container v-if="loading" style="text-align: center;">
-          <div class="loadingio-spinner-ripple-s9nf2nweyv"><div class="ldio-62v9m71m4dc">
-          <div></div><div></div>
-          </div></div>
+        <v-container
+          v-if="loading"
+          style="text-align: center;"
+        >
+          <div class="loadingio-spinner-ripple-s9nf2nweyv">
+            <div class="ldio-62v9m71m4dc">
+              <div></div>
+              <div></div>
+            </div>
+          </div>
         </v-container>
 
         <v-container v-else-if="!loading && orders === null">
@@ -80,16 +89,25 @@
                   <v-card-text>
                     <v-row>
                       <!-- 订单描述 -->
-                      <v-col cols="12" v-if="order.order_user_description">
+                      <v-col
+                        cols="12"
+                        v-if="order.order_user_description"
+                      >
                         <v-chip
                           label
                           outlined
                           class="mr-2"
                         >
-                          <v-icon small left>mdi-calendar-blank-outline</v-icon>
+                          <v-icon
+                            small
+                            left
+                          >mdi-calendar-blank-outline</v-icon>
                           {{ $t('order.acceptedOrder.expanded.description') }}
                         </v-chip>
-                        <span class="body-1" style="display: inline-block;">{{ order.order_user_description }}</span>
+                        <span
+                          class="body-1"
+                          style="display: inline-block;"
+                        >{{ order.order_user_description }}</span>
                       </v-col>
                       <!-- 订单创建日期 -->
                       <v-col cols="12">
@@ -98,10 +116,16 @@
                           outlined
                           class="mr-2"
                         >
-                          <v-icon small left>mdi-calendar-blank-outline</v-icon>
+                          <v-icon
+                            small
+                            left
+                          >mdi-calendar-blank-outline</v-icon>
                           {{ $t('order.acceptedOrder.expanded.createDate') }}
                         </v-chip>
-                        <span class="body-1" style="display: inline-block;">{{ order.create_date }}</span>
+                        <span
+                          class="body-1"
+                          style="display: inline-block;"
+                        >{{ order.create_date }}</span>
                       </v-col>
                       <!-- 订单经过时间 -->
                       <v-col cols="12">
@@ -110,10 +134,16 @@
                           outlined
                           class="mr-2"
                         >
-                          <v-icon small left>mdi-progress-clock</v-icon>
+                          <v-icon
+                            small
+                            left
+                          >mdi-progress-clock</v-icon>
                           {{ $t('order.acceptedOrder.expanded.openTime') }}
                         </v-chip>
-                        <span class="body-1" style="display: inline-block;">{{ order.order_open_time }}</span>
+                        <span
+                          class="body-1"
+                          style="display: inline-block;"
+                        >{{ order.order_open_time }}</span>
                       </v-col>
                       <!-- 订单额外操作
                       <v-col cols="12">

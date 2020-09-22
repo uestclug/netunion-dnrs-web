@@ -204,6 +204,15 @@ const sqlMap = {
         WHERE oan.order_id = $1 AND oan.user_id = $2 \
         ORDER BY oan.action_date DESC'
     },
+    export: {
+      // 通过 close_date 查询已完成（或记录完成）的订单信息
+      queryFinishedOrderInfoByTime: '\
+        SELECT o.*, a.name AS order_solver_name \
+        FROM' + orderTable + 'AS o \
+        LEFT JOIN' + accountTable + 'AS a \
+        ON o.solver_id = a.user_id \
+        WHERE order_status IN (\'finished\', \'recorded\') AND (close_date BETWEEN $1 AND $2)'
+    },
     // 通过 order_id 查询订单信息
     queryOrderInfoByOrderId: '\
       SELECT * \

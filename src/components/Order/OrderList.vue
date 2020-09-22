@@ -1,11 +1,29 @@
 <template>
   <v-container>
-    <v-hover v-slot:default="{ hover }" open-delay="200">
-      <v-card :elevation="hover ? 16 : 2" class="mx-auto transition-swing" max-width="1200">
+    <v-hover
+      v-slot:default="{ hover }"
+      open-delay="200"
+    >
+      <v-card
+        :elevation="hover ? 16 : 2"
+        class="mx-auto transition-swing"
+        max-width="1200"
+      >
         <!-- 表格 header 内容 -->
-        <v-toolbar flat class="body-1 pt-2">
-          <v-toolbar-title class="hidden-xs-only">{{ $t('order.orderList.title') }}</v-toolbar-title>
-          <v-divider class="mx-4 hidden-xs-only" inset vertical />
+        <v-toolbar
+          flat
+          class="body-1 pt-2"
+        >
+          <v-toolbar-title
+            class="hidden-xs-only"
+            style="cursor: pointer;"
+            @click="openExportRecordsDialog"
+          >{{ $t('order.orderList.title') }}</v-toolbar-title>
+          <v-divider
+            class="mx-4 hidden-xs-only"
+            inset
+            vertical
+          />
           <v-spacer />
           <v-select
             v-model="filterSelect"
@@ -16,7 +34,11 @@
             outlined
             @change="changeOrderListFilter"
           ></v-select>
-          <v-divider class="mx-4" inset vertical />
+          <v-divider
+            class="mx-4"
+            inset
+            vertical
+          />
           <v-btn
             color="success"
             class="mb-2"
@@ -87,73 +109,120 @@
             <template v-slot:expanded-item="{ headers, item }">
               <td :colspan="headers.length">
                 <!-- 订单详细信息 -->
-                <v-row style="word-wrap: break-word; word-break: break-all" class="mt-3">
+                <v-row
+                  style="word-wrap: break-word; word-break: break-all"
+                  class="mt-3"
+                >
                   <!-- 订单用户联系电话 -->
-                  <v-col cols="12" v-if="item.order_user_telephone">
-                    <v-chip small label outlined class="mr-1">
-                      <v-icon small left>mdi-cellphone</v-icon>
+                  <v-col
+                    cols="12"
+                    v-if="item.order_user_telephone"
+                  >
+                    <v-chip
+                      small
+                      label
+                      outlined
+                      class="mr-1"
+                    >
+                      <v-icon
+                        small
+                        left
+                      >mdi-cellphone</v-icon>
                       {{ $t('order.orderList.expanded.telephone') }}
                     </v-chip>
                     <span style="display: inline-block;">{{ item.order_user_telephone }}</span>
                   </v-col>
                   <!-- 订单寝室地址 -->
-                  <v-col cols="12" v-if="item.order_user_dormitory">
-                    <v-chip small label outlined class="mr-1">
-                      <v-icon small left>mdi-map-marker-outline</v-icon>
-                      <span
-                        style="display: inline-block;"
-                      >{{ $t('order.orderList.expanded.dormitory') }}</span>
+                  <v-col
+                    cols="12"
+                    v-if="item.order_user_dormitory"
+                  >
+                    <v-chip
+                      small
+                      label
+                      outlined
+                      class="mr-1"
+                    >
+                      <v-icon
+                        small
+                        left
+                      >mdi-map-marker-outline</v-icon>
+                      <span style="display: inline-block;">{{ $t('order.orderList.expanded.dormitory') }}</span>
                     </v-chip>
                     <span style="display: inline-block;">{{ item.order_user_dormitory }}</span>
                   </v-col>
                   <!-- 订单描述 -->
-                  <v-col cols="12" v-if="item.order_user_description">
-                    <v-chip small label outlined class="mr-1">
-                      <v-icon small left>mdi-calendar-blank-outline</v-icon>
+                  <v-col
+                    cols="12"
+                    v-if="item.order_user_description"
+                  >
+                    <v-chip
+                      small
+                      label
+                      outlined
+                      class="mr-1"
+                    >
+                      <v-icon
+                        small
+                        left
+                      >mdi-calendar-blank-outline</v-icon>
                       {{ $t('order.orderList.expanded.description') }}
                     </v-chip>
                     <span style="display: inline-block;">{{ item.order_user_description }}</span>
                   </v-col>
                   <!-- 订单处理者姓名 -->
-                  <v-col cols="12" v-if="item.solver_name">
-                    <v-chip small label outlined class="mr-1">
-                      <v-icon small left>mdi-card-account-details-outline</v-icon>
+                  <v-col
+                    cols="12"
+                    v-if="item.solver_name"
+                  >
+                    <v-chip
+                      small
+                      label
+                      outlined
+                      class="mr-1"
+                    >
+                      <v-icon
+                        small
+                        left
+                      >mdi-card-account-details-outline</v-icon>
                       {{ $t('order.orderList.expanded.solverName') }}
                     </v-chip>
                     <span style="display: inline-block;">{{ item.solver_name }}</span>
                   </v-col>
-                  <!-- 订单协作者姓名
-                  <v-col cols="12" v-if="item.assignee.length > 0">
-                    <v-chip small label outlined class="mr-1">
-                      <v-icon small left>mdi-comment-account-outline</v-icon>
-                      {{ $t('order.orderList.expanded.assigneeName') }}
-                    </v-chip>
-                    <span style="display: inline-block;">
-                      <span v-for="asgn in item.assignee" v-bind:key="asgn.solver_id">{{ asgn.solver_name }} </span>
-                    </span>
-                  </v-col>
-                  -->
-                  <!-- 订单出勤信息记录
-                  <v-col cols="12" v-if="item.attendance_record">
-                    <v-chip small label outlined class="mr-1">
-                      <v-icon small left>mdi-briefcase-edit-outline</v-icon>
-                      {{ $t('order.orderList.expanded.attendanceRecord') }}
-                    </v-chip>
-                    <span style="display: inline-block;">{{ item.attendance_record }}</span>
-                  </v-col>
-                  -->
                   <!-- 订单处理者记录 -->
-                  <v-col cols="12" v-if="item.order_solver_record">
-                    <v-chip small label outlined class="mr-1">
-                      <v-icon small left>mdi-calendar-check-outline</v-icon>
+                  <v-col
+                    cols="12"
+                    v-if="item.order_solver_record"
+                  >
+                    <v-chip
+                      small
+                      label
+                      outlined
+                      class="mr-1"
+                    >
+                      <v-icon
+                        small
+                        left
+                      >mdi-calendar-check-outline</v-icon>
                       {{ $t('order.orderList.expanded.record') }}
                     </v-chip>
                     <span style="display: inline-block;">{{ item.order_solver_record }}</span>
                   </v-col>
                   <!-- 订单关闭日期 -->
-                  <v-col cols="12" v-if="item.close_date">
-                    <v-chip small label outlined class="mr-1">
-                      <v-icon small left>mdi-clock-check-outline</v-icon>
+                  <v-col
+                    cols="12"
+                    v-if="item.close_date"
+                  >
+                    <v-chip
+                      small
+                      label
+                      outlined
+                      class="mr-1"
+                    >
+                      <v-icon
+                        small
+                        left
+                      >mdi-clock-check-outline</v-icon>
                       {{ $t('order.orderList.expanded.closeDate') }}
                     </v-chip>
                     <span style="display: inline-block;">{{ item.close_date }}</span>
@@ -169,18 +238,24 @@
                       depressed
                       @click="openAttnDialog(item)"
                       class="mr-2"
-                    ><v-icon small left>mdi-briefcase-outline</v-icon
-                      >{{ $t('order.orderList.expanded.viewAttendance') }}</v-btn
                     >
+                      <v-icon
+                        small
+                        left
+                      >mdi-briefcase-outline</v-icon>{{ $t('order.orderList.expanded.viewAttendance') }}
+                    </v-btn>
                     <!-- 查看协作人 -->
                     <v-btn
                       small
                       depressed
                       @click="openAssigneeDialog(item)"
                       class="mr-2"
-                    ><v-icon small left>mdi-comment-account-outline</v-icon
-                      >{{ $t('order.orderList.expanded.viewAssignee') }}</v-btn
                     >
+                      <v-icon
+                        small
+                        left
+                      >mdi-comment-account-outline</v-icon>{{ $t('order.orderList.expanded.viewAssignee') }}
+                    </v-btn>
                     <!-- 显示更多操作 -->
                     <v-btn
                       @click="showExtraActions = !showExtraActions"
@@ -196,9 +271,12 @@
                       v-show="showExtraActions"
                       @click="openOrderActionNotesDialog(item)"
                       class="mr-2"
-                    ><v-icon small left>mdi-calendar-clock</v-icon
-                      >{{ $t('order.orderList.expanded.viewActionNotes') }}</v-btn
                     >
+                      <v-icon
+                        small
+                        left
+                      >mdi-calendar-clock</v-icon>{{ $t('order.orderList.expanded.viewActionNotes') }}
+                    </v-btn>
                     <!-- 取消订单 -->
                     <v-btn
                       small
@@ -207,9 +285,12 @@
                       :disabled="!(item.order_status === GLOBAL.status.receipted && item.is_solver)"
                       @click="cancelOrder(item)"
                       class="mr-2"
-                    ><v-icon small left>mdi-close-circle-outline</v-icon
-                      >{{ $t('order.orderList.expanded.cancelOrder') }}</v-btn
                     >
+                      <v-icon
+                        small
+                        left
+                      >mdi-close-circle-outline</v-icon>{{ $t('order.orderList.expanded.cancelOrder') }}
+                    </v-btn>
                     <!-- 关闭订单 -->
                     <v-btn
                       small
@@ -218,9 +299,12 @@
                       :disabled="!(item.order_status === GLOBAL.status.waiting ||
                       (item.order_status === GLOBAL.status.receipted && item.is_solver))"
                       @click="closeOrder(item)"
-                    ><v-icon small left>mdi-delete-circle-outline</v-icon
-                      >{{ $t('order.orderList.expanded.closeOrder') }}</v-btn
                     >
+                      <v-icon
+                        small
+                        left
+                      >mdi-delete-circle-outline</v-icon>{{ $t('order.orderList.expanded.closeOrder') }}
+                    </v-btn>
                     <!-- 删除订单记录
                     <v-btn
                       small
@@ -245,6 +329,7 @@
     <AssigneeDialog />
     <AttendanceDialog />
     <OrderActionNotesDialog />
+    <ExportRecordsDialog />
   </v-container>
 </template>
 
@@ -252,13 +337,15 @@
 import AssigneeDialog from '@/components/Order/AssigneeDialog'
 import AttendanceDialog from '@/components/Order/AttendanceDialog'
 import OrderActionNotesDialog from '@/components/Order/OrderActionNotesDialog'
+import ExportRecordsDialog from '@/components/Order/ExportRecordsDialog'
 
 export default {
   name: 'OrderList',
   components: {
     AssigneeDialog,
     AttendanceDialog,
-    OrderActionNotesDialog
+    OrderActionNotesDialog,
+    ExportRecordsDialog
   },
   data: () => ({
     filterSelect: '显示可用',
@@ -306,6 +393,9 @@ export default {
     },
     openOrderActionNotesDialog (item) {
       this.Bus.$emit('openOrderActionNotesDialog', item)
+    },
+    openExportRecordsDialog () {
+      this.Bus.$emit('openExportRecordsDialog')
     },
     receiptOrder (item) {
       // 接取订单，设置订单状态为已接取

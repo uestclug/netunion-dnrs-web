@@ -51,9 +51,7 @@
                 justify="center"
               >
                 <!-- 姓名表单 -->
-                <v-col
-                  cols="3"
-                >
+                <v-col cols="3">
                   <v-text-field
                     v-model="name"
                     :error-messages="nameErrors"
@@ -65,9 +63,7 @@
                 </v-col>
 
                 <!-- 性别表单 -->
-                <v-col
-                  cols="3"
-                >
+                <v-col cols="3">
                   <v-select
                     v-model="gender"
                     :items="genderItems"
@@ -79,9 +75,7 @@
                 </v-col>
 
                 <!-- 联系电话表单 -->
-                <v-col
-                  cols="6"
-                >
+                <v-col cols="6">
                   <v-text-field
                     v-model="telephone"
                     :error-messages="telephoneErrors"
@@ -93,9 +87,7 @@
                 </v-col>
 
                 <!-- 校区选择器 -->
-                <v-col
-                  cols="6"
-                >
+                <v-col cols="6">
                   <v-select
                     v-model="campus"
                     :items="campusItems"
@@ -107,9 +99,7 @@
                 </v-col>
 
                 <!-- 寝室表单 -->
-                <v-col
-                  cols="6"
-                >
+                <v-col cols="6">
                   <v-text-field
                     v-model="dormitory"
                     :error-messages="dormitoryErrors"
@@ -120,9 +110,7 @@
                 </v-col>
 
                 <!-- 描述表单 -->
-                <v-col
-                  cols="12"
-                >
+                <v-col cols="12">
                   <v-textarea
                     v-model="description"
                     :label="descriptionLabel"
@@ -237,8 +225,8 @@ export default {
     submit () {
       this.$v.$touch()
       if (this.nameErrors.length === 0 && this.genderErrors.length === 0 &&
-      this.campusErrors.length === 0 && this.dormitoryErrors.length === 0 &&
-      this.telephoneErrors.length === 0) {
+        this.campusErrors.length === 0 && this.dormitoryErrors.length === 0 &&
+        this.telephoneErrors.length === 0) {
         this.submitLoading = true
 
         this.axios.post('/api/order/createOrderUser', {

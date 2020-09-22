@@ -5,22 +5,32 @@
       class="mx-auto"
       max-width="800"
     >
-      <v-toolbar flat class="body-1 pt-2">
+      <v-toolbar
+        flat
+        class="body-1 pt-2"
+      >
         <v-toolbar-title>{{ $t('about.sparklines.title') }}</v-toolbar-title>
-        <v-divider class="mx-4"/>
+        <v-divider class="mx-4" />
       </v-toolbar>
 
-      <v-container v-if="loading" style="text-align: center;">
-        <div class="loadingio-spinner-ripple-s9nf2nweyv"><div class="ldio-62v9m71m4dc">
-        <div></div><div></div>
-        </div></div>
+      <v-container
+        v-if="loading"
+        style="text-align: center;"
+      >
+        <div class="loadingio-spinner-ripple-s9nf2nweyv">
+          <div class="ldio-62v9m71m4dc">
+            <div></div>
+            <div></div>
+          </div>
+        </div>
       </v-container>
 
-      <v-container v-else class="text-center">
+      <v-container
+        v-else
+        class="text-center"
+      >
         <div class="title teal--text">
-          <v-icon
-            color="teal"
-          >mdi-briefcase-plus-outline
+          <v-icon color="teal">mdi-briefcase-plus-outline
           </v-icon>
           {{ $t('about.sparklines.createOrderSimple') }}
         </div>
@@ -44,12 +54,10 @@
           {{ $t('about.sparklines.createOrder') }} {{ createOrderCount }} {{ $t('about.sparklines.orders') }}
         </p>
 
-        <v-divider class="mx-4 mb-4"/>
+        <v-divider class="mx-4 mb-4" />
 
         <div class="title success--text">
-          <v-icon
-            color="success"
-          >mdi-briefcase-check-outline
+          <v-icon color="success">mdi-briefcase-check-outline
           </v-icon>
           {{ $t('about.sparklines.finishOrderSimple') }}
         </div>
@@ -73,17 +81,24 @@
           {{ $t('about.sparklines.finishOrder') }} {{ finishedOrderCount }} {{ $t('about.sparklines.orders') }}
         </p>
 
-        <v-divider class="mx-4 mb-4" v-if="mvsolvers.length != 0" />
+        <v-divider
+          class="mx-4 mb-4"
+          v-if="mvsolvers.length != 0"
+        />
 
-        <div class="title orange--text" v-if="mvsolvers.length != 0">
-          <v-icon
-            color="orange"
-          >mdi-card-account-details-star-outline
+        <div
+          class="title orange--text"
+          v-if="mvsolvers.length != 0"
+        >
+          <v-icon color="orange">mdi-card-account-details-star-outline
           </v-icon>
           {{ $t('about.sparklines.contributor') }}
         </div>
 
-        <v-row class="mt-3" v-if="mvsolvers.length != 0">
+        <v-row
+          class="mt-3"
+          v-if="mvsolvers.length != 0"
+        >
           <template v-for="solver in mvsolvers">
             <v-col
               cols="auto"

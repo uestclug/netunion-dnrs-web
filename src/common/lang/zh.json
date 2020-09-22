@@ -315,6 +315,25 @@
         "modifySucceed": "修改订单信息成功！",
         "getOrderStatusFailed": "获取订单的状态信息失败，页面正在刷新！"
       }
+    },
+    "exportDialog": {
+      "title": "导出订单",
+      "continue": "下一步",
+      "cancel": "取消",
+      "pickDate": "选择月份",
+      "additionalSettings": "更多设置",
+      "back": "返回",
+      "confirm": "点击导出",
+      "exportRecords": "确认导出",
+      "emailLabel": "同时发送到邮箱（可选）",
+      "emailErrors": "您需要输入正确的邮箱地址",
+      "confirmText": "点击下方的按钮导出订单信息吧！",
+      "onExportingRecords": "正在导出订单记录中...",
+      "exportSuccessfully": "导出订单记录成功！下载将会马上开始",
+      "exportFailed": "导出订单记录失败，这可能是由于服务器网络波动或查询月份没有订单记录，请稍后尝试",
+      "formatTitle": "选择导出格式",
+      "emailTitle": "发送到邮箱",
+      "formatToCsvNotes": "将会导出多个 .csv 文件"
     }
   },
   "login": {

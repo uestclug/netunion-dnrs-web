@@ -9,9 +9,12 @@
         class="mx-auto transition-swing"
         max-width="800"
       >
-        <v-toolbar flat class="body-1 pt-2">
+        <v-toolbar
+          flat
+          class="body-1 pt-2"
+        >
           <v-toolbar-title>{{ $t('user.account.title') }}</v-toolbar-title>
-          <v-divider class="mx-4"/>
+          <v-divider class="mx-4" />
         </v-toolbar>
         <v-card-text>
           <v-row>
@@ -31,12 +34,18 @@
                 @blur="$v.name.$touch()"
               ></v-text-field>
             </v-col>
-            <v-col cols="6" v-if="role === GLOBAL.role.solver">
+            <v-col
+              cols="6"
+              v-if="role === GLOBAL.role.solver"
+            >
               <p class="body-1 pt-2">
                 <v-icon left>mdi-account-tie-outline</v-icon>{{ $t('user.account.nickname') }}
               </p>
             </v-col>
-            <v-col cols="6" v-if="role === GLOBAL.role.solver">
+            <v-col
+              cols="6"
+              v-if="role === GLOBAL.role.solver"
+            >
               <v-text-field
                 v-model="nickname"
                 class="body-1 pt-0 pb-0"
@@ -73,12 +82,18 @@
                 :disabled="disabled"
               ></v-select>
             </v-col>
-            <v-col cols="6" v-if="role === GLOBAL.role.user">
+            <v-col
+              cols="6"
+              v-if="role === GLOBAL.role.user"
+            >
               <p class="body-1 pt-2">
                 <v-icon left>mdi-map-marker-outline</v-icon>{{ $t('user.account.location') }}
               </p>
             </v-col>
-            <v-col cols="6" v-if="role === GLOBAL.role.user">
+            <v-col
+              cols="6"
+              v-if="role === GLOBAL.role.user"
+            >
               <v-text-field
                 v-model="dormitory"
                 class="body-1 pt-0 pb-0"
@@ -101,12 +116,18 @@
                 @blur="$v.telephone.$touch()"
               ></v-text-field>
             </v-col>
-            <v-col cols="6" v-if="role === GLOBAL.role.solver">
+            <v-col
+              cols="6"
+              v-if="role === GLOBAL.role.solver"
+            >
               <p class="body-1 pt-2">
                 <v-icon left>mdi-badge-account-horizontal-outline</v-icon>{{ $t('user.account.intro') }}
               </p>
             </v-col>
-            <v-col cols="6" v-if="role === GLOBAL.role.solver">
+            <v-col
+              cols="6"
+              v-if="role === GLOBAL.role.solver"
+            >
               <v-textarea
                 v-model="intro"
                 class="body-1 pt-0 pb-0"
@@ -211,9 +232,7 @@
         </v-form>
         <v-card-actions class="mr-4">
           <v-spacer></v-spacer>
-          <v-btn
-            @click="modifyPasswordDialog = false"
-          >{{ $t('user.account.cancel') }}</v-btn>
+          <v-btn @click="modifyPasswordDialog = false">{{ $t('user.account.cancel') }}</v-btn>
           <v-btn
             color="success"
             @click="submitNewPassword"
@@ -226,7 +245,10 @@
     </v-dialog>
 
     <!-- 登出 Dialog -->
-    <v-dialog v-model="logoutDialog" max-width="600">
+    <v-dialog
+      v-model="logoutDialog"
+      max-width="600"
+    >
       <v-card>
         <v-card-title>
           <span class="headline">{{ $t('user.account.logout') }}</span>
@@ -420,7 +442,7 @@ export default {
       } else { // 第二次点击，保存修改内容到数据库中
         this.$v.$touch()
         if (this.nameErrors.length === 0 && this.nicknameErrors.length === 0 &&
-        this.telephoneErrors.length === 0 && this.introErrors.length === 0) {
+          this.telephoneErrors.length === 0 && this.introErrors.length === 0) {
           this.modifyAccountInfoLoading = true
 
           let modifyResponse = false

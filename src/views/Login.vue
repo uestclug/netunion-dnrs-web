@@ -10,9 +10,7 @@
             no-gutters
             style="text-align: center"
           >
-            <v-col
-              class="title mt-4 mb-4"
-            >
+            <v-col class="title mt-4 mb-4">
               {{ $t('app.name') }}
             </v-col>
           </v-row>
@@ -20,9 +18,7 @@
             justify="center"
             no-gutters
           >
-            <v-col
-              md="6"
-            >
+            <v-col md="6">
               <v-text-field
                 v-model="username"
                 prepend-icon="mdi-account-circle"
@@ -38,9 +34,7 @@
             justify="center"
             no-gutters
           >
-            <v-col
-              md="6"
-            >
+            <v-col md="6">
               <v-text-field
                 v-model="pwd"
                 prepend-icon="mdi-key"
@@ -67,7 +61,8 @@
             :loading="loading"
             :disabled="loading"
             class="mb-6"
-          >{{ $t('login.submit') }}<v-icon right>mdi-arrow-right</v-icon></v-btn>
+          >{{ $t('login.submit') }}<v-icon right>mdi-arrow-right</v-icon>
+          </v-btn>
         </v-row>
       </v-card>
     </v-container>

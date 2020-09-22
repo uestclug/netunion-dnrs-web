@@ -10,7 +10,6 @@
           <v-card flat>
             <v-card-title>
               <v-btn
-                color="info"
                 @click="toResetDialog"
                 class="subtitle-2"
               >{{ $t('order.createOrder.solver.reset') }}</v-btn>
@@ -49,9 +48,7 @@
                 justify="center"
               >
                 <!-- 姓名表单 -->
-                <v-col
-                  cols="3"
-                >
+                <v-col cols="3">
                   <v-text-field
                     v-model="name"
                     :error-messages="nameErrors"
@@ -65,9 +62,7 @@
                 </v-col>
 
                 <!-- 性别选择器 -->
-                <v-col
-                  cols="3"
-                >
+                <v-col cols="3">
                   <v-select
                     v-model="gender"
                     :items="genderItems"
@@ -81,9 +76,7 @@
                 </v-col>
 
                 <!-- 联系电话表单 -->
-                <v-col
-                  cols="6"
-                >
+                <v-col cols="6">
                   <v-text-field
                     v-model="telephone"
                     :error-messages="telephoneErrors"
@@ -97,9 +90,7 @@
                 </v-col>
 
                 <!-- 校区选择器 -->
-                <v-col
-                  cols="3"
-                >
+                <v-col cols="3">
                   <v-select
                     v-model="campus"
                     :items="campusItems"
@@ -113,9 +104,7 @@
                 </v-col>
 
                 <!-- 寝室表单 -->
-                <v-col
-                  cols="isModify ? 9 : 6"
-                >
+                <v-col cols="isModify ? 9 : 6">
                   <v-text-field
                     v-model="dormitory"
                     :error-messages="dormitoryErrors"
@@ -150,9 +139,7 @@
                 </v-col>
 
                 <!-- 描述 / 记录表单 -->
-                <v-col
-                  cols="12"
-                >
+                <v-col cols="12">
                   <v-textarea
                     v-if="status === this.$i18n.t('order.waitingStatus') || status === this.$i18n.t('order.receiptedStatus')"
                     v-model="description"
@@ -173,7 +160,10 @@
       </v-sheet>
     </v-bottom-sheet>
 
-    <v-dialog v-model="resetConfirmDialog" max-width="600px">
+    <v-dialog
+      v-model="resetConfirmDialog"
+      max-width="600px"
+    >
       <v-card>
         <v-card-title>
           <span class="headline">{{ $t('order.createOrder.solver.reset') }}</span>
@@ -181,24 +171,29 @@
         <v-card-text>
           <v-container>
             <v-row>
-              <v-col cols="12" v-show="!isModify">
+              <v-col
+                cols="12"
+                v-show="!isModify"
+              >
                 {{ $t('order.createOrder.solver.resetTip') }}
               </v-col>
-              <v-col cols="12" v-show="isModify">
+              <v-col
+                cols="12"
+                v-show="isModify"
+              >
                 {{ $t('order.modifyOrder.solver.resetTip') }}
               </v-col>
             </v-row>
           </v-container>
         </v-card-text>
         <v-card-actions>
-          <v-spacer/>
+          <v-spacer />
           <v-btn
-            color="info"
             @click="resetConfirmDialog = false"
             class="subtitle-2"
           >{{ $t('order.createOrder.solver.cancel') }}</v-btn>
           <v-btn
-            color="success"
+            color="info"
             @click="reset"
             class="subtitle-2"
           >{{ $t('order.createOrder.solver.resetConfirm') }}</v-btn>
@@ -347,8 +342,8 @@ export default {
       if (!this.isModify) { // 创建订单模式下
         this.$v.$touch()
         if (this.nameErrors.length === 0 && this.genderErrors.length === 0 &&
-            this.campusErrors.length === 0 && this.dormitoryErrors.length === 0 &&
-            this.telephoneErrors.length === 0 && this.statusErrors.length === 0) {
+          this.campusErrors.length === 0 && this.dormitoryErrors.length === 0 &&
+          this.telephoneErrors.length === 0 && this.statusErrors.length === 0) {
           this.submitLoading = true // 设置加载状态
 
           let description = this.description
@@ -398,8 +393,8 @@ export default {
       } else if (this.isModify) { // 修改订单模式下
         this.$v.$touch()
         if (this.nameErrors.length === 0 && this.genderErrors.length === 0 &&
-            this.campusErrors.length === 0 && this.dormitoryErrors.length === 0 &&
-            this.telephoneErrors.length === 0) {
+          this.campusErrors.length === 0 && this.dormitoryErrors.length === 0 &&
+          this.telephoneErrors.length === 0) {
           this.submitLoading = true // 设置加载状态
 
           this.axios.post('/api/order/modifyOrderSolver', {
@@ -516,14 +511,14 @@ export default {
       // 设置订单状态
       const orderStatus = order.order_status
       if (orderStatus == this.GLOBAL.status.waiting ||
-          orderStatus == this.$i18n.t('order.waitingStatus')) {
+        orderStatus == this.$i18n.t('order.waitingStatus')) {
         this.status = this.$i18n.t('order.waitingStatus')
       } else if (orderStatus == this.GLOBAL.status.receipted ||
-                 orderStatus == this.$i18n.t('order.receiptedStatus')) {
+        orderStatus == this.$i18n.t('order.receiptedStatus')) {
         this.status = this.$i18n.t('order.receiptedStatus')
       } else if (orderStatus == this.GLOBAL.status.recorded ||
-                 orderStatus == this.GLOBAL.status.finished ||
-                 orderStatus == this.$i18n.t('order.recordedStatus')) {
+        orderStatus == this.GLOBAL.status.finished ||
+        orderStatus == this.$i18n.t('order.recordedStatus')) {
         this.status = this.$i18n.t('order.recordedStatus')
       } else {
         this.Bus.$emit('setSnackbar', this.$i18n.t('order.modifyOrder.solver.getOrderStatusFailed'))

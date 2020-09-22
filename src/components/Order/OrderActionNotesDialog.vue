@@ -11,15 +11,24 @@
         {{ $t('order.actionNotesDialog.subtitle') }}
       </v-card-subtitle>
       <v-card-text>
-        <div v-if="actionNotesLoading" class="text--primary">
+        <div
+          v-if="actionNotesLoading"
+          class="text--primary"
+        >
           {{ $t('order.actionNotesDialog.actionNotesLoading') }}
         </div>
-        <div v-else-if="actionNotes.length == 0" class="body-1 text--primary">
+        <div
+          v-else-if="actionNotes.length == 0"
+          class="body-1 text--primary"
+        >
           {{ $t('order.actionNotesDialog.actionNotesNotFound') }}
         </div>
         <div v-else>
-          <template v-for="notes in actionNotes" >
-            <div v-bind:key="notes.action_date" class="mt-1">
+          <template v-for="notes in actionNotes">
+            <div
+              v-bind:key="notes.action_date"
+              class="mt-1"
+            >
               <v-tooltip left>
                 <template v-slot:activator="{ on, attrs }">
                   <v-chip

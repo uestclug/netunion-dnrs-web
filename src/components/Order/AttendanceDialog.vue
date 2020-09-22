@@ -10,15 +10,24 @@
       </v-card-title>
       <v-card-text>
         <div class="subtitle-1">{{ $t('order.attendanceDialog.nowAttnTitle') }}</div>
-        <div v-if="queryAttnloading" class="text--primary">
+        <div
+          v-if="queryAttnloading"
+          class="text--primary"
+        >
           {{ $t('order.attendanceDialog.nowAttnLoading') }}
         </div>
-        <div v-else-if="attendance.length == 0" class="body-1 text--primary">
+        <div
+          v-else-if="attendance.length == 0"
+          class="body-1 text--primary"
+        >
           {{ $t('order.attendanceDialog.nowAttnNotFound') }}
         </div>
         <div v-else>
-          <template v-for="attn in attendance" >
-            <div v-bind:key="attn.attn_date" class="mt-1">
+          <template v-for="attn in attendance">
+            <div
+              v-bind:key="attn.attn_date"
+              class="mt-1"
+            >
               <v-tooltip left>
                 <template v-slot:activator="{ on, attrs }">
                   <v-chip
@@ -41,8 +50,7 @@
         </div>
       </v-card-text>
       <v-card-text v-if="order != null && order.is_solver &&
-        order.order_status === GLOBAL.status.receipted"
-      >
+        order.order_status === GLOBAL.status.receipted">
         <div class="subtitle-1">{{ $t('order.attendanceDialog.addAttnTitle') }}</div>
         <v-text-field
           v-model="description"

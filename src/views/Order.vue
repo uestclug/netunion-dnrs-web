@@ -5,7 +5,6 @@
     </div>
     <div v-else-if="role === GLOBAL.role.solver">
       <OrderList />
-      <ExportOrderRecords />
     </div>
   </div>
 </template>
@@ -13,7 +12,6 @@
 <script>
 import LatestOrder from '@/components/Order/LatestOrder'
 import OrderList from '@/components/Order/OrderList'
-import ExportOrderRecords from '@/components/Order/ExportOrderRecords'
 
 export default {
   data: () => ({
@@ -22,8 +20,7 @@ export default {
   name: 'Order',
   components: {
     LatestOrder,
-    OrderList,
-    ExportOrderRecords
+    OrderList
   },
   created () {
     this.role = this.$store.state.role
