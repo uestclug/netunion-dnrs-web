@@ -68,7 +68,8 @@ const sqlMap = {
       queryOrderInfoByUserId: '\
         SELECT * \
         FROM' + orderTable + '\
-        WHERE user_id = $1',
+        WHERE user_id = $1 \
+        ORDER BY create_date DESC',
       // 将等待中的订单关闭
       closeOrder: '\
         UPDATE' + orderTable + '\

@@ -181,7 +181,7 @@
       "campus": "所处校区",
       "description": "订单描述",
       "telephone": "联系电话",
-      "date": "订单日期"
+      "date": "创建日期"
     },
     "orderList": {
       "title": "订单列表",

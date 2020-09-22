@@ -181,7 +181,7 @@
       "campus": "Campus",
       "description": "Description",
       "telephone": "Telephone",
-      "date": "Date"
+      "date": "Create Date"
     },
     "orderList": {
       "title": "ORDER LIST",

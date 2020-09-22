@@ -18,8 +18,11 @@ router.post('/createOrderUser', async function (req, res) {
   const checkTokenFlag = await apiUtils.checkToken(req)
   if (checkTokenFlag) {
     const reqBody = req.body
-    const checkLatestOrderStatusFlag = await apiUtils.latestOrderStatusCheck(reqBody.user_id)
-    if (checkLatestOrderStatusFlag && reqBody.role == $common.role.user) {
+    const latestOrder = await apiUtils.getLatestOrderInfo(reqBody.user_id)
+    const latestOrderStatus = latestOrder.order_status
+    if (latestOrderStatus != $common.status.waiting &&
+      latestOrderStatus != $common.status.receipted &&
+      reqBody.role == $common.role.user) {
       const user_name = reqBody.user_name
       const user_gender = reqBody.user_gender
       const user_telephone = reqBody.user_telephone
@@ -153,25 +156,6 @@ router.post('/modifyOrderSolver', async function (req, res) {
 })
 
 /**
- * 获取最近订单状态接口
- * 用户可以创建新订单时返回 true；
- * 用户无法创建新订单时返回 false。
- */
-router.post('/getLatestOrderStatus', async function (req, res) {
-  const flag = await apiUtils.checkToken(req)
-  if (flag) {
-    const user_id = req.body.user_id
-    const checkLatestOrderStatusFlag = await apiUtils.latestOrderStatusCheck(user_id)
-
-    if (checkLatestOrderStatusFlag) {
-      res.send(true)
-    } else {
-      res.send(false)
-    }
-  }
-})
-
-/**
  * 获取最近订单信息接口
  * 返回用户最近的订单信息。
  */
@@ -180,7 +164,6 @@ router.post('/getLatestOrderInfo', async function (req, res) {
   if (flag) {
     const user_id = req.body.user_id
     const latestOrder = await apiUtils.getLatestOrderInfo(user_id)
-    console.log(latestOrder)
 
     if (latestOrder) { // 获取到最近订单信息
       const solver_id = latestOrder.solver_id
@@ -245,7 +228,6 @@ router.post('/cancelOrderByUser', async function (req, res) {
         console.log(error)
         res.send(false)
       } else { // 查询订单信息成功
-        console.log(result)
         if (result.rowCount == 1 &&
           result.rows[0].user_id == user_id &&
           result.rows[0].order_status == $common.status.waiting) {
@@ -265,7 +247,6 @@ router.post('/cancelOrderByUser', async function (req, res) {
             }
           })
         } else { // 订单号不属于该用户
-          console.log('order_id not belong to the user.')
           res.send(false)
         }
       }

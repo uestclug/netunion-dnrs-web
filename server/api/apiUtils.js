@@ -22,35 +22,9 @@ async function getLatestOrderInfo (user_id) {
   client.release()
   const orderNum = response.rowCount
   if (orderNum != null && orderNum > 0) { // 用户有最近的订单记录，返回最近订单信息
-    return response.rows[orderNum - 1]
+    return response.rows[0]
   } else { // 用户无最近的订单记录或查询失败
     return false
-  }
-}
-
-/**
- * 检查最近订单的状态
- * 当返回值为 true 时可以创建新订单；
- * 当返回值为 false 时无法创建新订单。
- */
-async function latestOrderStatusCheck (user_id) {
-  const sqlData = [user_id]
-
-  const client = await pool.connect()
-  const response = await client.query($sql.order.user.queryOrderInfoByUserId, sqlData)
-  client.release()
-  const orderNum = response.rowCount
-  if (orderNum > 0) { // 存在最近订单
-    const latestOrder = response.rows[orderNum - 1]
-    const latestOrderStatus = latestOrder.order_status
-    // 最近订单进行中或已被接受时
-    if (latestOrderStatus == $common.status.waiting || latestOrderStatus == $common.status.receipted) {
-      return false
-    } else {
-      return true
-    }
-  } else { // 不存在最近订单
-    return true
   }
 }
 
@@ -176,7 +150,6 @@ async function addOrderActionNotes (order_id, user_id, notes_text, action_date) 
 
 module.exports = {
   getLatestOrderInfo,
-  latestOrderStatusCheck,
   generateOrderId,
   checkToken,
   generateToken,
