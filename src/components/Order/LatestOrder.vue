@@ -201,6 +201,7 @@ export default {
     cancelDialog: false,
     cancelDisabled: true,
     telephoneCallDisabled: true,
+    order: [],
     orderDormitory: '-',
     orderSolverName: '-',
     orderSolverTelephone: '-',
@@ -225,10 +226,8 @@ export default {
       if (Response.data) {
         this.orderStatus = this.$i18n.t('order.canceledByUserStatus')
         this.Bus.$emit('setSnackbar', this.$i18n.t('order.cancelSucceed'))
-        this.loading = false
-        this.cancelDialog = false
-        this.cancelDisabled = true
-        this.Bus.$emit('enableUserCreateOrder')
+        this.$router.push({ path: '/_empty' })
+        this.$router.back(-1)
       } else {
         this.Bus.$emit('modifyLoginStatus', 'unknownErr')
       }
@@ -241,6 +240,7 @@ export default {
     const Response = await this.axios.post('/api/order/getLatestOrderInfo')
     const orderInfo = Response.data
     if (orderInfo) { // 用户存在最近的订单
+      this.order = orderInfo
       this.orderDormitory = orderInfo.order_user_dormitory
       this.orderName = orderInfo.order_user_name
       this.orderCampus = orderInfo.order_user_campus
@@ -251,41 +251,51 @@ export default {
       localStorage.setItem('latest_order_id', orderInfo.order_id)
 
       if (status === this.GLOBAL.status.waiting) { // 用户可以取消订单
+        // 订单为等待接单状态
         this.orderStatus = this.$i18n.t('order.waitingStatus')
         this.cancelDisabled = false
-      } else { // 用户不可以取消订单
+      } else { // 用户不可取消订单
         if (status === this.GLOBAL.status.receipted) {
+          // 订单为已接单状态
           this.orderStatus = this.$i18n.t('order.receiptedStatus')
         } else if (status === this.GLOBAL.status.canceledByUser) {
+          // 订单为被用户取消状态
           this.orderStatus = this.$i18n.t('order.canceledByUserStatus')
-          this.Bus.$emit('enableUserCreateOrder')
         } else if (status === this.GLOBAL.status.canceledBySolver) {
+          // 订单为被处理者取消状态
           this.orderStatus = this.$i18n.t('order.canceledBySolverStatus')
-          this.Bus.$emit('enableUserCreateOrder')
         } else if (status === this.GLOBAL.status.finished) {
+          // 订单为完成状态
           this.orderStatus = this.$i18n.t('order.finishedStatus')
-          this.Bus.$emit('enableUserCreateOrder')
         } else {
+          // 获取订单状态异常
+          // 刷新当前页面
           this.orderStatus = this.$i18n.t('order.unknownStatus')
+          location.reload()
         }
         this.cancelDisabled = true
       }
       if (orderInfo.solver_id !== null) { // 存在接单者时
-        if (orderInfo.order_solver_nickname !== null && orderInfo.order_solver_nickname !== '') {
+        if (orderInfo.order_solver_nickname !== null &&
+          orderInfo.order_solver_nickname !== '') {
           this.orderSolverName = orderInfo.order_solver_nickname
         } else {
           this.orderSolverName = orderInfo.order_solver_name
         }
         this.orderSolverTelephone = orderInfo.order_solver_telephone
         if (this.orderStatus == this.$i18n.t('order.receiptedStatus') &&
-          this.orderSolverTelephone.length >= 4) { // 联系方式应至少为 4 位号码
+          this.orderSolverTelephone.length >= 4) { // 假设联系方式应至少为 4 位号码
           this.telephoneCallDisabled = false
         }
       }
-      this.infoLoading = false
-    } else { // 用户不存在最近的订单
-      this.Bus.$emit('enableUserCreateOrder')
+    } else {
+      // 用户为首次创建订单
+      // 用户可以创建订单，但不可修改订单或取消订单
+      this.order = []
+      this.cancelDisabled = true
     }
+    this.infoLoading = false
+    this.Bus.$emit('userLatestOrderInfoLoaded', this.order) // 设置订单信息加载完成
   }
 }
 </script>

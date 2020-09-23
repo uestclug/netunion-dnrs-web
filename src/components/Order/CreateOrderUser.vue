@@ -12,14 +12,24 @@
               <v-tooltip right>
                 <template v-slot:activator="{ on, attr }">
                   <v-btn
+                    v-if="!isModify"
                     v-on="on"
                     v-bind="attr"
-                    color="info"
+                    color="primary"
                     @click="autoEnter"
                     class="subtitle-2"
                   >{{ $t('order.createOrder.user.autoEnter') }}</v-btn>
+                  <v-btn
+                    v-else
+                    v-on="on"
+                    v-bind="attr"
+                    color="primary"
+                    @click="resetForm"
+                    class="subtitle-2"
+                  >{{ $t('order.modifyOrder.user.reset') }}</v-btn>
                 </template>
-                <span>{{ $t('order.createOrder.user.autoEnterNote') }}</span>
+                <span v-if="!isModify">{{ $t('order.createOrder.user.autoEnterNote') }}</span>
+                <span v-else>{{ $t('order.modify.user.resetNote') }}</span>
               </v-tooltip>
 
               <v-spacer></v-spacer>
@@ -44,7 +54,10 @@
                 @click="submit"
                 :loading="submitLoading"
                 :disabled="submitLoading"
-              >{{ $t('order.createOrder.user.submit') }}<v-icon right>mdi-check</v-icon>
+              >
+                <span v-if="!isModify">{{ $t('order.createOrder.user.submit') }}</span>
+                <span v-else>{{ $t('order.modifyOrder.user.submit') }}</span>
+                <v-icon right>mdi-check</v-icon>
               </v-btn>
             </v-card-title>
             <v-card-text>
@@ -136,6 +149,8 @@ export default {
   name: 'CreateOrderUser',
   data: () => ({
     sheet: false,
+    isModify: false,
+    order: [],
     name: '',
     gender: null,
     campus: null,
@@ -231,32 +246,62 @@ export default {
         this.telephoneErrors.length === 0) {
         this.submitLoading = true
 
-        this.axios.post('/api/order/createOrderUser', {
-          user_name: this.name,
-          user_gender: this.gender,
-          user_telephone: this.telephone,
-          user_campus: this.campus,
-          user_dormitory: this.dormitory,
-          user_description: this.description
-        }).then((Response) => {
-          if (Response.data) { // 订单提交成功，通过切换路由更新页面
-            this.Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.createSucceed'))
-            this.sheet = false
-            this.submitLoading = false
-            this.refreshRouter()
-          } else { // 订单提交失败，刷新页面
-            this.Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.createFailed'))
-            location.reload()
-          }
-        })
+        if (!this.isModify) { // 创建订单模式
+          this.axios.post('/api/order/createOrderUser', {
+            user_name: this.name,
+            user_gender: this.gender,
+            user_telephone: this.telephone,
+            user_campus: this.campus,
+            user_dormitory: this.dormitory,
+            user_description: this.description
+          }).then((Response) => {
+            if (Response.data) { // 订单提交成功，通过切换路由更新页面
+              this.Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.createSucceed'))
+              this.sheet = false
+              this.submitLoading = false
+              this.refreshRouter()
+            } else { // 订单提交失败，刷新页面
+              this.Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.createFailed'))
+              location.reload()
+            }
+          })
+        } else { // 修改订单模式
+          this.axios.post('/api/order/modifyOrderUser', {
+            order_id: this.order.order_id,
+            user_name: this.name,
+            user_gender: this.gender,
+            user_telephone: this.telephone,
+            user_campus: this.campus,
+            user_dormitory: this.dormitory,
+            user_description: this.description
+          }).then((Response) => {
+            if (Response.data) {
+              this.Bus.$emit('setSnackbar', this.$i18n.t('order.modifyOrder.user.modifySucceed'))
+              this.sheet = false
+              this.submitLoading = false
+              this.refreshRouter()
+            } else {
+              this.submitLoading = false
+              this.Bus.$emit('setSnackbar', this.$i18n.t('order.modifyOrder.user.modifyFailed'))
+            }
+          })
+        }
       }
     },
     autoEnter () { // 从 localstorage 读取用户资料并填写
       this.name = localStorage.getItem('name')
       this.gender = localStorage.getItem('gender')
       this.telephone = localStorage.getItem('telephone')
-      this.dormitory = localStorage.getItem('dormitory')
       this.campus = localStorage.getItem('campus')
+      this.dormitory = localStorage.getItem('dormitory')
+    },
+    resetForm () {
+      this.name = this.order.order_user_name
+      this.gender = this.order.order_user_gender
+      this.telephone = this.order.order_user_telephone
+      this.campus = this.order.order_user_campus
+      this.dormitory = this.order.order_user_dormitory
+      this.description = this.order.order_user_description
     },
     refreshRouter () {
       this.$router.push({ path: '/_empty' })
@@ -265,6 +310,18 @@ export default {
   },
   mounted () {
     this.Bus.$on('openCreateOrderUserSheet', (msg) => {
+      this.isModify = msg.isModify
+      this.order = msg.order
+      if (this.order != null && this.order != []) {
+        // 当订单不为空时，将订单信息赋值到 dialog
+        console.log(this.order)
+        this.name = this.order.order_user_name
+        this.gender = this.order.order_user_gender
+        this.telephone = this.order.order_user_telephone
+        this.campus = this.order.order_user_campus
+        this.dormitory = this.order.order_user_dormitory
+        this.description = this.order.order_user_description
+      }
       this.sheet = true
     })
   }

@@ -1,3 +1,4 @@
+/* eslint-disable no-multi-str */
 /* eslint-disable camelcase */
 /* 导出数据接口文件 */
 const pool = require('../db')
@@ -68,14 +69,14 @@ router.post('/exportToExcel', async function (req, res) {
       const orderAsgn = await client.query(queryOrderAsgnInfoByOrderId)
       const orderAsgnItems = orderAsgn.rows
       client.release()
-      
+
       // 处理数据为可导出的 Excel 表格
       const workbook = new ExcelJS.Workbook()
       workbook.creator = 'netunion'
       // 创建第一行冻结的工作表
-      const orderRecordsSheet = workbook.addWorksheet('订单记录', {views:[{state: 'frozen', ySplit: 1}]})
-      const orderAttnSheet = workbook.addWorksheet('出勤记录', {views:[{state: 'frozen', ySplit: 1}]})
-      const orderAsgnSheet = workbook.addWorksheet('协助人记录', {views:[{state: 'frozen', ySplit: 1}]})
+      const orderRecordsSheet = workbook.addWorksheet('订单记录', { views: [{ state: 'frozen', ySplit: 1 }] })
+      const orderAttnSheet = workbook.addWorksheet('出勤记录', { views: [{ state: 'frozen', ySplit: 1 }] })
+      const orderAsgnSheet = workbook.addWorksheet('协助人记录', { views: [{ state: 'frozen', ySplit: 1 }] })
       // 设置工作表列属性
       orderRecordsSheet.columns = [
         { header: '订单编号', key: 'orderId' },
@@ -103,7 +104,7 @@ router.post('/exportToExcel', async function (req, res) {
         { header: '订单编号', key: 'orderId' },
         { header: '协助者编号', key: 'assigneeId' },
         { header: '协助者姓名', key: 'assigneeName' }
-      ]      
+      ]
       // 添加工作表行数据
       for (let i = 0; i < orderRecordsItems.length; i++) {
         orderRecordsSheet.addRow({
@@ -148,9 +149,9 @@ router.post('/exportToExcel', async function (req, res) {
       } else if (format == 'csv') {
         const filenameBase = month + ' 网络维修记录 ' + reqBody.user_id + '-' + new Date().getTime() + '-'
         filename = [filenameBase + '订单记录.csv', filenameBase + '出勤记录.csv', filenameBase + '协助人记录.csv']
-        const orderRecordsSheetBuffer = await workbook.csv.writeBuffer({sheetId: 1})
-        const orderAttnSheetBuffer = await workbook.csv.writeBuffer({sheetId: 2})
-        const orderAsgnSheetBuffer = await workbook.csv.writeBuffer({sheetId: 3})
+        const orderRecordsSheetBuffer = await workbook.csv.writeBuffer({ sheetId: 1 })
+        const orderAttnSheetBuffer = await workbook.csv.writeBuffer({ sheetId: 2 })
+        const orderAsgnSheetBuffer = await workbook.csv.writeBuffer({ sheetId: 3 })
         // buffer = Buffer.concat([orderRecordsSheetBuffer,  orderAttnSheetBuffer,  orderAsgnSheetBuffer])
         buffer = [orderRecordsSheetBuffer, orderAttnSheetBuffer, orderAsgnSheetBuffer]
       } else res.send(false)

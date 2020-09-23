@@ -10,6 +10,7 @@
           <v-card flat>
             <v-card-title>
               <v-btn
+                color="primary"
                 @click="toResetDialog"
                 class="subtitle-2"
               >{{ $t('order.createOrder.solver.reset') }}</v-btn>
@@ -194,7 +195,7 @@
             class="subtitle-2"
           >{{ $t('order.createOrder.solver.cancel') }}</v-btn>
           <v-btn
-            color="info"
+            color="primary"
             @click="reset"
             class="subtitle-2"
           >{{ $t('order.createOrder.solver.resetConfirm') }}</v-btn>

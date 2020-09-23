@@ -1,10 +1,11 @@
+/* eslint-disable no-multi-str */
 /* 数据库操作函数 */
 const accountTable = ' public.account '
 const orderTable = ' public.order '
 const orderActionNotesTable = ' public.order_action_notes '
 const orderAssigneeTable = ' public.order_assignee '
 const orderAttendanceTable = ' public.order_attendance '
-const storageTable = ' public.storage '
+// const storageTable = ' public.storage '
 const tokenTable = ' public.token '
 
 const sqlMap = {
@@ -58,19 +59,25 @@ const sqlMap = {
   },
   order: {
     user: { // 对于 user 用户组
-      // 添加新的订单
+      // 用户添加新的订单
       createOrder: '\
         INSERT INTO' + orderTable + '\
         (order_user_name, order_user_gender, order_user_telephone, order_user_campus, \
         order_user_dormitory, order_user_description, create_date, order_status, order_id, user_id) \
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)',
+      // 用户修改订单信息
+      modifyOrder: '\
+        UPDATE' + orderTable + 'SET \
+        order_user_name=$2, order_user_gender=$3, order_user_telephone=$4, order_user_campus=$5, \
+        order_user_dormitory=$6, order_user_description=$7 \
+        WHERE order_id=$1',
       // 通过 user_id 查询所有该用户创建的订单信息
       queryOrderInfoByUserId: '\
         SELECT * \
         FROM' + orderTable + '\
         WHERE user_id = $1 \
         ORDER BY create_date DESC',
-      // 将等待中的订单关闭
+      // 用户将等待中的订单关闭
       closeOrder: '\
         UPDATE' + orderTable + '\
         SET solver_id = null, order_status = \'canceled by user\', close_date = $1 \
@@ -83,6 +90,7 @@ const sqlMap = {
         (order_user_name, order_user_gender, order_user_telephone, order_user_campus, order_user_dormitory, \
         order_user_description, order_solver_record, order_status, order_id, solver_id, create_date, close_date) \
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)',
+      // 处理者修改订单信息
       modifyOrder: '\
         UPDATE' + orderTable + 'SET \
         order_user_name=$2, order_user_gender=$3, order_user_telephone=$4, order_user_campus=$5, \

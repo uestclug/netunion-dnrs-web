@@ -30,6 +30,7 @@ const common = {
   },
   actionNotes: { // 订单操作记录
     userCreateOrder: '用户创建了订单',
+    userModifyOrder: '用户修改了订单信息',
     userCloseOrder: '用户关闭了订单',
     solverCreateOrder: '创建了订单',
     solverCreateAndAcceptOrder: '创建并接取了订单',

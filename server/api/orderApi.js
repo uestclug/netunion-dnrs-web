@@ -56,6 +56,50 @@ router.post('/createOrderUser', async function (req, res) {
 })
 
 /**
+ * 用户修改订单信息接口
+ */
+router.post('/modifyOrderUser', async function (req, res) {
+  const modifyDate = new Date().getTime()
+  const flag = await apiUtils.checkToken(req)
+  if (flag) {
+    const reqBody = req.body
+    const latestOrder = await apiUtils.getLatestOrderInfo(reqBody.user_id)
+    const latestOrderStatus = latestOrder.order_status
+    const latestOrderId = latestOrder.order_id
+    if (latestOrderId == reqBody.order_id &&
+      (latestOrderStatus == $common.status.waiting ||
+      latestOrderStatus == $common.status.receipted) &&
+      reqBody.role == $common.role.user) {
+      const user_name = reqBody.user_name
+      const user_gender = reqBody.user_gender
+      const user_telephone = reqBody.user_telephone
+      const user_campus = reqBody.user_campus
+      const user_dormitory = reqBody.user_dormitory
+      const user_description = reqBody.user_description
+      const sqlData = [latestOrderId, user_name, user_gender, user_telephone, user_campus, user_dormitory, user_description]
+
+      const client = await pool.connect()
+      client.query($sql.order.user.modifyOrder, sqlData, (error, result) => {
+        client.release()
+        if (error) {
+          console.log(error)
+          res.send(false)
+        } else {
+          apiUtils.addOrderActionNotes(
+            latestOrderId, reqBody.user_id, $common.actionNotes.userModifyOrder, modifyDate
+          )
+          res.send(true)
+        }
+      })
+    } else {
+      res.send(false)
+    }
+  } else {
+    res.send(false)
+  }
+})
+
+/**
  * 处理者记录订单接口
  * 当 token 验证成功时访问数据库进行操作。
  */
@@ -167,7 +211,7 @@ router.post('/getLatestOrderInfo', async function (req, res) {
 
     if (latestOrder) { // 获取到最近订单信息
       const solver_id = latestOrder.solver_id
-      
+
       if (solver_id != null && solver_id != '') { // 处理者已接单
         const client = await pool.connect()
         client.query($sql.order.querySolverInfo, [solver_id], (error, result) => {
@@ -184,7 +228,7 @@ router.post('/getLatestOrderInfo', async function (req, res) {
             latestOrder.close_date = new Date(parseInt(latestOrder.close_date)).toLocaleString()
             res.send(latestOrder)
           }
-        }) 
+        })
       } else { // 处理者未接单
         latestOrder.create_date = new Date(parseInt(latestOrder.create_date)).toLocaleString()
         res.send(latestOrder)
@@ -426,7 +470,7 @@ router.post('/queryOrderList', async function (req, res) {
           } else {
             orderItems[i].order_open_time = '-'
           }
-          
+
           // 实例化当前时间
           orderItems[i].create_date = new Date(parseInt(orderItems[i].create_date)).toLocaleString()
           if (orderItems[i].close_date != null) orderItems[i].close_date = new Date(parseInt(orderItems[i].close_date)).toLocaleString()
@@ -728,7 +772,7 @@ router.post('/queryAssignee', async function (req, res) {
   const flag = await apiUtils.checkToken(req)
   if (flag) {
     const order_id = req.body.order_id
-    
+
     const client = await pool.connect()
     client.query($sql.order.assignee.queryAssigneeInfo, [order_id], (error, result) => {
       client.release()

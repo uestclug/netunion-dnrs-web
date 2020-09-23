@@ -125,7 +125,9 @@
         "orderStatusErr": "You have an order in progress and cannot create a new one",
         "orderStatusCheckErr": "Failed to get order information",
         "createFailed": "Order creation failed, please call us to complain!",
-        "createSucceed": "Order created successfully, we will deal with it as soon as possible!"
+        "createSucceed": "Order created successfully, we will deal with it as soon as possible!",
+        "modify": "MODIFY ORDER",
+        "loadingOrderInfoText": "Loading latest order info..."
       },
       "solver": {
         "reset": "RESET",
@@ -314,6 +316,12 @@
         "getOrderStatusFailed": "Failed to get status information about the order, the page is refreshing!",
         "modifyFailed": "Failed to modify the order, maybe the server blew up!",
         "modifySucceed": "Modify order information successfully!"
+      },
+      "user": {
+        "submit": "MODIFY",
+        "reset": "RESET",
+        "modifyFailed": "Modifying order information failed, this may be due to network fluctuation, please try again later",
+        "modifySucceed": "Modify order information successfully!"
       }
     },
     "exportDialog": {
@@ -334,6 +342,11 @@
       "pickDate": "Select Month",
       "title": "Export Order Records",
       "formatToCsvNotes": "Multiple .csv files will be exported."
+    },
+    "modify": {
+      "user": {
+        "resetNote": "Reset form contents to unmodified status"
+      }
     }
   },
   "login": {
