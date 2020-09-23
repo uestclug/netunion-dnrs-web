@@ -49,7 +49,7 @@
       <v-card-actions class="mr-4">
         <v-spacer />
         <v-btn
-          color="success"
+          depressed
           @click="dialog = false"
         >{{ $t('order.actionNotesDialog.close') }}</v-btn>
       </v-card-actions>

@@ -64,7 +64,7 @@
         <v-card-actions class="mr-4">
           <v-spacer />
           <v-btn
-            color="success"
+            depressed
             @click="assigneeDialog = false"
             :disabled="addAssigneeLoading"
           >{{ $t('order.assigneeDialog.close') }}</v-btn>
@@ -83,11 +83,12 @@
         <v-card-actions class="mr-4">
           <v-spacer />
           <v-btn
+            depressed
             @click="confirmDialog = false"
             :disabled="removeAssigneeLoading"
           >{{ $t('order.assigneeDialog.cancel') }}</v-btn>
           <v-btn
-            color="info"
+            color="primary"
             @click="removeAssignee"
             :disabled="removeAssigneeLoading"
             :loading="removeAssigneeLoading"

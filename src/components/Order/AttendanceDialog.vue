@@ -70,7 +70,7 @@
       <v-card-actions class="mr-4">
         <v-spacer />
         <v-btn
-          color="success"
+          depressed
           @click="dialog = false"
           :disabled="addAttnLoading"
         >{{ $t('order.attendanceDialog.close') }}</v-btn>

@@ -24,6 +24,7 @@
                     v-bind="attrs"
                     class="mr-2"
                     @click="sheet = false"
+                    depressed
                   >{{ $t('order.createOrder.solver.cancel') }}</v-btn>
                 </template>
                 <span v-show="!isModify">{{ $t('order.createOrder.solver.cancelTip') }}</span>

@@ -73,8 +73,7 @@
 
           <v-card-actions>
             <v-btn
-              outlined
-              color="blue-grey"
+              color="primary"
               @click="telephoneCall(orderSolverTelephone)"
               :disabled="telephoneCallDisabled"
               class="ml-2 mb-2"
@@ -83,8 +82,7 @@
             </v-btn>
 
             <v-btn
-              color="red"
-              outlined
+              depressed
               @click="toCancelOrderDialog"
               :disabled="cancelDisabled"
               class="ml-2 mb-2"
@@ -168,32 +166,24 @@
     <!-- 取消订单 Dialog -->
     <v-dialog
       v-model="cancelDialog"
-      max-width="600px"
+      max-width="600"
     >
       <v-card>
         <v-card-title>
-          <span class="headline">{{ $t('order.latestOrder.cancelOrder') }}</span>
+          {{ $t('order.latestOrder.cancelOrder') }}
         </v-card-title>
         <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col cols="12">
-                {{ $t('order.latestOrder.cancelOrderText') }}
-              </v-col>
-            </v-row>
-          </v-container>
+          {{ $t('order.latestOrder.cancelOrderText') }}
         </v-card-text>
-        <v-card-actions>
+        <v-card-actions class="mr-4">
           <v-spacer></v-spacer>
           <v-btn
-            color="info"
+            depressed
             @click="cancelDialog = false"
-            class="subtitle-2"
           >{{ $t('order.latestOrder.cancel') }}</v-btn>
           <v-btn
-            color="success"
+            color="primary"
             @click="cancelOrder"
-            class="subtitle-2"
             :loading="loading"
             :disabled="loading"
           >{{ $t('order.latestOrder.confirm') }}</v-btn>

@@ -18,7 +18,6 @@
         <v-card-actions>
           <v-btn
             color="success"
-            outlined
             style="margin: 0px 0px 10px 10px"
             @click="openCreateOrderUserSheet"
             :disabled="disableCreateOrder"

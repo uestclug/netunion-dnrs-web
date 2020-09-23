@@ -28,6 +28,7 @@
               <v-tooltip left>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
+                    depressed
                     v-on="on"
                     v-bind="attrs"
                     class="mr-2"

@@ -174,6 +174,7 @@
         </v-card-actions>
       </v-card>
     </v-hover>
+
     <!-- 修改密码 Dialog -->
     <v-dialog
       v-model="modifyPasswordDialog"
@@ -232,9 +233,14 @@
         </v-form>
         <v-card-actions class="mr-4">
           <v-spacer></v-spacer>
-          <v-btn @click="modifyPasswordDialog = false">{{ $t('user.account.cancel') }}</v-btn>
           <v-btn
-            color="success"
+            depressed
+            @click="modifyPasswordDialog = false"
+          >
+            {{ $t('user.account.cancel') }}
+          </v-btn>
+          <v-btn
+            color="primary"
             @click="submitNewPassword"
             :loading="submitNewPasswordLoading"
             :disabled="presentPassword == '' || modifiedPassword == '' ||
@@ -251,25 +257,19 @@
     >
       <v-card>
         <v-card-title>
-          <span class="headline">{{ $t('user.account.logout') }}</span>
+          {{ $t('user.account.logout') }}
         </v-card-title>
         <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col cols="12">
-                {{ $t('user.account.logoutText') }}
-              </v-col>
-            </v-row>
-          </v-container>
+          {{ $t('user.account.logoutText') }}
         </v-card-text>
         <v-card-actions class="mr-4">
           <v-spacer></v-spacer>
           <v-btn
-            color="info"
+            depressed
             @click="logoutDialog = false"
           >{{ $t('user.account.cancel') }}</v-btn>
           <v-btn
-            color="success"
+            color="primary"
             @click="logout"
             :loading="logoutLoading"
             :disabled="logoutLoading"
