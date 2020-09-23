@@ -27,11 +27,11 @@
         <v-btn
           class="ma-2"
           depressed
-          href="https://github.com/uestclug/netunion-dormitory-network-repair-system"
+          href="https://github.com/uestclug/netunion-dnrs-web/issues"
           target="_blank"
         >
           <v-icon left>mdi-github</v-icon>
-          提交 PR
+          {{ $t('about.aboutUs.issues') }}
         </v-btn>
       </v-card-actions>
     </v-card>

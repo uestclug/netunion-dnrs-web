@@ -145,7 +145,8 @@ export default {
               localStorage.setItem('dormitory', resData.dormitory)
               localStorage.setItem('intro', resData.intro)
               // 显示提示登录成功的信息条
-              this.Bus.$emit('setSnackbar', this.$i18n.t('login.loginSucceed') + Response.data.name)
+              if (Response.data.name != '') this.Bus.$emit('setSnackbar', this.$i18n.t('login.loginSucceed') + Response.data.name)
+              else this.Bus.$emit('setSnackbar', this.$i18n.t('login.loginSucceed') + this.$i18n.t('login.defaultUserName'))
               // 回到主页
               this.$router.push({
                 name: 'home'

@@ -127,7 +127,9 @@
         "createFailed": "订单创建失败，请来电抱怨！",
         "createSucceed": "订单创建成功，我们会尽快为您处理！",
         "loadingOrderInfoText": "正在获取最近订单信息，请稍等...",
-        "modify": "修改报修订单信息"
+        "modify": "修改报修订单信息",
+        "modifyAccountInfoSucceed": "这是您第一次创建订单，已自动将订单填写信息同步到您的个人信息！",
+        "modifyAccountInfoFailed": "将您填写的订单信息同步到个人信息失败，您可以手动在“账户”页面修改"
       },
       "solver": {
         "reset": "重置表单",
@@ -360,7 +362,8 @@
     "logoutSuccess": "您已成功登出。",
     "infoCheckFailed": "用户信息检查失败，请重新登陆！",
     "unknownFailed": "时代变了！总而言之请重新登陆。",
-    "tokenCheckFailed": "账户凭证过期或错误，请重新登录！"
+    "tokenCheckFailed": "账户凭证过期或错误，请重新登录！",
+    "defaultUserName": "成电学子"
   },
   "error": {
     "underControl": "发生了意料之内的状况，正在刷新页面！",
@@ -368,7 +371,8 @@
   },
   "about": {
     "aboutUs": {
-      "title": "我们是"
+      "title": "我们是",
+      "issues": "意见提交 & 问题反馈"
     },
     "sparklines": {
       "title": "在过去的 30 天里",

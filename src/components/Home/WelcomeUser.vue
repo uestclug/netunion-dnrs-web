@@ -40,7 +40,8 @@ export default {
     actionBtnColor: 'default',
     orderInfoLoading: true,
     order: [],
-    enableCreateOrder: false
+    enableCreateOrder: false,
+    isNewUser: false
   }),
   methods: {
     openCreateOrderUserSheet () {
@@ -48,7 +49,8 @@ export default {
       // enableCreateOrder = false 时，进入修改订单模式
       this.Bus.$emit('openCreateOrderUserSheet', {
         isModify: !this.enableCreateOrder,
-        order: this.order
+        order: this.order,
+        isNewUser: this.isNewUser
       })
     }
   },
@@ -56,7 +58,7 @@ export default {
     this.Bus.$on('userLatestOrderInfoLoaded', (msg) => {
       // 已经获取用户最近的订单信息
       this.order = msg
-      if (this.order != []) { // 存在最近订单信息
+      if (this.order.length != 0) { // 存在最近订单信息
         const orderStatus = this.order.order_status
         if (orderStatus === this.GLOBAL.status.waiting) {
           // 订单为等待接单状态
@@ -75,6 +77,7 @@ export default {
           this.enableCreateOrder = true
         }
       } else { // 用户首次创建订单
+        this.isNewUser = true
         this.enableCreateOrder = true
       }
 

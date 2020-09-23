@@ -159,7 +159,8 @@ export default {
     dormitory: '',
     telephone: '',
     description: '',
-    submitLoading: false
+    submitLoading: false,
+    isNewUser: false
   }),
   mixins: [validationMixin],
   validations: {
@@ -260,6 +261,7 @@ export default {
               this.sheet = false
               this.submitLoading = false
               this.refreshRouter()
+              if (this.isNewUser) this.modifyAccountInfo() // 首次创建订单自动将信息同步到账号信息
             } else { // 订单提交失败，刷新页面
               this.Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.createFailed'))
               location.reload()
@@ -306,15 +308,35 @@ export default {
     refreshRouter () {
       this.$router.push({ path: '/_empty' })
       this.$router.back(-1)
+    },
+    modifyAccountInfo () {
+      this.axios.post('/api/user/modifyAccountInfo', {
+        name: this.name,
+        gender: this.gender,
+        campus: this.campus,
+        dormitory: this.dormitory,
+        telephone: this.telephone
+      }).then((Response) => {
+        if (Response.data) {
+          this.Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.modifyAccountInfoSucceed'))
+          localStorage.setItem('name', this.name)
+          localStorage.setItem('gender', this.gender)
+          localStorage.setItem('campus', this.campus)
+          localStorage.setItem('telephone', this.telephone)
+          localStorage.setItem('dormitory', this.dormitory)
+        } else {
+          this.Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.modifyAccountInfoFailed'))
+        }
+      })
     }
   },
   mounted () {
     this.Bus.$on('openCreateOrderUserSheet', (msg) => {
       this.isModify = msg.isModify
       this.order = msg.order
+      this.isNewUser = msg.isNewUser
       if (this.order != null && this.order != []) {
         // 当订单不为空时，将订单信息赋值到 dialog
-        console.log(this.order)
         this.name = this.order.order_user_name
         this.gender = this.order.order_user_gender
         this.telephone = this.order.order_user_telephone

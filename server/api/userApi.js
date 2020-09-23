@@ -64,13 +64,18 @@ router.post('/queryUserInfo', async function (req, res) {
       res.send(false)
     } else if (result.rowCount === 1) { // 查询到用户结果时
       const resultSet = result.rows[0]
-      const name = resultSet.name
-      const nickname = resultSet.nickname
+      let name = ''
+      if (resultSet.name != null) name = resultSet.name
+      let nickname = ''
+      if (resultSet.nickname != null) nickname = resultSet.nickname
       const gender = resultSet.gender
-      const telephone = resultSet.telephone
+      let telephone = ''
+      if (resultSet.telephone != null) telephone = resultSet.telephone
       const campus = resultSet.campus
-      const dormitory = resultSet.dormitory
-      const intro = resultSet.intro
+      let dormitory = ''
+      if (resultSet.dormitory != null) dormitory = resultSet.dormitory
+      let intro = ''
+      if (resultSet.intro != null) intro = resultSet.intro
       const response = {
         name: name,
         nickname: nickname,
