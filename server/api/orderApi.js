@@ -7,7 +7,7 @@ const router = express.Router()
 const apiUtils = require('./apiUtils')
 
 const $sql = require('../sqlMap')
-const $common = require('../../common.js')
+const $common = require('../common.js')
 
 /**
  * 用户新建订单接口

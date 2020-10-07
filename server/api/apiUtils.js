@@ -7,7 +7,7 @@ const utils = require('../utils')
 const Base64 = require('js-base64').Base64
 
 const $sql = require('../sqlMap')
-// const $common = require('../../common.js')
+// const $common = require('../common.js')
 
 /**
  * 获取用户最近的订单信息

@@ -8,7 +8,7 @@ const router = express.Router()
 const apiUtils = require('./apiUtils')
 
 // const $sql = require('../sqlMap')
-// const $common = require('../../common.js')
+// const $common = require('../common.js')
 
 // const conn = new pgsql.Pool(db.pgsql)
 

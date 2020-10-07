@@ -15,16 +15,14 @@ A web-based dormitory network repair system (platform) for students of **Univers
 ## Project setup
 
 ``` node
-// 根目录下
-npm install
-
-// server 目录下
+// 分别在 client 和 server 目录下
 npm install
 ```
 
 ### Run frontend server
 
 ``` node
+// client 目录下
 npm run frontend
 ```
 
@@ -35,6 +33,7 @@ npm run frontend
 启动后端服务器：
 
 ``` node
+// server 目录下
 npm run backend
 ```
 

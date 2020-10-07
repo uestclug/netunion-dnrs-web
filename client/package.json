@@ -1,10 +1,9 @@
 {
-  "name": "netunion-dnrs-web",
+  "name": "netunion-dnrs-web-frontend",
   "version": "1.4.0",
   "private": true,
   "scripts": {
     "frontend": "vue-cli-service serve",
-    "backend": "node ./server/index.js",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },

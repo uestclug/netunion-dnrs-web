@@ -5,7 +5,7 @@ import vuetify from '@/plugins/vuetify'
 import VueI18n from 'vue-i18n'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-import common from '@/../common.js'
+import common from '@/common/common.js'
 import store from '@/store'
 import Bus from './Bus'
 

@@ -7,7 +7,7 @@ const router = express.Router()
 const apiUtils = require('./apiUtils')
 
 const $sql = require('../sqlMap')
-const $common = require('../../common.js')
+const $common = require('../common.js')
 
 // todo: 用户注册接口
 router.post('/register', (req, res) => {
