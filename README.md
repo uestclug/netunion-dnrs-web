@@ -2,7 +2,7 @@
 
 <div align=center>
 
-  <img src="./src/assets/networkOff.jpg" alt="你没网啦？"/>
+  <img src="./client/src/assets/networkOff.jpg" alt="你没网啦？"/>
 
 </div>
 
