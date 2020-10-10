@@ -1,11 +1,11 @@
 <template>
   <div class="home mt-6 mb-6">
-    <div v-if="role === GLOBAL.role.user">
+    <div v-if="role === $GLOBAL.role.user">
       <InfoNoteUser />
       <WelcomeUser />
       <LatestOrder />
     </div>
-    <div v-else-if="role === GLOBAL.role.solver">
+    <div v-else-if="role === $GLOBAL.role.solver">
       <WelcomeSolver />
       <AcceptedOrder />
     </div>

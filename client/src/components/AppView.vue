@@ -122,7 +122,7 @@
     <!-- Solver: Create Oreder -->
     <CreateOrderSolver />
 
-    <!-- Global Bus Methods -->
+    <!-- GLOBAL Bus Methods -->
     <BusMethods />
   </v-app>
 </template>
@@ -161,7 +161,7 @@ export default {
   },
   mounted () {
     if (localStorage.getItem('token')) {
-      this.Bus.$emit('tokenCheck')
+      this.$Bus.$emit('tokenCheck')
     }
   },
   methods: {

@@ -30,7 +30,7 @@
                 v-bind:key="asgn.solver_id"
                 :color="asgn.solver_id == userId ? 'primary' : ''"
                 label
-                :close="order.is_solver && order.order_status === GLOBAL.status.receipted"
+                :close="order.is_solver && order.order_status === $GLOBAL.status.receipted"
                 @click:close="toConfirmRemoveAsgnDialog(asgn)"
                 class="mr-2 mt-1"
               >{{ asgn.solver_name }}</v-chip>
@@ -39,7 +39,7 @@
         </v-card-text>
         <!-- 添加协作人 -->
         <v-card-text v-if="order != null && order.is_solver &&
-          order.order_status === GLOBAL.status.receipted">
+          order.order_status === $GLOBAL.status.receipted">
           <div class="subtitle-1">{{ $t('order.assigneeDialog.addAssignee') }}</div>
           <v-btn
             @click="addMasterAsAssignee"
@@ -229,7 +229,7 @@ export default {
     }
   },
   mounted () {
-    this.Bus.$on('openAssigneeDialog', (msg) => {
+    this.$Bus.$on('openAssigneeDialog', (msg) => {
       this.userId = localStorage.user_id
       if (this.order == null || this.order != msg) {
         this.assignee = []

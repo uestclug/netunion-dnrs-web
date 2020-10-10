@@ -36,7 +36,7 @@
             </v-col>
             <v-col
               cols="6"
-              v-if="role === GLOBAL.role.solver"
+              v-if="role === $GLOBAL.role.solver"
             >
               <p class="body-1 pt-2">
                 <v-icon left>mdi-account-tie-outline</v-icon>{{ $t('user.account.nickname') }}
@@ -44,7 +44,7 @@
             </v-col>
             <v-col
               cols="6"
-              v-if="role === GLOBAL.role.solver"
+              v-if="role === $GLOBAL.role.solver"
             >
               <v-text-field
                 v-model="nickname"
@@ -84,7 +84,7 @@
             </v-col>
             <v-col
               cols="6"
-              v-if="role === GLOBAL.role.user"
+              v-if="role === $GLOBAL.role.user"
             >
               <p class="body-1 pt-2">
                 <v-icon left>mdi-map-marker-outline</v-icon>{{ $t('user.account.location') }}
@@ -92,7 +92,7 @@
             </v-col>
             <v-col
               cols="6"
-              v-if="role === GLOBAL.role.user"
+              v-if="role === $GLOBAL.role.user"
             >
               <v-text-field
                 v-model="dormitory"
@@ -118,7 +118,7 @@
             </v-col>
             <v-col
               cols="6"
-              v-if="role === GLOBAL.role.solver"
+              v-if="role === $GLOBAL.role.solver"
             >
               <p class="body-1 pt-2">
                 <v-icon left>mdi-badge-account-horizontal-outline</v-icon>{{ $t('user.account.intro') }}
@@ -126,7 +126,7 @@
             </v-col>
             <v-col
               cols="6"
-              v-if="role === GLOBAL.role.solver"
+              v-if="role === $GLOBAL.role.solver"
             >
               <v-textarea
                 v-model="intro"
@@ -361,9 +361,9 @@ export default {
     this.gender = localStorage.getItem('gender')
     this.campus = localStorage.getItem('campus')
     this.telephone = localStorage.getItem('telephone')
-    if (this.role === this.GLOBAL.role.user) {
+    if (this.role === this.$GLOBAL.role.user) {
       this.dormitory = localStorage.getItem('dormitory')
-    } else if (this.role === this.GLOBAL.role.solver) {
+    } else if (this.role === this.$GLOBAL.role.solver) {
       this.nickname = localStorage.getItem('nickname')
       this.intro = localStorage.getItem('intro')
     }
@@ -431,9 +431,9 @@ export default {
   methods: {
     modifyAccountInfo: async function () {
       if (this.disabled === true) { // 第一次点击，进入修改模式
-        this.Bus.$emit('tokenCheck')
+        this.$Bus.$emit('tokenCheck')
         this.modifyBtnColor = 'success' // 设置按钮颜色
-        this.Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyAccountInfoNote'))
+        this.$Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyAccountInfoNote'))
         this.disabled = false
         this.nameCounter = 20
         this.nicknameCounter = 30
@@ -446,7 +446,7 @@ export default {
           this.modifyAccountInfoLoading = true
 
           let modifyResponse = false
-          if (this.role === this.GLOBAL.role.user) { // 对于 user 用户组
+          if (this.role === this.$GLOBAL.role.user) { // 对于 user 用户组
             modifyResponse = await this.axios.post('/api/user/modifyAccountInfo', {
               name: this.name,
               gender: this.gender,
@@ -454,7 +454,7 @@ export default {
               dormitory: this.dormitory,
               telephone: this.telephone
             })
-          } else if (this.role === this.GLOBAL.role.solver) { // 对于 solver 用户组
+          } else if (this.role === this.$GLOBAL.role.solver) { // 对于 solver 用户组
             modifyResponse = await this.axios.post('/api/user/modifyAccountInfo', {
               name: this.name,
               nickname: this.nickname,
@@ -469,14 +469,14 @@ export default {
             localStorage.setItem('gender', this.gender)
             localStorage.setItem('campus', this.campus)
             localStorage.setItem('telephone', this.telephone)
-            if (this.role === this.GLOBAL.role.user) {
+            if (this.role === this.$GLOBAL.role.user) {
               localStorage.setItem('dormitory', this.dormitory)
-            } else if (this.role === this.GLOBAL.role.solver) {
+            } else if (this.role === this.$GLOBAL.role.solver) {
               localStorage.setItem('nickname', this.nickname)
               localStorage.setItem('intro', this.intro)
             }
             this.modifyBtnColor = 'brown darken-1'
-            this.Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyAccountInfoSucceed'))
+            this.$Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyAccountInfoSucceed'))
             this.modifyAccountInfoLoading = false
             this.disabled = true
             this.nameCounter = false
@@ -484,14 +484,14 @@ export default {
             this.telephoneCounter = false
             this.introCounter = false
           } else { // 修改失败，显示提示信息并刷新页面
-            this.Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyAccountInfoFailed'))
+            this.$Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyAccountInfoFailed'))
             location.reload()
           }
         }
       }
     },
     modifyPassword: function () {
-      this.Bus.$emit('tokenCheck')
+      this.$Bus.$emit('tokenCheck')
       this.modifyPasswordDialog = true
     },
     submitNewPassword: async function () {
@@ -502,33 +502,33 @@ export default {
         if (this.modifiedPassword !== this.reModifiedPassword) { // 当两次输入的新密码不一样时
           this.modifiedPassword = ''
           this.reModifiedPassword = ''
-          this.Bus.$emit('setSnackbar', this.$i18n.t('user.account.reModifiedPasswordErr'))
+          this.$Bus.$emit('setSnackbar', this.$i18n.t('user.account.reModifiedPasswordErr'))
           return
         }
 
         if (this.modifiedPassword === this.presentPassword) {
           this.modifiedPassword = ''
           this.reModifiedPassword = ''
-          this.Bus.$emit('setSnackbar', this.$i18n.t('user.account.sameModifiedPasswordErr'))
+          this.$Bus.$emit('setSnackbar', this.$i18n.t('user.account.sameModifiedPasswordErr'))
           return
         }
 
         this.submitNewPasswordLoading = true
 
         this.axios.post('/api/user/modifyPassword', { // 调用修改密码接口
-          presentPassword: this.presentPassword,
-          modifiedPassword: this.modifiedPassword
+          presentPassword: this.$Utils.generateEncryptedPassword(this.presentPassword),
+          modifiedPassword: this.$Utils.generateEncryptedPassword(this.modifiedPassword)
         }).then((Response) => {
           this.submitNewPasswordLoading = false
           if (Response.data === true) {
-            this.Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyPasswordSucceed'))
+            this.$Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyPasswordSucceed'))
             this.$refs.passwordForm.reset() // 重置表单
             this.modifyPasswordDialog = false
           } else if (Response.data === 'present password error') {
-            this.Bus.$emit('setSnackbar', this.$i18n.t('user.account.presentPasswordErr'))
+            this.$Bus.$emit('setSnackbar', this.$i18n.t('user.account.presentPasswordErr'))
             this.presentPassword = ''
           } else {
-            this.Bus.$emit('setSnackbar', this.$i18n.t('user.account.unknownErr'))
+            this.$Bus.$emit('setSnackbar', this.$i18n.t('user.account.unknownErr'))
           }
         })
       }
@@ -538,7 +538,7 @@ export default {
     },
     logout () {
       this.logoutLoading = true
-      this.Bus.$emit('modifyLoginStatus', 'logout')
+      this.$Bus.$emit('modifyLoginStatus', 'logout')
     }
   }
 }

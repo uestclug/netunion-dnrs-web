@@ -6,12 +6,24 @@ import VueI18n from 'vue-i18n'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import common from '@/common/common.js'
+import devData from '@/common/devData.js'
+import utils from '@/utils.js'
 import store from '@/store'
-import Bus from './Bus'
+import Bus from '@/Bus.js'
 
 Vue.config.productionTip = false
-Vue.prototype.GLOBAL = common // 引入全局变量
-Vue.prototype.Bus = Bus
+Vue.prototype.$GLOBAL = common
+Vue.prototype.$Bus = Bus
+Vue.prototype.$Utils = utils
+// Vue.prototype.$DevMode = true 时，将使用本地数据进行前端开发
+// 您可以手动设置 Vue.prototype.$DevMode = false 以连接后端进行测试开发
+// 您需要在 ../../server 目录执行 npm run backend 以连接后端服务器
+Vue.prototype.$DevMode = true
+if (process.env.NODE_ENV === 'development') {
+  Vue.prototype.$DevData = devData
+} else {
+  Vue.prototype.$DevMode = false
+}
 
 Vue.use(VueI18n)
 Vue.use(VueAxios, axios)

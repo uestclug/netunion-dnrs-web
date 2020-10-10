@@ -41,7 +41,7 @@ export default {
   name: 'WelcomeSolver',
   methods: {
     openCreateOrderSolverSheet () {
-      this.Bus.$emit('openCreateOrderSolverSheet')
+      this.$Bus.$emit('openCreateOrderSolverSheet')
     }
   }
 }

@@ -50,7 +50,7 @@ export default {
   created: async function () {
     this.role = this.$store.state.role
     let Response = null
-    if (this.role === this.GLOBAL.role.user) {
+    if (this.role === this.$GLOBAL.role.user) {
       Response = await this.axios.post('/api/user/getUserStatisticsInfo')
       const statisticsInfo = Response.data
       if (statisticsInfo) {
@@ -60,7 +60,7 @@ export default {
         this.lastOrderDate = statisticsInfo.latest_finished_order_date
         this.lastOrderSolver = statisticsInfo.latest_finished_order_solver_name
       }
-    } else if (this.role === this.GLOBAL.role.solver) {
+    } else if (this.role === this.$GLOBAL.role.solver) {
       Response = await this.axios.post('/api/user/getSolverStatisticsInfo')
       const statisticsInfo = Response.data
       if (statisticsInfo) {
@@ -95,7 +95,7 @@ export default {
     },
     statistics () {
       let statistics
-      if (this.role === this.GLOBAL.role.user) {
+      if (this.role === this.$GLOBAL.role.user) {
         statistics = [
           {
             statisticsTitle: this.$i18n.t('user.statistics.finishedOrderTime'),
@@ -118,7 +118,7 @@ export default {
             statisticsValue: this.lastOrderSolver
           }
         ]
-      } else if (this.role === this.GLOBAL.role.solver) {
+      } else if (this.role === this.$GLOBAL.role.solver) {
         statistics = [
           {
             statisticsTitle: this.$i18n.t('user.statistics.finishedOrderTimeTotally'),

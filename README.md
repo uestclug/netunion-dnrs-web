@@ -12,10 +12,14 @@
 
 A web-based dormitory network repair system (platform) for students of **University of Electronic Science and Technology**, which supports online report of dormitory network problems for students of Shahe and Qingshuihe campuses. Don't worry, we are the solvers of dormitory network problems.
 
-## Project setup
+## Development for frontend
+
+使用本地数据，只进行前端开发。
+
+### Frontend setup
 
 ``` node
-// 分别在 client 和 server 目录下
+// client 目录下
 npm install
 ```
 
@@ -26,9 +30,36 @@ npm install
 npm run frontend
 ```
 
-### Init PostgreSQL & Run backend server
+### Login in system
+
+之后您可以：
+
+- 用户组：使用 `user` 作为账号，任意输入密码登录。
+- 处理者组：使用 `solver` 作为账号，任意输入密码登录。
+
+## Development for full-stack
+
+使用服务器数据，进行全栈开发。
+
+### Full-stack setup
+
+``` node
+// 分别在 client 和 server 目录下
+npm install
+```
+
+### Init PostgreSQL
 
 向项目组成员获取测试数据库登录信息。
+
+### Run server
+
+启动前端网页渲染：
+
+``` node
+// client 目录下
+npm run frontend
+```
 
 启动后端服务器：
 
@@ -39,16 +70,16 @@ npm run backend
 
 之后您可以：
 
-- 用户组：使用 `2020091202000` 作为账号， `123123` 作为密码登录。
-- 处理者组：使用 `2018091202000` 作为账号， `123123` 作为密码登录。
+- 用户组：使用 `2020091202000` 作为账号，`123123` 作为密码登录。
+- 处理者组：使用 `2018091202000` 作为账号，`123123` 作为密码登录。
 
-### Compiles and minifies for production
+## Compiles and minifies for production
 
 ``` node
 npm run build
 ```
 
-### Lints and fixes files
+## Lints and fixes files
 
 ``` node
 npm run lint

@@ -22,6 +22,11 @@ export default {
       this.$store.commit('setRole', role)
       this.$store.commit('setToken', token)
     }
+  },
+  created () {
+    if (this.$DevMode) {
+      console.log('You are now in DevMode, feel free to develop this website.')
+    }
   }
 }
 </script>

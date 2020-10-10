@@ -81,7 +81,7 @@ export default {
     }
   },
   mounted () {
-    this.Bus.$on('openOrderActionNotesDialog', (msg) => {
+    this.$Bus.$on('openOrderActionNotesDialog', (msg) => {
       this.userId = localStorage.user_id
       if (this.order == null || this.order != msg) this.order = msg
       this.queryOrderActionNotes()

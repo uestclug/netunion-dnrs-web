@@ -208,13 +208,13 @@ export default {
           })
           .then((Response) => {
             if (Response.data) {
-              this.Bus.$emit(
+              this.$Bus.$emit(
                 'setSnackbar',
                 this.$i18n.t('order.orderList.actions.finishOrderSucceed')
               )
               this.refreshRouter()
             } else {
-              this.Bus.$emit(
+              this.$Bus.$emit(
                 'setSnackbar',
                 this.$i18n.t('order.orderList.actions.finishOrderFailed')
               )
@@ -230,10 +230,10 @@ export default {
           order_id: order.order_id
         }).then((Response) => {
           if (Response.data) {
-            this.Bus.$emit('setSnackbar', this.$i18n.t('order.orderList.actions.cancelOrderSucceed'))
+            this.$Bus.$emit('setSnackbar', this.$i18n.t('order.orderList.actions.cancelOrderSucceed'))
             this.refreshRouter()
           } else {
-            this.Bus.$emit('setSnackbar', this.$i18n.t('order.orderList.actions.cancelOrderFailed'))
+            this.$Bus.$emit('setSnackbar', this.$i18n.t('order.orderList.actions.cancelOrderFailed'))
             this.refreshRouter()
           }
         })
@@ -245,10 +245,10 @@ export default {
           order_id: order.order_id
         }).then((Response) => {
           if (Response.data) {
-            this.Bus.$emit('setSnackbar', this.$i18n.t('order.orderList.actions.closeOrderSucceed'))
+            this.$Bus.$emit('setSnackbar', this.$i18n.t('order.orderList.actions.closeOrderSucceed'))
             this.refreshRouter()
           } else {
-            this.Bus.$emit('setSnackbar', this.$i18n.t('order.orderList.actions.closeOrderFailed'))
+            this.$Bus.$emit('setSnackbar', this.$i18n.t('order.orderList.actions.closeOrderFailed'))
             this.refreshRouter()
           }
         })

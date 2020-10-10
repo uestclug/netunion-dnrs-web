@@ -225,11 +225,11 @@ export default {
       })
       if (Response.data) {
         this.orderStatus = this.$i18n.t('order.canceledByUserStatus')
-        this.Bus.$emit('setSnackbar', this.$i18n.t('order.cancelSucceed'))
+        this.$Bus.$emit('setSnackbar', this.$i18n.t('order.cancelSucceed'))
         this.$router.push({ path: '/_empty' })
         this.$router.back(-1)
       } else {
-        this.Bus.$emit('modifyLoginStatus', 'unknownErr')
+        this.$Bus.$emit('modifyLoginStatus', 'unknownErr')
       }
     },
     telephoneCall (telephone) {
@@ -250,21 +250,21 @@ export default {
       const status = orderInfo.order_status
       localStorage.setItem('latest_order_id', orderInfo.order_id)
 
-      if (status === this.GLOBAL.status.waiting) { // 用户可以取消订单
+      if (status === this.$GLOBAL.status.waiting) { // 用户可以取消订单
         // 订单为等待接单状态
         this.orderStatus = this.$i18n.t('order.waitingStatus')
         this.cancelDisabled = false
       } else { // 用户不可取消订单
-        if (status === this.GLOBAL.status.receipted) {
+        if (status === this.$GLOBAL.status.receipted) {
           // 订单为已接单状态
           this.orderStatus = this.$i18n.t('order.receiptedStatus')
-        } else if (status === this.GLOBAL.status.canceledByUser) {
+        } else if (status === this.$GLOBAL.status.canceledByUser) {
           // 订单为被用户取消状态
           this.orderStatus = this.$i18n.t('order.canceledByUserStatus')
-        } else if (status === this.GLOBAL.status.canceledBySolver) {
+        } else if (status === this.$GLOBAL.status.canceledBySolver) {
           // 订单为被处理者取消状态
           this.orderStatus = this.$i18n.t('order.canceledBySolverStatus')
-        } else if (status === this.GLOBAL.status.finished) {
+        } else if (status === this.$GLOBAL.status.finished) {
           // 订单为完成状态
           this.orderStatus = this.$i18n.t('order.finishedStatus')
         } else {
@@ -295,7 +295,7 @@ export default {
       this.cancelDisabled = true
     }
     this.infoLoading = false
-    this.Bus.$emit('userLatestOrderInfoLoaded', this.order) // 设置订单信息加载完成
+    this.$Bus.$emit('userLatestOrderInfoLoaded', this.order) // 设置订单信息加载完成
   }
 }
 </script>

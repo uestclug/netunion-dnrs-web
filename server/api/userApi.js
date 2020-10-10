@@ -22,7 +22,7 @@ router.post('/register', (req, res) => {
 router.post('/login', async function (req, res) {
   const reqBody = req.body
   const std_id = reqBody.std_id
-  const password = apiUtils.generateEncryptedPassword(reqBody.password)
+  const password = reqBody.password
   const sqlData = [std_id]
 
   const client = await pool.connect()
@@ -131,8 +131,8 @@ router.post('/modifyPassword', async function (req, res) {
   const flag = await apiUtils.checkToken(req)
   if (flag) {
     const reqBody = req.body
-    const presentPassword = apiUtils.generateEncryptedPassword(reqBody.presentPassword)
-    const modifiedPassword = apiUtils.generateEncryptedPassword(reqBody.modifiedPassword)
+    const presentPassword = reqBody.presentPassword
+    const modifiedPassword = reqBody.modifiedPassword
     const user_id = reqBody.user_id
     const flagData = [user_id]
     const sqlData = [modifiedPassword, user_id]

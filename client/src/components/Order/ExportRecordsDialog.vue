@@ -173,7 +173,7 @@ export default {
         email: this.email
       }).then((Response) => {
         if (Response.data) {
-          this.Bus.$emit('setSnackbar', this.$i18n.t('order.exportDialog.exportSuccessfully'))
+          this.$Bus.$emit('setSnackbar', this.$i18n.t('order.exportDialog.exportSuccessfully'))
           this.dialog = false
           this.stepper = 1
 
@@ -206,7 +206,7 @@ export default {
             }
           }
         } else {
-          this.Bus.$emit('setSnackbar', this.$i18n.t('order.exportDialog.exportFailed'))
+          this.$Bus.$emit('setSnackbar', this.$i18n.t('order.exportDialog.exportFailed'))
         }
         this.exportRecordsLoading = false
       })
@@ -224,7 +224,7 @@ export default {
     }
   },
   mounted () {
-    this.Bus.$on('openExportRecordsDialog', (msg) => {
+    this.$Bus.$on('openExportRecordsDialog', (msg) => {
       this.dialog = true
     })
   }

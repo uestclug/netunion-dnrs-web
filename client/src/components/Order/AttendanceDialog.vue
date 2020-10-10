@@ -50,7 +50,7 @@
         </div>
       </v-card-text>
       <v-card-text v-if="order != null && order.is_solver &&
-        order.order_status === GLOBAL.status.receipted">
+        order.order_status === $GLOBAL.status.receipted">
         <div class="subtitle-1">{{ $t('order.attendanceDialog.addAttnTitle') }}</div>
         <v-text-field
           v-model="description"
@@ -137,7 +137,7 @@ export default {
     }
   },
   mounted () {
-    this.Bus.$on('openAttnDialog', (msg) => {
+    this.$Bus.$on('openAttnDialog', (msg) => {
       this.userId = localStorage.user_id
       if (this.order == null || this.order != msg) {
         this.attendance = []

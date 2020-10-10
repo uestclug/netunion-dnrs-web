@@ -58,8 +58,8 @@
                     :label="nameLabel"
                     @input="$v.name.$touch()"
                     @blur="$v.name.$touch()"
-                    :disabled="modifiedOrder.order_status == GLOBAL.status.finished ||
-                              modifiedOrder.order_status == GLOBAL.status.recorded"
+                    :disabled="modifiedOrder.order_status == $GLOBAL.status.finished ||
+                              modifiedOrder.order_status == $GLOBAL.status.recorded"
                   ></v-text-field>
                 </v-col>
 
@@ -72,8 +72,8 @@
                     :error-messages="genderErrors"
                     @input="$v.gender.$touch()"
                     @blur="$v.gender.$touch()"
-                    :disabled="modifiedOrder.order_status == GLOBAL.status.finished ||
-                              modifiedOrder.order_status == GLOBAL.status.recorded"
+                    :disabled="modifiedOrder.order_status == $GLOBAL.status.finished ||
+                              modifiedOrder.order_status == $GLOBAL.status.recorded"
                   ></v-select>
                 </v-col>
 
@@ -86,8 +86,8 @@
                     :label="telephoneLabel"
                     @input="$v.telephone.$touch()"
                     @blur="$v.telephone.$touch()"
-                    :disabled="modifiedOrder.order_status == GLOBAL.status.finished ||
-                              modifiedOrder.order_status == GLOBAL.status.recorded"
+                    :disabled="modifiedOrder.order_status == $GLOBAL.status.finished ||
+                              modifiedOrder.order_status == $GLOBAL.status.recorded"
                   ></v-text-field>
                 </v-col>
 
@@ -100,8 +100,8 @@
                     :label="campusLabel"
                     @change="$v.campus.$touch()"
                     @blur="$v.campus.$touch()"
-                    :disabled="modifiedOrder.order_status == GLOBAL.status.finished ||
-                              modifiedOrder.order_status == GLOBAL.status.recorded"
+                    :disabled="modifiedOrder.order_status == $GLOBAL.status.finished ||
+                              modifiedOrder.order_status == $GLOBAL.status.recorded"
                   ></v-select>
                 </v-col>
 
@@ -113,8 +113,8 @@
                     :label="dormitoryLabel"
                     @input="$v.dormitory.$touch()"
                     @blur="$v.dormitory.$touch()"
-                    :disabled="modifiedOrder.order_status == GLOBAL.status.finished ||
-                              modifiedOrder.order_status == GLOBAL.status.recorded"
+                    :disabled="modifiedOrder.order_status == $GLOBAL.status.finished ||
+                              modifiedOrder.order_status == $GLOBAL.status.recorded"
                   ></v-text-field>
                 </v-col>
 
@@ -353,19 +353,19 @@ export default {
           let status = this.status
 
           if (this.status === this.$i18n.t('order.waitingStatus')) {
-            status = this.GLOBAL.status.waiting
+            status = this.$GLOBAL.status.waiting
             // 如果设置为创建订单，则清空 record
             record = ''
           } else if (this.status === this.$i18n.t('order.receiptedStatus')) {
-            status = this.GLOBAL.status.receipted
+            status = this.$GLOBAL.status.receipted
             // 如果设置为接取订单，则清空 record
             record = ''
           } else if (this.status === this.$i18n.t('order.recordedStatus')) {
-            status = this.GLOBAL.status.recorded
+            status = this.$GLOBAL.status.recorded
             // 如果设置为记录订单，则清空 description
             description = ''
           } else { // 订单状态预料之外，刷新页面
-            this.Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.solver.createFailed'))
+            this.$Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.solver.createFailed'))
             location.reload()
           }
 
@@ -380,10 +380,10 @@ export default {
             solver_record: record
           }).then((Response) => {
             if (Response.data === false) { // 订单提交失败，刷新页面
-              this.Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.solver.createFailed'))
+              this.$Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.solver.createFailed'))
               location.reload()
             } else { // 订单提交成功，通过切换路由更新页面
-              this.Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.solver.createSucceed'))
+              this.$Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.solver.createSucceed'))
               this.sheet = false
               this.submitLoading = false
               this.$router.push({ path: '/_empty' })
@@ -410,10 +410,10 @@ export default {
             solver_record: this.record
           }).then((Response) => {
             if (Response.data === false) { // 订单信息修改失败，刷新页面
-              this.Bus.$emit('setSnackbar', this.$i18n.t('order.modifyOrder.solver.modifyFailed'))
+              this.$Bus.$emit('setSnackbar', this.$i18n.t('order.modifyOrder.solver.modifyFailed'))
               location.reload()
             } else { // 订单信息修改成功
-              this.Bus.$emit('setSnackbar', this.$i18n.t('order.modifyOrder.solver.modifySucceed'))
+              this.$Bus.$emit('setSnackbar', this.$i18n.t('order.modifyOrder.solver.modifySucceed'))
               const orderUserName = this.name
               if (orderUserName == '') {
                 this.modifiedOrder.order_user_name = '[匿名用户]'
@@ -422,18 +422,18 @@ export default {
               }
 
               const orderUserGender = this.gender
-              if (orderUserGender == this.GLOBAL.gender.male) {
+              if (orderUserGender == this.$GLOBAL.gender.male) {
                 this.modifiedOrder.order_user_gender = '男'
-              } else if (orderUserGender == this.GLOBAL.gender.female) {
+              } else if (orderUserGender == this.$GLOBAL.gender.female) {
                 this.modifiedOrder.order_user_gender = '女'
               }
 
               this.modifiedOrder.order_user_telephone = this.telephone
 
               const orderUserCampus = this.campus
-              if (orderUserCampus == this.GLOBAL.campus.qingshuihe) {
+              if (orderUserCampus == this.$GLOBAL.campus.qingshuihe) {
                 this.modifiedOrder.order_user_campus = '清水河校区'
-              } else if (orderUserCampus == this.GLOBAL.campus.shahe) {
+              } else if (orderUserCampus == this.$GLOBAL.campus.shahe) {
                 this.modifiedOrder.order_user_campus = '沙河校区'
               }
 
@@ -490,9 +490,9 @@ export default {
       }
       // 设置用户性别
       const orderUserGender = order.order_user_gender
-      if (orderUserGender == '男' || orderUserGender == this.GLOBAL.gender.male) {
+      if (orderUserGender == '男' || orderUserGender == this.$GLOBAL.gender.male) {
         this.gender = this.genderItems[0]
-      } else if (orderUserGender == '女' || orderUserGender == this.GLOBAL.gender.female) {
+      } else if (orderUserGender == '女' || orderUserGender == this.$GLOBAL.gender.female) {
         this.gender = this.genderItems[1]
       } else {
         this.gender = ''
@@ -501,9 +501,9 @@ export default {
       this.telephone = order.order_user_telephone
       // 设置用户所在校区
       const orderUserCampus = order.order_user_campus
-      if (orderUserCampus == '清水河校区' || orderUserCampus == this.GLOBAL.campus.qingshuihe) {
+      if (orderUserCampus == '清水河校区' || orderUserCampus == this.$GLOBAL.campus.qingshuihe) {
         this.campus = this.campusItems[0]
-      } else if (orderUserCampus == '沙河校区' || orderUserCampus == this.GLOBAL.campus.shahe) {
+      } else if (orderUserCampus == '沙河校区' || orderUserCampus == this.$GLOBAL.campus.shahe) {
         this.campus = this.campusItems[1]
       } else {
         this.campus = ''
@@ -512,18 +512,18 @@ export default {
       this.dormitory = order.order_user_dormitory
       // 设置订单状态
       const orderStatus = order.order_status
-      if (orderStatus == this.GLOBAL.status.waiting ||
+      if (orderStatus == this.$GLOBAL.status.waiting ||
         orderStatus == this.$i18n.t('order.waitingStatus')) {
         this.status = this.$i18n.t('order.waitingStatus')
-      } else if (orderStatus == this.GLOBAL.status.receipted ||
+      } else if (orderStatus == this.$GLOBAL.status.receipted ||
         orderStatus == this.$i18n.t('order.receiptedStatus')) {
         this.status = this.$i18n.t('order.receiptedStatus')
-      } else if (orderStatus == this.GLOBAL.status.recorded ||
-        orderStatus == this.GLOBAL.status.finished ||
+      } else if (orderStatus == this.$GLOBAL.status.recorded ||
+        orderStatus == this.$GLOBAL.status.finished ||
         orderStatus == this.$i18n.t('order.recordedStatus')) {
         this.status = this.$i18n.t('order.recordedStatus')
       } else {
-        this.Bus.$emit('setSnackbar', this.$i18n.t('order.modifyOrder.solver.getOrderStatusFailed'))
+        this.$Bus.$emit('setSnackbar', this.$i18n.t('order.modifyOrder.solver.getOrderStatusFailed'))
         location.reload()
       }
       // 设置用户描述
@@ -533,7 +533,7 @@ export default {
     }
   },
   mounted () {
-    this.Bus.$on('openCreateOrderSolverSheet', (msg) => { // 创建订单模式
+    this.$Bus.$on('openCreateOrderSolverSheet', (msg) => { // 创建订单模式
       if (this.isModify) { // 从修改订单模式进入创建订单模式，从 localStorage 读取存储的表单数据
         this.setOrderData(JSON.parse(localStorage.beforeCreatedOrder))
       }
@@ -541,7 +541,7 @@ export default {
       this.isModify = false
       this.sheet = true
     })
-    this.Bus.$on('openModifyOrderSolverSheet', (msg) => { // 修改订单模式
+    this.$Bus.$on('openModifyOrderSolverSheet', (msg) => { // 修改订单模式
       if (!this.isModify) { // 从创建订单模式进入修改订单模式，保存原本表单数据到 localStorage
         localStorage.beforeCreatedOrder = this.stringifyOrderData()
       }

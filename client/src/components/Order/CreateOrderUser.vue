@@ -257,13 +257,13 @@ export default {
             user_description: this.description
           }).then((Response) => {
             if (Response.data) { // 订单提交成功，通过切换路由更新页面
-              this.Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.createSucceed'))
+              this.$Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.createSucceed'))
               this.sheet = false
               this.submitLoading = false
               this.refreshRouter()
               if (this.isNewUser) this.modifyAccountInfo() // 首次创建订单自动将信息同步到账号信息
             } else { // 订单提交失败，刷新页面
-              this.Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.createFailed'))
+              this.$Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.createFailed'))
               location.reload()
             }
           })
@@ -278,13 +278,13 @@ export default {
             user_description: this.description
           }).then((Response) => {
             if (Response.data) {
-              this.Bus.$emit('setSnackbar', this.$i18n.t('order.modifyOrder.user.modifySucceed'))
+              this.$Bus.$emit('setSnackbar', this.$i18n.t('order.modifyOrder.user.modifySucceed'))
               this.sheet = false
               this.submitLoading = false
               this.refreshRouter()
             } else {
               this.submitLoading = false
-              this.Bus.$emit('setSnackbar', this.$i18n.t('order.modifyOrder.user.modifyFailed'))
+              this.$Bus.$emit('setSnackbar', this.$i18n.t('order.modifyOrder.user.modifyFailed'))
             }
           })
         }
@@ -318,20 +318,20 @@ export default {
         telephone: this.telephone
       }).then((Response) => {
         if (Response.data) {
-          this.Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.modifyAccountInfoSucceed'))
+          this.$Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.modifyAccountInfoSucceed'))
           localStorage.setItem('name', this.name)
           localStorage.setItem('gender', this.gender)
           localStorage.setItem('campus', this.campus)
           localStorage.setItem('telephone', this.telephone)
           localStorage.setItem('dormitory', this.dormitory)
         } else {
-          this.Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.modifyAccountInfoFailed'))
+          this.$Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.modifyAccountInfoFailed'))
         }
       })
     }
   },
   mounted () {
-    this.Bus.$on('openCreateOrderUserSheet', (msg) => {
+    this.$Bus.$on('openCreateOrderUserSheet', (msg) => {
       this.isModify = msg.isModify
       this.order = msg.order
       this.isNewUser = msg.isNewUser

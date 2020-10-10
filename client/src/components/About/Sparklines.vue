@@ -120,7 +120,7 @@
                   </div>
                   <div class="text-subtitle-1 orange--text">{{ $t('about.sparklines.finishOrderSimple') }} {{ solver.finish_order_count }} {{ $t('about.sparklines.orders') }}</div>
                   <div class="pt-3 pb-6 text-body-2">
-                    <span v-if="role === GLOBAL.role.solver && solver.nickname">({{ solver.name }}) </span>
+                    <span v-if="role === $GLOBAL.role.solver && solver.nickname">({{ solver.name }}) </span>
                     {{ solver.intro }}
                   </div>
                 </div>

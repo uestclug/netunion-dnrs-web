@@ -93,15 +93,15 @@
                 class="mr-2"
               >mdi-pencil-outline</v-icon>
               <v-icon
-                v-if="item.order_status === GLOBAL.status.waiting"
+                v-if="item.order_status === $GLOBAL.status.waiting"
                 @click="receiptOrder(item)"
               >mdi-briefcase-plus-outline</v-icon>
               <v-icon
-                v-else-if="item.order_status === GLOBAL.status.receipted && item.is_solver"
+                v-else-if="item.order_status === $GLOBAL.status.receipted && item.is_solver"
                 @click="finishOrder(item)"
               >mdi-checkbox-multiple-marked-outline</v-icon>
               <v-icon
-                v-if="item.order_status === GLOBAL.status.canceledBySolver"
+                v-if="item.order_status === $GLOBAL.status.canceledBySolver"
                 @click="restoreOrder(item)"
               >mdi-autorenew</v-icon>
             </template>
@@ -231,7 +231,7 @@
 
                 <!-- 订单额外操作 -->
                 <v-row class="mb-3">
-                  <v-col v-if="item.order_status !== GLOBAL.status.recorded">
+                  <v-col v-if="item.order_status !== $GLOBAL.status.recorded">
                     <!-- 查看出勤记录 -->
                     <v-btn
                       small
@@ -282,7 +282,7 @@
                       small
                       depressed
                       v-show="showExtraActions"
-                      :disabled="!(item.order_status === GLOBAL.status.receipted && item.is_solver)"
+                      :disabled="!(item.order_status === $GLOBAL.status.receipted && item.is_solver)"
                       @click="cancelOrder(item)"
                       class="mr-2"
                     >
@@ -296,8 +296,8 @@
                       small
                       depressed
                       v-show="showExtraActions"
-                      :disabled="!(item.order_status === GLOBAL.status.waiting ||
-                      (item.order_status === GLOBAL.status.receipted && item.is_solver))"
+                      :disabled="!(item.order_status === $GLOBAL.status.waiting ||
+                      (item.order_status === $GLOBAL.status.receipted && item.is_solver))"
                       @click="closeOrder(item)"
                     >
                       <v-icon
@@ -309,10 +309,10 @@
                     <v-btn
                       small
                       depressed
-                      v-if="item.order_status === GLOBAL.status.canceledByUser ||
-                      item.order_status === GLOBAL.status.canceledBySolver ||
-                      (item.order_status === GLOBAL.status.finished && item.is_solver) ||
-                      (item.order_status === GLOBAL.status.recorded && item.is_solver)"
+                      v-if="item.order_status === $GLOBAL.status.canceledByUser ||
+                      item.order_status === $GLOBAL.status.canceledBySolver ||
+                      (item.order_status === $GLOBAL.status.finished && item.is_solver) ||
+                      (item.order_status === $GLOBAL.status.recorded && item.is_solver)"
                       label
                       @click="deleteOrder(item)"
                     >删除此订单</v-btn>
@@ -362,7 +362,7 @@ export default {
     this.axios
       .post('/api/order/queryOrderList', {
         page: 1,
-        filter: this.GLOBAL.filter.available
+        filter: this.$GLOBAL.filter.available
       })
       .then((Response) => {
         const orderItems = Response.data
@@ -383,19 +383,19 @@ export default {
       this.loadMoreOrderListItems()
     },
     openCreateOrderSolverSheet () {
-      this.Bus.$emit('openCreateOrderSolverSheet')
+      this.$Bus.$emit('openCreateOrderSolverSheet')
     },
     openAttnDialog (item) {
-      this.Bus.$emit('openAttnDialog', item)
+      this.$Bus.$emit('openAttnDialog', item)
     },
     openAssigneeDialog (item) {
-      this.Bus.$emit('openAssigneeDialog', item)
+      this.$Bus.$emit('openAssigneeDialog', item)
     },
     openOrderActionNotesDialog (item) {
-      this.Bus.$emit('openOrderActionNotesDialog', item)
+      this.$Bus.$emit('openOrderActionNotesDialog', item)
     },
     openExportRecordsDialog () {
-      this.Bus.$emit('openExportRecordsDialog')
+      this.$Bus.$emit('openExportRecordsDialog')
     },
     receiptOrder (item) {
       // 接取订单，设置订单状态为已接取
@@ -408,13 +408,13 @@ export default {
           })
           .then((Response) => {
             if (Response.data) {
-              this.Bus.$emit(
+              this.$Bus.$emit(
                 'setSnackbar',
                 this.$i18n.t('order.orderList.actions.receiptOrderSucceed')
               )
               this.refreshRouter()
             } else {
-              this.Bus.$emit(
+              this.$Bus.$emit(
                 'setSnackbar',
                 this.$i18n.t('order.orderList.actions.receiptOrderFailed')
               )
@@ -432,13 +432,13 @@ export default {
           })
           .then((Response) => {
             if (Response.data) {
-              this.Bus.$emit(
+              this.$Bus.$emit(
                 'setSnackbar',
                 this.$i18n.t('order.orderList.actions.finishOrderSucceed')
               )
               this.refreshRouter()
             } else {
-              this.Bus.$emit(
+              this.$Bus.$emit(
                 'setSnackbar',
                 this.$i18n.t('order.orderList.actions.finishOrderFailed')
               )
@@ -458,13 +458,13 @@ export default {
           })
           .then((Response) => {
             if (Response.data) {
-              this.Bus.$emit(
+              this.$Bus.$emit(
                 'setSnackbar',
                 this.$i18n.t('order.orderList.actions.restoreOrderSucceed')
               )
               this.refreshRouter()
             } else {
-              this.Bus.$emit(
+              this.$Bus.$emit(
                 'setSnackbar',
                 this.$i18n.t('order.orderList.actions.restoreOrderFailed')
               )
@@ -475,7 +475,7 @@ export default {
     },
     modifyOrder (item) {
       // 修改订单信息
-      this.Bus.$emit('openModifyOrderSolverSheet', item)
+      this.$Bus.$emit('openModifyOrderSolverSheet', item)
     },
     cancelOrder (item) {
       // 取消订单，并设置订单状态为待接取
@@ -486,13 +486,13 @@ export default {
           })
           .then((Response) => {
             if (Response.data) {
-              this.Bus.$emit(
+              this.$Bus.$emit(
                 'setSnackbar',
                 this.$i18n.t('order.orderList.actions.cancelOrderSucceed')
               )
               this.refreshRouter()
             } else {
-              this.Bus.$emit(
+              this.$Bus.$emit(
                 'setSnackbar',
                 this.$i18n.t('order.orderList.actions.cancelOrderFailed')
               )
@@ -510,13 +510,13 @@ export default {
           })
           .then((Response) => {
             if (Response.data) {
-              this.Bus.$emit(
+              this.$Bus.$emit(
                 'setSnackbar',
                 this.$i18n.t('order.orderList.actions.closeOrderSucceed')
               )
               this.refreshRouter()
             } else {
-              this.Bus.$emit(
+              this.$Bus.$emit(
                 'setSnackbar',
                 this.$i18n.t('order.orderList.actions.closeOrderFailed')
               )
@@ -538,11 +538,11 @@ export default {
 
       let filter = false
       if (this.filterSelect === '与我相关') {
-        filter = this.GLOBAL.filter.relevant
+        filter = this.$GLOBAL.filter.relevant
       } else if (this.filterSelect === '显示全部') {
-        filter = this.GLOBAL.filter.all
+        filter = this.$GLOBAL.filter.all
       } else if (this.filterSelect === '显示可用') {
-        filter = this.GLOBAL.filter.available
+        filter = this.$GLOBAL.filter.available
       }
 
       this.axios
@@ -564,19 +564,19 @@ export default {
         })
     },
     getStatusColor (status, isSolver) {
-      if (status === this.GLOBAL.status.waiting) {
+      if (status === this.$GLOBAL.status.waiting) {
         return 'green'
-      } else if (status === this.GLOBAL.status.receipted) {
+      } else if (status === this.$GLOBAL.status.receipted) {
         if (isSolver) return 'orange'
         else return 'primary'
       } else if (
-        status === this.GLOBAL.status.canceledByUser ||
-        status === this.GLOBAL.status.canceledBySolver
+        status === this.$GLOBAL.status.canceledByUser ||
+        status === this.$GLOBAL.status.canceledBySolver
       ) {
         return 'grey'
-      } else if (status === this.GLOBAL.status.finished) {
+      } else if (status === this.$GLOBAL.status.finished) {
         return 'teal'
-      } else if (status === this.GLOBAL.status.recorded) {
+      } else if (status === this.$GLOBAL.status.recorded) {
         return 'teal'
       } else {
         return null
@@ -590,34 +590,34 @@ export default {
       }
     },
     getStatusIcon (status) {
-      if (status === this.GLOBAL.status.waiting) {
+      if (status === this.$GLOBAL.status.waiting) {
         return 'mdi-bell-circle'
-      } else if (status === this.GLOBAL.status.receipted) {
+      } else if (status === this.$GLOBAL.status.receipted) {
         return 'mdi-account-circle'
-      } else if (status === this.GLOBAL.status.canceledByUser) {
+      } else if (status === this.$GLOBAL.status.canceledByUser) {
         return 'mdi-close-circle'
-      } else if (status === this.GLOBAL.status.canceledBySolver) {
+      } else if (status === this.$GLOBAL.status.canceledBySolver) {
         return 'mdi-delete-circle'
-      } else if (status === this.GLOBAL.status.finished) {
+      } else if (status === this.$GLOBAL.status.finished) {
         return 'mdi-check-circle'
-      } else if (status === this.GLOBAL.status.recorded) {
+      } else if (status === this.$GLOBAL.status.recorded) {
         return 'mdi-check-underline-circle'
       } else {
         return null
       }
     },
     getStatusText (status, isSolver) {
-      if (status === this.GLOBAL.status.waiting) {
+      if (status === this.$GLOBAL.status.waiting) {
         return this.$i18n.t('order.orderList.status.waiting')
-      } else if (status === this.GLOBAL.status.receipted) {
+      } else if (status === this.$GLOBAL.status.receipted) {
         if (isSolver) { return this.$i18n.t('order.orderList.status.receiptedByYou') } else return this.$i18n.t('order.orderList.status.receipted')
-      } else if (status === this.GLOBAL.status.canceledByUser) {
+      } else if (status === this.$GLOBAL.status.canceledByUser) {
         return this.$i18n.t('order.orderList.status.closed')
-      } else if (status === this.GLOBAL.status.canceledBySolver) {
+      } else if (status === this.$GLOBAL.status.canceledBySolver) {
         return this.$i18n.t('order.orderList.status.closed')
-      } else if (status === this.GLOBAL.status.finished) {
+      } else if (status === this.$GLOBAL.status.finished) {
         return this.$i18n.t('order.orderList.status.finished')
-      } else if (status === this.GLOBAL.status.recorded) {
+      } else if (status === this.$GLOBAL.status.recorded) {
         return this.$i18n.t('order.orderList.status.recorded')
       } else {
         return null

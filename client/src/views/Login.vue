@@ -111,11 +111,16 @@ export default {
     }
   },
   methods: {
-    submit () { // 登录验证
+    // 登录验证
+    submit () {
+      if (this.$DevMode) {
+        this.submitDevMode()
+        return
+      }
       this.$v.$touch()
       if (this.usernameErrors.length === 0 && this.pwdErrors.length === 0) { // 无报错内容时
         this.loading = true
-        const password = this.pwd // 加密密码
+        const password = this.$Utils.generateEncryptedPassword(this.pwd) // 加密密码
         const stdId = this.username
         localStorage.setItem('std_id', stdId)
         this.axios.post('/api/user/login', {
@@ -145,8 +150,8 @@ export default {
               localStorage.setItem('dormitory', resData.dormitory)
               localStorage.setItem('intro', resData.intro)
               // 显示提示登录成功的信息条
-              if (Response.data.name != '') this.Bus.$emit('setSnackbar', this.$i18n.t('login.loginSucceed') + Response.data.name)
-              else this.Bus.$emit('setSnackbar', this.$i18n.t('login.loginSucceed') + this.$i18n.t('login.defaultUserName'))
+              if (Response.data.name != '') this.$Bus.$emit('setSnackbar', this.$i18n.t('login.loginSucceed') + Response.data.name)
+              else this.$Bus.$emit('setSnackbar', this.$i18n.t('login.loginSucceed') + this.$i18n.t('login.defaultUserName'))
               // 回到主页
               this.$router.push({
                 name: 'home'
@@ -154,9 +159,40 @@ export default {
             })
           } else { // 登录失败
             this.pwd = ''
-            this.Bus.$emit('setSnackbar', this.$i18n.t('login.loginFailed')) // 显示提示登录失败的消息条
+            this.$Bus.$emit('setSnackbar', this.$i18n.t('login.loginFailed')) // 显示提示登录失败的消息条
             this.loading = false
           }
+        })
+      }
+    },
+    // 开发模式登录验证
+    submitDevMode () {
+      this.$v.$touch()
+      if (this.usernameErrors.length === 0 && this.pwdErrors.length === 0) {
+        localStorage.setItem('std_id', this.$DevData.account.stdId)
+        const loginRole = this.username
+        if (loginRole === 'user') {
+          //
+        } else if (loginRole === 'solver') {
+          //
+        } else {
+          this.username = ''
+          this.$Bus.$emit('setSnackbar', this.$i18n.t('devMode.loginUsernameError'))
+          return
+        }
+        this.$store.commit('setRole', loginRole)
+        this.$store.commit('setUserId', this.$DevData.account.userId)
+        this.$store.commit('setToken', this.$DevData.account.token)
+        localStorage.setItem('name', this.$DevData.account.name)
+        localStorage.setItem('nickname', this.$DevData.account.nickname)
+        localStorage.setItem('gender', this.$DevData.account.gender)
+        localStorage.setItem('telephone', this.$DevData.account.telephone)
+        localStorage.setItem('campus', this.$DevData.account.campus)
+        localStorage.setItem('dormitory', this.$DevData.account.dormitory)
+        localStorage.setItem('intro', this.$DevData.account.intro)
+        this.$Bus.$emit('setSnackbar', this.$i18n.t('login.loginSucceed') + this.$DevData.account.name)
+        this.$router.push({
+          name: 'home'
         })
       }
     }
