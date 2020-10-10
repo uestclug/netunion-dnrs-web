@@ -1,6 +1,6 @@
 {
   "name": "netunion-dnrs-web-frontend",
-  "version": "1.4.0",
+  "version": "20.10-S1",
   "private": true,
   "scripts": {
     "frontend": "vue-cli-service serve",

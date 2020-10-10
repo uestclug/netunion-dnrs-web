@@ -93,3 +93,8 @@ npm run build
 ``` node
 npm run lint
 ```
+
+## Version
+
+Year.Month-B(eta)/S(table) (Number)
+Example: 20.10-S1
