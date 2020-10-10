@@ -1,6 +1,5 @@
 {
   "name": "netunion-dnrs-web-backend",
-  "version": "20.10-S1",
   "private": true,
   "scripts": {
     "backend": "node index.js"

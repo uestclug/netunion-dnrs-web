@@ -97,4 +97,10 @@ npm run lint
 ## Version
 
 Year.Month-B(eta)/S(table) (Number)
-Example: 20.10-S1
+
+Example:
+
+``` js
+// client/.env
+VUE_APP_VERSION_CODE=20.10-S1
+```
