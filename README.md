@@ -30,7 +30,7 @@ npm install
 npm run frontend
 ```
 
-### Login in system
+### Log in system
 
 之后您可以：
 
@@ -46,6 +46,15 @@ npm run frontend
 ``` node
 // 分别在 client 和 server 目录下
 npm install
+```
+
+修改 `client/src/main.js` 中（前端）开发者模式为 false
+
+``` js
+// client/src/main.js
+// 默认为 Vue.prototype.$DevMode = true
+// 请勿提交此处修改
+Vue.prototype.$DevMode = false
 ```
 
 ### Init PostgreSQL

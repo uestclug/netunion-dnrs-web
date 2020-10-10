@@ -119,6 +119,12 @@ export default {
   }),
   methods: {
     queryAssigneeInfo () { // 获取此订单的协作人信息
+      if (this.$DevMode) {
+        this.assignee = this.$DevData.order.assignee
+        this.queryAssigneeLoading = false
+        return
+      }
+
       this.queryAssigneeLoading = true
       this.axios.post('api/order/queryAssignee', {
         order_id: this.order.order_id
@@ -138,6 +144,17 @@ export default {
       this.confirmDialog = true
     },
     removeAssignee () { // 移除协作人
+      if (this.$DevMode) {
+        for (let i = 0; i < this.assignee.length; i++) {
+          if (this.assignee[i].solver_id == this.confirmRemovedAsgnId) {
+            this.assignee.splice(i, 1)
+            break
+          }
+        }
+        this.confirmDialog = false
+        return
+      }
+
       this.removeAssigneeLoading = true
       this.axios.post('api/order/removeAssignee', {
         order_id: this.order.order_id,
@@ -181,6 +198,19 @@ export default {
       this.addAssigneeLoading = true
       this.searchResultText = this.$i18n.t('order.assigneeDialog.searchAssignee')
 
+      if (this.$DevMode) {
+        const newAssignee =
+        {
+          solver_id: new Date().getTime(),
+          solver_std_id: stdId,
+          solver_name: 'Other Developer'
+        }
+        this.assignee.push(newAssignee)
+        this.addAssigneeLoading = false
+        this.searchResultText = this.$i18n.t('order.assigneeDialog.addAssigneeSuccessfully') + newAssignee.solver_name
+        return
+      }
+
       this.axios.post('/api/user/getSolverInfoByStdId', {
         std_id: stdId
       }).then((Response) => {
@@ -217,6 +247,19 @@ export default {
       })
     },
     addMasterAsAssignee () { // 添加维修师傅协作人
+      if (this.$DevMode) {
+        const newAssignee =
+        {
+          solver_id: '000000',
+          solver_std_id: '000000',
+          solver_name: '维修师傅'
+        }
+        this.assignee.push(newAssignee)
+        this.addAssigneeLoading = false
+        this.searchResultText = this.$i18n.t('order.assigneeDialog.addAssigneeSuccessfully') + newAssignee.solver_name
+        return
+      }
+
       const inputSearchText = this.searchTextField
       this.searchTextField = '000000'
       this.addAssignee()

@@ -219,6 +219,8 @@ export default {
       this.cancelDialog = true
     },
     cancelOrder: async function () {
+      if (this.$DevMode) return
+
       this.loading = true
       const Response = await this.axios.post('/api/order/cancelOrderByUser', {
         order_id: localStorage.getItem('latest_order_id')
@@ -237,8 +239,17 @@ export default {
     }
   },
   created: async function () { // 获取最近的订单信息
-    const Response = await this.axios.post('/api/order/getLatestOrderInfo')
-    const orderInfo = Response.data
+    let orderInfo
+    if (this.$DevMode) {
+      // 赋值处理时间可能快于 WelcomeUser 组件加载完成时间
+      // 故设置等待时间防止 Bus 传值异常
+      await setTimeout(console.log('load order info.'), 1000)
+      orderInfo = this.$DevData.order.latestOrder
+    } else {
+      const Response = await this.axios.post('/api/order/getLatestOrderInfo')
+      orderInfo = Response.data
+    }
+
     if (orderInfo) { // 用户存在最近的订单
       this.order = orderInfo
       this.orderDormitory = orderInfo.order_user_dormitory
@@ -276,8 +287,8 @@ export default {
         this.cancelDisabled = true
       }
       if (orderInfo.solver_id !== null) { // 存在接单者时
-        if (orderInfo.order_solver_nickname !== null &&
-          orderInfo.order_solver_nickname !== '') {
+        if (orderInfo.order_solver_nickname != null &&
+          orderInfo.order_solver_nickname != '') {
           this.orderSolverName = orderInfo.order_solver_nickname
         } else {
           this.orderSolverName = orderInfo.order_solver_name

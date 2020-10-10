@@ -344,16 +344,26 @@ export default {
     }
   },
   created: function () {
-    this.axios.post('/api/user/queryUserInfo').then((Response) => {
-      const resData = Response.data
-      localStorage.setItem('name', resData.name)
-      localStorage.setItem('nickname', resData.nickname)
-      localStorage.setItem('gender', resData.gender)
-      localStorage.setItem('telephone', resData.telephone)
-      localStorage.setItem('campus', resData.campus)
-      localStorage.setItem('dormitory', resData.dormitory)
-      localStorage.setItem('intro', resData.intro)
-    })
+    if (this.$DevMode) {
+      localStorage.setItem('name', this.$DevData.account.name)
+      localStorage.setItem('nickname', this.$DevData.account.nickname)
+      localStorage.setItem('gender', this.$DevData.account.gender)
+      localStorage.setItem('telephone', this.$DevData.account.telephone)
+      localStorage.setItem('campus', this.$DevData.account.campus)
+      localStorage.setItem('dormitory', this.$DevData.account.dormitory)
+      localStorage.setItem('intro', this.$DevData.account.intro)
+    } else {
+      this.axios.post('/api/user/queryUserInfo').then((Response) => {
+        const resData = Response.data
+        localStorage.setItem('name', resData.name)
+        localStorage.setItem('nickname', resData.nickname)
+        localStorage.setItem('gender', resData.gender)
+        localStorage.setItem('telephone', resData.telephone)
+        localStorage.setItem('campus', resData.campus)
+        localStorage.setItem('dormitory', resData.dormitory)
+        localStorage.setItem('intro', resData.intro)
+      })
+    }
     // 获取用户组
     this.role = this.$store.state.role
     // 设置页面 dom
@@ -443,6 +453,16 @@ export default {
         this.$v.$touch()
         if (this.nameErrors.length === 0 && this.nicknameErrors.length === 0 &&
           this.telephoneErrors.length === 0 && this.introErrors.length === 0) {
+          if (this.$DevMode) {
+            this.$Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyAccountInfoSucceed'))
+            this.disabled = true
+            this.nameCounter = false
+            this.nicknameCounter = false
+            this.telephoneCounter = false
+            this.introCounter = false
+            return
+          }
+
           this.modifyAccountInfoLoading = true
 
           let modifyResponse = false
@@ -510,6 +530,13 @@ export default {
           this.modifiedPassword = ''
           this.reModifiedPassword = ''
           this.$Bus.$emit('setSnackbar', this.$i18n.t('user.account.sameModifiedPasswordErr'))
+          return
+        }
+
+        if (this.$DevMode) {
+          this.$Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyPasswordSucceed'))
+          this.$refs.passwordForm.reset()
+          this.modifyPasswordDialog = false
           return
         }
 

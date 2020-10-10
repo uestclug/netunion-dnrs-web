@@ -165,6 +165,13 @@ export default {
       }
     },
     exportRecords () {
+      if (this.$DevMode) {
+        this.$Bus.$emit('setSnackbar', this.$i18n.t('order.exportDialog.exportSuccessfully'))
+        this.dialog = false
+        this.stepper = 1
+        return
+      }
+
       this.exportRecordsLoading = true
 
       this.axios.post('/api/export/exportToExcel', {

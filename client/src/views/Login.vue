@@ -114,7 +114,7 @@ export default {
     // 登录验证
     submit () {
       if (this.$DevMode) {
-        this.submitDevMode()
+        this.devSubmit()
         return
       }
       this.$v.$touch()
@@ -165,8 +165,8 @@ export default {
         })
       }
     },
-    // 开发模式登录验证
-    submitDevMode () {
+    // 开发者模式登录验证
+    devSubmit () {
       this.$v.$touch()
       if (this.usernameErrors.length === 0 && this.pwdErrors.length === 0) {
         localStorage.setItem('std_id', this.$DevData.account.stdId)

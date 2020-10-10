@@ -29,143 +29,144 @@
           </div>
         </v-container>
 
-        <v-container v-else-if="!loading && orders === null">
-          <v-card-title>{{ $t('order.acceptedOrder.noOrderTitle') }}</v-card-title>
-          <v-card-subtitle>{{ $t('order.acceptedOrder.noOrderSubTitle') }}</v-card-subtitle>
-        </v-container>
-
         <v-container v-else>
-          <template v-for="order in orders">
-            <v-card
-              v-bind:key="order.order_id"
-              class="mx-auto mb-6"
-              max-width="calc(100% - 36px)"
-              elevation="2"
-            >
+          <div v-if="orders.length == 0">
+            <v-card-title>{{ $t('order.acceptedOrder.noOrderTitle') }}</v-card-title>
+            <v-card-subtitle>{{ $t('order.acceptedOrder.noOrderSubTitle') }}</v-card-subtitle>
+          </div>
+          <div v-if="orders.length != 0">
+            <template v-for="order in orders">
+              <v-card
+                v-bind:key="order.order_id"
+                class="mx-auto mb-6"
+                max-width="calc(100% - 36px)"
+                elevation="2"
+              >
 
-              <v-card-title>
-                {{ order.order_user_dormitory }}
-              </v-card-title>
+                <v-card-title>
+                  {{ order.order_user_dormitory }}
+                </v-card-title>
 
-              <v-card-subtitle>
-                {{ order.order_user_name }} | {{ order.order_user_gender }} | {{ order.order_user_campus }} | {{ order.order_user_telephone }}
-              </v-card-subtitle>
+                <v-card-subtitle>
+                  {{ order.order_user_name }} | {{ order.order_user_gender }} | {{ order.order_user_campus }} | {{ order.order_user_telephone }}
+                </v-card-subtitle>
 
-              <v-card-actions>
-                <v-btn
-                  v-if="order.order_user_telephone"
-                  color="blue-grey"
-                  dark
-                  @click="telephoneCall(order.order_user_telephone)"
-                  class="ml-2"
-                >
-                  <v-icon left>mdi-phone-in-talk-outline</v-icon> {{ $t('order.acceptedOrder.telephoneCall') }}
-                </v-btn>
+                <v-card-actions>
+                  <v-btn
+                    v-if="order.order_user_telephone"
+                    color="blue-grey"
+                    dark
+                    @click="telephoneCall(order.order_user_telephone)"
+                    class="ml-2"
+                  >
+                    <v-icon left>mdi-phone-in-talk-outline</v-icon> {{ $t('order.acceptedOrder.telephoneCall') }}
+                  </v-btn>
 
-                <v-btn
-                  color="success"
-                  @click="finishOrder(order)"
-                  class="ml-2"
-                >
-                  <v-icon left>mdi-checkbox-multiple-marked</v-icon> {{ $t('order.acceptedOrder.finishOrder') }}
-                </v-btn>
+                  <v-btn
+                    color="success"
+                    @click="finishOrder(order)"
+                    class="ml-2"
+                  >
+                    <v-icon left>mdi-checkbox-multiple-marked</v-icon> {{ $t('order.acceptedOrder.finishOrder') }}
+                  </v-btn>
 
-                <v-spacer></v-spacer>
+                  <v-spacer></v-spacer>
 
-                <v-btn
-                  icon
-                  @click="expandPanel(order.order_id)"
-                >
-                  <v-icon>{{ expandShow === order.order_id ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-                </v-btn>
-              </v-card-actions>
+                  <v-btn
+                    icon
+                    @click="expandPanel(order.order_id)"
+                  >
+                    <v-icon>{{ expandShow === order.order_id ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+                  </v-btn>
+                </v-card-actions>
 
-              <v-expand-transition>
-                <div v-show="expandShow === order.order_id">
-                  <v-divider></v-divider>
+                <v-expand-transition>
+                  <div v-show="expandShow === order.order_id">
+                    <v-divider></v-divider>
 
-                  <v-card-subtitle>{{ $t('order.acceptedOrder.expanded.orderId') }}{{ order.order_id }}</v-card-subtitle>
+                    <v-card-subtitle>{{ $t('order.acceptedOrder.expanded.orderId') }}{{ order.order_id }}</v-card-subtitle>
 
-                  <v-card-text>
-                    <v-row>
-                      <!-- 订单描述 -->
-                      <v-col
-                        cols="12"
-                        v-if="order.order_user_description"
-                      >
-                        <v-chip
-                          label
-                          outlined
-                          class="mr-2"
+                    <v-card-text>
+                      <v-row>
+                        <!-- 订单描述 -->
+                        <v-col
+                          cols="12"
+                          v-if="order.order_user_description"
                         >
-                          <v-icon
+                          <v-chip
+                            label
+                            outlined
+                            class="mr-2"
+                          >
+                            <v-icon
+                              small
+                              left
+                            >mdi-calendar-blank-outline</v-icon>
+                            {{ $t('order.acceptedOrder.expanded.description') }}
+                          </v-chip>
+                          <span
+                            class="body-1"
+                            style="display: inline-block;"
+                          >{{ order.order_user_description }}</span>
+                        </v-col>
+                        <!-- 订单创建日期 -->
+                        <v-col cols="12">
+                          <v-chip
+                            label
+                            outlined
+                            class="mr-2"
+                          >
+                            <v-icon
+                              small
+                              left
+                            >mdi-calendar-blank-outline</v-icon>
+                            {{ $t('order.acceptedOrder.expanded.createDate') }}
+                          </v-chip>
+                          <span
+                            class="body-1"
+                            style="display: inline-block;"
+                          >{{ order.create_date }}</span>
+                        </v-col>
+                        <!-- 订单经过时间 -->
+                        <v-col cols="12">
+                          <v-chip
+                            label
+                            outlined
+                            class="mr-2"
+                          >
+                            <v-icon
+                              small
+                              left
+                            >mdi-progress-clock</v-icon>
+                            {{ $t('order.acceptedOrder.expanded.openTime') }}
+                          </v-chip>
+                          <span
+                            class="body-1"
+                            style="display: inline-block;"
+                          >{{ order.order_open_time }}</span>
+                        </v-col>
+                        <!-- 订单额外操作
+                        <v-col cols="12">
+                          <v-btn
                             small
-                            left
-                          >mdi-calendar-blank-outline</v-icon>
-                          {{ $t('order.acceptedOrder.expanded.description') }}
-                        </v-chip>
-                        <span
-                          class="body-1"
-                          style="display: inline-block;"
-                        >{{ order.order_user_description }}</span>
-                      </v-col>
-                      <!-- 订单创建日期 -->
-                      <v-col cols="12">
-                        <v-chip
-                          label
-                          outlined
-                          class="mr-2"
-                        >
-                          <v-icon
+                            depressed
+                            @click="cancelOrder(order)"
+                          >{{ $t('order.acceptedOrder.expanded.cancelOrder') }}</v-btn>
+                          <v-btn
+                            class="ml-2"
                             small
-                            left
-                          >mdi-calendar-blank-outline</v-icon>
-                          {{ $t('order.acceptedOrder.expanded.createDate') }}
-                        </v-chip>
-                        <span
-                          class="body-1"
-                          style="display: inline-block;"
-                        >{{ order.create_date }}</span>
-                      </v-col>
-                      <!-- 订单经过时间 -->
-                      <v-col cols="12">
-                        <v-chip
-                          label
-                          outlined
-                          class="mr-2"
-                        >
-                          <v-icon
-                            small
-                            left
-                          >mdi-progress-clock</v-icon>
-                          {{ $t('order.acceptedOrder.expanded.openTime') }}
-                        </v-chip>
-                        <span
-                          class="body-1"
-                          style="display: inline-block;"
-                        >{{ order.order_open_time }}</span>
-                      </v-col>
-                      <!-- 订单额外操作
-                      <v-col cols="12">
-                        <v-btn
-                          small
-                          depressed
-                          @click="cancelOrder(order)"
-                        >{{ $t('order.acceptedOrder.expanded.cancelOrder') }}</v-btn>
-                        <v-btn
-                          class="ml-2"
-                          small
-                          depressed
-                          @click="closeOrder(order)"
-                        >{{ $t('order.acceptedOrder.expanded.closeOrder') }}</v-btn>
-                      </v-col>
-                      -->
-                    </v-row>
-                  </v-card-text>
-                </div>
-              </v-expand-transition>
-            </v-card>
-          </template>
+                            depressed
+                            @click="closeOrder(order)"
+                          >{{ $t('order.acceptedOrder.expanded.closeOrder') }}</v-btn>
+                        </v-col>
+                        -->
+                      </v-row>
+                    </v-card-text>
+                  </div>
+                </v-expand-transition>
+              </v-card>
+            </template>
+          </div>
         </v-container>
       </v-card>
     </v-hover>
@@ -178,14 +179,24 @@ export default {
   data: () => ({
     loading: true,
     expandShow: null,
-    orders: null
+    orders: []
   }),
   created () {
+    if (this.$DevMode) {
+      const orders = this.$DevData.order.acceptedOrders
+      this.orders = orders
+      if (orders.length != 0) this.expandShow = orders[0].order_id
+      this.loading = false
+      return
+    }
+
     this.axios.post('/api/order/queryAcceptedOrder').then((Response) => {
       if (Response.data) {
         if (Response.data.length != 0) {
           this.orders = Response.data
           this.expandShow = this.orders[0].order_id
+        } else {
+          this.orders = []
         }
         this.loading = false
       }
@@ -202,25 +213,38 @@ export default {
     finishOrder (item) {
       // 设置订单状态为已完成
       if (confirm(this.$i18n.t('order.orderList.actions.finishOrderConfirm'))) {
-        this.axios
-          .post('/api/order/finishOrder', {
-            order_id: item.order_id
-          })
-          .then((Response) => {
-            if (Response.data) {
-              this.$Bus.$emit(
-                'setSnackbar',
-                this.$i18n.t('order.orderList.actions.finishOrderSucceed')
-              )
-              this.refreshRouter()
-            } else {
-              this.$Bus.$emit(
-                'setSnackbar',
-                this.$i18n.t('order.orderList.actions.finishOrderFailed')
-              )
-              this.refreshRouter()
+        if (this.$DevMode) {
+          this.$Bus.$emit(
+            'setSnackbar',
+            this.$i18n.t('order.orderList.actions.finishOrderSucceed')
+          )
+          for (let i = 0; i < this.orders.length; i++) {
+            if (this.orders[i] == item) {
+              this.orders.splice(i, 1)
+              break
             }
-          })
+          }
+          if (this.orders.length != 0) this.expandShow = this.orders[0].order_id
+          return
+        }
+
+        this.axios.post('/api/order/finishOrder', {
+          order_id: item.order_id
+        }).then((Response) => {
+          if (Response.data) {
+            this.$Bus.$emit(
+              'setSnackbar',
+              this.$i18n.t('order.orderList.actions.finishOrderSucceed')
+            )
+            this.refreshRouter()
+          } else {
+            this.$Bus.$emit(
+              'setSnackbar',
+              this.$i18n.t('order.orderList.actions.finishOrderFailed')
+            )
+            this.refreshRouter()
+          }
+        })
       }
     },
     /*
@@ -255,7 +279,7 @@ export default {
       }
     },
     */
-    telephoneCall (telephone) { // QQ 浏览器似乎不行
+    telephoneCall (telephone) {
       window.location.href = 'tel:' + telephone
     },
     refreshRouter () {

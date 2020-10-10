@@ -359,24 +359,29 @@ export default {
     showExtraActions: false
   }),
   created () {
-    this.axios
-      .post('/api/order/queryOrderList', {
-        page: 1,
-        filter: this.$GLOBAL.filter.available
-      })
-      .then((Response) => {
-        const orderItems = Response.data
-        for (let i = 0; i < orderItems.length; i++) {
-          this.orderListItems.push(orderItems[i])
-        }
-        if (orderItems.length === 10) {
-          this.showLoadMore = true
-        }
-        this.orderListLoading = false
-      })
+    if (this.$DevMode) {
+      this.orderListItems = this.$DevData.order.orderListOrders
+      this.showLoadMore = true
+      this.orderListLoading = false
+      return
+    }
+
+    this.axios.post('/api/order/queryOrderList', {
+      page: 1,
+      filter: this.$GLOBAL.filter.available
+    }).then((Response) => {
+      const orderItems = Response.data
+      this.orderListItems = orderItems
+      if (orderItems.length === 10) {
+        this.showLoadMore = true
+      }
+      this.orderListLoading = false
+    })
   },
   methods: {
     changeOrderListFilter (id) {
+      if (this.$DevMode) return // 开发者模式禁用过滤选项
+
       this.page = 0
       this.orderListItems = []
 
@@ -399,78 +404,113 @@ export default {
     },
     receiptOrder (item) {
       // 接取订单，设置订单状态为已接取
-      if (
-        confirm(this.$i18n.t('order.orderList.actions.receiptOrderConfirm'))
-      ) {
-        this.axios
-          .post('/api/order/receiptOrder', {
-            order_id: item.order_id
-          })
-          .then((Response) => {
-            if (Response.data) {
-              this.$Bus.$emit(
-                'setSnackbar',
-                this.$i18n.t('order.orderList.actions.receiptOrderSucceed')
-              )
-              this.refreshRouter()
-            } else {
-              this.$Bus.$emit(
-                'setSnackbar',
-                this.$i18n.t('order.orderList.actions.receiptOrderFailed')
-              )
-              this.refreshRouter()
+      if (confirm(this.$i18n.t('order.orderList.actions.receiptOrderConfirm'))) {
+        if (this.$DevMode) {
+          this.$Bus.$emit(
+            'setSnackbar',
+            this.$i18n.t('order.orderList.actions.receiptOrderSucceed')
+          )
+          for (let i = 0; i < this.orderListItems.length; i++) {
+            if (this.orderListItems[i] == item) {
+              this.orderListItems[i].order_status = this.$GLOBAL.status.receipted
+              this.orderListItems[i].is_solver = true
+              this.orderListItems[i].solver_name = 'Developer'
+              break
             }
-          })
+          }
+          return
+        }
+
+        this.axios.post('/api/order/receiptOrder', {
+          order_id: item.order_id
+        }).then((Response) => {
+          if (Response.data) {
+            this.$Bus.$emit(
+              'setSnackbar',
+              this.$i18n.t('order.orderList.actions.receiptOrderSucceed')
+            )
+            this.refreshRouter()
+          } else {
+            this.$Bus.$emit(
+              'setSnackbar',
+              this.$i18n.t('order.orderList.actions.receiptOrderFailed')
+            )
+            this.refreshRouter()
+          }
+        })
       }
     },
     finishOrder (item) {
       // 设置订单状态为已完成
       if (confirm(this.$i18n.t('order.orderList.actions.finishOrderConfirm'))) {
-        this.axios
-          .post('/api/order/finishOrder', {
-            order_id: item.order_id
-          })
-          .then((Response) => {
-            if (Response.data) {
-              this.$Bus.$emit(
-                'setSnackbar',
-                this.$i18n.t('order.orderList.actions.finishOrderSucceed')
-              )
-              this.refreshRouter()
-            } else {
-              this.$Bus.$emit(
-                'setSnackbar',
-                this.$i18n.t('order.orderList.actions.finishOrderFailed')
-              )
-              this.refreshRouter()
+        if (this.$DevMode) {
+          this.$Bus.$emit(
+            'setSnackbar',
+            this.$i18n.t('order.orderList.actions.finishOrderSucceed')
+          )
+          for (let i = 0; i < this.orderListItems.length; i++) {
+            if (this.orderListItems[i] == item) {
+              this.orderListItems[i].order_status = this.$GLOBAL.status.finished
+              this.orderListItems[i].close_date = new Date().toLocaleString()
+              break
             }
-          })
+          }
+          return
+        }
+
+        this.axios.post('/api/order/finishOrder', {
+          order_id: item.order_id
+        }).then((Response) => {
+          if (Response.data) {
+            this.$Bus.$emit(
+              'setSnackbar',
+              this.$i18n.t('order.orderList.actions.finishOrderSucceed')
+            )
+            this.refreshRouter()
+          } else {
+            this.$Bus.$emit(
+              'setSnackbar',
+              this.$i18n.t('order.orderList.actions.finishOrderFailed')
+            )
+            this.refreshRouter()
+          }
+        })
       }
     },
     restoreOrder (item) {
       // 将 solver 关闭订单的状态设置为待接取
-      if (
-        confirm(this.$i18n.t('order.orderList.actions.restoreOrderConfirm'))
-      ) {
-        this.axios
-          .post('/api/order/restoreOrder', {
-            order_id: item.order_id
-          })
-          .then((Response) => {
-            if (Response.data) {
-              this.$Bus.$emit(
-                'setSnackbar',
-                this.$i18n.t('order.orderList.actions.restoreOrderSucceed')
-              )
-              this.refreshRouter()
-            } else {
-              this.$Bus.$emit(
-                'setSnackbar',
-                this.$i18n.t('order.orderList.actions.restoreOrderFailed')
-              )
-              this.refreshRouter()
+      if (confirm(this.$i18n.t('order.orderList.actions.restoreOrderConfirm'))) {
+        if (this.$DevMode) {
+          this.$Bus.$emit(
+            'setSnackbar',
+            this.$i18n.t('order.orderList.actions.restoreOrderSucceed')
+          )
+          for (let i = 0; i < this.orderListItems.length; i++) {
+            if (this.orderListItems[i] == item) {
+              this.orderListItems[i].order_status = this.$GLOBAL.status.waiting
+              break
             }
-          })
+          }
+          return
+        }
+
+        this.axios.post('/api/order/restoreOrder', {
+          order_id: item.order_id
+        }).then((Response) => {
+          if (Response.data) {
+            this.$Bus.$emit(
+              'setSnackbar',
+              this.$i18n.t('order.orderList.actions.restoreOrderSucceed')
+            )
+            this.refreshRouter()
+          } else {
+            this.$Bus.$emit(
+              'setSnackbar',
+              this.$i18n.t('order.orderList.actions.restoreOrderFailed')
+            )
+            this.refreshRouter()
+          }
+        })
       }
     },
     modifyOrder (item) {
@@ -480,49 +520,77 @@ export default {
     cancelOrder (item) {
       // 取消订单，并设置订单状态为待接取
       if (confirm(this.$i18n.t('order.orderList.actions.cancelOrderConfirm'))) {
-        this.axios
-          .post('/api/order/cancelOrder', {
-            order_id: item.order_id
-          })
-          .then((Response) => {
-            if (Response.data) {
-              this.$Bus.$emit(
-                'setSnackbar',
-                this.$i18n.t('order.orderList.actions.cancelOrderSucceed')
-              )
-              this.refreshRouter()
-            } else {
-              this.$Bus.$emit(
-                'setSnackbar',
-                this.$i18n.t('order.orderList.actions.cancelOrderFailed')
-              )
-              this.refreshRouter()
+        if (this.$DevMode) {
+          this.$Bus.$emit(
+            'setSnackbar',
+            this.$i18n.t('order.orderList.actions.cancelOrderSucceed')
+          )
+          for (let i = 0; i < this.orderListItems.length; i++) {
+            if (this.orderListItems[i] == item) {
+              this.orderListItems[i].order_status = this.$GLOBAL.status.waiting
+              this.orderListItems[i].is_solver = false
+              this.orderListItems[i].solver_name = ''
+              break
             }
-          })
+          }
+          return
+        }
+
+        this.axios.post('/api/order/cancelOrder', {
+          order_id: item.order_id
+        }).then((Response) => {
+          if (Response.data) {
+            this.$Bus.$emit(
+              'setSnackbar',
+              this.$i18n.t('order.orderList.actions.cancelOrderSucceed')
+            )
+            this.refreshRouter()
+          } else {
+            this.$Bus.$emit(
+              'setSnackbar',
+              this.$i18n.t('order.orderList.actions.cancelOrderFailed')
+            )
+            this.refreshRouter()
+          }
+        })
       }
     },
     closeOrder (item) {
       // 关闭订单，并设置订单状态为处理者关闭
       if (confirm(this.$i18n.t('order.orderList.actions.closeOrderConfirm'))) {
-        this.axios
-          .post('/api/order/closeOrder', {
-            order_id: item.order_id
-          })
-          .then((Response) => {
-            if (Response.data) {
-              this.$Bus.$emit(
-                'setSnackbar',
-                this.$i18n.t('order.orderList.actions.closeOrderSucceed')
-              )
-              this.refreshRouter()
-            } else {
-              this.$Bus.$emit(
-                'setSnackbar',
-                this.$i18n.t('order.orderList.actions.closeOrderFailed')
-              )
-              this.refreshRouter()
+        if (this.$DevMode) {
+          this.$Bus.$emit(
+            'setSnackbar',
+            this.$i18n.t('order.orderList.actions.closeOrderSucceed')
+          )
+          for (let i = 0; i < this.orderListItems.length; i++) {
+            if (this.orderListItems[i] == item) {
+              this.orderListItems[i].order_status = this.$GLOBAL.status.canceledBySolver
+              this.orderListItems[i].is_solver = false
+              this.orderListItems[i].solver_name = ''
+              break
             }
-          })
+          }
+          return
+        }
+
+        this.axios.post('/api/order/closeOrder', {
+          order_id: item.order_id
+        }).then((Response) => {
+          if (Response.data) {
+            this.$Bus.$emit(
+              'setSnackbar',
+              this.$i18n.t('order.orderList.actions.closeOrderSucceed')
+            )
+            this.refreshRouter()
+          } else {
+            this.$Bus.$emit(
+              'setSnackbar',
+              this.$i18n.t('order.orderList.actions.closeOrderFailed')
+            )
+            this.refreshRouter()
+          }
+        })
       }
     },
     deleteOrder (item) {
@@ -533,6 +601,11 @@ export default {
     },
     loadMoreOrderListItems () {
       // 点击加载更多按钮载入更多订单信息
+      if (this.$DevMode) {
+        this.showLoadMore = false
+        return
+      }
+
       this.page = this.page + 1
       this.orderListLoading = true
 
@@ -545,23 +618,21 @@ export default {
         filter = this.$GLOBAL.filter.available
       }
 
-      this.axios
-        .post('/api/order/queryOrderList', {
-          page: this.page,
-          filter: filter
-        })
-        .then((Response) => {
-          const orderItems = Response.data
-          for (let i = 0; i < orderItems.length; i++) {
-            this.orderListItems.push(orderItems[i])
-          }
-          if (orderItems.length === 10) {
-            this.showLoadMore = true
-          } else {
-            this.showLoadMore = false
-          }
-          this.orderListLoading = false
-        })
+      this.axios.post('/api/order/queryOrderList', {
+        page: this.page,
+        filter: filter
+      }).then((Response) => {
+        const orderItems = Response.data
+        for (let i = 0; i < orderItems.length; i++) {
+          this.orderListItems.push(orderItems[i])
+        }
+        if (orderItems.length === 10) {
+          this.showLoadMore = true
+        } else {
+          this.showLoadMore = false
+        }
+        this.orderListLoading = false
+      })
     },
     getStatusColor (status, isSolver) {
       if (status === this.$GLOBAL.status.waiting) {

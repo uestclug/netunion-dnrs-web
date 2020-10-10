@@ -49,6 +49,11 @@ export default {
   }),
   created: async function () {
     this.role = this.$store.state.role
+    if (this.$DevMode) {
+      // todo: devmode funcitons
+      return
+    }
+
     let Response = null
     if (this.role === this.$GLOBAL.role.user) {
       Response = await this.axios.post('/api/user/getUserStatisticsInfo')

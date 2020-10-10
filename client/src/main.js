@@ -15,10 +15,13 @@ Vue.config.productionTip = false
 Vue.prototype.$GLOBAL = common
 Vue.prototype.$Bus = Bus
 Vue.prototype.$Utils = utils
-// Vue.prototype.$DevMode = true 时，将使用本地数据进行前端开发
+
+// Vue.prototype.$DevMode = true 时（默认），将使用本地数据进行前端开发
 // 您可以手动设置 Vue.prototype.$DevMode = false 以连接后端进行测试开发
-// 您需要在 ../../server 目录执行 npm run backend 以连接后端服务器
+// 当然，您需要在 ../../server 目录执行 npm run backend 以启动后端服务器
+// 对此处的修改请勿提交到 git
 Vue.prototype.$DevMode = true
+
 if (process.env.NODE_ENV === 'development') {
   Vue.prototype.$DevData = devData
 } else {

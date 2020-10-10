@@ -245,6 +245,13 @@ export default {
       if (this.nameErrors.length === 0 && this.genderErrors.length === 0 &&
         this.campusErrors.length === 0 && this.dormitoryErrors.length === 0 &&
         this.telephoneErrors.length === 0) {
+        if (this.$DevMode) {
+          if (this.isModify) this.$Bus.$emit('setSnackbar', this.$i18n.t('order.modifyOrder.user.modifySucceed'))
+          else this.$Bus.$emit('setSnackbar', this.$i18n.t('order.modifyOrder.user.createSucceed'))
+          this.sheet = false
+          return
+        }
+
         this.submitLoading = true
 
         if (!this.isModify) { // 创建订单模式
@@ -310,6 +317,8 @@ export default {
       this.$router.back(-1)
     },
     modifyAccountInfo () {
+      if (this.$DevMode) return
+
       this.axios.post('/api/user/modifyAccountInfo', {
         name: this.name,
         gender: this.gender,

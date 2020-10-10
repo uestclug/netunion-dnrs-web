@@ -70,6 +70,13 @@ export default {
   methods: {
     queryOrderActionNotes () {
       this.actionNotesLoading = true
+
+      if (this.$DevMode) {
+        this.actionNotes = this.$DevData.order.OrderActionNotes
+        this.actionNotesLoading = false
+        return
+      }
+
       this.axios.post('api/order/queryOrderActionNotes', {
         order_id: this.order.order_id
       }).then((Response) => {

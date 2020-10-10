@@ -155,6 +155,16 @@ export default {
   }),
   created () {
     this.role = this.$store.state.role
+    if (this.$DevMode) {
+      this.valueCreateOrder = this.$DevData.about.valueCreateOrder
+      this.createOrderCount = this.$DevData.about.createOrderCount
+      this.valueFinishOrder = this.$DevData.about.valueFinishOrder
+      this.finishedOrderCount = this.$DevData.about.finishedOrderCount
+      this.mvsolvers = this.$DevData.about.mvsolvers
+      this.loading = false
+      return
+    }
+
     this.axios.post('/api/about/queryCreateOrderMonthly').then((Response) => {
       this.valueCreateOrder = Response.data.valueCreateOrder
       this.createOrderCount = Response.data.orderCount

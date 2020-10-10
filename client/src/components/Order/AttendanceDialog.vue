@@ -95,6 +95,13 @@ export default {
   methods: {
     queryAttnInfo () { // 获取此订单的出勤记录信息
       this.queryAttnloading = true
+
+      if (this.$DevMode) {
+        this.attendance = this.$DevData.order.attendance
+        this.queryAttnloading = false
+        return
+      }
+
       this.axios.post('api/order/queryAttendance', {
         order_id: this.order.order_id
       }).then((Response) => {
@@ -114,6 +121,20 @@ export default {
       this.addAttnResultText = this.$i18n.t('order.attendanceDialog.addAttnLoading')
 
       const attnDescription = this.description
+
+      if (this.$DevMode) {
+        this.description = ''
+        this.attendance.unshift({
+          solver_id: '114514',
+          attn_description: attnDescription,
+          solver_name: 'Developer',
+          attn_date: new Date().toLocaleString()
+        })
+        this.addAttnResultText = this.$i18n.t('order.attendanceDialog.addAttnSuccessfully')
+        this.addAttnLoading = false
+        return
+      }
+
       this.axios.post('api/order/addAttendance', {
         order_id: this.order.order_id,
         attn_description: attnDescription,
@@ -121,9 +142,9 @@ export default {
         is_solver: this.order.is_solver
       }).then((Response) => {
         if (Response.data) {
+          this.attendance.unshift(Response.data)
           this.description = ''
           this.addAttnResultText = this.$i18n.t('order.attendanceDialog.addAttnSuccessfully')
-          this.attendance.unshift(Response.data)
         } else {
           this.addAttnResultText = this.$i18n.t('order.attendanceDialog.addAttnFailed')
         }
