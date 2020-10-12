@@ -201,24 +201,28 @@
         "solverName": "处理者",
         "actions": "操作",
         "createDate": "创建日期",
-        "orderOpenTime": "进行时间"
+        "orderOpenTime": "进行时间",
+        "userTelephone": "联系电话"
       },
       "expanded": {
-        "telephone": "用户联系电话",
-        "dormitory": "用户寝室地址",
-        "description": "用户情况描述",
-        "solverName": "处理者的姓名",
-        "assigneeName": "协作者的姓名",
+        "telephone": "联系电话",
+        "dormitory": "寝室地址",
+        "description": "情况描述",
+        "solverName": "处理者名",
+        "assigneeName": "协作者名",
         "attendanceRecord": "出勤情况记录",
-        "record": "订单处理记录",
-        "closeDate": "订单关闭日期",
+        "record": "处理记录",
+        "closeDate": "关闭日期",
         "notes": "订单备注信息",
         "actionNotes": "订单操作记录",
         "cancelOrder": "取消此订单",
         "closeOrder": "关闭此订单",
         "viewAttendance": "查看出勤记录",
         "viewAssignee": "查看协助人",
-        "viewActionNotes": "查看操作记录"
+        "viewActionNotes": "查看操作记录",
+        "createDate": "创建日期",
+        "username": "用户姓名",
+        "you": "您"
       },
       "actions": {
         "receiptOrderConfirm": "您确定要接取此订单吗?",
@@ -371,7 +375,7 @@
   },
   "about": {
     "aboutUs": {
-      "title": "我们是",
+      "title": "这里是",
       "issues": "意见提交 & 问题反馈"
     },
     "sparklines": {

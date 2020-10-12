@@ -201,7 +201,8 @@
         "solverName": "SOLVER",
         "actions": "ACTIONS",
         "createDate": "CREATE DATE",
-        "orderOpenTime": "OPEN TIME"
+        "orderOpenTime": "OPEN TIME",
+        "userTelephone": "TELEPHONE"
       },
       "expanded": {
         "telephone": "TELEPHONE",
@@ -218,7 +219,10 @@
         "attendanceRecord": "Attendance Record",
         "viewAssignee": "View Assignee",
         "viewAttendance": "View Attendance",
-        "viewActionNotes": "ACTION NOTES"
+        "viewActionNotes": "ACTION NOTES",
+        "createDate": "CREATE DATE",
+        "username": "USER NAME",
+        "you": "YOU"
       },
       "actions": {
         "receiptOrderConfirm": "Are you sure to receive this order?",

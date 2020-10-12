@@ -87,22 +87,34 @@
             </template>
             <!-- 订单 actions 项内容 -->
             <template v-slot:item.actions="{ item }">
+              <!-- 修改订单 -->
               <v-icon
-                v-if="item.is_solver"
+                :disabled="!item.is_solver"
                 @click="modifyOrder(item)"
-                class="mr-2"
-              >mdi-pencil-outline</v-icon>
+              >mdi-pencil</v-icon>
+              <!-- 拨打电话 -->
+              <v-icon
+                v-if="item.is_solver && item.order_status === $GLOBAL.status.receipted && item.order_user_telephone"
+                @click="telephoneCall(item.order_user_telephone)"
+                class="ml-3"
+              >mdi-phone-in-talk</v-icon>
+              <!-- 接取订单 -->
               <v-icon
                 v-if="item.order_status === $GLOBAL.status.waiting"
                 @click="receiptOrder(item)"
-              >mdi-briefcase-plus-outline</v-icon>
+                class="ml-3"
+              >mdi-briefcase-plus</v-icon>
+              <!-- 完成订单 -->
               <v-icon
                 v-else-if="item.order_status === $GLOBAL.status.receipted && item.is_solver"
                 @click="finishOrder(item)"
-              >mdi-checkbox-multiple-marked-outline</v-icon>
+                class="ml-3"
+              >mdi-checkbox-multiple-marked</v-icon>
+              <!-- 重置订单 -->
               <v-icon
                 v-if="item.order_status === $GLOBAL.status.canceledBySolver"
                 @click="restoreOrder(item)"
+                class="ml-3"
               >mdi-autorenew</v-icon>
             </template>
             <!-- 订单展开内容 -->
@@ -113,7 +125,26 @@
                   style="word-wrap: break-word; word-break: break-all"
                   class="mt-3"
                 >
-                  <!-- 订单用户联系电话 -->
+                  <!-- 用户填写姓名 -->
+                  <v-col
+                    cols="12"
+                    v-if="item.order_user_name"
+                  >
+                    <v-chip
+                      small
+                      label
+                      outlined
+                      class="mr-1"
+                    >
+                      <v-icon
+                        small
+                        left
+                      >mdi-account-outline</v-icon>
+                      {{ $t('order.orderList.expanded.username') }}
+                    </v-chip>
+                    <span style="display: inline-block;">{{ item.order_user_name }}</span>
+                  </v-col>
+                  <!-- 订单用户联系电话
                   <v-col
                     cols="12"
                     v-if="item.order_user_telephone"
@@ -132,7 +163,8 @@
                     </v-chip>
                     <span style="display: inline-block;">{{ item.order_user_telephone }}</span>
                   </v-col>
-                  <!-- 订单寝室地址 -->
+                  -->
+                  <!-- 订单寝室地址
                   <v-col
                     cols="12"
                     v-if="item.order_user_dormitory"
@@ -151,6 +183,7 @@
                     </v-chip>
                     <span style="display: inline-block;">{{ item.order_user_dormitory }}</span>
                   </v-col>
+                  -->
                   <!-- 订单描述 -->
                   <v-col
                     cols="12"
@@ -180,6 +213,7 @@
                       label
                       outlined
                       class="mr-1"
+                      :color="item.is_solver ? 'primary' : ''"
                     >
                       <v-icon
                         small
@@ -187,7 +221,10 @@
                       >mdi-card-account-details-outline</v-icon>
                       {{ $t('order.orderList.expanded.solverName') }}
                     </v-chip>
-                    <span style="display: inline-block;">{{ item.solver_name }}</span>
+                    <span style="display: inline-block;">{{ item.solver_name }}<span
+                      v-if="item.is_solver"
+                    >({{ $t('order.orderList.expanded.you') }})</span>
+                    </span>
                   </v-col>
                   <!-- 订单处理者记录 -->
                   <v-col
@@ -207,6 +244,25 @@
                       {{ $t('order.orderList.expanded.record') }}
                     </v-chip>
                     <span style="display: inline-block;">{{ item.order_solver_record }}</span>
+                  </v-col>
+                  <!-- 订单创建日期 -->
+                  <v-col
+                    cols="12"
+                    v-if="item.create_date"
+                  >
+                    <v-chip
+                      small
+                      label
+                      outlined
+                      class="mr-1"
+                    >
+                      <v-icon
+                        small
+                        left
+                      >mdi-clock-outline</v-icon>
+                      {{ $t('order.orderList.expanded.createDate') }}
+                    </v-chip>
+                    <span style="display: inline-block;">{{ item.create_date }}</span>
                   </v-col>
                   <!-- 订单关闭日期 -->
                   <v-col
@@ -694,6 +750,9 @@ export default {
         return null
       }
     },
+    telephoneCall (telephone) {
+      window.location.href = 'tel:' + telephone
+    },
     refreshRouter () {
       this.$router.push({ path: '/_empty' })
       this.$router.back(-1)
@@ -712,22 +771,23 @@ export default {
     orderListHeaders () {
       const headers = [
         {
-          text: this.$i18n.t('order.orderList.header.userName'),
-          align: 'start',
-          sortable: false,
-          value: 'order_user_name'
-        },
-        {
           text: this.$i18n.t('order.orderList.header.userGender'),
-          value: 'order_user_gender'
+          value: 'order_user_gender',
+          align: 'start'
         },
         {
           text: this.$i18n.t('order.orderList.header.userCampus'),
           value: 'order_user_campus'
         },
         {
-          text: this.$i18n.t('order.orderList.header.createDate'),
-          value: 'create_date'
+          text: this.$i18n.t('order.orderList.header.userDormitory'),
+          value: 'order_user_dormitory',
+          sortable: false
+        },
+        {
+          text: this.$i18n.t('order.orderList.header.userTelephone'),
+          value: 'order_user_telephone',
+          sortable: false
         },
         {
           text: this.$i18n.t('order.orderList.header.orderOpenTime'),
@@ -739,8 +799,8 @@ export default {
         },
         {
           text: this.$i18n.t('order.orderList.header.actions'),
-          sortable: false,
-          value: 'actions'
+          value: 'actions',
+          sortable: false
         },
         {
           sortable: false,

@@ -102,5 +102,5 @@ Example:
 
 ``` js
 // client/.env
-VUE_APP_VERSION_CODE=20.10-S1
+VUE_APP_VERSION_CODE=20.10-S2
 ```

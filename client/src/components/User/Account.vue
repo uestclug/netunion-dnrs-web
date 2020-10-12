@@ -156,7 +156,7 @@
             <v-icon left>mdi-account-edit-outline</v-icon>{{ $t('user.account.modify') }}
           </v-btn>
           <v-btn
-            color="blue-grey"
+            color="secondary"
             text
             style="margin: 0px 0px 10px 10px"
             @click="modifyPassword"
@@ -166,6 +166,7 @@
           </v-btn>
           <v-spacer></v-spacer>
           <v-btn
+            color="secondary"
             text
             style="margin: 0px 0px 10px 0px"
             @click="toLogoutDialog"
@@ -298,7 +299,7 @@ export default {
     disabled: true, // 设置修改用户资料内容默认不可修改
     modifyPasswordDialog: false, // 设置修改密码 Dialog 默认不可见
     logoutDialog: false, // 设置登出 Dialog 默认不可见
-    modifyBtnColor: 'brown darken-1',
+    modifyBtnColor: 'primary',
     genderItems: ['男(Male)', '女(Female)'],
     campusItems: ['清水河校区(Qingshuihe Campus)', '沙河校区(Shahe Campus)'],
     presentPassword: '',
@@ -455,6 +456,7 @@ export default {
           this.telephoneErrors.length === 0 && this.introErrors.length === 0) {
           if (this.$DevMode) {
             this.$Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyAccountInfoSucceed'))
+            this.modifyBtnColor = 'primary'
             this.disabled = true
             this.nameCounter = false
             this.nicknameCounter = false
@@ -495,7 +497,7 @@ export default {
               localStorage.setItem('nickname', this.nickname)
               localStorage.setItem('intro', this.intro)
             }
-            this.modifyBtnColor = 'brown darken-1'
+            this.modifyBtnColor = 'primary'
             this.$Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyAccountInfoSucceed'))
             this.modifyAccountInfoLoading = false
             this.disabled = true
