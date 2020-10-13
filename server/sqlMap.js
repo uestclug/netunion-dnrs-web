@@ -148,7 +148,12 @@ const sqlMap = {
       closeOrder: '\
         UPDATE' + orderTable + '\
         SET solver_id = null, order_status = \'canceled by solver\', close_date = $1 \
-        WHERE order_id = $2'
+        WHERE order_id = $2',
+      // 将已完成的订单重开为进行中状态
+      restartOrder: '\
+        UPDATE' + orderTable + '\
+        SET order_status = \'receipted\', close_date = null \
+        WHERE order_id = $1'
     },
     admin: { // 对于 admin 用户组
 

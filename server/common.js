@@ -44,7 +44,8 @@ const common = {
     solverCloseOrder: '关闭了订单',
     solverAddAttn: '添加了出勤记录',
     solverAddAsgn: '添加了协作人',
-    solverRemoveAsgn: '移除了协作人'
+    solverRemoveAsgn: '移除了协作人',
+    solverRestartOrder: '重开并接取了订单'
   },
   master: { // 维修师傅账户信息
     userId: '4',

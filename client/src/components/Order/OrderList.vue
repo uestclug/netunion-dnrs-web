@@ -338,7 +338,8 @@
                       small
                       depressed
                       v-show="showExtraActions"
-                      :disabled="!(item.order_status === $GLOBAL.status.receipted && item.is_solver)"
+                      v-if="item.order_status === $GLOBAL.status.receipted"
+                      :disabled="!item.is_solver"
                       @click="cancelOrder(item)"
                       class="mr-2"
                     >
@@ -352,14 +353,28 @@
                       small
                       depressed
                       v-show="showExtraActions"
-                      :disabled="!(item.order_status === $GLOBAL.status.waiting ||
-                      (item.order_status === $GLOBAL.status.receipted && item.is_solver))"
+                      v-if="item.order_status === $GLOBAL.status.waiting || item.order_status === $GLOBAL.status.receipted"
+                      :disabled="!item.is_solver"
                       @click="closeOrder(item)"
                     >
                       <v-icon
                         small
                         left
                       >mdi-delete-circle-outline</v-icon>{{ $t('order.orderList.expanded.closeOrder') }}
+                    </v-btn>
+                    <!-- 重开订单 -->
+                    <v-btn
+                      small
+                      depressed
+                      v-show="showExtraActions"
+                      v-if="item.order_status === $GLOBAL.status.finished"
+                      :disabled="!item.is_solver"
+                      @click="restartOrder(item)"
+                    >
+                      <v-icon
+                        small
+                        left
+                      >mdi-progress-wrench</v-icon>{{ $t('order.orderList.expanded.restartOrder') }}
                     </v-btn>
                     <!-- 删除订单记录
                     <v-btn
@@ -458,8 +473,8 @@ export default {
     openExportRecordsDialog () {
       this.$Bus.$emit('openExportRecordsDialog')
     },
+    // 接取订单，设置订单状态为已接取
     receiptOrder (item) {
-      // 接取订单，设置订单状态为已接取
       if (confirm(this.$i18n.t('order.orderList.actions.receiptOrderConfirm'))) {
         if (this.$DevMode) {
           this.$Bus.$emit(
@@ -485,19 +500,18 @@ export default {
               'setSnackbar',
               this.$i18n.t('order.orderList.actions.receiptOrderSucceed')
             )
-            this.refreshRouter()
           } else {
             this.$Bus.$emit(
               'setSnackbar',
               this.$i18n.t('order.orderList.actions.receiptOrderFailed')
             )
-            this.refreshRouter()
           }
+          this.refreshRouter()
         })
       }
     },
+    // 设置订单状态为已完成
     finishOrder (item) {
-      // 设置订单状态为已完成
       if (confirm(this.$i18n.t('order.orderList.actions.finishOrderConfirm'))) {
         if (this.$DevMode) {
           this.$Bus.$emit(
@@ -522,19 +536,18 @@ export default {
               'setSnackbar',
               this.$i18n.t('order.orderList.actions.finishOrderSucceed')
             )
-            this.refreshRouter()
           } else {
             this.$Bus.$emit(
               'setSnackbar',
               this.$i18n.t('order.orderList.actions.finishOrderFailed')
             )
-            this.refreshRouter()
           }
+          this.refreshRouter()
         })
       }
     },
+    // 将 solver 关闭订单的状态设置为待接取
     restoreOrder (item) {
-      // 将 solver 关闭订单的状态设置为待接取
       if (confirm(this.$i18n.t('order.orderList.actions.restoreOrderConfirm'))) {
         if (this.$DevMode) {
           this.$Bus.$emit(
@@ -558,23 +571,22 @@ export default {
               'setSnackbar',
               this.$i18n.t('order.orderList.actions.restoreOrderSucceed')
             )
-            this.refreshRouter()
           } else {
             this.$Bus.$emit(
               'setSnackbar',
               this.$i18n.t('order.orderList.actions.restoreOrderFailed')
             )
-            this.refreshRouter()
           }
+          this.refreshRouter()
         })
       }
     },
+    // 修改订单信息
     modifyOrder (item) {
-      // 修改订单信息
       this.$Bus.$emit('openModifyOrderSolverSheet', item)
     },
+    // 取消订单，并设置订单状态为待接取
     cancelOrder (item) {
-      // 取消订单，并设置订单状态为待接取
       if (confirm(this.$i18n.t('order.orderList.actions.cancelOrderConfirm'))) {
         if (this.$DevMode) {
           this.$Bus.$emit(
@@ -600,19 +612,18 @@ export default {
               'setSnackbar',
               this.$i18n.t('order.orderList.actions.cancelOrderSucceed')
             )
-            this.refreshRouter()
           } else {
             this.$Bus.$emit(
               'setSnackbar',
               this.$i18n.t('order.orderList.actions.cancelOrderFailed')
             )
-            this.refreshRouter()
           }
+          this.refreshRouter()
         })
       }
     },
+    // 关闭订单，并设置订单状态为处理者关闭
     closeOrder (item) {
-      // 关闭订单，并设置订单状态为处理者关闭
       if (confirm(this.$i18n.t('order.orderList.actions.closeOrderConfirm'))) {
         if (this.$DevMode) {
           this.$Bus.$emit(
@@ -638,19 +649,54 @@ export default {
               'setSnackbar',
               this.$i18n.t('order.orderList.actions.closeOrderSucceed')
             )
-            this.refreshRouter()
           } else {
             this.$Bus.$emit(
               'setSnackbar',
               this.$i18n.t('order.orderList.actions.closeOrderFailed')
             )
-            this.refreshRouter()
           }
+          this.refreshRouter()
         })
       }
     },
+    // 重开订单，将已完成订单设置为进行中
+    restartOrder (item) {
+      if (confirm(this.$i18n.t('order.orderList.actions.restartOrderConfirm'))) {
+        if (this.$DevMode) {
+          this.$Bus.$emit(
+            'setSnackbar',
+            this.$i18n.t('order.orderList.actions.restartOrderSucceed')
+          )
+          for (let i = 0; i < this.orderListItems.length; i++) {
+            if (this.orderListItems[i] == item) {
+              this.orderListItems[i].order_status = this.$GLOBAL.status.receipted
+              this.orderListItems[i].close_date = ''
+              break
+            }
+          }
+          return
+        }
+
+        this.axios.post('/api/order/restartOrder', {
+          order_id: item.order_id
+        }).then((Response) => {
+          if (Response.data) {
+            this.$Bus.$emit(
+              'setSnackbar',
+              this.$i18n.t('order.orderList.actions.restartOrderSucceed')
+            )
+          } else {
+            this.$Bus.$emit(
+              'setSnackbar',
+              this.$i18n.t('order.orderList.actions.restartOrderFailed')
+            )
+          }
+          this.refreshRouter()
+        })
+      }
+    },
+    // 删除订单
     deleteOrder (item) {
-      // 删除订单
       if (confirm()) {
         console.log('deleted')
       }

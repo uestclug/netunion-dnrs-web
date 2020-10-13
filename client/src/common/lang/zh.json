@@ -230,7 +230,8 @@
         "viewActionNotes": "查看操作记录",
         "createDate": "创建日期",
         "username": "用户姓名",
-        "you": "您"
+        "you": "您",
+        "restartOrder": "重开此订单"
       },
       "actions": {
         "receiptOrderConfirm": "您确定要接取此订单吗?",
@@ -250,7 +251,10 @@
         "closeOrderFailed": "订单关闭失败，请稍后重试。",
         "deleteOrderConfirm": "订单将被彻底删除并无法复原，您确定要删除本订单吗？",
         "deleteOrderSucceed": "订单已删除！",
-        "deleteOrderFailed": "订单删除失败，请稍后重试。"
+        "deleteOrderFailed": "订单删除失败，请稍后重试。",
+        "restartOrderConfirm": "订单将从已完成状态设置为由您接受状态，您确定要重开此订单吗？",
+        "restartOrderSucceed": "订单已重开，请尽快处理！",
+        "restartOrderFailed": "订单重置失败，请稍后重试。"
       },
       "status": {
         "waiting": "等待",

@@ -230,7 +230,8 @@
         "viewActionNotes": "ACTION NOTES",
         "createDate": "CREATE DATE",
         "username": "USER NAME",
-        "you": "YOU"
+        "you": "YOU",
+        "restartOrder": "RESTART"
       },
       "actions": {
         "receiptOrderConfirm": "Are you sure to receive this order?",
@@ -250,7 +251,10 @@
         "closeOrderFailed": "Order closing failed. Please try again later.",
         "deleteOrderConfirm": "The order will be completely deleted and cannot be restored. Are you sure you want to delete this order?",
         "deleteOrderSucceed": "Order deleted!",
-        "deleteOrderFailed": "Order deletion failed. Please try again later."
+        "deleteOrderFailed": "Order deletion failed. Please try again later.",
+        "restartOrderConfirm": "The order will be set from Completed to Accepted by you, are you sure you want to restart this order?",
+        "restartOrderSucceed": "Order restarted!",
+        "restartOrderFailed": "The order restart failed, please try again later."
       },
       "status": {
         "waiting": "WAITING",

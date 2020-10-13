@@ -236,14 +236,13 @@ export default {
               'setSnackbar',
               this.$i18n.t('order.orderList.actions.finishOrderSucceed')
             )
-            this.refreshRouter()
           } else {
             this.$Bus.$emit(
               'setSnackbar',
               this.$i18n.t('order.orderList.actions.finishOrderFailed')
             )
-            this.refreshRouter()
           }
+          this.refreshRouter()
         })
       }
     },

@@ -483,12 +483,17 @@ router.post('/queryOrderList', async function (req, res) {
           } else if (orderItems[i].order_user_gender == $common.gender.female) {
             orderItems[i].order_user_gender = '女'
           }
+          
+          // 用户联系方式为空时，替换为 '-'
+          if (orderItems[i].order_user_telephone == '') {
+            orderItems[i].order_user_telephone == '-'
+          }
 
           // 简化订单用户所处校区项
           if (orderItems[i].order_user_campus == $common.campus.qingshuihe) {
-            orderItems[i].order_user_campus = '清水河校区'
+            orderItems[i].order_user_campus = '清水河'
           } else if (orderItems[i].order_user_campus == $common.campus.shahe) {
-            orderItems[i].order_user_campus = '沙河校区'
+            orderItems[i].order_user_campus = '沙河'
           }
 
           // 根据时间计算并添加 order_open_time 项
@@ -500,9 +505,9 @@ router.post('/queryOrderList', async function (req, res) {
               orderOpenTime = new Date().getTime() - orderItems[i].create_date
             }
             if (orderOpenTime < hour) {
-              orderItems[i].order_open_time = Math.floor(orderOpenTime / min) + ' min'
+              orderItems[i].order_open_time = Math.floor(orderOpenTime / min) + ' m'
             } else if (orderOpenTime < day) {
-              orderItems[i].order_open_time = Math.floor(orderOpenTime / hour) + ' hour'
+              orderItems[i].order_open_time = Math.floor(orderOpenTime / hour) + ' h'
             } else {
               const valueDay = Math.floor(orderOpenTime / day)
               const valueHour = (Math.floor(orderOpenTime / hour) - 24 * valueDay)
@@ -720,6 +725,44 @@ router.post('/closeOrder', async function (req, res) {
                 res.send(true)
               }
             })
+          }
+        })
+      } else {
+        res.send(false)
+      }
+    } else {
+      res.send(false)
+    }
+  } else {
+    res.send(false)
+  }
+})
+
+/**
+ * 处理者重开订单接口
+ */
+router.post('/restartOrder', async function (req, res) {
+  const flag = await apiUtils.checkToken(req)
+  if (flag) {
+    const reqBody = req.body
+    const order_id = reqBody.order_id
+    const user_id = reqBody.user_id
+
+    const order = await apiUtils.queryOrderInfoByOrderId(order_id)
+    if (order !== null) {
+      if (order.solver_id == user_id && order.order_status === $common.status.finished) {
+        const sqlData = [order_id]
+        const client = await pool.connect()
+        client.query($sql.order.solver.restartOrder, sqlData, (error, result) => {
+          client.release()
+          if (error) {
+            console.log(error)
+            res.send(false)
+          } else {
+            apiUtils.addOrderActionNotes(
+              order_id, user_id, $common.actionNotes.solverRestartOrder, null
+            )
+            res.send(true)
           }
         })
       } else {
