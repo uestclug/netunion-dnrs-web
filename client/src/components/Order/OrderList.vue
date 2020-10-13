@@ -354,7 +354,7 @@
                       depressed
                       v-show="showExtraActions"
                       v-if="item.order_status === $GLOBAL.status.waiting || item.order_status === $GLOBAL.status.receipted"
-                      :disabled="!item.is_solver"
+                      :disabled="item.order_status === $GLOBAL.status.receipted && !item.is_solver"
                       @click="closeOrder(item)"
                     >
                       <v-icon
