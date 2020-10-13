@@ -22,7 +22,7 @@ router.post('/createOrderUnlogged', async function (req, res) {
   const user_dormitory = reqBody.user_dormitory
   const user_description = reqBody.user_description
   const order_status = $common.status.waiting
-  const user_id = null
+  const user_id = $common.master.userId
   const order_id = apiUtils.generateOrderId(0) // 以 '000000' 开头的订单为匿名创建
   const sqlData = [user_name, user_gender, user_telephone, user_campus, user_dormitory, user_description, create_date, order_status, order_id, user_id]
 
@@ -33,7 +33,18 @@ router.post('/createOrderUnlogged', async function (req, res) {
       console.log(error)
       res.send(false)
     } else {
-      // 不添加报修记录信息
+      // 获取真人快打可能性微存的用户 IP 地址
+      let user_ip = req.headers['x-real-ip'] ||
+        req.headers['x-forwarded-for'] ||
+        req.connection.remoteAddres ||
+        req.socket.remoteAddress ||
+        '0.0.0.0'
+      if (user_ip.split(',').length > 0) {
+        user_ip = user_ip.split(',')[0]
+      }
+      apiUtils.addOrderActionNotes(
+        order_id, user_id, 'ip 为 ' + user_ip + $common.actionNotes.userUnloggedCreateOrder, create_date
+      )
       res.send(true)
     }
   })

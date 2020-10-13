@@ -352,7 +352,7 @@
       "confirmText": "点击下方的按钮导出订单信息吧！",
       "onExportingRecords": "正在导出订单记录中...",
       "exportSuccessfully": "导出订单记录成功！下载将会马上开始",
-      "exportFailed": "导出订单记录失败，这可能是由于服务器网络波动或查询月份没有订单记录，请稍后尝试",
+      "exportFailed": "导出订单记录失败，这可能是由于查询月份 没有完成的订单 或网络波动，请稍后尝试",
       "formatTitle": "选择导出格式",
       "emailTitle": "发送到邮箱",
       "formatToCsvNotes": "将会导出多个 .csv 文件"

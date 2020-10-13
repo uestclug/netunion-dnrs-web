@@ -8,6 +8,19 @@ const $sql = require('../sqlMap')
 // const $common = require('../common.js')
 
 /**
+ * 通过 std_id 获取用户的 user_id
+ */
+async function getUserIdByStdId (std_id) {
+  const sqlData = [std_id]
+
+  const client = await pool.connect()
+  const response = await client.query($sql.account.getUserIdByStdId, sqlData)
+  client.release()
+  if (response.rowCount == 1) return response.rows[0].user_id
+  else return null
+}
+
+/**
  * 获取用户最近的订单信息
  * 用户存在最近订单时返回最近订单的信息；
  * 不存在或查询失败时返回 false。
@@ -139,6 +152,7 @@ async function addOrderActionNotes (order_id, user_id, notes_text, action_date) 
 }
 
 module.exports = {
+  getUserIdByStdId,
   getLatestOrderInfo,
   generateOrderId,
   checkToken,

@@ -348,7 +348,7 @@
       "emailErrors": "You need to enter a correct email address",
       "emailLabel": "Also sent to my email (optional)",
       "emailTitle": "Send to Email",
-      "exportFailed": "Exporting order records failed, this may be due to server network fluctuations or the query month has no order records, please try again later",
+      "exportFailed": "Exporting order records failed, this may be due to server network fluctuations or the query month has no finished order records, please try again later",
       "exportRecords": "Export",
       "exportSuccessfully": "Export order records successfully! The download will begin immediately.",
       "formatTitle": "File Format",

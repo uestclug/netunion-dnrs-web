@@ -181,7 +181,6 @@ export default {
       }).then((Response) => {
         if (Response.data) {
           this.$Bus.$emit('setSnackbar', this.$i18n.t('order.exportDialog.exportSuccessfully'))
-          this.dialog = false
           this.stepper = 1
 
           const filename = Response.data.filename
@@ -215,6 +214,7 @@ export default {
         } else {
           this.$Bus.$emit('setSnackbar', this.$i18n.t('order.exportDialog.exportFailed'))
         }
+        this.dialog = false
         this.exportRecordsLoading = false
       })
     }

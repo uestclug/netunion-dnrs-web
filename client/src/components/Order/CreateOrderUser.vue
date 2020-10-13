@@ -293,7 +293,7 @@ export default {
                 this.submitLoading = false
               } else {
                 this.$Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.createFailed'))
-                location.reload()
+                this.submitLoading = false
               }
             })
           } else { // 已登录用户
@@ -311,9 +311,9 @@ export default {
                 this.submitLoading = false
                 this.refreshRouter()
                 if (this.isNewUser) this.modifyAccountInfo() // 首次创建订单自动将信息同步到账号信息
-              } else { // 订单提交失败，刷新页面
+              } else {
                 this.$Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.createFailed'))
-                location.reload()
+                this.submitLoading = false
               }
             })
           }
@@ -333,8 +333,8 @@ export default {
               this.submitLoading = false
               this.refreshRouter()
             } else {
-              this.submitLoading = false
               this.$Bus.$emit('setSnackbar', this.$i18n.t('order.modifyOrder.user.modifyFailed'))
+              this.submitLoading = false
             }
           })
         }

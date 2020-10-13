@@ -30,6 +30,7 @@ const common = {
   },
   actionNotes: { // 订单操作记录
     userCreateOrder: '用户创建了订单',
+    userUnloggedCreateOrder: ' 的用户创建了订单', // ip 为 0.0.0.0 的用户创建了订单
     userModifyOrder: '用户修改了订单信息',
     userCloseOrder: '用户关闭了订单',
     solverCreateOrder: '创建了订单',
@@ -44,6 +45,11 @@ const common = {
     solverAddAttn: '添加了出勤记录',
     solverAddAsgn: '添加了协作人',
     solverRemoveAsgn: '移除了协作人'
+  },
+  master: { // 维修师傅账户信息
+    userId: '4',
+    stdId: '000000',
+    name: '维修师傅'
   }
 }
 

@@ -26,7 +26,12 @@ const sqlMap = {
       WHERE t.user_id = $1'
   },
   account: {
-    // 通过 std_id 获取 password 和 user_id
+    // 通过 std_id 获取 user_id
+    getUserIdByStdId: '\
+      SELECT user_id\
+      FROM' + accountTable + '\
+      WHERE std_id = $1',
+    // 通过 std_id 获取 password, user_id, role
     getLoginResponse: '\
       SELECT password, user_id, role \
       FROM' + accountTable + '\

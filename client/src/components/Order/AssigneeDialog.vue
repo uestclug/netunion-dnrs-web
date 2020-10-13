@@ -45,7 +45,6 @@
             @click="addMasterAsAssignee"
             depressed
             :disabled="addAssigneeLoading"
-            small
           >{{ $t('order.assigneeDialog.addMasterAsAssignee') }}</v-btn>
           <v-text-field
             v-model="searchTextField"
@@ -250,9 +249,9 @@ export default {
       if (this.$DevMode) {
         const newAssignee =
         {
-          solver_id: '000000',
-          solver_std_id: '000000',
-          solver_name: '维修师傅'
+          solver_id: this.$GLOBAL.master.userId,
+          solver_std_id: this.$GLOBAL.master.stdId,
+          solver_name: this.$GLOBAL.master.name
         }
         this.assignee.push(newAssignee)
         this.addAssigneeLoading = false
@@ -261,7 +260,7 @@ export default {
       }
 
       const inputSearchText = this.searchTextField
-      this.searchTextField = '000000'
+      this.searchTextField = this.$GLOBAL.master.stdId
       this.addAssignee()
       this.searchTextField = inputSearchText
     }
