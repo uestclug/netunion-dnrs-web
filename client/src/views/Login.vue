@@ -140,7 +140,6 @@ export default {
           std_id: stdId,
           password: password
         }).then((Response) => {
-          // console.log(Response.data)
           if (Response.data) { // 登录成功
             const resData = Response.data
             const userId = resData.user_id
@@ -152,7 +151,6 @@ export default {
             this.$store.commit('setToken', token)
             // 获取用户资料
             this.axios.post('/api/user/queryUserInfo').then((Response) => {
-              // console.log(Response.data)
               const resData = Response.data
               // 将得到的用户资料保存到 localStorage 中
               localStorage.setItem('name', resData.name)

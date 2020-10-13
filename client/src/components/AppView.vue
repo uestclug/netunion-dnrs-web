@@ -182,7 +182,6 @@ export default {
       }
     },
     switchLanguage (id) { // 选择语言
-      // console.log('value: ', id)
       if (id === '简体中文') {
         this.$i18n.locale = 'zh-CN'
       } else if (id === 'ENGLISH') {
