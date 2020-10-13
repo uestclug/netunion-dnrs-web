@@ -269,9 +269,14 @@ export default {
         this.campusErrors.length === 0 && this.dormitoryErrors.length === 0 &&
         this.telephoneErrors.length === 0) {
         if (this.$DevMode) {
-          if (this.isModify) this.$Bus.$emit('setSnackbar', this.$i18n.t('order.modifyOrder.user.modifySucceed'))
-          else this.$Bus.$emit('setSnackbar', this.$i18n.t('order.modifyOrder.user.createSucceed'))
-          this.sheet = false
+          if (this.isModify) {
+            this.$Bus.$emit('setSnackbar', this.$i18n.t('order.modifyOrder.user.modifySucceed'))
+            this.sheet = false
+          } else {
+            this.$Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.createSucceed'))
+            if (this.isUnlogged) this.orderSubmit = true
+            else this.sheet = false
+          }
           return
         }
 
