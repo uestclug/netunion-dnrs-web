@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <div>
     <v-hover
       v-slot:default="{ hover }"
       open-delay="200"
@@ -26,7 +26,7 @@
         </v-card-text>
       </v-card>
     </v-hover>
-  </v-container>
+  </div>
 </template>
 
 <script>

@@ -1,13 +1,13 @@
 <template>
-  <div class="home mt-6 mb-6">
+  <div class="home">
     <div v-if="role === $GLOBAL.role.user">
       <InfoNoteUser />
-      <WelcomeUser />
-      <LatestOrder />
+      <WelcomeUser class="mt-8" />
+      <LatestOrder class="mt-8" />
     </div>
     <div v-else-if="role === $GLOBAL.role.solver">
       <WelcomeSolver />
-      <AcceptedOrder />
+      <AcceptedOrder class="mt-8" />
     </div>
   </div>
 </template>

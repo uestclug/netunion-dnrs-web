@@ -1,5 +1,5 @@
 <template>
-  <v-app id="AppView">
+  <div>
     <!-- Drawer -->
     <v-navigation-drawer
       app
@@ -111,7 +111,9 @@
     </v-app-bar>
 
     <!-- Main View -->
-    <router-view />
+    <v-main>
+      <router-view class="mt-12 mb-12" />
+    </v-main>
 
     <!-- Snackbar -->
     <Snackbar />
@@ -124,7 +126,7 @@
 
     <!-- GLOBAL Bus Methods -->
     <BusMethods />
-  </v-app>
+  </div>
 </template>
 
 <script>

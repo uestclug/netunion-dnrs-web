@@ -1,5 +1,5 @@
 <template>
-  <div class="order mt-6 mb-6">
+  <div class="order">
     <div v-if="role === $GLOBAL.role.user">
       <LatestOrder />
     </div>

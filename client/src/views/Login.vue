@@ -1,6 +1,6 @@
 <template>
-  <div class="login mt-10">
-    <v-container>
+  <div class="login">
+    <div>
       <v-card
         class="mx-auto"
         max-width="800"
@@ -73,7 +73,7 @@
           </v-col>
         </v-row>
       </v-card>
-    </v-container>
+    </div>
     <Footer />
   </div>
 </template>

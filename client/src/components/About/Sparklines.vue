@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <div>
     <v-card
       :elevation="2"
       class="mx-auto"
@@ -130,7 +130,7 @@
         </v-row>
       </v-container>
     </v-card>
-  </v-container>
+  </div>
 </template>
 
 <script>

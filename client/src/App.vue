@@ -1,7 +1,7 @@
 <template>
-  <v-main>
+  <v-app id="AppView">
     <AppView style="cursor: default" />
-  </v-main>
+  </v-app>
 </template>
 
 <script>

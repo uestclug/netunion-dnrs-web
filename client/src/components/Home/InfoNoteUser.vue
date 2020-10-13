@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <div>
     <v-card
       class="mx-auto"
       max-width="800"
@@ -12,7 +12,7 @@
         {{ $t('home.infoNoteUser.note') }}
       </v-alert>
     </v-card>
-  </v-container>
+  </div>
 </template>
 
 <script>

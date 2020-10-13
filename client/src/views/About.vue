@@ -1,9 +1,8 @@
 <template>
   <div class="about">
-    <div class="mt-6 mb-15">
+    <div>
       <AboutUs />
-      <Sparklines />
-      <UpdateLog />
+      <Sparklines class="mt-8" />
     </div>
     <Footer />
   </div>
@@ -12,7 +11,6 @@
 <script>
 import AboutUs from '@/components/About/AboutUs'
 import Sparklines from '@/components/About/Sparklines'
-import UpdateLog from '@/components/About/UpdateLog'
 import Footer from '@/components/About/Footer'
 
 export default {
@@ -23,7 +21,6 @@ export default {
   components: {
     AboutUs,
     Sparklines,
-    UpdateLog,
     Footer
   },
   created () {

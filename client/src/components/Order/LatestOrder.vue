@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <div>
     <v-hover
       v-slot:default="{ hover }"
       open-delay="200"
@@ -190,7 +190,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </v-container>
+  </div>
 </template>
 
 <script>

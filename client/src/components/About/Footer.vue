@@ -2,6 +2,7 @@
   <div>
     <v-footer
       fixed
+      app
     >
       <!--
       <span>{{ $t('app.contactUs') }}83202112({{ $t('app.shahe') }})</span>
