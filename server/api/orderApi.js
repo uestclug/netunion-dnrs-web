@@ -10,6 +10,36 @@ const $sql = require('../sqlMap')
 const $common = require('../common.js')
 
 /**
+ * 未登录用户新建订单接口
+ */
+router.post('/createOrderUnlogged', async function (req, res) {
+  const create_date = new Date().getTime()
+  const reqBody = req.body
+  const user_name = reqBody.user_name
+  const user_gender = reqBody.user_gender
+  const user_telephone = reqBody.user_telephone
+  const user_campus = reqBody.user_campus
+  const user_dormitory = reqBody.user_dormitory
+  const user_description = reqBody.user_description
+  const order_status = $common.status.waiting
+  const user_id = null
+  const order_id = apiUtils.generateOrderId(0) // 以 '000000' 开头的订单为匿名创建
+  const sqlData = [user_name, user_gender, user_telephone, user_campus, user_dormitory, user_description, create_date, order_status, order_id, user_id]
+
+  const client = await pool.connect()
+  client.query($sql.order.user.createOrder, sqlData, (error) => {
+    client.release()
+    if (error) {
+      console.log(error)
+      res.send(false)
+    } else {
+      // 不添加报修记录信息
+      res.send(true)
+    }
+  })
+})
+
+/**
  * 用户新建订单接口
  * 当 token 验证成功且用户能够创建订单时访问数据库进行操作。
  */

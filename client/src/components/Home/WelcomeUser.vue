@@ -50,7 +50,8 @@ export default {
       this.$Bus.$emit('openCreateOrderUserSheet', {
         isModify: !this.enableCreateOrder,
         order: this.order,
-        isNewUser: this.isNewUser
+        isNewUser: this.isNewUser,
+        isUnlogged: false
       })
     }
   },

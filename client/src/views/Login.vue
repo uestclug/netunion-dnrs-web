@@ -55,23 +55,33 @@
           justify="center"
           no-gutters
         >
-          <v-btn
-            color="success"
-            @click="submit"
-            :loading="loading"
-            :disabled="loading"
-            class="mb-6"
-          >{{ $t('login.submit') }}<v-icon right>mdi-arrow-right</v-icon>
-          </v-btn>
+          <v-col class="mb-6 text-center">
+            <v-btn
+              color="primary"
+              @click="createOrderUnlogged"
+              class="mr-4"
+            >{{ $t('login.createOrderUnlogged') }}<v-icon right>mdi-pencil</v-icon>
+            </v-btn>
+
+            <v-btn
+              color="success"
+              @click="submit"
+              :loading="loading"
+              :disabled="loading"
+            >{{ $t('login.submit') }}<v-icon right>mdi-arrow-right</v-icon>
+            </v-btn>
+          </v-col>
         </v-row>
       </v-card>
     </v-container>
+    <Footer />
   </div>
 </template>
 
 <script>
 import { validationMixin } from 'vuelidate'
 import { required } from 'vuelidate/lib/validators'
+import Footer from '@/components/About/Footer'
 
 export default {
   name: 'Login',
@@ -81,6 +91,9 @@ export default {
     showPassword: false,
     loading: false
   }),
+  components: {
+    Footer
+  },
   mixins: [validationMixin],
   validations: {
     username: {
@@ -195,6 +208,12 @@ export default {
           name: 'home'
         })
       }
+    },
+    // 不登录，直接创建订单
+    createOrderUnlogged () {
+      this.$Bus.$emit('openCreateOrderUserSheet', ({
+        isUnlogged: true
+      }))
     }
   }
 }

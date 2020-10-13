@@ -1,7 +1,9 @@
 {
   "app": {
     "name": "UESTC | Dormitory Network Repair Platform",
-    "shortName": "Network Repair Platform"
+    "shortName": "Network Repair Platform",
+    "contactUs": "Contact us: ",
+    "shahe": "Shahe Campus"
   },
   "viewTitle": {
     "home": "HOME",
@@ -163,6 +165,12 @@
         "statusTooltipReceipted": "The order is created and receipted by you",
         "statusTooltipRecorded": "This order does not require a visit, it is for records only",
         "statusTooltipUnexpected": "Unexpected order status, try reload the page"
+      },
+      "unlogged": {
+        "title": "Create a Dormitory Network Repair Order",
+        "successTitle": "Great Success",
+        "successText": "You have successfully submitted a repair order for the dormitory network.",
+        "successTextWaiting": "Waiting for us. Coming soon."
       }
     },
     "latestOrder": {
@@ -357,9 +365,9 @@
   },
   "login": {
     "submit": "Login",
-    "usernameLabel": "Student ID",
+    "usernameLabel": "Student ID / Solver ID",
     "pwdLabel": "Password",
-    "usernameRequiredErr": "Student ID is required as username",
+    "usernameRequiredErr": "Student id or solver id is required as username",
     "pwdRequiredErr": "Wrong password, please check it",
     "loginFailed": "Wrong student number or password, please check it!",
     "loginSucceed": "Welcome, ",
@@ -367,7 +375,8 @@
     "infoCheckFailed": "User information check failed, please login again!",
     "unknownFailed": "Time has changed! Please login again.",
     "tokenCheckFailed": "Account voucher expired or wrong, please login again!",
-    "defaultUserName": "UESTCer"
+    "defaultUserName": "UESTCer",
+    "createOrderUnlogged": "Create orders directly"
   },
   "error": {
     "underControl": "The error is UNDER CONTROL, don\"t worry!",

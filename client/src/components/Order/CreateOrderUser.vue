@@ -3,13 +3,16 @@
     <v-bottom-sheet
       v-model="sheet"
       inset
-      :persistent="submitLoading"
+      :persistent="submitLoading || orderSubmit"
     >
       <v-sheet height="1200px">
-        <v-form ref="bottomForm">
+        <v-form ref="bottomForm" v-if="!orderSubmit">
           <v-card flat>
             <v-card-title>
-              <v-tooltip right>
+              <v-tooltip
+                right
+                v-if="!isUnlogged"
+              >
                 <template v-slot:activator="{ on, attr }">
                   <v-btn
                     v-if="!isModify"
@@ -31,6 +34,9 @@
                 <span v-if="!isModify">{{ $t('order.createOrder.user.autoEnterNote') }}</span>
                 <span v-else>{{ $t('order.modify.user.resetNote') }}</span>
               </v-tooltip>
+              <span v-else>
+                {{ $t('order.createOrder.unlogged.title') }}
+              </span>
 
               <v-spacer></v-spacer>
 
@@ -136,6 +142,21 @@
             </v-card-text>
           </v-card>
         </v-form>
+        <!-- 未登录用户创建订单成功后显示此页面 -->
+        <v-card flat v-else>
+          <div class="text-center grey--text text--darken-3">
+            <v-icon class="pt-10 pb-6" style="font-size: 64px;">mdi-checkbox-marked-circle-outline</v-icon>
+            <h1 class="pb-4">
+              {{ $t('order.createOrder.unlogged.successTitle') }}
+            </h1>
+            <p>
+              {{ $t('order.createOrder.unlogged.successText') }}
+            </p>
+            <p>
+              {{ $t('order.createOrder.unlogged.successTextWaiting') }}
+            </p>
+          </div>
+        </v-card>
       </v-sheet>
     </v-bottom-sheet>
   </div>
@@ -160,7 +181,9 @@ export default {
     telephone: '',
     description: '',
     submitLoading: false,
-    isNewUser: false
+    isNewUser: false,
+    isUnlogged: false,
+    orderSubmit: false
   }),
   mixins: [validationMixin],
   validations: {
@@ -255,25 +278,45 @@ export default {
         this.submitLoading = true
 
         if (!this.isModify) { // 创建订单模式
-          this.axios.post('/api/order/createOrderUser', {
-            user_name: this.name,
-            user_gender: this.gender,
-            user_telephone: this.telephone,
-            user_campus: this.campus,
-            user_dormitory: this.dormitory,
-            user_description: this.description
-          }).then((Response) => {
-            if (Response.data) { // 订单提交成功，通过切换路由更新页面
-              this.$Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.createSucceed'))
-              this.sheet = false
-              this.submitLoading = false
-              this.refreshRouter()
-              if (this.isNewUser) this.modifyAccountInfo() // 首次创建订单自动将信息同步到账号信息
-            } else { // 订单提交失败，刷新页面
-              this.$Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.createFailed'))
-              location.reload()
-            }
-          })
+          if (this.isUnlogged) { // 未登录用户
+            this.axios.post('/api/order/createOrderUnlogged', {
+              user_name: this.name,
+              user_gender: this.gender,
+              user_telephone: this.telephone,
+              user_campus: this.campus,
+              user_dormitory: this.dormitory,
+              user_description: this.description
+            }).then((Response) => {
+              if (Response.data) {
+                this.$Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.createSucceed'))
+                this.orderSubmit = true
+                this.submitLoading = false
+              } else {
+                this.$Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.createFailed'))
+                location.reload()
+              }
+            })
+          } else { // 已登录用户
+            this.axios.post('/api/order/createOrderUser', {
+              user_name: this.name,
+              user_gender: this.gender,
+              user_telephone: this.telephone,
+              user_campus: this.campus,
+              user_dormitory: this.dormitory,
+              user_description: this.description
+            }).then((Response) => {
+              if (Response.data) { // 订单提交成功，通过切换路由更新页面
+                this.$Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.createSucceed'))
+                this.sheet = false
+                this.submitLoading = false
+                this.refreshRouter()
+                if (this.isNewUser) this.modifyAccountInfo() // 首次创建订单自动将信息同步到账号信息
+              } else { // 订单提交失败，刷新页面
+                this.$Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.createFailed'))
+                location.reload()
+              }
+            })
+          }
         } else { // 修改订单模式
           this.axios.post('/api/order/modifyOrderUser', {
             order_id: this.order.order_id,
@@ -341,17 +384,25 @@ export default {
   },
   mounted () {
     this.$Bus.$on('openCreateOrderUserSheet', (msg) => {
-      this.isModify = msg.isModify
-      this.order = msg.order
-      this.isNewUser = msg.isNewUser
-      if (this.order != null && this.order != []) {
-        // 当订单不为空时，将订单信息赋值到 dialog
-        this.name = this.order.order_user_name
-        this.gender = this.order.order_user_gender
-        this.telephone = this.order.order_user_telephone
-        this.campus = this.order.order_user_campus
-        this.dormitory = this.order.order_user_dormitory
-        this.description = this.order.order_user_description
+      if (msg.isUnlogged) { // 未登录用户
+        this.isUnlogged = true
+        this.isModify = false
+        this.order = []
+        this.isNewUser = false
+      } else { // 已登录用户
+        this.isUnlogged = false
+        this.isModify = msg.isModify
+        this.order = msg.order
+        this.isNewUser = msg.isNewUser
+        if (this.order != null && this.order != []) {
+          // 当订单不为空时，将订单信息赋值到 dialog
+          this.name = this.order.order_user_name
+          this.gender = this.order.order_user_gender
+          this.telephone = this.order.order_user_telephone
+          this.campus = this.order.order_user_campus
+          this.dormitory = this.order.order_user_dormitory
+          this.description = this.order.order_user_description
+        }
       }
       this.sheet = true
     })

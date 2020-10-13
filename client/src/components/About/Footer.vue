@@ -1,10 +1,13 @@
 <template>
-  <div class="hideOnPhone">
+  <div>
     <v-footer
-      absolute
+      fixed
     >
+      <!--
+      <span>{{ $t('app.contactUs') }}83202112({{ $t('app.shahe') }})</span>
+      -->
       <v-spacer></v-spacer>
-      <div>{{ $t('app.name') }} &copy; {{ new Date().getFullYear() }}</div>
+      <span>{{ $t('app.name') }} &copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
   </div>
 </template>
