@@ -67,6 +67,9 @@
                 class="body-1 pt-0 pb-0"
                 :items="genderItems"
                 :disabled="disabled"
+                :error-messages="genderErrors"
+                @input="$v.gender.$touch()"
+                @blur="$v.gender.$touch()"
               ></v-select>
             </v-col>
             <v-col cols="6">
@@ -80,6 +83,9 @@
                 class="body-1 pt-0 pb-0"
                 :items="campusItems"
                 :disabled="disabled"
+                :error-messages="campusErrors"
+                @input="$v.campus.$touch()"
+                @blur="$v.campus.$touch()"
               ></v-select>
             </v-col>
             <v-col
@@ -290,8 +296,8 @@ export default {
   data: () => ({
     role: null,
     name: '',
-    gender: null,
-    campus: null,
+    gender: '',
+    campus: '',
     telephone: '',
     dormitory: '', // *user
     nickname: '', // *solver
@@ -320,6 +326,12 @@ export default {
     },
     nickname: {
       maxLength: maxLength(30)
+    },
+    gender: {
+      required
+    },
+    campus: {
+      required
     },
     telephone: {
       numeric,
@@ -392,6 +404,18 @@ export default {
       !this.$v.nickname.maxLength && errors.push(this.$i18n.t('user.account.nicknameMaxLengthErr'))
       return errors
     },
+    genderErrors () {
+      const errors = []
+      if (!this.$v.gender.$dirty) return errors
+      !this.$v.gender.required && errors.push(this.$i18n.t('user.account.genderRequiredErr'))
+      return errors
+    },
+    campusErrors () {
+      const errors = []
+      if (!this.$v.campus.$dirty) return errors
+      !this.$v.campus.required && errors.push(this.$i18n.t('user.account.campusRequiredErr'))
+      return errors
+    },
     telephoneErrors () {
       const errors = []
       if (!this.$v.telephone.$dirty) return errors
@@ -452,8 +476,10 @@ export default {
         this.introCounter = 50
       } else { // 第二次点击，保存修改内容到数据库中
         this.$v.$touch()
+
         if (this.nameErrors.length === 0 && this.nicknameErrors.length === 0 &&
-          this.telephoneErrors.length === 0 && this.introErrors.length === 0) {
+          this.telephoneErrors.length === 0 && this.introErrors.length === 0 &&
+          this.campusErrors.length === 0 && this.genderErrors.length === 0) {
           if (this.$DevMode) {
             this.$Bus.$emit('setSnackbar', this.$i18n.t('user.account.modifyAccountInfoSucceed'))
             this.modifyBtnColor = 'primary'

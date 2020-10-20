@@ -104,3 +104,5 @@ Example:
 // client/.env
 VUE_APP_VERSION_CODE=20.10-S2
 ```
+
+Version update log view: [CHANGELOG.md](./CHANGELOG.md)

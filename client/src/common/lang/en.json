@@ -55,8 +55,8 @@
       "reModifiedPassword": "Rewrite New Password",
       "passwordMaxLengthErr": "Password no more than 32 characters",
       "passwordminLengthErr": "Password no less than 6 characters",
-      "presentPasswordRequiredErr": "Present password needed",
-      "modifiedPasswordRequiredErr": "New password needed",
+      "presentPasswordRequiredErr": "Present password is needed",
+      "modifiedPasswordRequiredErr": "New password is needed",
       "reModifiedPasswordRequiredErr": "Please input your new password again",
       "reModifiedPasswordErr": "The new passwords you entered are different. Please re-enter",
       "sameModifiedPasswordErr": "The new password you entered are same with the present. Please re-enter",
@@ -65,7 +65,9 @@
       "unknownErr": "Unknown errors happened. Modify password failed",
       "cancel": "CANCEL",
       "submit": "SUBMIT",
-      "confirm": "CONFIRM"
+      "confirm": "CONFIRM",
+      "genderRequiredErr": "Gender is required",
+      "campusRequiredErr": "Campus is required"
     },
     "statistics": {
       "title": "Statistics",

@@ -65,7 +65,9 @@
       "unknownErr": "发生不明错误，密码修改失败",
       "cancel": "取消",
       "submit": "修改密码",
-      "confirm": "确认"
+      "confirm": "确认",
+      "genderRequiredErr": "您需要选择您的医学性别",
+      "campusRequiredErr": "您需要选择您所在的校区"
     },
     "statistics": {
       "title": "统计信息",
