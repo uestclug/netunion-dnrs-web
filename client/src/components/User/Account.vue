@@ -186,7 +186,7 @@
       :persistent="presentPassword != ''"
       max-width="600"
     >
-      <v-card>
+      <v-card class="pb-2">
         <v-card-title>
           <span class="headline">{{ $t('user.account.modifyPassword') }}</span>
         </v-card-title>
@@ -263,7 +263,7 @@
       v-model="logoutDialog"
       max-width="600"
     >
-      <v-card>
+      <v-card class="pb-2">
         <v-card-title>
           {{ $t('user.account.logout') }}
         </v-card-title>
