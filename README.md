@@ -1,10 +1,6 @@
 # netunion-dnrs-web
 
-<div align=center>
-
-  <img src="./client/src/assets/networkOff.jpg" alt="你没网啦？"/>
-
-</div>
+<div align=center><img src="./client/src/assets/networkOff.jpg" alt="你没网啦？" /></div>
 
 ## NetUnion Dormitory Network Repair System Web
 
@@ -18,14 +14,14 @@ A web-based dormitory network repair system (platform) for students of **Univers
 
 ### Frontend setup
 
-``` node
+``` shell
 // client 目录下
 npm install
 ```
 
 ### Run frontend server
 
-``` node
+``` shell
 // client 目录下
 npm run frontend
 ```
@@ -43,7 +39,7 @@ npm run frontend
 
 ### Full-stack setup
 
-``` node
+``` shell
 // 分别在 client 和 server 目录下
 npm install
 ```
@@ -65,14 +61,14 @@ Vue.prototype.$DevMode = false
 
 启动前端网页渲染：
 
-``` node
+``` shell
 // client 目录下
 npm run frontend
 ```
 
 启动后端服务器：
 
-``` node
+``` shell
 // server 目录下
 npm run backend
 ```
@@ -84,13 +80,15 @@ npm run backend
 
 ## Compiles and minifies for production
 
-``` node
+``` shell
+// client 目录下
 npm run build
 ```
 
 ## Lints and fixes files
 
-``` node
+``` shell
+// client 目录下
 npm run lint
 ```
 
@@ -105,4 +103,4 @@ Example:
 VUE_APP_VERSION_CODE=20.10-S2
 ```
 
-Version update log view: [CHANGELOG.md](./CHANGELOG.md)
+Want to know more about version update log, see [CHANGELOG.md](./CHANGELOG.md).
