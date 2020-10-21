@@ -60,6 +60,7 @@
                     @blur="$v.name.$touch()"
                     :disabled="modifiedOrder.order_status == $GLOBAL.status.finished ||
                               modifiedOrder.order_status == $GLOBAL.status.recorded"
+                    prepend-icon="mdi-account"
                   ></v-text-field>
                 </v-col>
 
@@ -74,6 +75,7 @@
                     @blur="$v.gender.$touch()"
                     :disabled="modifiedOrder.order_status == $GLOBAL.status.finished ||
                               modifiedOrder.order_status == $GLOBAL.status.recorded"
+                    prepend-icon="mdi-gender-male-female"
                   ></v-select>
                 </v-col>
 
@@ -88,6 +90,7 @@
                     @blur="$v.telephone.$touch()"
                     :disabled="modifiedOrder.order_status == $GLOBAL.status.finished ||
                               modifiedOrder.order_status == $GLOBAL.status.recorded"
+                    prepend-icon="mdi-cellphone"
                   ></v-text-field>
                 </v-col>
 
@@ -102,6 +105,7 @@
                     @blur="$v.campus.$touch()"
                     :disabled="modifiedOrder.order_status == $GLOBAL.status.finished ||
                               modifiedOrder.order_status == $GLOBAL.status.recorded"
+                    prepend-icon="mdi-domain"
                   ></v-select>
                 </v-col>
 
@@ -115,6 +119,7 @@
                     @blur="$v.dormitory.$touch()"
                     :disabled="modifiedOrder.order_status == $GLOBAL.status.finished ||
                               modifiedOrder.order_status == $GLOBAL.status.recorded"
+                    prepend-icon="mdi-map-marker"
                   ></v-text-field>
                 </v-col>
 
@@ -134,6 +139,7 @@
                         @blur="$v.status.$touch()"
                         v-on="on"
                         v-bind="attrs"
+                        prepend-icon="mdi-briefcase-upload"
                       ></v-select>
                     </template>
                     <span>{{ statusTooltip }}</span>
@@ -147,12 +153,14 @@
                     v-model="description"
                     :label="descriptionLabel"
                     :hint="descriptionHint"
+                    prepend-icon="mdi-calendar-blank"
                   ></v-textarea>
                   <v-textarea
                     v-else-if="status === this.$i18n.t('order.recordedStatus')"
                     v-model="record"
                     :label="recordLabel"
                     :hint="recordHint"
+                    prepend-icon="mdi-calendar-check"
                   ></v-textarea>
                 </v-col>
               </v-row>

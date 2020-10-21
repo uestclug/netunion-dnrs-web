@@ -50,7 +50,7 @@
           auto-draw
         ></v-sparkline>
 
-        <p class="body-1 mt-3 teal--text">
+        <p class="body-1 mt-4 teal--text">
           {{ $t('about.sparklines.createOrder') }} {{ createOrderCount }} {{ $t('about.sparklines.orders') }}
         </p>
 
@@ -77,7 +77,7 @@
           auto-draw
         ></v-sparkline>
 
-        <p class="body-1 mt-3 success--text">
+        <p class="body-1 mt-4 success--text">
           {{ $t('about.sparklines.finishOrder') }} {{ finishedOrderCount }} {{ $t('about.sparklines.orders') }}
         </p>
 
@@ -96,7 +96,7 @@
         </div>
 
         <v-row
-          class="mt-3"
+          class="mt-4"
           v-if="mvsolvers.length != 0"
         >
           <template v-for="solver in mvsolvers">

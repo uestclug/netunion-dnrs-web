@@ -67,7 +67,8 @@
       "submit": "SUBMIT",
       "confirm": "CONFIRM",
       "genderRequiredErr": "Gender is required",
-      "campusRequiredErr": "Campus is required"
+      "campusRequiredErr": "Campus is required",
+      "saveModify": "SAVE"
     },
     "statistics": {
       "title": "Statistics",
@@ -201,7 +202,7 @@
       "title": "ORDER LIST",
       "filterLabel": "ORDER FILTER",
       "loadingText": "Your Dian\"s server is loading orders...",
-      "loadingMore": "LOADING MORE",
+      "loadingMore": "LOAD MORE",
       "header": {
         "userName": "USER",
         "userGender": "GENDER",

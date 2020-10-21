@@ -9,28 +9,29 @@
         class="mx-auto transition-swing"
         max-width="800"
       >
-        <v-card-text>
+        <v-card-text class="pb-2">
           <p class="subtitle-1">{{ $t('home.welcomeSolver.words') }}<v-divider></v-divider>
           </p>
           <p class="headline text--primary font-weight-medium">{{ $t('home.welcomeSolver.slogan') }}</p>
-        </v-card-text>
 
-        <v-card-actions>
-          <v-btn
-            color="success"
-            style="margin: 0px 0px 10px 10px"
-            @click="openCreateOrderSolverSheet"
-          >
-            <v-icon left>mdi-pencil</v-icon> {{ $t('order.createOrder.solver.create') }}
-          </v-btn>
-          <v-btn
-            outlined
-            color="blue-grey"
-            style="margin: 0px 0px 10px 10px"
-            router-link
-            to="/Order"
-          >{{ $t('order.viewAllOrders') }}</v-btn>
-        </v-card-actions>
+          <v-row>
+            <v-col cols="auto">
+              <v-btn
+                color="success"
+                @click="openCreateOrderSolverSheet"
+                class="mr-2"
+              >
+                <v-icon left>mdi-pencil</v-icon> {{ $t('order.createOrder.solver.create') }}
+              </v-btn>
+              <v-btn
+                outlined
+                color="blue-grey"
+                router-link
+                to="/Order"
+              >{{ $t('order.viewAllOrders') }}</v-btn>
+            </v-col>
+          </v-row>
+        </v-card-text>
       </v-card>
     </v-hover>
   </div>

@@ -51,42 +51,48 @@
                   {{ order.order_user_name }} | {{ order.order_user_gender }} | {{ order.order_user_campus }} | {{ order.order_user_telephone }}
                 </v-card-subtitle>
 
-                <v-card-actions>
-                  <v-btn
-                    v-if="order.order_user_telephone"
-                    color="blue-grey"
-                    dark
-                    @click="telephoneCall(order.order_user_telephone)"
-                    class="ml-2"
-                  >
-                    <v-icon left>mdi-phone-in-talk-outline</v-icon> {{ $t('order.acceptedOrder.telephoneCall') }}
-                  </v-btn>
+                <v-card-text class="pb-2">
+                  <v-row>
+                    <v-col cols="auto">
+                      <v-btn
+                        v-if="order.order_user_telephone"
+                        color="blue-grey"
+                        dark
+                        @click="telephoneCall(order.order_user_telephone)"
+                        class="mr-2"
+                      >
+                        <v-icon left>mdi-phone-in-talk-outline</v-icon> {{ $t('order.acceptedOrder.telephoneCall') }}
+                      </v-btn>
 
-                  <v-btn
-                    color="success"
-                    @click="finishOrder(order)"
-                    class="ml-2"
-                  >
-                    <v-icon left>mdi-checkbox-multiple-marked</v-icon> {{ $t('order.acceptedOrder.finishOrder') }}
-                  </v-btn>
+                      <v-btn
+                        color="success"
+                        @click="finishOrder(order)"
+                        class="mr-2"
+                      >
+                        <v-icon left>mdi-checkbox-multiple-marked</v-icon> {{ $t('order.acceptedOrder.finishOrder') }}
+                      </v-btn>
+                    </v-col>
 
-                  <v-spacer></v-spacer>
+                    <v-spacer />
 
-                  <v-btn
-                    icon
-                    @click="expandPanel(order.order_id)"
-                  >
-                    <v-icon>{{ expandShow === order.order_id ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-                  </v-btn>
-                </v-card-actions>
+                    <v-col cols="auto">
+                      <v-btn
+                        icon
+                        @click="expandPanel(order.order_id)"
+                      >
+                        <v-icon>{{ expandShow === order.order_id ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+                      </v-btn>
+                    </v-col>
+                  </v-row>
+                </v-card-text>
 
                 <v-expand-transition>
                   <div v-show="expandShow === order.order_id">
-                    <v-divider></v-divider>
+                    <v-divider />
 
                     <v-card-subtitle>{{ $t('order.acceptedOrder.expanded.orderId') }}{{ order.order_id }}</v-card-subtitle>
 
-                    <v-card-text>
+                    <v-card-text class="pb-2">
                       <v-row>
                         <!-- 订单描述 -->
                         <v-col

@@ -31,7 +31,7 @@
   "user": {
     "account": {
       "title": "账户资料",
-      "modify": "修改信息",
+      "modify": "编辑信息",
       "modifyPassword": "修改密码",
       "logout": "登出",
       "logoutText": "确定要注销登录吗？",
@@ -67,7 +67,8 @@
       "submit": "修改密码",
       "confirm": "确认",
       "genderRequiredErr": "您需要选择您的医学性别",
-      "campusRequiredErr": "您需要选择您所在的校区"
+      "campusRequiredErr": "您需要选择您所在的校区",
+      "saveModify": "保存修改"
     },
     "statistics": {
       "title": "统计信息",

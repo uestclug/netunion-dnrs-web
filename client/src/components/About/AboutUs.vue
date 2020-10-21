@@ -24,6 +24,8 @@
         <div>联系我们：<a href="mailto:recruit@dormforce.net?body=MAIL FROM INTERNET REPAIR SYSTEM">recruit@dormforce.net</a></div>
       </v-card-text>
 
+      <v-divider class="mx-4" />
+
       <v-card-title>
         NETUNION DNRS WEB
       </v-card-title>

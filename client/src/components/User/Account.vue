@@ -16,7 +16,7 @@
           <v-toolbar-title>{{ $t('user.account.title') }}</v-toolbar-title>
           <v-divider class="mx-4" />
         </v-toolbar>
-        <v-card-text>
+        <v-card-text class="pb-2">
           <v-row>
             <v-col cols="6">
               <p class="body-1 pt-2">
@@ -147,38 +147,36 @@
               ></v-textarea>
             </v-col>
           </v-row>
-
+          <v-row>
+            <v-col cols="auto">
+              <v-btn
+                :color="modifyBtnColor"
+                depressed
+                @click="modifyAccountInfo"
+                :loading="modifyAccountInfoLoading"
+                :disabled="modifyAccountInfoLoading"
+                class="mr-2"
+              ><v-icon left>mdi-account-edit-outline</v-icon
+                >{{ disabled ? $t('user.account.modify'):$t('user.account.saveModify') }}</v-btn
+              >
+              <v-btn
+                depressed
+                @click="modifyPassword"
+                :disabled="!disabled"
+              >
+                <v-icon left>mdi-key-outline</v-icon>{{ $t('user.account.modifyPassword') }}
+              </v-btn>
+            </v-col>
+            <v-spacer></v-spacer>
+            <v-col cols="auto">
+              <v-btn
+                depressed
+                @click="toLogoutDialog"
+                :disabled="!disabled"
+              >{{ $t('user.account.logout') }}</v-btn>
+            </v-col>
+          </v-row>
         </v-card-text>
-        <v-card-actions>
-          <v-btn
-            :color="modifyBtnColor"
-            outlined
-            style="margin: 0px 0px 10px 10px"
-            @click="modifyAccountInfo"
-            class="subtitle-2"
-            :loading="modifyAccountInfoLoading"
-            :disabled="modifyAccountInfoLoading"
-          >
-            <v-icon left>mdi-account-edit-outline</v-icon>{{ $t('user.account.modify') }}
-          </v-btn>
-          <v-btn
-            color="secondary"
-            text
-            style="margin: 0px 0px 10px 10px"
-            @click="modifyPassword"
-            class="subtitle-2"
-          >
-            <v-icon left>mdi-key-outline</v-icon>{{ $t('user.account.modifyPassword') }}
-          </v-btn>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="secondary"
-            text
-            style="margin: 0px 0px 10px 0px"
-            @click="toLogoutDialog"
-            class="subtitle-2"
-          >{{ $t('user.account.logout') }}</v-btn>
-        </v-card-actions>
       </v-card>
     </v-hover>
 
@@ -237,23 +235,26 @@
               ></v-text-field>
             </v-col>
           </v-row>
+          <v-row>
+            <v-spacer />
+            <v-col cols="auto">
+              <v-btn
+                depressed
+                @click="modifyPasswordDialog = false"
+                class="mr-2"
+              >
+                {{ $t('user.account.cancel') }}
+              </v-btn>
+              <v-btn
+                color="primary"
+                @click="submitNewPassword"
+                :loading="submitNewPasswordLoading"
+                :disabled="presentPassword == '' || modifiedPassword == '' ||
+                reModifiedPassword == '' || submitNewPasswordLoading"
+              >{{ $t('user.account.submit') }}</v-btn>
+            </v-col>
+          </v-row>
         </v-form>
-        <v-card-actions class="mr-4">
-          <v-spacer></v-spacer>
-          <v-btn
-            depressed
-            @click="modifyPasswordDialog = false"
-          >
-            {{ $t('user.account.cancel') }}
-          </v-btn>
-          <v-btn
-            color="primary"
-            @click="submitNewPassword"
-            :loading="submitNewPasswordLoading"
-            :disabled="presentPassword == '' || modifiedPassword == '' ||
-            reModifiedPassword == '' || submitNewPasswordLoading"
-          >{{ $t('user.account.submit') }}</v-btn>
-        </v-card-actions>
       </v-card>
     </v-dialog>
 

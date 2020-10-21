@@ -72,8 +72,8 @@
 
       <template v-slot:append>
         <v-card
-          class="mx-auto"
-          style="padding: 10px; text-align: center"
+          class="pt-4"
+          style="text-align: center"
         >
           <v-icon>{{darkModeSwitch?'mdi-brightness-4':'mdi-brightness-7'}}</v-icon>
           {{ $t('theme.darkMode') }}

@@ -9,25 +9,26 @@
         class="mx-auto transition-swing"
         max-width="800"
       >
-        <v-card-text>
+        <v-card-text class="pb-2">
           <p class="subtitle-1">{{ $t('home.welcomeUser.words') }}<v-divider></v-divider>
           </p>
           <p class="headline text--primary font-weight-medium">{{ $t('home.welcomeUser.slogan') }}</p>
+          <v-row>
+            <v-col cols="auto">
+              <v-btn
+                :color="actionBtnColor"
+                @click="openCreateOrderUserSheet"
+                :disabled="orderInfoLoading"
+                :loading="orderInfoLoading"
+                class="mr-2"
+              >
+                <v-icon left>mdi-pencil</v-icon>
+                <span v-if="enableCreateOrder">{{ $t('order.createOrder.user.create') }}</span>
+                <span v-else>{{ $t('order.createOrder.user.modify') }}</span>
+              </v-btn>
+            </v-col>
+          </v-row>
         </v-card-text>
-
-        <v-card-actions>
-          <v-btn
-            :color="actionBtnColor"
-            style="margin: 0px 0px 10px 10px"
-            @click="openCreateOrderUserSheet"
-            :disabled="orderInfoLoading"
-            :loading="orderInfoLoading"
-          >
-            <v-icon left>mdi-pencil</v-icon>
-            <span v-if="enableCreateOrder">{{ $t('order.createOrder.user.create') }}</span>
-            <span v-else>{{ $t('order.createOrder.user.modify') }}</span>
-          </v-btn>
-        </v-card-actions>
       </v-card>
     </v-hover>
   </div>

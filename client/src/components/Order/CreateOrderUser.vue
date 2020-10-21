@@ -80,6 +80,7 @@
                     :label="nameLabel"
                     @input="$v.name.$touch()"
                     @blur="$v.name.$touch()"
+                    prepend-icon="mdi-account"
                   ></v-text-field>
                 </v-col>
 
@@ -92,6 +93,7 @@
                     :label="genderLabel"
                     @change="$v.gender.$touch()"
                     @blur="$v.gender.$touch()"
+                    prepend-icon="mdi-gender-male-female"
                   ></v-select>
                 </v-col>
 
@@ -104,6 +106,7 @@
                     :label="telephoneLabel"
                     @input="$v.telephone.$touch()"
                     @blur="$v.telephone.$touch()"
+                    prepend-icon="mdi-cellphone"
                   ></v-text-field>
                 </v-col>
 
@@ -116,6 +119,7 @@
                     :label="campusLabel"
                     @change="$v.campus.$touch()"
                     @blur="$v.campus.$touch()"
+                    prepend-icon="mdi-domain"
                   ></v-select>
                 </v-col>
 
@@ -127,6 +131,7 @@
                     :label="dormitoryLabel"
                     @input="$v.dormitory.$touch()"
                     @blur="$v.dormitory.$touch()"
+                    prepend-icon="mdi-map-marker"
                   ></v-text-field>
                 </v-col>
 
@@ -136,6 +141,7 @@
                     v-model="description"
                     :label="descriptionLabel"
                     :hint="descriptionHint"
+                    prepend-icon="mdi-calendar-blank"
                   ></v-textarea>
                 </v-col>
               </v-row>
