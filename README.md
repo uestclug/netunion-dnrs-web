@@ -12,17 +12,13 @@ A web-based dormitory network repair system (platform) for students of **Univers
 
 使用本地数据，只进行前端开发。
 
-### Frontend setup
-
 ``` shell
-// client 目录下
 npm install
 ```
 
-### Run frontend server
+### Run frontend serve
 
 ``` shell
-// client 目录下
 npm run frontend
 ```
 
@@ -35,16 +31,21 @@ npm run frontend
 
 ## Development for full-stack
 
-使用服务器数据，进行全栈开发。
+<details>
 
-### Full-stack setup
+<summary>使用服务器数据，进行全栈开发。</summary>
 
 ``` shell
-// 分别在 client 和 server 目录下
 npm install
 ```
 
-修改 `client/src/main.js` 中（前端）开发者模式为 false
+### Full-stack setup
+
+移步到项目 [netunion-dnrs-backend](https://github.com/uestclug/netunion-dnrs-backend) 启动后端服务器。
+
+### Disable frontend devmode
+
+修改 `src/main.js` 中前端开发者模式为 false
 
 ``` js
 // client/src/main.js
@@ -53,42 +54,29 @@ npm install
 Vue.prototype.$DevMode = false
 ```
 
-### Init PostgreSQL
-
-向项目组成员获取测试数据库登录信息。
-
-### Run server
+### Run frontend serve
 
 启动前端网页渲染：
 
 ``` shell
-// client 目录下
 npm run frontend
 ```
 
-启动后端服务器：
+### Log in system
 
-``` shell
-// server 目录下
-npm run backend
-```
+向项目组成员获取系统登录信息。
 
-之后您可以：
-
-- 用户组：使用 `2020091202000` 作为账号，`123123` 作为密码登录。
-- 处理者组：使用 `2018091202000` 作为账号，`123123` 作为密码登录。
+</details>
 
 ## Compiles and minifies for production
 
 ``` shell
-// client 目录下
 npm run build
 ```
 
 ## Lints and fixes files
 
 ``` shell
-// client 目录下
 npm run lint
 ```
 
@@ -99,7 +87,7 @@ Year.Month-B(eta)/S(table) (Number)
 Example:
 
 ``` js
-// client/.env
+// .env
 VUE_APP_VERSION_CODE=20.10-S2
 ```
 

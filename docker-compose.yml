@@ -2,13 +2,13 @@ version: '3'
 
 services:
   frontend:
-    build: ./client
+    build: ./
     image: repair-system-frontend
     ports:
       - 8080:80
 
   backend:
-    build: ./server
+    build: ../netunion-dnrs-backend
     image: repair-system-backend
     environment:
       - POSTGRES_HOST=postgres
