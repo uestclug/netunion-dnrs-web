@@ -1,6 +1,6 @@
 # netunion-dnrs-web
 
-<div align=center><img src="./client/src/assets/networkOff.jpg" alt="你没网啦？" /></div>
+<div align=center><img src="./src/assets/networkOff.jpg" alt="你没网啦？" /></div>
 
 ## NetUnion Dormitory Network Repair System Web
 
