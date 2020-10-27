@@ -16,10 +16,12 @@ Vue.prototype.$GLOBAL = common
 Vue.prototype.$Bus = Bus
 Vue.prototype.$Utils = utils
 
-// Vue.prototype.$DevMode = true 时（默认），将使用本地数据进行前端开发
-// 您可以手动设置 Vue.prototype.$DevMode = false 以连接后端进行测试开发
-// 当然，您需要在 ../../server 目录执行 npm run backend 以启动后端服务器
-// 对此处的修改请勿提交到 git
+/**
+ * Vue.prototype.$DevMode = true 时（默认），将使用本地数据进行前端开发
+ * 您可以手动设置 Vue.prototype.$DevMode = false 以连接后端进行测试开发
+ * 当然，您需要首先[启动后端服务器](https://github.com/uestclug/netunion-dnrs-backend)
+ * 对此处的修改请勿提交到 git
+ */
 Vue.prototype.$DevMode = true
 
 if (process.env.NODE_ENV === 'development') {
@@ -33,7 +35,6 @@ Vue.use(VueAxios, axios)
 
 // 实现国际化
 const i18n = new VueI18n({
-  // 通过切换 this.$i18n.locale 的值来实现语言切换
   locale: 'zh-CN',
   messages: {
     'zh-CN': require('@/common/lang/zh.json'),

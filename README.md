@@ -48,7 +48,6 @@ npm install
 修改 `src/main.js` 中前端开发者模式为 false
 
 ``` js
-// client/src/main.js
 // 默认为 Vue.prototype.$DevMode = true
 // 请勿提交此处修改
 Vue.prototype.$DevMode = false
@@ -86,7 +85,7 @@ Year.Month-B(eta)/S(table) (Number)
 
 Example:
 
-``` js
+``` none
 // .env
 VUE_APP_VERSION_CODE=20.10-S2
 ```
