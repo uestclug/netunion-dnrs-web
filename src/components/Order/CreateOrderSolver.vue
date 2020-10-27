@@ -446,9 +446,9 @@ export default {
 
               const orderUserCampus = this.campus
               if (orderUserCampus == this.$GLOBAL.campus.qingshuihe) {
-                this.modifiedOrder.order_user_campus = '清水河校区'
+                this.modifiedOrder.order_user_campus = '清水河'
               } else if (orderUserCampus == this.$GLOBAL.campus.shahe) {
-                this.modifiedOrder.order_user_campus = '沙河校区'
+                this.modifiedOrder.order_user_campus = '沙河'
               }
 
               this.modifiedOrder.order_user_dormitory = this.dormitory
@@ -515,9 +515,9 @@ export default {
       this.telephone = order.order_user_telephone
       // 设置用户所在校区
       const orderUserCampus = order.order_user_campus
-      if (orderUserCampus == '清水河校区' || orderUserCampus == this.$GLOBAL.campus.qingshuihe) {
+      if (orderUserCampus == '清水河校区' || orderUserCampus == '清水河' || orderUserCampus == this.$GLOBAL.campus.qingshuihe) {
         this.campus = this.campusItems[0]
-      } else if (orderUserCampus == '沙河校区' || orderUserCampus == this.$GLOBAL.campus.shahe) {
+      } else if (orderUserCampus == '沙河校区' || orderUserCampus == '沙河' || orderUserCampus == this.$GLOBAL.campus.shahe) {
         this.campus = this.campusItems[1]
       } else {
         this.campus = ''
