@@ -26,6 +26,7 @@ export default {
   created () {
     if (this.$DevMode) {
       console.log('You are now in DevMode, feel free to develop this website.')
+      console.log('Patch version: ' + process.env.VUE_APP_VERSION_CODE)
     }
   }
 }

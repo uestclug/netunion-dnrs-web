@@ -8,60 +8,46 @@
 
 A web-based dormitory network repair system (platform) for students of **University of Electronic Science and Technology**, which supports online report of dormitory network problems for students of Shahe and Qingshuihe campuses. Don't worry, we are the solvers of dormitory network problems.
 
-## Development for frontend
-
-使用本地数据，只进行前端开发。
+## Development
 
 ``` shell
 npm install
 ```
 
-### Run frontend serve
+### Frontend development
+
+使用预设的数据，进行前端开发。
+
+#### Run frontend serve
 
 ``` shell
 npm run frontend
 ```
 
-### Log in system
+#### Log in system
 
 之后您可以：
 
 - 用户组：使用 `user` 作为账号，任意输入密码登录。
 - 处理者组：使用 `solver` 作为账号，任意输入密码登录。
 
-## Development for full-stack
+### Full stack development
 
 <details>
 
 <summary>使用服务器数据，进行全栈开发。</summary>
 
-``` shell
-npm install
-```
-
-### Full-stack setup
+#### Setup backend server
 
 移步到项目 [netunion-dnrs-backend](https://github.com/uestclug/netunion-dnrs-backend) 启动后端服务器。
 
-### Disable frontend devmode
-
-修改 `src/main.js` 中前端开发者模式为 false
-
-``` js
-// 默认为 Vue.prototype.$DevMode = true
-// 请勿提交此处修改
-Vue.prototype.$DevMode = false
-```
-
-### Run frontend serve
-
-启动前端网页渲染：
+#### Run full stack serve
 
 ``` shell
-npm run frontend
+npm run fullstack
 ```
 
-### Log in system
+#### Log in system
 
 向项目组成员获取系统登录信息。
 

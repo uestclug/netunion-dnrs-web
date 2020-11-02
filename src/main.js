@@ -16,18 +16,15 @@ Vue.prototype.$GLOBAL = common
 Vue.prototype.$Bus = Bus
 Vue.prototype.$Utils = utils
 
-/**
- * Vue.prototype.$DevMode = true 时（默认），将使用本地数据进行前端开发
- * 您可以手动设置 Vue.prototype.$DevMode = false 以连接后端进行测试开发
- * 当然，您需要首先[启动后端服务器](https://github.com/uestclug/netunion-dnrs-backend)
- * 对此处的修改请勿提交到 git
- */
-Vue.prototype.$DevMode = true
-
-if (process.env.NODE_ENV === 'development') {
+if (process.env.VUE_APP_DEV_MODE == 'frontend') {
+  Vue.prototype.$DevMode = true
   Vue.prototype.$DevData = devData
+} else if (process.env.VUE_APP_DEV_MODE == 'fullstack') {
+  Vue.prototype.$DevMode = false
+  Vue.prototype.$DevData = null
 } else {
   Vue.prototype.$DevMode = false
+  Vue.prototype.$DevData = null
 }
 
 Vue.use(VueI18n)
