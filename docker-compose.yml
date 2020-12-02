@@ -6,10 +6,12 @@ services:
     image: repair-system-frontend
     ports:
       - 8080:80
+    restart: on-failure
 
   backend:
     build: ../netunion-dnrs-backend
     image: repair-system-backend
+    restart: on-failure
     environment:
       - POSTGRES_HOST=postgres
       - POSTGRES_USER=netunion_dnrs_visitor
@@ -18,6 +20,7 @@ services:
 
   postgres:
     image: postgres:alpine
+    restart: on-failure
     volumes:
       - database:/var/lib/postgresql/data
     environment:
