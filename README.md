@@ -10,7 +10,7 @@ A web-based dormitory network repair system (platform) for students of **Univers
 
 ## Frontend development
 
-使用预设的数据，进行前端开发。
+Front-end development using pre-defined data.
 
 ``` shell
 npm install
@@ -24,16 +24,16 @@ npm run frontend
 
 ### Log in system
 
-之后您可以选择以下两种身份登录系统：
+Then you can log in to the system under two different identities.
 
-- **用户**：使用 `user` 作为账号，任意输入密码登录。
-- **处理者**：使用 `solver` 作为账号，任意输入密码登录。
+- **User**: Use `user` as username and enter any password to log in.
+- **Solver**: Use `solver` as username and enter any password to log in.
 
 ## Full stack development
 
 <details>
 
-<summary>使用服务器数据，进行全栈开发。</summary>
+<summary>Use server data for full-stack development.</summary>
 
 <br />
 
@@ -43,7 +43,7 @@ npm install
 
 ### Setup backend server
 
-移步到项目 [netunion-dnrs-backend](https://github.com/uestclug/netunion-dnrs-backend) 启动后端服务器。
+Go to project [netunion-dnrs-backend](https://github.com/uestclug/netunion-dnrs-backend) and start the backend server.
 
 ### Run full stack serve
 
@@ -53,7 +53,7 @@ npm run fullstack
 
 ### Log in system
 
-向项目组成员获取系统登录信息。
+Ask system login information from project team members.
 
 </details>
 
