@@ -1,10 +1,7 @@
 <template>
   <div>
     <!-- Drawer -->
-    <v-navigation-drawer
-      app
-      v-model="drawer"
-    >
+    <v-navigation-drawer app v-model="drawer">
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="title mb-2 mt-2">
@@ -20,10 +17,7 @@
 
       <v-list shaped>
         <v-list-item-group color="success">
-          <v-list-item
-            router-link
-            to="/"
-          >
+          <v-list-item router-link to="/">
             <v-list-item-action>
               <v-icon>mdi-home</v-icon>
             </v-list-item-action>
@@ -32,10 +26,7 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item
-            router-link
-            to="/User"
-          >
+          <v-list-item router-link to="/User">
             <v-list-item-action>
               <v-icon>mdi-account-circle</v-icon>
             </v-list-item-action>
@@ -44,10 +35,7 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item
-            router-link
-            to="/Order"
-          >
+          <v-list-item router-link to="/Order">
             <v-list-item-action>
               <v-icon>mdi-clipboard-check-multiple</v-icon>
             </v-list-item-action>
@@ -56,10 +44,7 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item
-            router-link
-            to="/About"
-          >
+          <v-list-item router-link to="/About">
             <v-list-item-action>
               <v-icon>mdi-iframe</v-icon>
             </v-list-item-action>
@@ -71,11 +56,10 @@
       </v-list>
 
       <template v-slot:append>
-        <v-card
-          class="pt-4"
-          style="text-align: center"
-        >
-          <v-icon>{{darkModeSwitch?'mdi-brightness-4':'mdi-brightness-7'}}</v-icon>
+        <v-card class="pt-4" style="text-align: center">
+          <v-icon>{{
+            darkModeSwitch ? 'mdi-brightness-4' : 'mdi-brightness-7'
+          }}</v-icon>
           {{ $t('theme.darkMode') }}
           <v-switch
             v-model="darkModeSwitch"
@@ -88,10 +72,7 @@
     </v-navigation-drawer>
 
     <!-- App Bar -->
-    <v-app-bar
-      app
-      hide-on-scroll
-    >
+    <v-app-bar app hide-on-scroll>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title>{{ $t($route.meta.viewTitle) }}</v-toolbar-title>
       <v-spacer></v-spacer>
@@ -148,10 +129,7 @@ export default {
   },
   data: () => ({
     drawer: null,
-    languages: [
-      { text: '简体中文' },
-      { text: 'ENGLISH' }
-    ],
+    languages: [{ text: '简体中文' }, { text: 'ENGLISH' }],
     darkModeSwitch: false
   }),
   beforeCreate () {
@@ -167,7 +145,8 @@ export default {
     }
   },
   methods: {
-    setDefaultLanguage () { // 使用 localStorage 保存用户使用语言习惯
+    setDefaultLanguage () {
+      // 使用 localStorage 保存用户使用语言习惯
       const dl = localStorage.getItem('defaultLanguage')
       if (dl != null) {
         this.defaultLanguage = dl
@@ -181,7 +160,8 @@ export default {
         localStorage.setItem('defaultLanguage', '简体中文')
       }
     },
-    switchLanguage (id) { // 选择语言
+    switchLanguage (id) {
+      // 选择语言
       if (id === '简体中文') {
         this.$i18n.locale = 'zh-CN'
       } else if (id === 'ENGLISH') {
@@ -189,7 +169,8 @@ export default {
       }
       localStorage.setItem('defaultLanguage', id)
     },
-    changeLanguage () { // 点击 icon 一键切换语言
+    changeLanguage () {
+      // 点击 icon 一键切换语言
       if (this.$i18n.locale === 'zh-CN') {
         this.$i18n.locale = 'en-US'
         this.defaultLanguage = 'ENGLISH'
@@ -200,7 +181,8 @@ export default {
         localStorage.setItem('defaultLanguage', '简体中文')
       }
     },
-    setDefaultMode () { // 使用 localStorage 保存界面夜间模式
+    setDefaultMode () {
+      // 使用 localStorage 保存界面夜间模式
       const ddm = localStorage.getItem('defaultDarkMode')
       if (ddm != null) {
         this.defaultDarkMode = ddm
@@ -214,7 +196,8 @@ export default {
         localStorage.setItem('defaultDarkMode', 'false')
       }
     },
-    changeMode (value) { // 设置夜间模式
+    changeMode (value) {
+      // 设置夜间模式
       localStorage.setItem('defaultDarkMode', value)
       if (value === true) {
         this.$vuetify.theme.dark = true

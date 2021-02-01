@@ -1,8 +1,5 @@
 <template>
-  <v-dialog
-    v-model="dialog"
-    max-width="600"
-  >
+  <v-dialog v-model="dialog" max-width="600">
     <v-card>
       <v-card-title>
         {{ $t('order.actionNotesDialog.title') }}
@@ -11,24 +8,15 @@
         {{ $t('order.actionNotesDialog.subtitle') }}
       </v-card-subtitle>
       <v-card-text>
-        <div
-          v-if="actionNotesLoading"
-          class="text--primary"
-        >
+        <div v-if="actionNotesLoading" class="text--primary">
           {{ $t('order.actionNotesDialog.actionNotesLoading') }}
         </div>
-        <div
-          v-else-if="actionNotes.length == 0"
-          class="body-1 text--primary"
-        >
+        <div v-else-if="actionNotes.length == 0" class="body-1 text--primary">
           {{ $t('order.actionNotesDialog.actionNotesNotFound') }}
         </div>
         <div v-else>
           <template v-for="notes in actionNotes">
-            <div
-              v-bind:key="notes.action_date"
-              class="mt-1"
-            >
+            <div v-bind:key="notes.action_date" class="mt-1">
               <v-tooltip left>
                 <template v-slot:activator="{ on, attrs }">
                   <v-chip
@@ -37,7 +25,8 @@
                     v-bind="attrs"
                     v-on="on"
                     :color="notes.user_id == userId ? 'primary' : ''"
-                  >{{ notes.action_date }}</v-chip>
+                    >{{ notes.action_date }}</v-chip
+                  >
                   <span class="text--primary">{{ notes.notes_text }}</span>
                 </template>
                 <span>{{ notes.user_name }}</span>
@@ -46,12 +35,11 @@
           </template>
         </div>
       </v-card-text>
-      <v-card-actions class="mr-4">
+      <v-card-actions class="mr-4 pb-4">
         <v-spacer />
-        <v-btn
-          depressed
-          @click="dialog = false"
-        >{{ $t('order.actionNotesDialog.close') }}</v-btn>
+        <v-btn depressed @click="dialog = false">{{
+          $t('order.actionNotesDialog.close')
+        }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -77,18 +65,20 @@ export default {
         return
       }
 
-      this.axios.post('api/order/queryOrderActionNotes', {
-        order_id: this.order.order_id
-      }).then((Response) => {
-        if (Response.data) {
-          this.actionNotes = Response.data
-        }
-        this.actionNotesLoading = false
-      })
+      this.axios
+        .post('api/order/queryOrderActionNotes', {
+          order_id: this.order.order_id
+        })
+        .then(Response => {
+          if (Response.data) {
+            this.actionNotes = Response.data
+          }
+          this.actionNotesLoading = false
+        })
     }
   },
   mounted () {
-    this.$Bus.$on('openOrderActionNotesDialog', (msg) => {
+    this.$Bus.$on('openOrderActionNotesDialog', msg => {
       this.userId = localStorage.user_id
       if (this.order == null || this.order != msg) this.order = msg
       this.queryOrderActionNotes()

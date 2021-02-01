@@ -33,5 +33,5 @@ export default {
 </script>
 
 <style lang="sass">
-  @import '@/common/sass/main.scss'
+@import '@/common/sass/main.scss'
 </style>

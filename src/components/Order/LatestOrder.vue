@@ -1,26 +1,17 @@
 <template>
   <div>
-    <v-hover
-      v-slot:default="{ hover }"
-      open-delay="200"
-    >
+    <v-hover v-slot:default="{ hover }" open-delay="200">
       <v-card
         :elevation="hover ? 16 : 2"
         class="mx-auto transition-swing"
         max-width="800"
       >
-        <v-toolbar
-          flat
-          class="body-1 pt-2"
-        >
+        <v-toolbar flat class="body-1 pt-2">
           <v-toolbar-title>{{ $t('order.latestOrder.title') }}</v-toolbar-title>
           <v-divider class="mx-4" />
         </v-toolbar>
 
-        <v-container
-          v-if="infoLoading"
-          style="text-align: center;"
-        >
+        <v-container v-if="infoLoading" style="text-align: center;">
           <div class="loadingio-spinner-ripple-s9nf2nweyv">
             <div class="ldio-62v9m71m4dc">
               <div></div>
@@ -30,7 +21,7 @@
         </v-container>
 
         <div v-else>
-          <v-card-text class="pb-2">
+          <v-card-text class="pb-4">
             <v-row>
               <v-col cols="6">
                 <p class="body-1">
@@ -78,7 +69,8 @@
                   :disabled="telephoneCallDisabled"
                   class="mr-2"
                 >
-                  <v-icon left>mdi-phone-in-talk-outline</v-icon> {{ $t('order.acceptedOrder.telephoneCall') }}
+                  <v-icon left>mdi-phone-in-talk-outline</v-icon>
+                  {{ $t('order.acceptedOrder.telephoneCall') }}
                 </v-btn>
 
                 <v-btn
@@ -86,7 +78,8 @@
                   @click="toCancelOrderDialog"
                   :disabled="cancelDisabled"
                 >
-                  <v-icon left>mdi-close</v-icon> {{ $t('order.latestOrder.cancelOrder') }}
+                  <v-icon left>mdi-close</v-icon>
+                  {{ $t('order.latestOrder.cancelOrder') }}
                 </v-btn>
               </v-col>
 
@@ -98,7 +91,9 @@
                   @click="showDetails = !showDetails"
                   class="subtitle-2"
                 >
-                  <v-icon>{{ showDetails ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+                  <v-icon>{{
+                    showDetails ? 'mdi-chevron-up' : 'mdi-chevron-down'
+                  }}</v-icon>
                 </v-btn>
               </v-col>
             </v-row>
@@ -108,7 +103,9 @@
             <div v-show="showDetails">
               <v-divider />
 
-              <v-card-subtitle>{{ $t('order.latestOrder.orderInfo') }}</v-card-subtitle>
+              <v-card-subtitle>{{
+                $t('order.latestOrder.orderInfo')
+              }}</v-card-subtitle>
 
               <v-card-text class="pb-2">
                 <v-row>
@@ -166,10 +163,7 @@
     </v-hover>
 
     <!-- 取消订单 Dialog -->
-    <v-dialog
-      v-model="cancelDialog"
-      max-width="600"
-    >
+    <v-dialog v-model="cancelDialog" max-width="600">
       <v-card>
         <v-card-title>
           {{ $t('order.latestOrder.cancelOrder') }}
@@ -179,16 +173,16 @@
         </v-card-text>
         <v-card-actions class="mr-4">
           <v-spacer></v-spacer>
-          <v-btn
-            depressed
-            @click="cancelDialog = false"
-          >{{ $t('order.latestOrder.cancel') }}</v-btn>
+          <v-btn depressed @click="cancelDialog = false">{{
+            $t('order.latestOrder.cancel')
+          }}</v-btn>
           <v-btn
             color="primary"
             @click="cancelOrder"
             :loading="loading"
             :disabled="loading"
-          >{{ $t('order.latestOrder.confirm') }}</v-btn>
+            >{{ $t('order.latestOrder.confirm') }}</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -240,7 +234,8 @@ export default {
       window.location.href = 'tel:' + telephone
     }
   },
-  created: async function () { // 获取最近的订单信息
+  created: async function () {
+    // 获取最近的订单信息
     let orderInfo
     if (this.$DevMode) {
       // 赋值处理时间可能快于 WelcomeUser 组件加载完成时间
@@ -252,22 +247,25 @@ export default {
       orderInfo = Response.data
     }
 
-    if (orderInfo) { // 用户存在最近的订单
+    if (orderInfo) {
+      // 用户存在最近的订单
       this.order = orderInfo
       this.orderDormitory = orderInfo.order_user_dormitory
       this.orderName = orderInfo.order_user_name
       this.orderCampus = orderInfo.order_user_campus
       this.orderTelephone = orderInfo.order_user_telephone
-      if (orderInfo.order_user_description !== '') this.orderDescription = orderInfo.order_user_description
+      if (orderInfo.order_user_description !== '') { this.orderDescription = orderInfo.order_user_description }
       this.createDate = orderInfo.create_date
       const status = orderInfo.order_status
       localStorage.setItem('latest_order_id', orderInfo.order_id)
 
-      if (status === this.$GLOBAL.status.waiting) { // 用户可以取消订单
+      if (status === this.$GLOBAL.status.waiting) {
+        // 用户可以取消订单
         // 订单为等待接单状态
         this.orderStatus = this.$i18n.t('order.waitingStatus')
         this.cancelDisabled = false
-      } else { // 用户不可取消订单
+      } else {
+        // 用户不可取消订单
         if (status === this.$GLOBAL.status.receipted) {
           // 订单为已接单状态
           this.orderStatus = this.$i18n.t('order.receiptedStatus')
@@ -288,16 +286,22 @@ export default {
         }
         this.cancelDisabled = true
       }
-      if (orderInfo.solver_id !== null) { // 存在接单者时
-        if (orderInfo.order_solver_nickname != null &&
-          orderInfo.order_solver_nickname != '') {
+      if (orderInfo.solver_id !== null) {
+        // 存在接单者时
+        if (
+          orderInfo.order_solver_nickname != null &&
+          orderInfo.order_solver_nickname != ''
+        ) {
           this.orderSolverName = orderInfo.order_solver_nickname
         } else {
           this.orderSolverName = orderInfo.order_solver_name
         }
         this.orderSolverTelephone = orderInfo.order_solver_telephone
-        if (this.orderStatus == this.$i18n.t('order.receiptedStatus') &&
-          this.orderSolverTelephone.length >= 4) { // 假设联系方式应至少为 4 位号码
+        if (
+          this.orderStatus == this.$i18n.t('order.receiptedStatus') &&
+          this.orderSolverTelephone.length >= 4
+        ) {
+          // 假设联系方式应至少为 4 位号码
           this.telephoneCallDisabled = false
         }
       }

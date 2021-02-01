@@ -285,15 +285,17 @@
                   </v-col>
                 </v-row>
 
+                <v-divider class="mt-4 mb-4" />
+
                 <!-- 订单额外操作 -->
-                <v-row class="mb-3">
+                <v-row class="mb-1">
                   <v-col v-if="item.order_status !== $GLOBAL.status.recorded">
                     <!-- 查看出勤记录 -->
                     <v-btn
                       small
                       depressed
                       @click="openAttnDialog(item)"
-                      class="mr-2"
+                      class="mr-2 mb-1"
                     >
                       <v-icon
                         small
@@ -305,7 +307,7 @@
                       small
                       depressed
                       @click="openAssigneeDialog(item)"
-                      class="mr-2"
+                      class="mr-2 mb-1"
                     >
                       <v-icon
                         small
@@ -315,7 +317,7 @@
                     <!-- 显示更多操作 -->
                     <v-btn
                       @click="showExtraActions = !showExtraActions"
-                      class="mr-2"
+                      class="mr-2 mb-1"
                       icon
                     >
                       <v-icon>mdi-{{ showExtraActions ? "chevron-left-circle-outline" : "chevron-right-circle-outline" }}</v-icon>
@@ -326,7 +328,7 @@
                       depressed
                       v-show="showExtraActions"
                       @click="openOrderActionNotesDialog(item)"
-                      class="mr-2"
+                      class="mr-2 mb-1"
                     >
                       <v-icon
                         small
@@ -341,7 +343,7 @@
                       v-if="item.order_status === $GLOBAL.status.receipted"
                       :disabled="!item.is_solver"
                       @click="cancelOrder(item)"
-                      class="mr-2"
+                      class="mr-2 mb-1"
                     >
                       <v-icon
                         small
@@ -356,6 +358,7 @@
                       v-if="item.order_status === $GLOBAL.status.waiting || item.order_status === $GLOBAL.status.receipted"
                       :disabled="item.order_status === $GLOBAL.status.receipted && !item.is_solver"
                       @click="closeOrder(item)"
+                      class="mb-1"
                     >
                       <v-icon
                         small
@@ -370,24 +373,13 @@
                       v-if="item.order_status === $GLOBAL.status.finished"
                       :disabled="!item.is_solver"
                       @click="restartOrder(item)"
+                      class="mb-1"
                     >
                       <v-icon
                         small
                         left
                       >mdi-progress-wrench</v-icon>{{ $t('order.orderList.expanded.restartOrder') }}
                     </v-btn>
-                    <!-- 删除订单记录
-                    <v-btn
-                      small
-                      depressed
-                      v-if="item.order_status === $GLOBAL.status.canceledByUser ||
-                      item.order_status === $GLOBAL.status.canceledBySolver ||
-                      (item.order_status === $GLOBAL.status.finished && item.is_solver) ||
-                      (item.order_status === $GLOBAL.status.recorded && item.is_solver)"
-                      label
-                      @click="deleteOrder(item)"
-                    >删除此订单</v-btn>
-                    -->
                   </v-col>
                 </v-row>
               </td>

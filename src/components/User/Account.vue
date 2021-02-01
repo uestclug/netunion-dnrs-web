@@ -16,7 +16,7 @@
           <v-toolbar-title>{{ $t('user.account.title') }}</v-toolbar-title>
           <v-divider class="mx-4" />
         </v-toolbar>
-        <v-card-text class="pb-2">
+        <v-card-text>
           <v-row>
             <v-col cols="6">
               <p class="body-1 pt-2">
@@ -237,7 +237,7 @@
           </v-row>
           <v-row>
             <v-spacer />
-            <v-col cols="auto">
+            <v-col cols="auto" class="pb-4">
               <v-btn
                 depressed
                 @click="modifyPasswordDialog = false"

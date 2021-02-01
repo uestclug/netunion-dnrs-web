@@ -9,10 +9,7 @@
         <v-form ref="bottomForm" v-if="!orderSubmit">
           <v-card flat>
             <v-card-title>
-              <v-tooltip
-                right
-                v-if="!isUnlogged"
-              >
+              <v-tooltip right v-if="!isUnlogged">
                 <template v-slot:activator="{ on, attr }">
                   <v-btn
                     v-if="!isModify"
@@ -21,7 +18,8 @@
                     color="primary"
                     @click="autoEnter"
                     class="subtitle-2"
-                  >{{ $t('order.createOrder.user.autoEnter') }}</v-btn>
+                    >{{ $t('order.createOrder.user.autoEnter') }}</v-btn
+                  >
                   <v-btn
                     v-else
                     v-on="on"
@@ -29,9 +27,12 @@
                     color="primary"
                     @click="resetForm"
                     class="subtitle-2"
-                  >{{ $t('order.modifyOrder.user.reset') }}</v-btn>
+                    >{{ $t('order.modifyOrder.user.reset') }}</v-btn
+                  >
                 </template>
-                <span v-if="!isModify">{{ $t('order.createOrder.user.autoEnterNote') }}</span>
+                <span v-if="!isModify">{{
+                  $t('order.createOrder.user.autoEnterNote')
+                }}</span>
                 <span v-else>{{ $t('order.modify.user.resetNote') }}</span>
               </v-tooltip>
               <span v-else>
@@ -49,7 +50,8 @@
                     v-bind="attrs"
                     class="mr-2"
                     @click="sheet = false"
-                  >{{ $t('order.createOrder.user.cancel') }}</v-btn>
+                    >{{ $t('order.createOrder.user.cancel') }}</v-btn
+                  >
                 </template>
                 <span>{{ $t('order.createOrder.user.cancelTip') }}</span>
               </v-tooltip>
@@ -61,16 +63,15 @@
                 :loading="submitLoading"
                 :disabled="submitLoading"
               >
-                <span v-if="!isModify">{{ $t('order.createOrder.user.submit') }}</span>
+                <span v-if="!isModify">{{
+                  $t('order.createOrder.user.submit')
+                }}</span>
                 <span v-else>{{ $t('order.modifyOrder.user.submit') }}</span>
                 <v-icon right>mdi-check</v-icon>
               </v-btn>
             </v-card-title>
             <v-card-text>
-              <v-row
-                class="mt-6"
-                justify="center"
-              >
+              <v-row class="mt-6" justify="center">
                 <!-- 姓名表单 -->
                 <v-col cols="3">
                   <v-text-field
@@ -151,7 +152,9 @@
         <!-- 未登录用户创建订单成功后显示此页面 -->
         <v-card flat v-else>
           <div class="text-center grey--text text--darken-3">
-            <v-icon class="pt-10 pb-6" style="font-size: 64px;">mdi-checkbox-marked-circle-outline</v-icon>
+            <v-icon class="pt-10 pb-6" style="font-size: 64px;"
+              >mdi-checkbox-marked-circle-outline</v-icon
+            >
             <h1 class="pb-4">
               {{ $t('order.createOrder.unlogged.successTitle') }}
             </h1>
@@ -216,34 +219,44 @@ export default {
     nameErrors () {
       const errors = []
       if (!this.$v.name.$dirty) return errors
-      !this.$v.name.maxLength && errors.push(this.$i18n.t('order.createOrder.user.nameMaxLengthErr'))
-      !this.$v.name.required && errors.push(this.$i18n.t('order.createOrder.user.nameRequiredErr'))
+      !this.$v.name.maxLength &&
+        errors.push(this.$i18n.t('order.createOrder.user.nameMaxLengthErr'))
+      !this.$v.name.required &&
+        errors.push(this.$i18n.t('order.createOrder.user.nameRequiredErr'))
       return errors
     },
     genderErrors () {
       const errors = []
       if (!this.$v.gender.$dirty) return errors
-      !this.$v.gender.required && errors.push(this.$i18n.t('order.createOrder.user.genderRequiredErr'))
+      !this.$v.gender.required &&
+        errors.push(this.$i18n.t('order.createOrder.user.genderRequiredErr'))
       return errors
     },
     campusErrors () {
       const errors = []
       if (!this.$v.campus.$dirty) return errors
-      !this.$v.campus.required && errors.push(this.$i18n.t('order.createOrder.user.campusRequiredErr'))
+      !this.$v.campus.required &&
+        errors.push(this.$i18n.t('order.createOrder.user.campusRequiredErr'))
       return errors
     },
     dormitoryErrors () {
       const errors = []
       if (!this.$v.dormitory.$dirty) return errors
-      !this.$v.dormitory.required && errors.push(this.$i18n.t('order.createOrder.user.dormitoryRequiredErr'))
+      !this.$v.dormitory.required &&
+        errors.push(this.$i18n.t('order.createOrder.user.dormitoryRequiredErr'))
       return errors
     },
     telephoneErrors () {
       const errors = []
       if (!this.$v.telephone.$dirty) return errors
-      !this.$v.telephone.numeric && errors.push(this.$i18n.t('order.createOrder.user.telephoneNumericErr'))
-      !this.$v.telephone.maxLength && errors.push(this.$i18n.t('order.createOrder.user.telephoneMaxLengthErr'))
-      !this.$v.telephone.required && errors.push(this.$i18n.t('order.createOrder.user.telephoneRequiredErr'))
+      !this.$v.telephone.numeric &&
+        errors.push(this.$i18n.t('order.createOrder.user.telephoneNumericErr'))
+      !this.$v.telephone.maxLength &&
+        errors.push(
+          this.$i18n.t('order.createOrder.user.telephoneMaxLengthErr')
+        )
+      !this.$v.telephone.required &&
+        errors.push(this.$i18n.t('order.createOrder.user.telephoneRequiredErr'))
       return errors
     },
     nameLabel () {
@@ -271,15 +284,25 @@ export default {
   methods: {
     submit () {
       this.$v.$touch()
-      if (this.nameErrors.length === 0 && this.genderErrors.length === 0 &&
-        this.campusErrors.length === 0 && this.dormitoryErrors.length === 0 &&
-        this.telephoneErrors.length === 0) {
+      if (
+        this.nameErrors.length === 0 &&
+        this.genderErrors.length === 0 &&
+        this.campusErrors.length === 0 &&
+        this.dormitoryErrors.length === 0 &&
+        this.telephoneErrors.length === 0
+      ) {
         if (this.$DevMode) {
           if (this.isModify) {
-            this.$Bus.$emit('setSnackbar', this.$i18n.t('order.modifyOrder.user.modifySucceed'))
+            this.$Bus.$emit(
+              'setSnackbar',
+              this.$i18n.t('order.modifyOrder.user.modifySucceed')
+            )
             this.sheet = false
           } else {
-            this.$Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.createSucceed'))
+            this.$Bus.$emit(
+              'setSnackbar',
+              this.$i18n.t('order.createOrder.user.createSucceed')
+            )
             if (this.isUnlogged) this.orderSubmit = true
             else this.sheet = false
           }
@@ -288,70 +311,100 @@ export default {
 
         this.submitLoading = true
 
-        if (!this.isModify) { // 创建订单模式
-          if (this.isUnlogged) { // 未登录用户
-            this.axios.post('/api/order/createOrderUnlogged', {
+        if (!this.isModify) {
+          // 创建订单模式
+          if (this.isUnlogged) {
+            // 未登录用户
+            this.axios
+              .post('/api/order/createOrderUnlogged', {
+                user_name: this.name,
+                user_gender: this.gender,
+                user_telephone: this.telephone,
+                user_campus: this.campus,
+                user_dormitory: this.dormitory,
+                user_description: this.description
+              })
+              .then(Response => {
+                if (Response.data) {
+                  this.$Bus.$emit(
+                    'setSnackbar',
+                    this.$i18n.t('order.createOrder.user.createSucceed')
+                  )
+                  this.orderSubmit = true
+                  this.submitLoading = false
+                } else {
+                  this.$Bus.$emit(
+                    'setSnackbar',
+                    this.$i18n.t('order.createOrder.user.createFailed')
+                  )
+                  this.submitLoading = false
+                }
+              })
+          } else {
+            // 已登录用户
+            this.axios
+              .post('/api/order/createOrderUser', {
+                user_name: this.name,
+                user_gender: this.gender,
+                user_telephone: this.telephone,
+                user_campus: this.campus,
+                user_dormitory: this.dormitory,
+                user_description: this.description
+              })
+              .then(Response => {
+                if (Response.data) {
+                  // 订单提交成功，通过切换路由更新页面
+                  this.$Bus.$emit(
+                    'setSnackbar',
+                    this.$i18n.t('order.createOrder.user.createSucceed')
+                  )
+                  this.sheet = false
+                  this.submitLoading = false
+                  this.refreshRouter()
+                  if (this.isNewUser) this.modifyAccountInfo() // 首次创建订单自动将信息同步到账号信息
+                } else {
+                  this.$Bus.$emit(
+                    'setSnackbar',
+                    this.$i18n.t('order.createOrder.user.createFailed')
+                  )
+                  this.submitLoading = false
+                }
+              })
+          }
+        } else {
+          // 修改订单模式
+          this.axios
+            .post('/api/order/modifyOrderUser', {
+              order_id: this.order.order_id,
               user_name: this.name,
               user_gender: this.gender,
               user_telephone: this.telephone,
               user_campus: this.campus,
               user_dormitory: this.dormitory,
               user_description: this.description
-            }).then((Response) => {
-              if (Response.data) {
-                this.$Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.createSucceed'))
-                this.orderSubmit = true
-                this.submitLoading = false
-              } else {
-                this.$Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.createFailed'))
-                this.submitLoading = false
-              }
             })
-          } else { // 已登录用户
-            this.axios.post('/api/order/createOrderUser', {
-              user_name: this.name,
-              user_gender: this.gender,
-              user_telephone: this.telephone,
-              user_campus: this.campus,
-              user_dormitory: this.dormitory,
-              user_description: this.description
-            }).then((Response) => {
-              if (Response.data) { // 订单提交成功，通过切换路由更新页面
-                this.$Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.createSucceed'))
+            .then(Response => {
+              if (Response.data) {
+                this.$Bus.$emit(
+                  'setSnackbar',
+                  this.$i18n.t('order.modifyOrder.user.modifySucceed')
+                )
                 this.sheet = false
                 this.submitLoading = false
                 this.refreshRouter()
-                if (this.isNewUser) this.modifyAccountInfo() // 首次创建订单自动将信息同步到账号信息
               } else {
-                this.$Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.createFailed'))
+                this.$Bus.$emit(
+                  'setSnackbar',
+                  this.$i18n.t('order.modifyOrder.user.modifyFailed')
+                )
                 this.submitLoading = false
               }
             })
-          }
-        } else { // 修改订单模式
-          this.axios.post('/api/order/modifyOrderUser', {
-            order_id: this.order.order_id,
-            user_name: this.name,
-            user_gender: this.gender,
-            user_telephone: this.telephone,
-            user_campus: this.campus,
-            user_dormitory: this.dormitory,
-            user_description: this.description
-          }).then((Response) => {
-            if (Response.data) {
-              this.$Bus.$emit('setSnackbar', this.$i18n.t('order.modifyOrder.user.modifySucceed'))
-              this.sheet = false
-              this.submitLoading = false
-              this.refreshRouter()
-            } else {
-              this.$Bus.$emit('setSnackbar', this.$i18n.t('order.modifyOrder.user.modifyFailed'))
-              this.submitLoading = false
-            }
-          })
         }
       }
     },
-    autoEnter () { // 从 localstorage 读取用户资料并填写
+    autoEnter () {
+      // 从 localstorage 读取用户资料并填写
       this.name = localStorage.getItem('name')
       this.gender = localStorage.getItem('gender')
       this.telephone = localStorage.getItem('telephone')
@@ -373,47 +426,59 @@ export default {
     modifyAccountInfo () {
       if (this.$DevMode) return
 
-      this.axios.post('/api/user/modifyAccountInfo', {
-        name: this.name,
-        gender: this.gender,
-        campus: this.campus,
-        dormitory: this.dormitory,
-        telephone: this.telephone
-      }).then((Response) => {
-        if (Response.data) {
-          this.$Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.modifyAccountInfoSucceed'))
-          localStorage.setItem('name', this.name)
-          localStorage.setItem('gender', this.gender)
-          localStorage.setItem('campus', this.campus)
-          localStorage.setItem('telephone', this.telephone)
-          localStorage.setItem('dormitory', this.dormitory)
-        } else {
-          this.$Bus.$emit('setSnackbar', this.$i18n.t('order.createOrder.user.modifyAccountInfoFailed'))
-        }
-      })
+      this.axios
+        .post('/api/user/modifyAccountInfo', {
+          name: this.name,
+          gender: this.gender,
+          campus: this.campus,
+          dormitory: this.dormitory,
+          telephone: this.telephone
+        })
+        .then(Response => {
+          if (Response.data) {
+            this.$Bus.$emit(
+              'setSnackbar',
+              this.$i18n.t('order.createOrder.user.modifyAccountInfoSucceed')
+            )
+            localStorage.setItem('name', this.name)
+            localStorage.setItem('gender', this.gender)
+            localStorage.setItem('campus', this.campus)
+            localStorage.setItem('telephone', this.telephone)
+            localStorage.setItem('dormitory', this.dormitory)
+          } else {
+            this.$Bus.$emit(
+              'setSnackbar',
+              this.$i18n.t('order.createOrder.user.modifyAccountInfoFailed')
+            )
+          }
+        })
     }
   },
   mounted () {
-    this.$Bus.$on('openCreateOrderUserSheet', (msg) => {
-      if (msg.isUnlogged) { // 未登录用户
+    this.$Bus.$on('openCreateOrderUserSheet', msg => {
+      if (msg.isUnlogged) {
+        // 未登录用户
         this.isUnlogged = true
         this.isModify = false
         this.order = []
         this.isNewUser = false
-      } else { // 已登录用户
+      } else {
+        // 已登录用户
         this.isUnlogged = false
         this.isModify = msg.isModify
-        this.order = msg.order
-        this.isNewUser = msg.isNewUser
-        if (this.order != null && this.order != []) {
-          // 当订单不为空时，将订单信息赋值到 dialog
-          this.name = this.order.order_user_name
-          this.gender = this.order.order_user_gender
-          this.telephone = this.order.order_user_telephone
-          this.campus = this.order.order_user_campus
-          this.dormitory = this.order.order_user_dormitory
-          this.description = this.order.order_user_description
+        if (this.order.length == 0) { // 订单尚未初始化时
+          if (msg.order != null && msg.order != []) { // 当传入的最近订单不为空时，将订单信息赋值给变量
+            this.order = msg.order
+
+            this.name = this.order.order_user_name
+            this.gender = this.order.order_user_gender
+            this.telephone = this.order.order_user_telephone
+            this.campus = this.order.order_user_campus
+            this.dormitory = this.order.order_user_dormitory
+            this.description = this.order.order_user_description
+          }
         }
+        this.isNewUser = msg.isNewUser
       }
       this.sheet = true
     })

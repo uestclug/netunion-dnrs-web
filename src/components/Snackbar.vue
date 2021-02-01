@@ -1,17 +1,8 @@
 <template>
-  <v-snackbar
-    top
-    v-model="snackbar"
-    :timeout=timeout
-  >
+  <v-snackbar top v-model="snackbar" :timeout="timeout">
     {{ snackbarText }}
     <template v-slot:action="{ attrs }">
-      <v-btn
-        color="blue"
-        text
-        v-bind="attrs"
-        @click="snackbar = false"
-      >
+      <v-btn color="blue" text v-bind="attrs" @click="snackbar = false">
         Close
       </v-btn>
     </template>
@@ -27,7 +18,8 @@ export default {
     snackbarText: 'Nothing ever happened'
   }),
   mounted () {
-    this.$Bus.$on('setSnackbar', (msg) => { // 弹出显示 msg 内容的 snackbar
+    this.$Bus.$on('setSnackbar', msg => {
+      // 弹出显示 msg 内容的 snackbar
       this.snackbarText = msg
       this.snackbar = true
     })

@@ -1,26 +1,19 @@
 <template>
   <div>
-    <v-hover
-      v-slot:default="{ hover }"
-      open-delay="200"
-    >
+    <v-hover v-slot:default="{ hover }" open-delay="200">
       <v-card
         :elevation="hover ? 16 : 2"
         class="mx-auto transition-swing"
         max-width="800"
       >
-        <v-toolbar
-          flat
-          class="body-1 pt-2"
-        >
-          <v-toolbar-title>{{ $t('order.acceptedOrder.title') }}</v-toolbar-title>
+        <v-toolbar flat class="body-1 pt-2">
+          <v-toolbar-title>{{
+            $t('order.acceptedOrder.title')
+          }}</v-toolbar-title>
           <v-divider class="mx-4" />
         </v-toolbar>
 
-        <v-container
-          v-if="loading"
-          style="text-align: center;"
-        >
+        <v-container v-if="loading" style="text-align: center;">
           <div class="loadingio-spinner-ripple-s9nf2nweyv">
             <div class="ldio-62v9m71m4dc">
               <div></div>
@@ -31,8 +24,12 @@
 
         <v-container v-else>
           <div v-if="orders.length == 0">
-            <v-card-title>{{ $t('order.acceptedOrder.noOrderTitle') }}</v-card-title>
-            <v-card-subtitle>{{ $t('order.acceptedOrder.noOrderSubTitle') }}</v-card-subtitle>
+            <v-card-title>{{
+              $t('order.acceptedOrder.noOrderTitle')
+            }}</v-card-title>
+            <v-card-subtitle>{{
+              $t('order.acceptedOrder.noOrderSubTitle')
+            }}</v-card-subtitle>
           </div>
           <div v-if="orders.length != 0">
             <template v-for="order in orders">
@@ -42,16 +39,17 @@
                 max-width="calc(100% - 36px)"
                 elevation="2"
               >
-
                 <v-card-title>
                   {{ order.order_user_dormitory }}
                 </v-card-title>
 
                 <v-card-subtitle>
-                  {{ order.order_user_name }} | {{ order.order_user_gender }} | {{ order.order_user_campus }} | {{ order.order_user_telephone }}
+                  {{ order.order_user_name }} | {{ order.order_user_gender }} |
+                  {{ order.order_user_campus }} |
+                  {{ order.order_user_telephone }}
                 </v-card-subtitle>
 
-                <v-card-text class="pb-2">
+                <v-card-text class="pb-4">
                   <v-row>
                     <v-col cols="auto">
                       <v-btn
@@ -61,7 +59,8 @@
                         @click="telephoneCall(order.order_user_telephone)"
                         class="mr-2"
                       >
-                        <v-icon left>mdi-phone-in-talk-outline</v-icon> {{ $t('order.acceptedOrder.telephoneCall') }}
+                        <v-icon left>mdi-phone-in-talk-outline</v-icon>
+                        {{ $t('order.acceptedOrder.telephoneCall') }}
                       </v-btn>
 
                       <v-btn
@@ -69,18 +68,20 @@
                         @click="finishOrder(order)"
                         class="mr-2"
                       >
-                        <v-icon left>mdi-checkbox-multiple-marked</v-icon> {{ $t('order.acceptedOrder.finishOrder') }}
+                        <v-icon left>mdi-checkbox-multiple-marked</v-icon>
+                        {{ $t('order.acceptedOrder.finishOrder') }}
                       </v-btn>
                     </v-col>
 
                     <v-spacer />
 
                     <v-col cols="auto">
-                      <v-btn
-                        icon
-                        @click="expandPanel(order.order_id)"
-                      >
-                        <v-icon>{{ expandShow === order.order_id ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+                      <v-btn icon @click="expandPanel(order.order_id)">
+                        <v-icon>{{
+                          expandShow === order.order_id
+                            ? 'mdi-chevron-up'
+                            : 'mdi-chevron-down'
+                        }}</v-icon>
                       </v-btn>
                     </v-col>
                   </v-row>
@@ -90,66 +91,46 @@
                   <div v-show="expandShow === order.order_id">
                     <v-divider />
 
-                    <v-card-subtitle>{{ $t('order.acceptedOrder.expanded.orderId') }}{{ order.order_id }}</v-card-subtitle>
+                    <v-card-subtitle
+                      >{{ $t('order.acceptedOrder.expanded.orderId')
+                      }}{{ order.order_id }}</v-card-subtitle
+                    >
 
-                    <v-card-text class="pb-2">
+                    <v-card-text class="pb-4">
                       <v-row>
                         <!-- 订单描述 -->
-                        <v-col
-                          cols="12"
-                          v-if="order.order_user_description"
-                        >
-                          <v-chip
-                            label
-                            outlined
-                            class="mr-2"
-                          >
-                            <v-icon
-                              small
-                              left
-                            >mdi-calendar-blank-outline</v-icon>
+                        <v-col cols="12" v-if="order.order_user_description">
+                          <v-chip label outlined class="mr-2">
+                            <v-icon small left
+                              >mdi-calendar-blank-outline</v-icon
+                            >
                             {{ $t('order.acceptedOrder.expanded.description') }}
                           </v-chip>
-                          <span
-                            class="body-1"
-                            style="display: inline-block;"
-                          >{{ order.order_user_description }}</span>
+                          <span class="body-1" style="display: inline-block;">{{
+                            order.order_user_description
+                          }}</span>
                         </v-col>
                         <!-- 订单创建日期 -->
                         <v-col cols="12">
-                          <v-chip
-                            label
-                            outlined
-                            class="mr-2"
-                          >
-                            <v-icon
-                              small
-                              left
-                            >mdi-calendar-blank-outline</v-icon>
+                          <v-chip label outlined class="mr-2">
+                            <v-icon small left
+                              >mdi-calendar-blank-outline</v-icon
+                            >
                             {{ $t('order.acceptedOrder.expanded.createDate') }}
                           </v-chip>
-                          <span
-                            class="body-1"
-                            style="display: inline-block;"
-                          >{{ order.create_date }}</span>
+                          <span class="body-1" style="display: inline-block;">{{
+                            order.create_date
+                          }}</span>
                         </v-col>
                         <!-- 订单经过时间 -->
                         <v-col cols="12">
-                          <v-chip
-                            label
-                            outlined
-                            class="mr-2"
-                          >
-                            <v-icon
-                              small
-                              left
-                            >mdi-progress-clock</v-icon>
+                          <v-chip label outlined class="mr-2">
+                            <v-icon small left>mdi-progress-clock</v-icon>
                             {{ $t('order.acceptedOrder.expanded.openTime') }}
                           </v-chip>
-                          <span
-                            class="body-1"
-                            style="display: inline-block;"
-                          >{{ order.order_open_time }}</span>
+                          <span class="body-1" style="display: inline-block;">{{
+                            order.order_open_time
+                          }}</span>
                         </v-col>
                         <!-- 订单额外操作
                         <v-col cols="12">
@@ -196,7 +177,7 @@ export default {
       return
     }
 
-    this.axios.post('/api/order/queryAcceptedOrder').then((Response) => {
+    this.axios.post('/api/order/queryAcceptedOrder').then(Response => {
       if (Response.data) {
         if (Response.data.length != 0) {
           this.orders = Response.data
@@ -234,22 +215,24 @@ export default {
           return
         }
 
-        this.axios.post('/api/order/finishOrder', {
-          order_id: item.order_id
-        }).then((Response) => {
-          if (Response.data) {
-            this.$Bus.$emit(
-              'setSnackbar',
-              this.$i18n.t('order.orderList.actions.finishOrderSucceed')
-            )
-          } else {
-            this.$Bus.$emit(
-              'setSnackbar',
-              this.$i18n.t('order.orderList.actions.finishOrderFailed')
-            )
-          }
-          this.refreshRouter()
-        })
+        this.axios
+          .post('/api/order/finishOrder', {
+            order_id: item.order_id
+          })
+          .then(Response => {
+            if (Response.data) {
+              this.$Bus.$emit(
+                'setSnackbar',
+                this.$i18n.t('order.orderList.actions.finishOrderSucceed')
+              )
+            } else {
+              this.$Bus.$emit(
+                'setSnackbar',
+                this.$i18n.t('order.orderList.actions.finishOrderFailed')
+              )
+            }
+            this.refreshRouter()
+          })
       }
     },
     /*

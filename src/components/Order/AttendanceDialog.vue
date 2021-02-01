@@ -1,33 +1,22 @@
 <template>
-  <v-dialog
-    v-model="dialog"
-    max-width="600"
-    :persistent="description !== ''"
-  >
+  <v-dialog v-model="dialog" max-width="600" :persistent="description !== ''">
     <v-card>
       <v-card-title>
         {{ $t('order.attendanceDialog.title') }}
       </v-card-title>
       <v-card-text>
-        <div class="subtitle-1">{{ $t('order.attendanceDialog.nowAttnTitle') }}</div>
-        <div
-          v-if="queryAttnloading"
-          class="text--primary"
-        >
+        <div class="subtitle-1">
+          {{ $t('order.attendanceDialog.nowAttnTitle') }}
+        </div>
+        <div v-if="queryAttnloading" class="text--primary">
           {{ $t('order.attendanceDialog.nowAttnLoading') }}
         </div>
-        <div
-          v-else-if="attendance.length == 0"
-          class="body-1 text--primary"
-        >
+        <div v-else-if="attendance.length == 0" class="body-1 text--primary">
           {{ $t('order.attendanceDialog.nowAttnNotFound') }}
         </div>
         <div v-else>
           <template v-for="attn in attendance">
-            <div
-              v-bind:key="attn.attn_date"
-              class="mt-1"
-            >
+            <div v-bind:key="attn.attn_date" class="mt-1">
               <v-tooltip left>
                 <template v-slot:activator="{ on, attrs }">
                   <v-chip
@@ -36,7 +25,8 @@
                     v-bind="attrs"
                     v-on="on"
                     :color="attn.solver_id == userId ? 'primary' : ''"
-                  >{{ attn.attn_date }}</v-chip>
+                    >{{ attn.attn_date }}</v-chip
+                  >
                   <span class="text--primary">{{ attn.attn_description }}</span>
                 </template>
                 <!--
@@ -49,9 +39,16 @@
           </template>
         </div>
       </v-card-text>
-      <v-card-text v-if="order != null && order.is_solver &&
-        order.order_status === $GLOBAL.status.receipted">
-        <div class="subtitle-1">{{ $t('order.attendanceDialog.addAttnTitle') }}</div>
+      <v-card-text
+        v-if="
+          order != null &&
+            order.is_solver &&
+            order.order_status === $GLOBAL.status.receipted
+        "
+      >
+        <div class="subtitle-1">
+          {{ $t('order.attendanceDialog.addAttnTitle') }}
+        </div>
         <v-text-field
           v-model="description"
           :label="label"
@@ -67,13 +64,11 @@
           :disabled="addAttnLoading"
         ></v-text-field>
       </v-card-text>
-      <v-card-actions class="mr-4">
+      <v-card-actions class="mr-4 pb-4">
         <v-spacer />
-        <v-btn
-          depressed
-          @click="dialog = false"
-          :disabled="addAttnLoading"
-        >{{ $t('order.attendanceDialog.close') }}</v-btn>
+        <v-btn depressed @click="dialog = false" :disabled="addAttnLoading">{{
+          $t('order.attendanceDialog.close')
+        }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -93,7 +88,8 @@ export default {
     addAttnLoading: false
   }),
   methods: {
-    queryAttnInfo () { // 获取此订单的出勤记录信息
+    queryAttnInfo () {
+      // 获取此订单的出勤记录信息
       this.queryAttnloading = true
 
       if (this.$DevMode) {
@@ -102,23 +98,30 @@ export default {
         return
       }
 
-      this.axios.post('api/order/queryAttendance', {
-        order_id: this.order.order_id
-      }).then((Response) => {
-        if (Response.data) {
-          this.attendance = Response.data
-          this.queryAttnloading = false
-        }
-      })
+      this.axios
+        .post('api/order/queryAttendance', {
+          order_id: this.order.order_id
+        })
+        .then(Response => {
+          if (Response.data) {
+            this.attendance = Response.data
+            this.queryAttnloading = false
+          }
+        })
     },
-    addAttendance () { // 添加出勤记录
+    addAttendance () {
+      // 添加出勤记录
       if (this.description == '') {
-        this.addAttnResultText = this.$i18n.t('order.attendanceDialog.addAttnNeedDescription')
+        this.addAttnResultText = this.$i18n.t(
+          'order.attendanceDialog.addAttnNeedDescription'
+        )
         return false
       }
 
       this.addAttnLoading = true
-      this.addAttnResultText = this.$i18n.t('order.attendanceDialog.addAttnLoading')
+      this.addAttnResultText = this.$i18n.t(
+        'order.attendanceDialog.addAttnLoading'
+      )
 
       const attnDescription = this.description
 
@@ -130,26 +133,34 @@ export default {
           solver_name: 'Developer',
           attn_date: new Date().toLocaleString()
         })
-        this.addAttnResultText = this.$i18n.t('order.attendanceDialog.addAttnSuccessfully')
+        this.addAttnResultText = this.$i18n.t(
+          'order.attendanceDialog.addAttnSuccessfully'
+        )
         this.addAttnLoading = false
         return
       }
 
-      this.axios.post('api/order/addAttendance', {
-        order_id: this.order.order_id,
-        attn_description: attnDescription,
-        solver_name: localStorage.name,
-        is_solver: this.order.is_solver
-      }).then((Response) => {
-        if (Response.data) {
-          this.attendance.unshift(Response.data)
-          this.description = ''
-          this.addAttnResultText = this.$i18n.t('order.attendanceDialog.addAttnSuccessfully')
-        } else {
-          this.addAttnResultText = this.$i18n.t('order.attendanceDialog.addAttnFailed')
-        }
-        this.addAttnLoading = false
-      })
+      this.axios
+        .post('api/order/addAttendance', {
+          order_id: this.order.order_id,
+          attn_description: attnDescription,
+          solver_name: localStorage.name,
+          is_solver: this.order.is_solver
+        })
+        .then(Response => {
+          if (Response.data) {
+            this.attendance.unshift(Response.data)
+            this.description = ''
+            this.addAttnResultText = this.$i18n.t(
+              'order.attendanceDialog.addAttnSuccessfully'
+            )
+          } else {
+            this.addAttnResultText = this.$i18n.t(
+              'order.attendanceDialog.addAttnFailed'
+            )
+          }
+          this.addAttnLoading = false
+        })
     }
   },
   computed: {
@@ -158,7 +169,7 @@ export default {
     }
   },
   mounted () {
-    this.$Bus.$on('openAttnDialog', (msg) => {
+    this.$Bus.$on('openAttnDialog', msg => {
       this.userId = localStorage.user_id
       if (this.order == null || this.order != msg) {
         this.attendance = []

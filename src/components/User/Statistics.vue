@@ -1,18 +1,8 @@
 <template>
   <div>
-    <v-hover
-      v-slot:default="{ hover }"
-      open-delay="200"
-    >
-      <v-card
-        :elevation="hover ? 16 : 2"
-        class="mx-auto"
-        max-width="800"
-      >
-        <v-toolbar
-          flat
-          class="body-1 pt-2"
-        >
+    <v-hover v-slot:default="{ hover }" open-delay="200">
+      <v-card :elevation="hover ? 16 : 2" class="mx-auto" max-width="800">
+        <v-toolbar flat class="body-1 pt-2">
           <v-toolbar-title>{{ $t('user.statistics.title') }}</v-toolbar-title>
           <v-divider class="mx-4" />
         </v-toolbar>
@@ -69,8 +59,10 @@ export default {
       Response = await this.axios.post('/api/user/getSolverStatisticsInfo')
       const statisticsInfo = Response.data
       if (statisticsInfo) {
-        this.finishedOrderTimeTotally = statisticsInfo.finished_order_time_totally
-        this.finishedOrderTimeMonthly = statisticsInfo.finished_order_time_monthly
+        this.finishedOrderTimeTotally =
+          statisticsInfo.finished_order_time_totally
+        this.finishedOrderTimeMonthly =
+          statisticsInfo.finished_order_time_monthly
         this.firstOrderDate = statisticsInfo.first_finished_order_date
         this.firstOrderUser = statisticsInfo.first_finished_order_user_name
         this.lastOrderDate = statisticsInfo.latest_finished_order_date
@@ -82,7 +74,8 @@ export default {
     }
   },
   computed: {
-    statisticsHeaders () { // 统计表格的头部
+    statisticsHeaders () {
+      // 统计表格的头部
       const headers = [
         {
           text: this.$i18n.t('user.statistics.statisticsTitle'),
@@ -104,7 +97,8 @@ export default {
         statistics = [
           {
             statisticsTitle: this.$i18n.t('user.statistics.finishedOrderTime'),
-            statisticsValue: this.finishedOrderTime + this.$i18n.t('user.statistics.orders')
+            statisticsValue:
+              this.finishedOrderTime + this.$i18n.t('user.statistics.orders')
           },
           {
             statisticsTitle: this.$i18n.t('user.statistics.firstOrderDate'),
@@ -126,12 +120,20 @@ export default {
       } else if (this.role === this.$GLOBAL.role.solver) {
         statistics = [
           {
-            statisticsTitle: this.$i18n.t('user.statistics.finishedOrderTimeTotally'),
-            statisticsValue: this.finishedOrderTimeTotally + this.$i18n.t('user.statistics.orders')
+            statisticsTitle: this.$i18n.t(
+              'user.statistics.finishedOrderTimeTotally'
+            ),
+            statisticsValue:
+              this.finishedOrderTimeTotally +
+              this.$i18n.t('user.statistics.orders')
           },
           {
-            statisticsTitle: this.$i18n.t('user.statistics.finishedOrderTimeMonthly'),
-            statisticsValue: this.finishedOrderTimeMonthly + this.$i18n.t('user.statistics.orders')
+            statisticsTitle: this.$i18n.t(
+              'user.statistics.finishedOrderTimeMonthly'
+            ),
+            statisticsValue:
+              this.finishedOrderTimeMonthly +
+              this.$i18n.t('user.statistics.orders')
           },
           {
             statisticsTitle: this.$i18n.t('user.statistics.firstOrderDate'),
@@ -151,15 +153,19 @@ export default {
           },
           {
             statisticsTitle: this.$i18n.t('user.statistics.unlockedUser'),
-            statisticsValue: this.unlockedUser + this.$i18n.t('user.statistics.people')
+            statisticsValue:
+              this.unlockedUser + this.$i18n.t('user.statistics.people')
           },
           {
             statisticsTitle: this.$i18n.t('user.statistics.bestUser'),
             statisticsValue: this.bestUser
           },
           {
-            statisticsTitle: this.$i18n.t('user.statistics.bestUserOrderedTime'),
-            statisticsValue: this.bestUserOrderedTime + this.$i18n.t('user.statistics.times')
+            statisticsTitle: this.$i18n.t(
+              'user.statistics.bestUserOrderedTime'
+            ),
+            statisticsValue:
+              this.bestUserOrderedTime + this.$i18n.t('user.statistics.times')
           }
         ]
       }

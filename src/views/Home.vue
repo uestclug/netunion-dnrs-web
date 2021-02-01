@@ -3,7 +3,6 @@
     <div v-if="role === $GLOBAL.role.user">
       <InfoNoteUser />
       <WelcomeUser class="mt-8" />
-      <LatestOrder class="mt-8" />
     </div>
     <div v-else-if="role === $GLOBAL.role.solver">
       <WelcomeSolver />
@@ -15,7 +14,6 @@
 <script>
 import InfoNoteUser from '@/components/Home/InfoNoteUser'
 import WelcomeUser from '@/components/Home/WelcomeUser'
-import LatestOrder from '@/components/Order/LatestOrder'
 import WelcomeSolver from '@/components/Home/WelcomeSolver.vue'
 import AcceptedOrder from '@/components/Order/AcceptedOrder'
 
@@ -27,7 +25,6 @@ export default {
   components: {
     InfoNoteUser,
     WelcomeUser,
-    LatestOrder,
     WelcomeSolver,
     AcceptedOrder
   },

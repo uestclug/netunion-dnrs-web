@@ -1,23 +1,14 @@
 <template>
   <div class="login">
     <div>
-      <v-card
-        class="mx-auto"
-        max-width="800"
-      >
+      <v-card class="mx-auto" max-width="800">
         <v-card-text>
-          <v-row
-            no-gutters
-            style="text-align: center"
-          >
+          <v-row no-gutters style="text-align: center">
             <v-col class="title mt-4 mb-4">
               {{ $t('app.name') }}
             </v-col>
           </v-row>
-          <v-row
-            justify="center"
-            no-gutters
-          >
+          <v-row justify="center" no-gutters>
             <v-col md="6">
               <v-text-field
                 v-model="username"
@@ -30,10 +21,7 @@
               ></v-text-field>
             </v-col>
           </v-row>
-          <v-row
-            justify="center"
-            no-gutters
-          >
+          <v-row justify="center" no-gutters>
             <v-col md="6">
               <v-text-field
                 v-model="pwd"
@@ -51,16 +39,11 @@
           </v-row>
         </v-card-text>
 
-        <v-row
-          justify="center"
-          no-gutters
-        >
+        <v-row justify="center" no-gutters>
           <v-col class="mb-6 text-center">
-            <v-btn
-              color="primary"
-              @click="createOrderUnlogged"
-              class="mr-4"
-            >{{ $t('login.createOrderUnlogged') }}<v-icon right>mdi-pencil</v-icon>
+            <v-btn color="primary" @click="createOrderUnlogged" class="mr-4"
+              >{{ $t('login.createOrderUnlogged')
+              }}<v-icon right>mdi-pencil</v-icon>
             </v-btn>
 
             <v-btn
@@ -68,7 +51,7 @@
               @click="submit"
               :loading="loading"
               :disabled="loading"
-            >{{ $t('login.submit') }}<v-icon right>mdi-arrow-right</v-icon>
+              >{{ $t('login.submit') }}<v-icon right>mdi-arrow-right</v-icon>
             </v-btn>
           </v-col>
         </v-row>
@@ -113,7 +96,8 @@ export default {
     usernameErrors () {
       const errors = []
       if (!this.$v.username.$dirty) return errors
-      !this.$v.username.required && errors.push(this.$i18n.t('login.usernameRequiredErr'))
+      !this.$v.username.required &&
+        errors.push(this.$i18n.t('login.usernameRequiredErr'))
       return errors
     },
     pwdErrors () {
@@ -131,49 +115,64 @@ export default {
         return
       }
       this.$v.$touch()
-      if (this.usernameErrors.length === 0 && this.pwdErrors.length === 0) { // 无报错内容时
+      if (this.usernameErrors.length === 0 && this.pwdErrors.length === 0) {
+        // 无报错内容时
         this.loading = true
         const password = this.$Utils.generateEncryptedPassword(this.pwd) // 加密密码
         const stdId = this.username
         localStorage.setItem('std_id', stdId)
-        this.axios.post('/api/user/login', {
-          std_id: stdId,
-          password: password
-        }).then((Response) => {
-          if (Response.data) { // 登录成功
-            const resData = Response.data
-            const userId = resData.user_id
-            const role = resData.role
-            const token = resData.token
-            // 存储用户信息至 vuex 和 localStorage
-            this.$store.commit('setUserId', userId)
-            this.$store.commit('setRole', role)
-            this.$store.commit('setToken', token)
-            // 获取用户资料
-            this.axios.post('/api/user/queryUserInfo').then((Response) => {
+        this.axios
+          .post('/api/user/login', {
+            std_id: stdId,
+            password: password
+          })
+          .then(Response => {
+            if (Response.data) {
+              // 登录成功
               const resData = Response.data
-              // 将得到的用户资料保存到 localStorage 中
-              localStorage.setItem('name', resData.name)
-              localStorage.setItem('nickname', resData.nickname)
-              localStorage.setItem('gender', resData.gender)
-              localStorage.setItem('telephone', resData.telephone)
-              localStorage.setItem('campus', resData.campus)
-              localStorage.setItem('dormitory', resData.dormitory)
-              localStorage.setItem('intro', resData.intro)
-              // 显示提示登录成功的信息条
-              if (Response.data.name != '') this.$Bus.$emit('setSnackbar', this.$i18n.t('login.loginSucceed') + Response.data.name)
-              else this.$Bus.$emit('setSnackbar', this.$i18n.t('login.loginSucceed') + this.$i18n.t('login.defaultUserName'))
-              // 回到主页
-              this.$router.push({
-                name: 'home'
+              const userId = resData.user_id
+              const role = resData.role
+              const token = resData.token
+              // 存储用户信息至 vuex 和 localStorage
+              this.$store.commit('setUserId', userId)
+              this.$store.commit('setRole', role)
+              this.$store.commit('setToken', token)
+              // 获取用户资料
+              this.axios.post('/api/user/queryUserInfo').then(Response => {
+                const resData = Response.data
+                // 将得到的用户资料保存到 localStorage 中
+                localStorage.setItem('name', resData.name)
+                localStorage.setItem('nickname', resData.nickname)
+                localStorage.setItem('gender', resData.gender)
+                localStorage.setItem('telephone', resData.telephone)
+                localStorage.setItem('campus', resData.campus)
+                localStorage.setItem('dormitory', resData.dormitory)
+                localStorage.setItem('intro', resData.intro)
+                // 显示提示登录成功的信息条
+                if (Response.data.name != '') {
+                  this.$Bus.$emit(
+                    'setSnackbar',
+                    this.$i18n.t('login.loginSucceed') + Response.data.name
+                  )
+                } else {
+                  this.$Bus.$emit(
+                    'setSnackbar',
+                    this.$i18n.t('login.loginSucceed') +
+                      this.$i18n.t('login.defaultUserName')
+                  )
+                }
+                // 回到主页
+                this.$router.push({
+                  name: 'home'
+                })
               })
-            })
-          } else { // 登录失败
-            this.pwd = ''
-            this.$Bus.$emit('setSnackbar', this.$i18n.t('login.loginFailed')) // 显示提示登录失败的消息条
-            this.loading = false
-          }
-        })
+            } else {
+              // 登录失败
+              this.pwd = ''
+              this.$Bus.$emit('setSnackbar', this.$i18n.t('login.loginFailed')) // 显示提示登录失败的消息条
+              this.loading = false
+            }
+          })
       }
     },
     // 开发者模式登录验证
@@ -188,7 +187,10 @@ export default {
           //
         } else {
           this.username = ''
-          this.$Bus.$emit('setSnackbar', this.$i18n.t('devMode.loginUsernameError'))
+          this.$Bus.$emit(
+            'setSnackbar',
+            this.$i18n.t('devMode.loginUsernameError')
+          )
           return
         }
         this.$store.commit('setRole', loginRole)
@@ -201,7 +203,10 @@ export default {
         localStorage.setItem('campus', this.$DevData.account.campus)
         localStorage.setItem('dormitory', this.$DevData.account.dormitory)
         localStorage.setItem('intro', this.$DevData.account.intro)
-        this.$Bus.$emit('setSnackbar', this.$i18n.t('login.loginSucceed') + this.$DevData.account.name)
+        this.$Bus.$emit(
+          'setSnackbar',
+          this.$i18n.t('login.loginSucceed') + this.$DevData.account.name
+        )
         this.$router.push({
           name: 'home'
         })
@@ -209,9 +214,9 @@ export default {
     },
     // 不登录，直接创建订单
     createOrderUnlogged () {
-      this.$Bus.$emit('openCreateOrderUserSheet', ({
+      this.$Bus.$emit('openCreateOrderUserSheet', {
         isUnlogged: true
-      }))
+      })
     }
   }
 }
