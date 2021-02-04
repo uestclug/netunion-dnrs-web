@@ -16,11 +16,23 @@
         <div>长期摸鱼，偶尔招新。</div>
         <div>
           联系我们：<a
-            href="mailto:recruit@dormforce.net?body=MAIL FROM INTERNET REPAIR SYSTEM"
+            :href="emailLink"
             >recruit@dormforce.net</a
           >
         </div>
       </v-card-text>
+
+      <v-card-actions>
+        <v-btn
+          class="ma-2"
+          depressed
+          :href="homePageLink"
+          target="_blank"
+        >
+          <v-icon left>mdi-door-open</v-icon>
+          {{ $t('about.aboutUs.home') }}
+        </v-btn>
+      </v-card-actions>
 
       <v-divider class="mx-4" />
 
@@ -43,7 +55,7 @@
         <v-btn
           class="ma-2"
           depressed
-          href="https://github.com/uestclug/netunion-dnrs-web/issues"
+          :href="issuesLink"
           target="_blank"
         >
           <v-icon left>mdi-github</v-icon>
@@ -58,12 +70,16 @@
 export default {
   name: 'AboutUs',
   data: () => ({
-    version: process.env.VUE_APP_VERSION_CODE
+    version: process.env.VUE_APP_VERSION_CODE,
+    emailLink: 'mailto:recruit@dormforce.net?body=MAIL FROM INTERNET REPAIR SYSTEM',
+    homePageLink: 'https://uestclug.github.io',
+    changeLogLink: 'https://github.com/uestclug/netunion-dnrs-web/blob/master/CHANGELOG.md',
+    issuesLink: 'https://github.com/uestclug/netunion-dnrs-web/issues'
   }),
   methods: {
     toChangeLog () {
       window.open(
-        'https://github.com/uestclug/netunion-dnrs-web/blob/master/CHANGELOG.md'
+        this.changeLogLink
       )
     }
   }

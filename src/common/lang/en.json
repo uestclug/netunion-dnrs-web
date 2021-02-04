@@ -115,7 +115,7 @@
         "telephoneLabel": "Telephone",
         "campusLabel": "Campus",
         "dormitoryLabel": "Dormitory",
-        "descriptionLabel": "Description (optional)",
+        "descriptionLabel": "Description",
         "nameMaxLengthErr": "Name must be at most 20 characters long",
         "nameRequiredErr": "Name is required",
         "telephoneNumericErr": "Telephone should be numeric",
@@ -144,14 +144,14 @@
         "cancelTip": "Completed content will not reset",
         "submit": "SUBMIT",
         "cancel": "CANCEL",
-        "nameLabel": "User Name (optional)",
+        "nameLabel": "User Name",
         "genderLabel": "User Gender",
-        "telephoneLabel": "User Telephone (optional)",
+        "telephoneLabel": "User Telephone",
         "campusLabel": "User Campus",
         "dormitoryLabel": "User Dormitory",
         "statusLabel": "Order Status",
-        "descriptionLabel": "User Description (optional)",
-        "recordLabel": "Solver Record (optional)",
+        "descriptionLabel": "User Description",
+        "recordLabel": "Solver Record",
         "nameMaxLengthErr": "Name must be at most 20 characters long",
         "genderRequiredErr": "Gender is required",
         "telephoneNumericErr": "Telephone should be numeric",
@@ -167,7 +167,8 @@
         "statusTooltipWaiting": "The order can be receipted by any solver",
         "statusTooltipReceipted": "The order is created and receipted by you",
         "statusTooltipRecorded": "This order does not require a visit, it is for records only",
-        "statusTooltipUnexpected": "Unexpected order status, try reload the page"
+        "statusTooltipUnexpected": "Unexpected order status, try reload the page",
+        "createShort": "NEW"
       },
       "unlogged": {
         "title": "Create a Dormitory Network Repair Order",
@@ -257,7 +258,17 @@
         "deleteOrderFailed": "Order deletion failed. Please try again later.",
         "restartOrderConfirm": "The order will be set from Completed to Accepted by you, are you sure you want to restart this order?",
         "restartOrderSucceed": "Order restarted!",
-        "restartOrderFailed": "The order restart failed, please try again later."
+        "restartOrderFailed": "The order restart failed, please try again later.",
+        "acceptOrder": "ACCEPT",
+        "teleCall": "TELE",
+        "modifyOrder": "MODIFY",
+        "finishOrder": "FINISH",
+        "restoreOrder": "RESTORE",
+        "modifyOrderTooltip": "Click to modify order",
+        "teleCallTooltip": "Click to call user",
+        "acceptOrderTooltip": "Click to accept the order",
+        "finishOrderTooltip": "Click to set order finished",
+        "restoreOrderTooltip": "Click to restore the order"
       },
       "status": {
         "waiting": "WAITING",
@@ -267,7 +278,8 @@
         "finished": "FINISHED",
         "recorded": "RECORD"
       },
-      "noDataText": "No order data found, try adding a new network warranty record!"
+      "noDataText": "No order data found, try adding a new network warranty record!",
+      "titleTooltip": "Click to export closed orders by month as a form"
     },
     "acceptedOrder": {
       "title": "YOUR ORDERS",
@@ -353,7 +365,7 @@
       "confirmText": "Click the button below to export order records!",
       "continue": "CONTINUE",
       "emailErrors": "You need to enter a correct email address",
-      "emailLabel": "Also sent to my email (optional)",
+      "emailLabel": "Also sent to my email",
       "emailTitle": "Send to Email",
       "exportFailed": "Exporting order records failed, this may be due to server network fluctuations or the query month has no finished order records, please try again later",
       "exportRecords": "Export",
@@ -392,7 +404,8 @@
   "about": {
     "aboutUs": {
       "title": "WE ARE",
-      "issues": "NEW ISSUES"
+      "issues": "NEW ISSUES",
+      "home": "VISIT HOME"
     },
     "sparklines": {
       "title": "IN THE PAST 30 DAYS",

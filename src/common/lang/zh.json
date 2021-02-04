@@ -115,7 +115,7 @@
         "telephoneLabel": "联系电话",
         "campusLabel": "所处校区",
         "dormitoryLabel": "寝室地址",
-        "descriptionLabel": "描述（可选）",
+        "descriptionLabel": "描述",
         "nameMaxLengthErr": "姓名最长输入 20 字符",
         "nameRequiredErr": "嗨，请告诉我们您的姓名",
         "telephoneNumericErr": "联系电话应该由数字组成",
@@ -144,14 +144,14 @@
         "cancelTip": "已填写内容不会消失",
         "submit": "提交",
         "cancel": "取消",
-        "nameLabel": "用户姓名（可选）",
+        "nameLabel": "用户姓名",
         "genderLabel": "用户性别",
-        "telephoneLabel": "用户联系电话（可选）",
+        "telephoneLabel": "用户联系电话",
         "campusLabel": "用户所处校区",
         "dormitoryLabel": "用户寝室地址",
         "statusLabel": "订单状态",
-        "descriptionLabel": "用户情况描述（可选）",
-        "recordLabel": "网络维修记录（可选）",
+        "descriptionLabel": "用户情况描述",
+        "recordLabel": "网络维修记录",
         "nameMaxLengthErr": "姓名最长输入 20 字符",
         "genderRequiredErr": "您需要选择用户的性别",
         "telephoneNumericErr": "希望……电话是数字就好了",
@@ -167,7 +167,8 @@
         "statusTooltipWaiting": "此订单可以被所有处理者接取",
         "statusTooltipReceipted": "此订单由您创建并接取",
         "statusTooltipRecorded": "此订单无需上门，仅作记录",
-        "statusTooltipUnexpected": "此订单状态值为预期之外的值，建议刷新页面"
+        "statusTooltipUnexpected": "此订单状态值为预期之外的值，建议刷新页面",
+        "createShort": "新建"
       },
       "unlogged": {
         "title": "创建宿舍网络报修订单",
@@ -243,9 +244,9 @@
         "finishOrderConfirm": "您确定要设置本订单已完成吗？",
         "finishOrderSucceed": "订单已完成！干得好！",
         "finishOrderFailed": "设置完成订单失败，请稍后重试。",
-        "restoreOrderConfirm": "订单将回到待接取状态，您确定要重置本订单吗？",
-        "restoreOrderSucceed": "订单已重置！",
-        "restoreOrderFailed": "订单重置失败，请稍后重试。",
+        "restoreOrderConfirm": "订单将回到待接取状态，您确定要重启本订单吗？",
+        "restoreOrderSucceed": "订单已重启！",
+        "restoreOrderFailed": "订单重启失败，请稍后重试。",
         "cancelOrderConfirm": "订单将回到待接取状态，您确定取消本订单吗？",
         "cancelOrderSucceed": "订单已取消！现在其他人可以接取本订单。",
         "cancelOrderFailed": "订单取消失败，请稍后重试。",
@@ -257,7 +258,17 @@
         "deleteOrderFailed": "订单删除失败，请稍后重试。",
         "restartOrderConfirm": "订单将从已完成状态设置为由您接受状态，您确定要重开此订单吗？",
         "restartOrderSucceed": "订单已重开，请尽快处理！",
-        "restartOrderFailed": "订单重置失败，请稍后重试。"
+        "restartOrderFailed": "订单重启失败，请稍后重试。",
+        "acceptOrder": "接受订单",
+        "teleCall": "拨打电话",
+        "modifyOrder": "修改订单",
+        "finishOrder": "完成订单",
+        "restoreOrder": "重启订单",
+        "modifyOrderTooltip": "点击可以修改订单信息",
+        "teleCallTooltip": "点击拨打报修人的电话",
+        "acceptOrderTooltip": "点击以接受此订单",
+        "finishOrderTooltip": "点击设置订单已完成",
+        "restoreOrderTooltip": "点击以重启此订单"
       },
       "status": {
         "waiting": "等待",
@@ -267,7 +278,8 @@
         "finished": "完成",
         "recorded": "记录"
       },
-      "noDataText": "未查询到订单数据，试着添加新的网络报修记录吧！"
+      "noDataText": "未查询到订单数据，试着添加新的网络报修记录吧！",
+      "titleTooltip": "点击以按月份导出已结束订单为表格"
     },
     "acceptedOrder": {
       "title": "您的订单",
@@ -354,7 +366,7 @@
       "back": "返回",
       "confirm": "点击导出",
       "exportRecords": "确认导出",
-      "emailLabel": "同时发送到邮箱（可选）",
+      "emailLabel": "同时发送到邮箱",
       "emailErrors": "您需要输入正确的邮箱地址",
       "confirmText": "点击下方的按钮导出订单信息吧！",
       "onExportingRecords": "正在导出订单记录中...",
@@ -368,6 +380,10 @@
       "user": {
         "resetNote": "将表单内容重置为未修改前状态"
       }
+    },
+    "orderSearchDialog": {
+      "title": "搜索订单",
+      "subtitle": "通过寝室地址或用户联系电话搜索订单"
     }
   },
   "login": {
@@ -392,7 +408,8 @@
   "about": {
     "aboutUs": {
       "title": "这里是",
-      "issues": "意见提交 & 问题反馈"
+      "issues": "意见提交 & 问题反馈",
+      "home": "访问官网"
     },
     "sparklines": {
       "title": "在过去的 30 天里",

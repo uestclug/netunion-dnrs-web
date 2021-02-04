@@ -93,7 +93,7 @@
 
     <!-- Main View -->
     <v-main>
-      <router-view class="mt-12 mb-12" />
+      <router-view class="mt-10 mb-12" />
     </v-main>
 
     <!-- Snackbar -->

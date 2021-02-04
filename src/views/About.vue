@@ -4,7 +4,7 @@
       <AboutUs />
       <Sparklines class="mt-8" />
     </div>
-    <Footer />
+    <Footer class="pt-4" />
   </div>
 </template>
 

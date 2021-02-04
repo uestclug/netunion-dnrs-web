@@ -1,29 +1,27 @@
 <template>
   <div>
-    <v-hover
-      v-slot:default="{ hover }"
-      open-delay="200"
-    >
+    <v-hover v-slot:default="{ hover }" open-delay="200">
       <v-card
         :elevation="hover ? 16 : 2"
         class="mx-auto transition-swing"
         max-width="1200"
       >
         <!-- 表格 header 内容 -->
-        <v-toolbar
-          flat
-          class="body-1 pt-2"
-        >
-          <v-toolbar-title
-            class="hidden-xs-only"
-            style="cursor: pointer;"
-            @click="openExportRecordsDialog"
-          >{{ $t('order.orderList.title') }}</v-toolbar-title>
-          <v-divider
-            class="mx-4 hidden-xs-only"
-            inset
-            vertical
-          />
+        <v-toolbar flat class="body-1 pt-2">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-toolbar-title
+                class="hidden-xs-only"
+                style="cursor: pointer;"
+                v-bind="attrs"
+                v-on="on"
+                @click="openExportRecordsDialog"
+                >{{ $t('order.orderList.title') }}</v-toolbar-title
+              >
+            </template>
+            <span>{{ $t('order.orderList.titleTooltip') }}</span>
+          </v-tooltip>
+          <v-divider class="mx-4 hidden-xs-only" inset vertical />
           <v-spacer />
           <v-select
             v-model="filterSelect"
@@ -34,16 +32,17 @@
             outlined
             @change="changeOrderListFilter"
           ></v-select>
-          <v-divider
-            class="mx-4"
-            inset
-            vertical
-          />
+          <v-divider class="mx-4" inset vertical />
           <v-btn
             color="success"
             class="mb-2"
             @click="openCreateOrderSolverSheet"
-          >{{ $t('order.createOrder.solver.create') }}</v-btn>
+            >{{
+              $vuetify.breakpoint.xs
+                ? $t('order.createOrder.solver.createShort')
+                : $t('order.createOrder.solver.create')
+            }}</v-btn
+          >
         </v-toolbar>
         <v-card-text>
           <!-- 表格主体 -->
@@ -71,7 +70,8 @@
                 depressed
                 block
                 @click="loadMoreOrderListItems"
-              >{{ $t('order.orderList.loadingMore') }}</v-btn>
+                >{{ $t('order.orderList.loadingMore') }}</v-btn
+              >
             </template>
             <!-- 订单 status 项内容 -->
             <template v-slot:item.order_status="{ item }">
@@ -88,34 +88,162 @@
             <!-- 订单 actions 项内容 -->
             <template v-slot:item.actions="{ item }">
               <!-- 修改订单 -->
-              <v-icon
-                :disabled="!item.is_solver"
-                @click="modifyOrder(item)"
-              >mdi-pencil</v-icon>
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    v-bind="attrs"
+                    v-on="on"
+                    :icon="!$vuetify.breakpoint.xs"
+                    :small="$vuetify.breakpoint.xs"
+                    depressed
+                    :disabled="!item.is_solver"
+                    @click="modifyOrder(item)"
+                  >
+                    <v-icon
+                      :left="$vuetify.breakpoint.xs"
+                      :small="$vuetify.breakpoint.xs"
+                      >mdi-pencil{{
+                        $vuetify.breakpoint.xs ? '-outline' : ''
+                      }}</v-icon
+                    >
+                    <span v-if="$vuetify.breakpoint.xs">{{
+                      $t('order.orderList.actions.modifyOrder')
+                    }}</span>
+                  </v-btn>
+                </template>
+                <span>{{
+                  $t('order.orderList.actions.modifyOrderTooltip')
+                }}</span>
+              </v-tooltip>
               <!-- 拨打电话 -->
-              <v-icon
-                v-if="item.is_solver && item.order_status === $GLOBAL.status.receipted && item.order_user_telephone"
-                @click="telephoneCall(item.order_user_telephone)"
-                class="ml-3"
-              >mdi-phone-in-talk</v-icon>
+              <v-tooltip
+                bottom
+                v-if="
+                  item.is_solver &&
+                    item.order_status === $GLOBAL.status.receipted &&
+                    item.order_user_telephone
+                "
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    v-bind="attrs"
+                    v-on="on"
+                    :icon="!$vuetify.breakpoint.xs"
+                    :small="$vuetify.breakpoint.xs"
+                    depressed
+                    @click="telephoneCall(item.order_user_telephone)"
+                    class="ml-2"
+                  >
+                    <v-icon
+                      :left="$vuetify.breakpoint.xs"
+                      :small="$vuetify.breakpoint.xs"
+                      >mdi-phone-in-talk{{
+                        $vuetify.breakpoint.xs ? '-outline' : ''
+                      }}</v-icon
+                    >
+                    <span v-if="$vuetify.breakpoint.xs">{{
+                      $t('order.orderList.actions.teleCall')
+                    }}</span>
+                  </v-btn>
+                </template>
+                <span>{{
+                  $t('order.orderList.actions.teleCallTooltip')
+                }}</span>
+              </v-tooltip>
               <!-- 接取订单 -->
-              <v-icon
+              <v-tooltip
+                bottom
                 v-if="item.order_status === $GLOBAL.status.waiting"
-                @click="receiptOrder(item)"
-                class="ml-3"
-              >mdi-briefcase-plus</v-icon>
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    v-bind="attrs"
+                    v-on="on"
+                    :icon="!$vuetify.breakpoint.xs"
+                    :small="$vuetify.breakpoint.xs"
+                    depressed
+                    @click="receiptOrder(item)"
+                    class="ml-2"
+                  >
+                    <v-icon
+                      :left="$vuetify.breakpoint.xs"
+                      :small="$vuetify.breakpoint.xs"
+                      >mdi-briefcase-plus{{
+                        $vuetify.breakpoint.xs ? '-outline' : ''
+                      }}</v-icon
+                    >
+                    <span v-if="$vuetify.breakpoint.xs">{{
+                      $t('order.orderList.actions.acceptOrder')
+                    }}</span>
+                  </v-btn>
+                </template>
+                <span>{{
+                  $t('order.orderList.actions.acceptOrderTooltip')
+                }}</span>
+              </v-tooltip>
               <!-- 完成订单 -->
-              <v-icon
-                v-else-if="item.order_status === $GLOBAL.status.receipted && item.is_solver"
-                @click="finishOrder(item)"
-                class="ml-3"
-              >mdi-checkbox-multiple-marked</v-icon>
-              <!-- 重置订单 -->
-              <v-icon
+              <v-tooltip
+                bottom
+                v-else-if="
+                  item.order_status === $GLOBAL.status.receipted &&
+                    item.is_solver
+                "
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    v-bind="attrs"
+                    v-on="on"
+                    :icon="!$vuetify.breakpoint.xs"
+                    :small="$vuetify.breakpoint.xs"
+                    depressed
+                    @click="finishOrder(item)"
+                    class="ml-2"
+                  >
+                    <v-icon
+                      :left="$vuetify.breakpoint.xs"
+                      :small="$vuetify.breakpoint.xs"
+                      >mdi-checkbox-multiple-marked{{
+                        $vuetify.breakpoint.xs ? '-outline' : ''
+                      }}</v-icon
+                    >
+                    <span v-if="$vuetify.breakpoint.xs">{{
+                      $t('order.orderList.actions.finishOrder')
+                    }}</span>
+                  </v-btn>
+                </template>
+                <span>{{
+                  $t('order.orderList.actions.finishOrderTooltip')
+                }}</span>
+              </v-tooltip>
+              <!-- 重启订单 -->
+              <v-tooltip
+                bottom
                 v-if="item.order_status === $GLOBAL.status.canceledBySolver"
-                @click="restoreOrder(item)"
-                class="ml-3"
-              >mdi-autorenew</v-icon>
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    v-bind="attrs"
+                    v-on="on"
+                    :icon="!$vuetify.breakpoint.xs"
+                    :small="$vuetify.breakpoint.xs"
+                    depressed
+                    @click="restoreOrder(item)"
+                    class="ml-2"
+                  >
+                    <v-icon
+                      :left="$vuetify.breakpoint.xs"
+                      :small="$vuetify.breakpoint.xs"
+                      >mdi-autorenew</v-icon
+                    >
+                    <span v-if="$vuetify.breakpoint.xs">{{
+                      $t('order.orderList.actions.restoreOrder')
+                    }}</span>
+                  </v-btn>
+                </template>
+                <span>{{
+                  $t('order.orderList.actions.restoreOrderTooltip')
+                }}</span>
+              </v-tooltip>
             </template>
             <!-- 订单展开内容 -->
             <template v-slot:expanded-item="{ headers, item }">
@@ -126,23 +254,14 @@
                   class="mt-3"
                 >
                   <!-- 用户填写姓名 -->
-                  <v-col
-                    cols="12"
-                    v-if="item.order_user_name"
-                  >
-                    <v-chip
-                      small
-                      label
-                      outlined
-                      class="mr-1"
-                    >
-                      <v-icon
-                        small
-                        left
-                      >mdi-account-outline</v-icon>
+                  <v-col cols="12" v-if="item.order_user_name">
+                    <v-chip small label outlined class="mr-1">
+                      <v-icon small left>mdi-account-outline</v-icon>
                       {{ $t('order.orderList.expanded.username') }}
                     </v-chip>
-                    <span style="display: inline-block;">{{ item.order_user_name }}</span>
+                    <span style="display: inline-block;">{{
+                      item.order_user_name
+                    }}</span>
                   </v-col>
                   <!-- 订单用户联系电话
                   <v-col
@@ -185,29 +304,17 @@
                   </v-col>
                   -->
                   <!-- 订单描述 -->
-                  <v-col
-                    cols="12"
-                    v-if="item.order_user_description"
-                  >
-                    <v-chip
-                      small
-                      label
-                      outlined
-                      class="mr-1"
-                    >
-                      <v-icon
-                        small
-                        left
-                      >mdi-calendar-blank-outline</v-icon>
+                  <v-col cols="12" v-if="item.order_user_description">
+                    <v-chip small label outlined class="mr-1">
+                      <v-icon small left>mdi-calendar-blank-outline</v-icon>
                       {{ $t('order.orderList.expanded.description') }}
                     </v-chip>
-                    <span style="display: inline-block;">{{ item.order_user_description }}</span>
+                    <span style="display: inline-block;">{{
+                      item.order_user_description
+                    }}</span>
                   </v-col>
                   <!-- 订单处理者姓名 -->
-                  <v-col
-                    cols="12"
-                    v-if="item.solver_name"
-                  >
+                  <v-col cols="12" v-if="item.solver_name">
                     <v-chip
                       small
                       label
@@ -215,73 +322,47 @@
                       class="mr-1"
                       :color="item.is_solver ? 'primary' : ''"
                     >
-                      <v-icon
-                        small
-                        left
-                      >mdi-card-account-details-outline</v-icon>
+                      <v-icon small left
+                        >mdi-card-account-details-outline</v-icon
+                      >
                       {{ $t('order.orderList.expanded.solverName') }}
                     </v-chip>
-                    <span style="display: inline-block;">{{ item.solver_name }}<span
-                      v-if="item.is_solver"
-                    >({{ $t('order.orderList.expanded.you') }})</span>
+                    <span style="display: inline-block;"
+                      >{{ item.solver_name
+                      }}<span v-if="item.is_solver"
+                        >({{ $t('order.orderList.expanded.you') }})</span
+                      >
                     </span>
                   </v-col>
                   <!-- 订单处理者记录 -->
-                  <v-col
-                    cols="12"
-                    v-if="item.order_solver_record"
-                  >
-                    <v-chip
-                      small
-                      label
-                      outlined
-                      class="mr-1"
-                    >
-                      <v-icon
-                        small
-                        left
-                      >mdi-calendar-check-outline</v-icon>
+                  <v-col cols="12" v-if="item.order_solver_record">
+                    <v-chip small label outlined class="mr-1">
+                      <v-icon small left>mdi-calendar-check-outline</v-icon>
                       {{ $t('order.orderList.expanded.record') }}
                     </v-chip>
-                    <span style="display: inline-block;">{{ item.order_solver_record }}</span>
+                    <span style="display: inline-block;">{{
+                      item.order_solver_record
+                    }}</span>
                   </v-col>
                   <!-- 订单创建日期 -->
-                  <v-col
-                    cols="12"
-                    v-if="item.create_date"
-                  >
-                    <v-chip
-                      small
-                      label
-                      outlined
-                      class="mr-1"
-                    >
-                      <v-icon
-                        small
-                        left
-                      >mdi-clock-outline</v-icon>
+                  <v-col cols="12" v-if="item.create_date">
+                    <v-chip small label outlined class="mr-1">
+                      <v-icon small left>mdi-clock-outline</v-icon>
                       {{ $t('order.orderList.expanded.createDate') }}
                     </v-chip>
-                    <span style="display: inline-block;">{{ item.create_date }}</span>
+                    <span style="display: inline-block;">{{
+                      item.create_date
+                    }}</span>
                   </v-col>
                   <!-- 订单关闭日期 -->
-                  <v-col
-                    cols="12"
-                    v-if="item.close_date"
-                  >
-                    <v-chip
-                      small
-                      label
-                      outlined
-                      class="mr-1"
-                    >
-                      <v-icon
-                        small
-                        left
-                      >mdi-clock-check-outline</v-icon>
+                  <v-col cols="12" v-if="item.close_date">
+                    <v-chip small label outlined class="mr-1">
+                      <v-icon small left>mdi-clock-check-outline</v-icon>
                       {{ $t('order.orderList.expanded.closeDate') }}
                     </v-chip>
-                    <span style="display: inline-block;">{{ item.close_date }}</span>
+                    <span style="display: inline-block;">{{
+                      item.close_date
+                    }}</span>
                   </v-col>
                 </v-row>
 
@@ -297,10 +378,8 @@
                       @click="openAttnDialog(item)"
                       class="mr-2 mb-1"
                     >
-                      <v-icon
-                        small
-                        left
-                      >mdi-briefcase-outline</v-icon>{{ $t('order.orderList.expanded.viewAttendance') }}
+                      <v-icon small left>mdi-briefcase-outline</v-icon
+                      >{{ $t('order.orderList.expanded.viewAttendance') }}
                     </v-btn>
                     <!-- 查看协作人 -->
                     <v-btn
@@ -309,10 +388,8 @@
                       @click="openAssigneeDialog(item)"
                       class="mr-2 mb-1"
                     >
-                      <v-icon
-                        small
-                        left
-                      >mdi-comment-account-outline</v-icon>{{ $t('order.orderList.expanded.viewAssignee') }}
+                      <v-icon small left>mdi-comment-account-outline</v-icon
+                      >{{ $t('order.orderList.expanded.viewAssignee') }}
                     </v-btn>
                     <!-- 显示更多操作 -->
                     <v-btn
@@ -320,7 +397,13 @@
                       class="mr-2 mb-1"
                       icon
                     >
-                      <v-icon>mdi-{{ showExtraActions ? "chevron-left-circle-outline" : "chevron-right-circle-outline" }}</v-icon>
+                      <v-icon
+                        >mdi-{{
+                          showExtraActions
+                            ? 'chevron-left-circle-outline'
+                            : 'chevron-right-circle-outline'
+                        }}</v-icon
+                      >
                     </v-btn>
                     <!-- 查看订单操作记录 -->
                     <v-btn
@@ -330,10 +413,8 @@
                       @click="openOrderActionNotesDialog(item)"
                       class="mr-2 mb-1"
                     >
-                      <v-icon
-                        small
-                        left
-                      >mdi-calendar-clock</v-icon>{{ $t('order.orderList.expanded.viewActionNotes') }}
+                      <v-icon small left>mdi-calendar-clock</v-icon
+                      >{{ $t('order.orderList.expanded.viewActionNotes') }}
                     </v-btn>
                     <!-- 取消订单 -->
                     <v-btn
@@ -345,25 +426,27 @@
                       @click="cancelOrder(item)"
                       class="mr-2 mb-1"
                     >
-                      <v-icon
-                        small
-                        left
-                      >mdi-close-circle-outline</v-icon>{{ $t('order.orderList.expanded.cancelOrder') }}
+                      <v-icon small left>mdi-close-circle-outline</v-icon
+                      >{{ $t('order.orderList.expanded.cancelOrder') }}
                     </v-btn>
                     <!-- 关闭订单 -->
                     <v-btn
                       small
                       depressed
                       v-show="showExtraActions"
-                      v-if="item.order_status === $GLOBAL.status.waiting || item.order_status === $GLOBAL.status.receipted"
-                      :disabled="item.order_status === $GLOBAL.status.receipted && !item.is_solver"
+                      v-if="
+                        item.order_status === $GLOBAL.status.waiting ||
+                          item.order_status === $GLOBAL.status.receipted
+                      "
+                      :disabled="
+                        item.order_status === $GLOBAL.status.receipted &&
+                          !item.is_solver
+                      "
                       @click="closeOrder(item)"
                       class="mb-1"
                     >
-                      <v-icon
-                        small
-                        left
-                      >mdi-delete-circle-outline</v-icon>{{ $t('order.orderList.expanded.closeOrder') }}
+                      <v-icon small left>mdi-delete-circle-outline</v-icon
+                      >{{ $t('order.orderList.expanded.closeOrder') }}
                     </v-btn>
                     <!-- 重开订单 -->
                     <v-btn
@@ -375,10 +458,8 @@
                       @click="restartOrder(item)"
                       class="mb-1"
                     >
-                      <v-icon
-                        small
-                        left
-                      >mdi-progress-wrench</v-icon>{{ $t('order.orderList.expanded.restartOrder') }}
+                      <v-icon small left>mdi-progress-wrench</v-icon
+                      >{{ $t('order.orderList.expanded.restartOrder') }}
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -391,24 +472,27 @@
 
     <AssigneeDialog />
     <AttendanceDialog />
-    <OrderActionNotesDialog />
     <ExportRecordsDialog />
+    <OrderActionNotesDialog />
+    <OrderSearchDialog />
   </div>
 </template>
 
 <script>
 import AssigneeDialog from '@/components/Order/AssigneeDialog'
 import AttendanceDialog from '@/components/Order/AttendanceDialog'
-import OrderActionNotesDialog from '@/components/Order/OrderActionNotesDialog'
 import ExportRecordsDialog from '@/components/Order/ExportRecordsDialog'
+import OrderActionNotesDialog from '@/components/Order/OrderActionNotesDialog'
+import OrderSearchDialog from '@/components/Order/OrderSearchDialog'
 
 export default {
   name: 'OrderList',
   components: {
     AssigneeDialog,
     AttendanceDialog,
+    ExportRecordsDialog,
     OrderActionNotesDialog,
-    ExportRecordsDialog
+    OrderSearchDialog
   },
   data: () => ({
     filterSelect: '显示可用',
@@ -429,25 +513,28 @@ export default {
       return
     }
 
-    this.axios.post('/api/order/queryOrderList', {
-      page: 1,
-      filter: this.$GLOBAL.filter.available
-    }).then((Response) => {
-      const orderItems = Response.data
-      this.orderListItems = orderItems
-      if (orderItems.length === 10) {
-        this.showLoadMore = true
-      }
-      this.orderListLoading = false
-    })
+    this.axios
+      .post('/api/order/queryOrderList', {
+        page: 1,
+        filter: this.$GLOBAL.filter.available
+      })
+      .then(Response => {
+        const orderItems = Response.data
+        this.orderListItems = orderItems
+        if (orderItems.length === 10) {
+          this.showLoadMore = true
+        }
+        this.orderListLoading = false
+      })
   },
   methods: {
     changeOrderListFilter (id) {
+      // 修改订单过滤下拉框时触发此方法
+      console.log(id)
       if (this.$DevMode) return // 开发者模式禁用过滤选项
 
       this.page = 0
       this.orderListItems = []
-
       this.loadMoreOrderListItems()
     },
     openCreateOrderSolverSheet () {
@@ -467,7 +554,9 @@ export default {
     },
     // 接取订单，设置订单状态为已接取
     receiptOrder (item) {
-      if (confirm(this.$i18n.t('order.orderList.actions.receiptOrderConfirm'))) {
+      if (
+        confirm(this.$i18n.t('order.orderList.actions.receiptOrderConfirm'))
+      ) {
         if (this.$DevMode) {
           this.$Bus.$emit(
             'setSnackbar',
@@ -475,7 +564,9 @@ export default {
           )
           for (let i = 0; i < this.orderListItems.length; i++) {
             if (this.orderListItems[i] == item) {
-              this.orderListItems[i].order_status = this.$GLOBAL.status.receipted
+              this.orderListItems[
+                i
+              ].order_status = this.$GLOBAL.status.receipted
               this.orderListItems[i].is_solver = true
               this.orderListItems[i].solver_name = 'Developer'
               break
@@ -484,22 +575,24 @@ export default {
           return
         }
 
-        this.axios.post('/api/order/receiptOrder', {
-          order_id: item.order_id
-        }).then((Response) => {
-          if (Response.data) {
-            this.$Bus.$emit(
-              'setSnackbar',
-              this.$i18n.t('order.orderList.actions.receiptOrderSucceed')
-            )
-          } else {
-            this.$Bus.$emit(
-              'setSnackbar',
-              this.$i18n.t('order.orderList.actions.receiptOrderFailed')
-            )
-          }
-          this.refreshRouter()
-        })
+        this.axios
+          .post('/api/order/receiptOrder', {
+            order_id: item.order_id
+          })
+          .then(Response => {
+            if (Response.data) {
+              this.$Bus.$emit(
+                'setSnackbar',
+                this.$i18n.t('order.orderList.actions.receiptOrderSucceed')
+              )
+            } else {
+              this.$Bus.$emit(
+                'setSnackbar',
+                this.$i18n.t('order.orderList.actions.receiptOrderFailed')
+              )
+            }
+            this.refreshRouter()
+          })
       }
     },
     // 设置订单状态为已完成
@@ -520,27 +613,31 @@ export default {
           return
         }
 
-        this.axios.post('/api/order/finishOrder', {
-          order_id: item.order_id
-        }).then((Response) => {
-          if (Response.data) {
-            this.$Bus.$emit(
-              'setSnackbar',
-              this.$i18n.t('order.orderList.actions.finishOrderSucceed')
-            )
-          } else {
-            this.$Bus.$emit(
-              'setSnackbar',
-              this.$i18n.t('order.orderList.actions.finishOrderFailed')
-            )
-          }
-          this.refreshRouter()
-        })
+        this.axios
+          .post('/api/order/finishOrder', {
+            order_id: item.order_id
+          })
+          .then(Response => {
+            if (Response.data) {
+              this.$Bus.$emit(
+                'setSnackbar',
+                this.$i18n.t('order.orderList.actions.finishOrderSucceed')
+              )
+            } else {
+              this.$Bus.$emit(
+                'setSnackbar',
+                this.$i18n.t('order.orderList.actions.finishOrderFailed')
+              )
+            }
+            this.refreshRouter()
+          })
       }
     },
     // 将 solver 关闭订单的状态设置为待接取
     restoreOrder (item) {
-      if (confirm(this.$i18n.t('order.orderList.actions.restoreOrderConfirm'))) {
+      if (
+        confirm(this.$i18n.t('order.orderList.actions.restoreOrderConfirm'))
+      ) {
         if (this.$DevMode) {
           this.$Bus.$emit(
             'setSnackbar',
@@ -555,22 +652,24 @@ export default {
           return
         }
 
-        this.axios.post('/api/order/restoreOrder', {
-          order_id: item.order_id
-        }).then((Response) => {
-          if (Response.data) {
-            this.$Bus.$emit(
-              'setSnackbar',
-              this.$i18n.t('order.orderList.actions.restoreOrderSucceed')
-            )
-          } else {
-            this.$Bus.$emit(
-              'setSnackbar',
-              this.$i18n.t('order.orderList.actions.restoreOrderFailed')
-            )
-          }
-          this.refreshRouter()
-        })
+        this.axios
+          .post('/api/order/restoreOrder', {
+            order_id: item.order_id
+          })
+          .then(Response => {
+            if (Response.data) {
+              this.$Bus.$emit(
+                'setSnackbar',
+                this.$i18n.t('order.orderList.actions.restoreOrderSucceed')
+              )
+            } else {
+              this.$Bus.$emit(
+                'setSnackbar',
+                this.$i18n.t('order.orderList.actions.restoreOrderFailed')
+              )
+            }
+            this.refreshRouter()
+          })
       }
     },
     // 修改订单信息
@@ -596,22 +695,24 @@ export default {
           return
         }
 
-        this.axios.post('/api/order/cancelOrder', {
-          order_id: item.order_id
-        }).then((Response) => {
-          if (Response.data) {
-            this.$Bus.$emit(
-              'setSnackbar',
-              this.$i18n.t('order.orderList.actions.cancelOrderSucceed')
-            )
-          } else {
-            this.$Bus.$emit(
-              'setSnackbar',
-              this.$i18n.t('order.orderList.actions.cancelOrderFailed')
-            )
-          }
-          this.refreshRouter()
-        })
+        this.axios
+          .post('/api/order/cancelOrder', {
+            order_id: item.order_id
+          })
+          .then(Response => {
+            if (Response.data) {
+              this.$Bus.$emit(
+                'setSnackbar',
+                this.$i18n.t('order.orderList.actions.cancelOrderSucceed')
+              )
+            } else {
+              this.$Bus.$emit(
+                'setSnackbar',
+                this.$i18n.t('order.orderList.actions.cancelOrderFailed')
+              )
+            }
+            this.refreshRouter()
+          })
       }
     },
     // 关闭订单，并设置订单状态为处理者关闭
@@ -624,7 +725,9 @@ export default {
           )
           for (let i = 0; i < this.orderListItems.length; i++) {
             if (this.orderListItems[i] == item) {
-              this.orderListItems[i].order_status = this.$GLOBAL.status.canceledBySolver
+              this.orderListItems[
+                i
+              ].order_status = this.$GLOBAL.status.canceledBySolver
               this.orderListItems[i].is_solver = false
               this.orderListItems[i].solver_name = ''
               break
@@ -633,27 +736,31 @@ export default {
           return
         }
 
-        this.axios.post('/api/order/closeOrder', {
-          order_id: item.order_id
-        }).then((Response) => {
-          if (Response.data) {
-            this.$Bus.$emit(
-              'setSnackbar',
-              this.$i18n.t('order.orderList.actions.closeOrderSucceed')
-            )
-          } else {
-            this.$Bus.$emit(
-              'setSnackbar',
-              this.$i18n.t('order.orderList.actions.closeOrderFailed')
-            )
-          }
-          this.refreshRouter()
-        })
+        this.axios
+          .post('/api/order/closeOrder', {
+            order_id: item.order_id
+          })
+          .then(Response => {
+            if (Response.data) {
+              this.$Bus.$emit(
+                'setSnackbar',
+                this.$i18n.t('order.orderList.actions.closeOrderSucceed')
+              )
+            } else {
+              this.$Bus.$emit(
+                'setSnackbar',
+                this.$i18n.t('order.orderList.actions.closeOrderFailed')
+              )
+            }
+            this.refreshRouter()
+          })
       }
     },
     // 重开订单，将已完成订单设置为进行中
     restartOrder (item) {
-      if (confirm(this.$i18n.t('order.orderList.actions.restartOrderConfirm'))) {
+      if (
+        confirm(this.$i18n.t('order.orderList.actions.restartOrderConfirm'))
+      ) {
         if (this.$DevMode) {
           this.$Bus.$emit(
             'setSnackbar',
@@ -661,7 +768,9 @@ export default {
           )
           for (let i = 0; i < this.orderListItems.length; i++) {
             if (this.orderListItems[i] == item) {
-              this.orderListItems[i].order_status = this.$GLOBAL.status.receipted
+              this.orderListItems[
+                i
+              ].order_status = this.$GLOBAL.status.receipted
               this.orderListItems[i].close_date = ''
               break
             }
@@ -669,22 +778,24 @@ export default {
           return
         }
 
-        this.axios.post('/api/order/restartOrder', {
-          order_id: item.order_id
-        }).then((Response) => {
-          if (Response.data) {
-            this.$Bus.$emit(
-              'setSnackbar',
-              this.$i18n.t('order.orderList.actions.restartOrderSucceed')
-            )
-          } else {
-            this.$Bus.$emit(
-              'setSnackbar',
-              this.$i18n.t('order.orderList.actions.restartOrderFailed')
-            )
-          }
-          this.refreshRouter()
-        })
+        this.axios
+          .post('/api/order/restartOrder', {
+            order_id: item.order_id
+          })
+          .then(Response => {
+            if (Response.data) {
+              this.$Bus.$emit(
+                'setSnackbar',
+                this.$i18n.t('order.orderList.actions.restartOrderSucceed')
+              )
+            } else {
+              this.$Bus.$emit(
+                'setSnackbar',
+                this.$i18n.t('order.orderList.actions.restartOrderFailed')
+              )
+            }
+            this.refreshRouter()
+          })
       }
     },
     // 删除订单
@@ -710,23 +821,28 @@ export default {
         filter = this.$GLOBAL.filter.all
       } else if (this.filterSelect === '显示可用') {
         filter = this.$GLOBAL.filter.available
+      } else {
+        // 自定义搜索时
+        filter = this.filterSelect
       }
 
-      this.axios.post('/api/order/queryOrderList', {
-        page: this.page,
-        filter: filter
-      }).then((Response) => {
-        const orderItems = Response.data
-        for (let i = 0; i < orderItems.length; i++) {
-          this.orderListItems.push(orderItems[i])
-        }
-        if (orderItems.length === 10) {
-          this.showLoadMore = true
-        } else {
-          this.showLoadMore = false
-        }
-        this.orderListLoading = false
-      })
+      this.axios
+        .post('/api/order/queryOrderList', {
+          page: this.page,
+          filter: filter
+        })
+        .then(Response => {
+          const orderItems = Response.data
+          for (let i = 0; i < orderItems.length; i++) {
+            this.orderListItems.push(orderItems[i])
+          }
+          if (orderItems.length === 10) {
+            this.showLoadMore = true
+          } else {
+            this.showLoadMore = false
+          }
+          this.orderListLoading = false
+        })
     },
     getStatusColor (status, isSolver) {
       if (status === this.$GLOBAL.status.waiting) {
@@ -775,7 +891,9 @@ export default {
       if (status === this.$GLOBAL.status.waiting) {
         return this.$i18n.t('order.orderList.status.waiting')
       } else if (status === this.$GLOBAL.status.receipted) {
-        if (isSolver) { return this.$i18n.t('order.orderList.status.receiptedByYou') } else return this.$i18n.t('order.orderList.status.receipted')
+        if (isSolver) {
+          return this.$i18n.t('order.orderList.status.receiptedByYou')
+        } else return this.$i18n.t('order.orderList.status.receipted')
       } else if (status === this.$GLOBAL.status.canceledByUser) {
         return this.$i18n.t('order.orderList.status.closed')
       } else if (status === this.$GLOBAL.status.canceledBySolver) {
