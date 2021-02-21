@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.21.1",
-    "core-js": "^3.8.3",
+    "core-js": "^3.9.0",
     "js-base64": "^3.6.0",
     "js-md5": "^0.7.3",
     "vue": "^2.6.12",
@@ -17,7 +17,7 @@
     "vue-i18n": "^8.22.4",
     "vue-router": "^3.5.1",
     "vuelidate": "^0.7.6",
-    "vuetify": "^2.4.3",
+    "vuetify": "^2.4.4",
     "vuex": "^3.6.2"
   },
   "devDependencies": {
@@ -32,15 +32,15 @@
     "eslint": "^6.8.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-promise": "^4.3.1",
     "eslint-plugin-standard": "^4.1.0",
     "eslint-plugin-vue": "^6.2.2",
     "minimist": ">=1.2.5",
-    "sass": "^1.32.5",
+    "sass": "^1.32.8",
     "sass-loader": "^10.1.1",
     "vue-cli-plugin-vuetify": "~2.1.0",
     "vue-template-compiler": "^2.6.12",
-    "vuetify-loader": "^1.7.1"
+    "vuetify-loader": "^1.7.2"
   },
   "peerDependencies": {}
 }

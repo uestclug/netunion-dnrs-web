@@ -1,8 +1,8 @@
 <template>
   <div>
-    <v-hover v-slot:default="{ hover }" open-delay="200">
+    <v-hover v-slot:default="{ hover }">
       <v-card
-        :elevation="hover ? 16 : 2"
+        :elevation="hover ? 4 : 2"
         class="mx-auto transition-swing"
         max-width="800"
       >

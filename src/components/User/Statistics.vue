@@ -1,7 +1,7 @@
 <template>
   <div>
-    <v-hover v-slot:default="{ hover }" open-delay="200">
-      <v-card :elevation="hover ? 16 : 2" class="mx-auto" max-width="800">
+    <v-hover v-slot:default="{ hover }">
+      <v-card :elevation="hover ? 4 : 2" class="mx-auto" max-width="800">
         <v-toolbar flat class="body-1 pt-2">
           <v-toolbar-title>{{ $t('user.statistics.title') }}</v-toolbar-title>
           <v-divider class="mx-4" />

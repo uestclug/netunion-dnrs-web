@@ -279,7 +279,8 @@
         "recorded": "RECORD"
       },
       "noDataText": "No order data found, try adding a new network warranty record!",
-      "titleTooltip": "Click to export closed orders by month as a form"
+      "titleTooltip": "Click to export closed orders by month as a form",
+      "noLoadingMore": "NO MORE WITH THIS FILTER"
     },
     "acceptedOrder": {
       "title": "YOUR ORDERS",

@@ -63,7 +63,7 @@
           {{ $t('theme.darkMode') }}
           <v-switch
             v-model="darkModeSwitch"
-            color="cyan lighten-1"
+            color="grey darken-2"
             @change="changeMode"
             style="display: inline-block; margin: auto auto auto 20px"
           ></v-switch>
@@ -96,8 +96,8 @@
       <router-view class="mt-10 mb-12" />
     </v-main>
 
-    <!-- Snackbar -->
-    <Snackbar />
+    <!-- GLOBAL Bus Methods -->
+    <BusMethods />
 
     <!-- USER: Create Oreder -->
     <CreateOrderUser />
@@ -105,24 +105,29 @@
     <!-- Solver: Create Oreder -->
     <CreateOrderSolver />
 
-    <!-- GLOBAL Bus Methods -->
-    <BusMethods />
+    <!-- Back to top float button -->
+    <FloatBtn />
+
+    <!-- Snackbar -->
+    <Snackbar />
   </div>
 </template>
 
 <script>
-import Snackbar from '@/components/Snackbar'
+import BusMethods from '@/components/BusMethods'
 import CreateOrderUser from '@/components/Order/CreateOrderUser'
 import CreateOrderSolver from '@/components/Order/CreateOrderSolver'
-import BusMethods from '@/components/BusMethods'
+import FloatBtn from '@/components/App/FloatBtn'
+import Snackbar from '@/components/Snackbar'
 
 export default {
   name: 'AppView',
   components: {
-    Snackbar,
+    BusMethods,
     CreateOrderUser,
     CreateOrderSolver,
-    BusMethods
+    FloatBtn,
+    Snackbar
   },
   props: {
     source: String

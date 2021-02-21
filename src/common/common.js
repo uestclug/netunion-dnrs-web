@@ -23,11 +23,6 @@ const common = {
     solver: 'solver',
     admin: 'admin'
   },
-  filter: { // 订单列表过滤
-    available: 'available',
-    relevant: 'relevant',
-    all: 'all'
-  },
   master: { // 维修师傅账户信息
     userId: '4',
     stdId: '000000',

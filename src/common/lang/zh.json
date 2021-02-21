@@ -203,7 +203,7 @@
       "title": "订单列表",
       "filterLabel": "订单过滤",
       "loadingText": "你电的某台服务器正在拼命加载订单中...",
-      "loadingMore": "加载更多",
+      "loadingMore": "加载更多订单",
       "header": {
         "userName": "用户名",
         "userGender": "性别",
@@ -279,7 +279,8 @@
         "recorded": "记录"
       },
       "noDataText": "未查询到订单数据，试着添加新的网络报修记录吧！",
-      "titleTooltip": "点击以按月份导出已结束订单为表格"
+      "titleTooltip": "点击以按月份导出已结束订单为表格",
+      "noLoadingMore": "搜索不到此过滤条件的更多订单喽"
     },
     "acceptedOrder": {
       "title": "您的订单",
