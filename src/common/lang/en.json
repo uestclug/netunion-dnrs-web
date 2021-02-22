@@ -280,7 +280,9 @@
       },
       "noDataText": "No order data found, try adding a new network warranty record!",
       "titleTooltip": "Click to export closed orders by month as a form",
-      "noLoadingMore": "NO MORE WITH THIS FILTER"
+      "noLoadingMore": "NO MORE WITH THIS FILTER",
+      "searchOrder": "Search order...",
+      "exportOrderShort": "EXPORT"
     },
     "acceptedOrder": {
       "title": "YOUR ORDERS",
@@ -381,6 +383,12 @@
       "user": {
         "resetNote": "Reset form contents to unmodified status"
       }
+    },
+    "orderSearchDialog": {
+      "close": "CLOSE",
+      "confirm": "SEARCH",
+      "inputLabel": "Dormitory Location or Telephone",
+      "inputHint": "Fuzzy match for dormitory location, but exact match for telephone"
     }
   },
   "login": {

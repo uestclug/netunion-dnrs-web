@@ -64,7 +64,7 @@
           :disabled="addAttnLoading"
         ></v-text-field>
       </v-card-text>
-      <v-card-actions class="mr-4 pb-4">
+      <v-card-actions class="mr-2 pb-4">
         <v-spacer />
         <v-btn depressed @click="dialog = false" :disabled="addAttnLoading">{{
           $t('order.attendanceDialog.close')

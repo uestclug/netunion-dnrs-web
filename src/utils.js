@@ -12,12 +12,14 @@ function generateEncryptedPassword (password) {
 /**
  * 生成随机的颜文字！
  */
-function generateEmoticons (type) {
+function generateEmoticons (type = '') {
   let emoticons = []
-  const emoticonsHappy = ['(◔◡◔)', '(｡･∀･)ﾉﾞ', 'o(￣▽￣)ｄ', '*´∀`)´∀`)*´∀`)', 'ヾ(≧∇≦*)ゝ', '(≧∀≦)ゞ', '(๑¯∀¯๑)', 'φ(≧ω≦*)♪']
+  const emoticonsHappy = ['(◔◡◔)', '(｡･∀･)ﾉﾞ', 'o(￣▽￣)ｄ', '*´∀`)´∀`)*´∀`)', 'ヾ(≧∇≦*)ゝ',
+    '(≧∀≦)ゞ', '(๑¯∀¯๑)', 'φ(≧ω≦*)♪', '～(￣▽￣～)', '(～￣▽￣)～', '(>▽<)']
   const emoticonsSad = ['〒▽〒', 'o(╥﹏╥)o']
   const emoticonsAngry = ['( ͡❛ ︵ ͡❛)', 'o(≧口≦)o', '（＃￣～￣＃）', 'o(￣ヘ￣o＃)', '（｀へ´）']
-  const emoticonsAny = ['つ﹏⊂', '～(￣▽￣～)', '(～￣▽￣)～', '_( ﾟДﾟ)ﾉ', '⊙▽⊙', '(>▽<)', '=￣ω￣=', '（´v｀）', '(′▽`〃)']
+  const emoticonsElse = ['つ﹏⊂', '_( ﾟДﾟ)ﾉ', '⊙▽⊙', '=￣ω￣=', '（´v｀）', '(′▽`〃)']
+  const emoticonsAll = emoticonsElse.concat(emoticonsHappy, emoticonsSad, emoticonsAngry)
   switch (type) {
     case 'happy':
       emoticons = emoticonsHappy
@@ -29,7 +31,7 @@ function generateEmoticons (type) {
       emoticons = emoticonsAngry
       break
     default:
-      emoticons = emoticonsAny
+      emoticons = emoticonsAll
   }
   return emoticons[Math.floor(Math.random() * emoticons.length)]
 }

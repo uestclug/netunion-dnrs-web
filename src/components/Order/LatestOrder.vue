@@ -171,7 +171,7 @@
         <v-card-text>
           {{ $t('order.latestOrder.cancelOrderText') }}
         </v-card-text>
-        <v-card-actions class="mr-4">
+        <v-card-actions class="mr-2">
           <v-spacer></v-spacer>
           <v-btn depressed @click="cancelDialog = false">{{
             $t('order.latestOrder.cancel')

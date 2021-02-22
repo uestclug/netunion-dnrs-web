@@ -4,9 +4,14 @@
       elevation="2"
       class="mx-auto transition-swing"
       max-width="1200"
-      :width="$vuetify.breakpoint.name == 'xs' || $vuetify.breakpoint.name == 'sm' ? '100%' : '90%'"
+      :width="
+        $vuetify.breakpoint.name == 'xs' || $vuetify.breakpoint.name == 'sm'
+          ? '100%'
+          : '90%'
+      "
     >
       <!-- 表格 header 内容 -->
+      <!-- 标题 / 导出订单按钮 -->
       <v-toolbar flat class="body-1 pt-2">
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
@@ -23,6 +28,7 @@
         </v-tooltip>
         <v-divider class="mx-4 hidden-xs-only" inset vertical />
         <v-spacer />
+        <!-- 过滤器下拉框 -->
         <v-select
           v-model="filterSelect"
           dense
@@ -31,8 +37,32 @@
           class="mt-5"
           outlined
           @change="changeOrderListFilter"
-        ></v-select>
+        >
+          <template v-slot:prepend-item>
+            <v-list-item ripple @click="openOrderSearchDialog">
+              <v-list-item-action>
+                <v-icon>
+                  mdi-briefcase-search
+                </v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>
+                  {{ $t('order.orderList.searchOrder') }}
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-divider class="mt-2"></v-divider>
+          </template>
+        </v-select>
         <v-divider class="mx-4" inset vertical />
+        <!-- 导出订单记录按钮 -->
+        <v-btn
+          color="info"
+          class="mb-2 mr-2 d-flex d-sm-none"
+          @click="openExportRecordsDialog"
+          >{{ $t('order.orderList.exportOrderShort') }}</v-btn
+        >
+        <!-- 创建新订单按钮 -->
         <v-btn
           color="success"
           class="mb-2"
@@ -69,7 +99,15 @@
               depressed
               block
               @click="loadMoreOrderListItems"
-              >{{ showLoadMore ? $t('order.orderList.loadingMore') + ' ' + $Utils.generateEmoticons() : $t('order.orderList.noLoadingMore') + ' ' + $Utils.generateEmoticons('happy') }}</v-btn
+              >{{
+                showLoadMore
+                  ? $t('order.orderList.loadingMore') +
+                    ' ' +
+                    $Utils.generateEmoticons()
+                  : $t('order.orderList.noLoadingMore') +
+                    ' ' +
+                    $Utils.generateEmoticons('happy')
+              }}</v-btn
             >
           </template>
           <!-- 订单 status 项内容 -->
@@ -147,9 +185,7 @@
                   }}</span>
                 </v-btn>
               </template>
-              <span>{{
-                $t('order.orderList.actions.teleCallTooltip')
-              }}</span>
+              <span>{{ $t('order.orderList.actions.teleCallTooltip') }}</span>
             </v-tooltip>
             <!-- 接取订单 -->
             <v-tooltip
@@ -186,8 +222,7 @@
             <v-tooltip
               bottom
               v-else-if="
-                item.order_status === $GLOBAL.status.receipted &&
-                  item.is_solver
+                item.order_status === $GLOBAL.status.receipted && item.is_solver
               "
             >
               <template v-slot:activator="{ on, attrs }">
@@ -323,9 +358,7 @@
                     class="mr-1"
                     :color="item.is_solver ? 'primary' : ''"
                   >
-                    <v-icon small left
-                      >mdi-card-account-details-outline</v-icon
-                    >
+                    <v-icon small left>mdi-card-account-details-outline</v-icon>
                     {{ $t('order.orderList.expanded.solverName') }}
                   </v-chip>
                   <span style="display: inline-block;"
@@ -507,6 +540,12 @@ export default {
     showExtraActions: false
   }),
   created () {
+    // 从 localStorage 读取最近一次自定义的过滤 filter
+    const customFilter = localStorage.getItem('orderListCustomFilter')
+    if (customFilter && customFilter != '') {
+      this.filterItems.push(customFilter)
+    }
+
     if (this.$DevMode) {
       this.orderListItems = this.$DevData.order.orderListOrders
       this.showLoadMore = true
@@ -539,6 +578,9 @@ export default {
     },
     openExportRecordsDialog () {
       this.$Bus.$emit('openExportRecordsDialog')
+    },
+    openOrderSearchDialog () {
+      this.$Bus.$emit('openOrderSearchDialog')
     },
     // 接取订单，设置订单状态为已接取
     receiptOrder (item) {
@@ -792,8 +834,8 @@ export default {
         console.log('deleted')
       }
     },
+    // 载入更多订单信息
     loadMoreOrderListItems () {
-      // 点击加载更多按钮载入更多订单信息
       if (this.$DevMode) {
         this.showLoadMore = false
         return
@@ -830,15 +872,16 @@ export default {
         })
         .then(Response => {
           this.page = page + 1
+
           const orderItems = Response.data
-          for (let i = 0; i < orderItems.length; i++) {
-            this.orderListItems.push(orderItems[i])
-          }
+          this.orderListItems.push(...orderItems)
+
           if (orderItems.length === limit) {
             this.showLoadMore = true
           } else {
             this.showLoadMore = false
           }
+
           this.orderListLoading = false
         })
     },
@@ -963,6 +1006,24 @@ export default {
       ]
       return headers
     }
+  },
+  mounted () {
+    this.$Bus.$on('setOrderListFilter', msg => {
+      if (this.filterItems.length === 4) {
+        localStorage.setItem('orderListCustomFilter', msg)
+        this.filterItems.push(msg)
+        this.filterSelect = msg
+        this.changeOrderListFilter()
+      } else {
+        if (this.filterItems[4] !== msg) {
+          localStorage.setItem('orderListCustomFilter', msg)
+          this.filterItems.pop()
+          this.filterItems.push(msg)
+          this.filterSelect = msg
+          this.changeOrderListFilter()
+        }
+      }
+    })
   }
 }
 </script>

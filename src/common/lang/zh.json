@@ -280,7 +280,9 @@
       },
       "noDataText": "未查询到订单数据，试着添加新的网络报修记录吧！",
       "titleTooltip": "点击以按月份导出已结束订单为表格",
-      "noLoadingMore": "搜索不到此过滤条件的更多订单喽"
+      "noLoadingMore": "搜索不到此过滤条件的更多订单喽",
+      "searchOrder": "搜索订单...",
+      "exportOrderShort": "导出"
     },
     "acceptedOrder": {
       "title": "您的订单",
@@ -384,7 +386,11 @@
     },
     "orderSearchDialog": {
       "title": "搜索订单",
-      "subtitle": "通过寝室地址或用户联系电话搜索订单"
+      "subtitle": "通过寝室地址或用户联系电话搜索订单",
+      "close": "关闭",
+      "confirm": "搜索",
+      "inputLabel": "寝室地址或联系电话",
+      "inputHint": "模糊匹配寝室号，完全匹配联系电话"
     }
   },
   "login": {

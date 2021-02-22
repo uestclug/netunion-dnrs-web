@@ -90,7 +90,7 @@
           $t('order.assigneeDialog.confirmTitle')
         }}</v-card-title>
         <v-card-text>{{ confirmDialogText }}</v-card-text>
-        <v-card-actions class="mr-4 pb-4">
+        <v-card-actions class="mr-2 pb-4">
           <v-spacer />
           <v-btn
             depressed

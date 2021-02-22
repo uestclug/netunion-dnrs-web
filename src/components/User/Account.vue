@@ -269,7 +269,7 @@
         <v-card-text>
           {{ $t('user.account.logoutText') }}
         </v-card-text>
-        <v-card-actions class="mr-4">
+        <v-card-actions class="mr-2">
           <v-spacer></v-spacer>
           <v-btn
             depressed
