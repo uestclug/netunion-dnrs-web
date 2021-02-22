@@ -4,7 +4,7 @@
 
 ### 新增
 
-- 为处理者的订单列表添加自定义搜索订单功能（#15）。
+- 为处理者的订单列表添加自定义搜索订单功能（[#15](https://github.com/uestclug/netunion-dnrs-web/issues/15)）。
 - 为处理者的订单列表添加“我已接单”过滤。
 - 为处理者的订单列表添加更多的 Tooltip, Emoticons 和文字叙述。
 - 从关于我们页面快速跳转到 NetUnion 官网。
