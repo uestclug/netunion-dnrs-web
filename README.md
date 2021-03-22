@@ -1,8 +1,15 @@
 # netunion-dnrs-web
 
-<div align=center><img src="./src/assets/networkOff.jpg" alt="你没网啦？" /></div>
+## Deprecated / 已弃用
 
-## NetUnion Dormitory Network Repair System Web
+电子科技大学提供了官方宿舍网络报修的微信小程序，您可以使用**微信**扫描下方的二维码进入！
+
+- **沙河校区**宿舍网络报修二维码
+  <div align=center><img src="./src/assets/studentQRCode.jpg" alt="宿舍网络报修微信二维码" /></div>
+
+## NetUnion Dormitory Network Repair System Web / NetUnion 宿舍网络报修系统（web）
+
+<div align=center><img src="./src/assets/networkOff.jpg" alt="你没网啦？" /></div>
 
 为**电子科技大学**的学生提供的基于 web 的宿舍网络在线报修系统（平台），支持沙河校区和清水河校区的学生在线报修宿舍网络问题。别担心，宿舍网络问题找我们！
 
